@@ -13,7 +13,9 @@ import { useParams } from 'react-router-dom'
 import { StepCategory, StepData, StepPalleteModuleInfo, useGetStepsV2 } from 'services/pipeline-ng'
 import { useMutateAsGet } from '@common/hooks'
 import { useStrings } from 'framework/strings'
+import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
 import { useTelemetry } from '@common/hooks/useTelemetry'
+import { useFeature } from '@common/hooks/useFeatures'
 import { StepActions } from '@common/constants/TrackingConstants'
 import type { StageType } from '@pipeline/utils/stageHelpers'
 import { StepPopover } from '@pipeline/components/PipelineStudio/StepPalette/StepPopover/StepPopover'
@@ -72,6 +74,11 @@ export const StepPalette: React.FC<StepPaletteProps> = ({
   // Need this when we have same names for category and sub category
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null)
   const { accountId } = useParams<{ module: string; accountId: string }>()
+  const { enabled: featureZeroNorth } = useFeature({
+    featureRequest: {
+      featureName: FeatureIdentifier.ZERONORTH_STEP
+    }
+  })
 
   const Message = ({ stepsDataLoading }: { stepsDataLoading: boolean }) => {
     const message = stepsDataLoading
@@ -98,6 +105,18 @@ export const StepPalette: React.FC<StepPaletteProps> = ({
     const toShow: StepCategory[] = []
     fromApi?.forEach(stepCat => {
       if (stepCat?.stepCategories?.length) {
+        if (featureZeroNorth) {
+          // Clone the Plugin Step to a "beta version" ZeroNorth Step
+          if (stepCat.name === 'Continuous Integration') {
+            stepCat.stepCategories.forEach(subCat => {
+              const pluginStep = subCat?.stepsData?.find(step => step.type === 'Plugin')
+              if (pluginStep) {
+                subCat?.stepsData?.push({ ...pluginStep, name: 'Run Security Test', type: 'ZeroNorth' })
+              }
+            })
+          }
+        }
+
         toShow.push(...stepCat?.stepCategories)
       }
     })

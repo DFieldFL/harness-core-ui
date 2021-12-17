@@ -34,6 +34,8 @@ import { StepType } from '../PipelineSteps/PipelineStepInterface'
 import '@cd/components/PipelineSteps'
 // eslint-disable-next-line no-restricted-imports
 import '@ci/components/PipelineSteps'
+// eslint-disable-next-line no-restricted-imports
+import '@sto/components/PipelineSteps'
 import { StepViewType } from '../AbstractSteps/Step'
 
 export const clearRuntimeInput = (template: PipelineInfoConfig): PipelineInfoConfig => {

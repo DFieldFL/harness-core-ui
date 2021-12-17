@@ -39,6 +39,7 @@ function validateReferences(str, path, restricedModules = [], isOld) {
 
   while ((match = REFERENCE_REGEX1.exec(str))) {
     const [, ref] = match
+    console.log(ref)
 
     restricedModules.forEach(mod => {
       if (ref.startsWith(mod)) {
@@ -112,6 +113,7 @@ for (const [i, layer] of moduleLayers.entries()) {
     const restrictedModules = _.flatten(moduleLayers.slice(i))
       .map(mod => mod.moduleRef)
       .filter(mod => mod !== moduleRef)
+      .map(mod => `${mod}.`)
 
     values[moduleRef] = parsedContent
     validateStrings(parsedContent, [moduleRef], restrictedModules)
