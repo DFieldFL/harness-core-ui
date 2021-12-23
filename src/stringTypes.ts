@@ -3447,6 +3447,8 @@ export interface StringsMap {
   'ce.co.gatewayConfig.name': string
   'ce.co.gatewayConfig.routingDescription': string
   'ce.co.gatewayConfig.scheduleDescription': string
+  'ce.co.gatewayConfig.setSchedulePeriodHeader': string
+  'ce.co.gatewayConfig.setScheduleTimeHeader': string
   'ce.co.gatewayConfig.usePrivateIP': string
   'ce.co.gatewayReview.configurationDetails': string
   'ce.co.gatewayReview.gatewayDetails': string

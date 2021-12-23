@@ -10,5 +10,6 @@ declare const styles: {
   readonly day: string
   readonly daysOfWeekSelectorCont: string
   readonly selected: string
+  readonly disabled: string
 }
 export default styles

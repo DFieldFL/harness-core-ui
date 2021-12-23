@@ -7,6 +7,10 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
+  readonly fixedScheduleFormContainer: string
+  readonly heading: string
+  readonly inputRow: string
+  readonly typeToggle: string
   readonly allDayCheckbox: string
   readonly ctaContainer: string
   readonly errorDisplayContainer: string

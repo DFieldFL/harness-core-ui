@@ -17,10 +17,10 @@ interface Props {
   onTimezoneSelect: (tz: string) => void
 }
 
-const CronTimezone = (props: Props) => {
+const TimezoneSelector = (props: Props) => {
   const { getString } = useStrings()
-  const [searchText, setSearchText] = useState('')
   const { timezone, onTimezoneSelect } = props
+  const [searchText, setSearchText] = useState('')
 
   const renderTimeZones = () => {
     const filteredTimezones = ALL_TIME_ZONES.filter(t => t.toLowerCase().includes(searchText.toLowerCase()))
@@ -78,10 +78,10 @@ const CronTimezone = (props: Props) => {
         <Text inline color="primary6" font="small">
           {timezone}
         </Text>
-        <Icon name="caret-down" color="primary6" />
+        <Icon name="chevron-down" color="primary6" />
       </>
     </Popover>
   )
 }
 
-export default CronTimezone
+export default TimezoneSelector

@@ -19,7 +19,7 @@ const FixedScheduleDialog: React.FC<FixedScheduleDialogProps> = props => {
       isOpen={true}
       enforceFocus={false}
       style={{
-        width: 430,
+        width: 630,
         minHeight: 550,
         padding: 40,
         position: 'relative'

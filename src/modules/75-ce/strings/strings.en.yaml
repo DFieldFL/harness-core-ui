@@ -326,6 +326,8 @@ co:
     healthCheck: 'Health check'
     name: '{{$.ce.co.gatewayReview.nameYourGateway}}'
     addSchedule: '+ add schedule'
+    setSchedulePeriodHeader: 'Set schedule period'
+    setScheduleTimeHeader: 'Uptime/Downtime in the selected period'
     scheduleDescription: 'Set an automated schedule for uptime or downtime of all the resources that match your filter criteria.'
     routingDescription: 'This is the load balancer routing configuration for the underlying application that is running on the cloud resources managed by this AutoStopping Rule.'
     k8sroutingDescription: 'This is the resource definition YAML of the Kubernetes AutoStopping Rule that will be applied to the cluster. The specification here is the same as a Kubernetes ingress, with additional Harness metadata. Edit the below template with the right HTTP/HTTPS service details. Validate the YAML to proceed.'

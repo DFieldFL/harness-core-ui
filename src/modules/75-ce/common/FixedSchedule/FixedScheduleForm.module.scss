@@ -19,16 +19,29 @@
       }
     }
 
+    .heading {
+      font-weight: 600 !important;
+      margin-bottom: var(--spacing-medium) !important;
+    }
+
+    .inputRow {
+      border-bottom: 1px solid var(--grey-200);
+      padding-bottom: var(--spacing-large);
+    }
+
     .typeToggle {
       width: 140px;
       height: 20px;
-      > div[class*='selected'] {
-        background-color: var(--green-800);
-      }
       > div[data-name^='toggle-option'] {
         width: 70px;
         height: 20px;
         padding: 4px 5px;
+      }
+      > div[data-name='toggle-option-one'][class*='selected'] {
+        background-color: var(--green-800);
+      }
+      > div[data-name='toggle-option-two'][class*='selected'] {
+        background-color: var(--red-500);
       }
     }
 

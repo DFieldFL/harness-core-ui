@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TimePicker } from '@blueprintjs/datetime'
 import { defaultTo as _defaultTo, isEmpty as _isEmpty } from 'lodash-es'
 import * as Yup from 'yup'
@@ -20,26 +20,22 @@ import {
   Heading,
   Label,
   Layout,
-  Select,
-  SelectOption,
   Text,
-  PillToggle
+  PillToggle,
+  Radio,
+  RadioGroup
 } from '@wings-software/uicore'
 import { useParams } from 'react-router-dom'
 import DaysOfWeekSelector, { days as weekDays } from '@ce/common/DaysOfWeekSelector/DaysOfWeekSelector'
 import { useStrings } from 'framework/strings'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
-import {
-  ALL_TIME_ZONES,
-  getStaticSchedulePeriodString,
-  getStaticSchedulePeriodTime,
-  getUserTimeZone
-} from '@ce/utils/momentUtils'
+import { getStaticSchedulePeriodString, getStaticSchedulePeriodTime, getUserTimeZone } from '@ce/utils/momentUtils'
 import type { FixedScheduleClient, ScheduleTime } from '@ce/components/COCreateGateway/models'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import { useValidateStaticScheduleList } from 'services/lw'
 import { Utils } from '../Utils'
 import { ScheduleDescription } from '../FixedSchedulesList/FixedSchedulesList'
+import TimezoneSelector from '../TimeZoneSelector/TimeZoneSelector'
 import css from './FixedScheduleForm.module.scss'
 
 interface FixedScheduleFormProps {
@@ -146,33 +142,49 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
           <FormikForm>
             <Layout.Vertical spacing={'large'}>
               <FormInput.Text name="name" label="Name*" />
-              <Container>
-                <Label>{'Type*'}</Label>
-                <PillToggle
-                  selectedView={_formikProps.values.type}
-                  options={[
-                    {
-                      label: getString(
-                        'ce.co.autoStoppingRule.configuration.step4.tabs.schedules.uptime'
-                      ).toUpperCase(),
-                      value: getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.uptime')
-                    },
-                    {
-                      label: getString(
-                        'ce.co.autoStoppingRule.configuration.step4.tabs.schedules.downtime'
-                      ).toUpperCase(),
-                      value: getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.downtime')
-                    }
-                  ]}
-                  onChange={val => {
-                    _formikProps.setFieldValue('type', val)
-                  }}
-                  className={css.typeToggle}
-                />
+              <Container className={css.inputRow}>
+                <Layout.Horizontal spacing={'large'}>
+                  <Container>
+                    <Label>{'Type*'}</Label>
+                    <PillToggle
+                      selectedView={_formikProps.values.type}
+                      options={[
+                        {
+                          label: getString(
+                            'ce.co.autoStoppingRule.configuration.step4.tabs.schedules.uptime'
+                          ).toUpperCase(),
+                          value: getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.uptime')
+                        },
+                        {
+                          label: getString(
+                            'ce.co.autoStoppingRule.configuration.step4.tabs.schedules.downtime'
+                          ).toUpperCase(),
+                          value: getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.downtime')
+                        }
+                      ]}
+                      onChange={val => {
+                        _formikProps.setFieldValue('type', val)
+                      }}
+                      className={css.typeToggle}
+                    />
+                  </Container>
+                  <Container>
+                    <Label>{'Timezone*'}</Label>
+                    <TimezoneSelector
+                      onTimezoneSelect={val => {
+                        _formikProps.setFieldValue('timezone', val)
+                      }}
+                      timezone={_formikProps.values.timezone}
+                    />
+                  </Container>
+                </Layout.Horizontal>
               </Container>
-              <Container>
-                <Layout.Horizontal flex={{ justifyContent: 'space-between' }}>
-                  <div>
+              <Container className={css.inputRow}>
+                <Heading level={3} className={css.heading}>
+                  {getString('ce.co.gatewayConfig.setSchedulePeriodHeader')}
+                </Heading>
+                <Layout.Horizontal spacing={'large'}>
+                  <div style={{ flex: 1 }}>
                     <Label>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.beginsOn')}</Label>
                     <DateInput
                       timePrecision="minute"
@@ -192,7 +204,7 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
                       data-testid="beginsOn"
                     />
                   </div>
-                  <div>
+                  <div style={{ flex: 1 }}>
                     <Label>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.endsOn')}</Label>
                     <DateInput
                       timePrecision="minute"
@@ -221,22 +233,78 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
               </Container>
 
               <Container>
-                <Label>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.repeats')}</Label>
-                <DaysOfWeekSelector
-                  selection={_formikProps.values.repeats}
-                  onChange={days => {
-                    _formikProps.setFieldValue(
-                      'repeats',
-                      days.map(d => d.id)
-                    )
-                    _formikProps.setFieldValue('everyday', days.length === 7)
-                    if (days.length === 0) {
-                      _formikProps.setFieldValue('startTime', null)
-                      _formikProps.setFieldValue('endTime', null)
-                      _formikProps.setFieldValue('allDay', false)
-                    }
-                  }}
-                />
+                <Heading level={3} className={css.heading}>
+                  {getString('ce.co.gatewayConfig.setScheduleTimeHeader')}
+                </Heading>
+                <Layout.Horizontal>
+                  <Container style={{ flex: 1 }}>
+                    <Label>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.repeats')}</Label>
+                    <RadioGroup>
+                      <Radio
+                        label={getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.everyday')}
+                        value="everyday"
+                      />
+                      <Layout.Horizontal>
+                        <Radio value="somedays" />
+                        <DaysOfWeekSelector
+                          disable={true}
+                          selection={_formikProps.values.repeats}
+                          onChange={days => {
+                            _formikProps.setFieldValue(
+                              'repeats',
+                              days.map(d => d.id)
+                            )
+                            _formikProps.setFieldValue('everyday', days.length === 7)
+                            if (days.length === 0) {
+                              _formikProps.setFieldValue('startTime', null)
+                              _formikProps.setFieldValue('endTime', null)
+                              _formikProps.setFieldValue('allDay', false)
+                            }
+                          }}
+                        />
+                      </Layout.Horizontal>
+                    </RadioGroup>
+                  </Container>
+                  <Container style={{ flex: 1 }}>
+                    <Label>{'Time'}</Label>
+                    <RadioGroup>
+                      <Radio
+                        label={getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.allDay')}
+                        value={'allDay'}
+                      />
+                      <Layout.Horizontal>
+                        <Radio />
+                        <Container>
+                          <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }}>
+                            <Text>{'from'}</Text>
+                            <TimePicker
+                              useAmPm
+                              value={getTime(_formikProps.values.startTime)}
+                              disabled={_formikProps.values.allDay}
+                              onChange={d => {
+                                _formikProps.setFieldValue('startTime', { hour: d.getHours(), min: d.getMinutes() })
+                              }}
+                            />
+                          </Layout.Horizontal>
+                          <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }}>
+                            <Text>{'to'}</Text>
+                            <TimePicker
+                              useAmPm
+                              value={getTime(_formikProps.values.endTime)}
+                              disabled={_formikProps.values.allDay}
+                              onChange={d => {
+                                _formikProps.setFieldValue('endTime', { hour: d.getHours(), min: d.getMinutes() })
+                                if (_isEmpty(_formikProps.values.startTime)) {
+                                  _formikProps.setFieldValue('startTime', { hour: 0, min: 0 })
+                                }
+                              }}
+                            />
+                          </Layout.Horizontal>
+                        </Container>
+                      </Layout.Horizontal>
+                    </RadioGroup>
+                  </Container>
+                </Layout.Horizontal>
                 <div className={css.allDayCheckbox}>
                   <FormInput.CheckBox
                     name={'everyday'}
@@ -257,7 +325,7 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
                   />
                 </div>
               </Container>
-              {(_formikProps.values.everyday || !_isEmpty(_formikProps.values.repeats)) && (
+              {/* {(_formikProps.values.everyday || !_isEmpty(_formikProps.values.repeats)) && (
                 <Container>
                   <Label>{'Time'}</Label>
                   <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }} spacing="medium">
@@ -289,8 +357,8 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
                     />
                   </div>
                 </Container>
-              )}
-              <Container>
+              )} */}
+              {/* <Container>
                 <Label>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.timezone')}</Label>
                 <TimeZonesSelect
                   value={_formikProps.values.timezone}
@@ -298,7 +366,7 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
                     _formikProps.setFieldValue('timezone', d)
                   }}
                 />
-              </Container>
+              </Container> */}
             </Layout.Vertical>
             {(_formikProps.values.beginsOn || !_isEmpty(_formikProps.values.repeats)) && (
               <ScheduleDescription schedule={getUpdatedScheduleData(_formikProps.values)} />
@@ -317,23 +385,6 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
       </Formik>
     </Layout.Vertical>
   )
-}
-
-interface TimeZonesSelectProps {
-  value?: string
-  onChange: (timezone: string) => void
-}
-
-const TimeZonesSelect: React.FC<TimeZonesSelectProps> = props => {
-  const [data, setData] = useState<SelectOption[]>([])
-  const value = props.value ? { label: props.value, value: props.value } : null
-
-  useEffect(() => {
-    const filteredData = ALL_TIME_ZONES.map(d => ({ label: d, value: d }))
-    setData(filteredData)
-  }, [])
-
-  return <Select value={value} items={data} onChange={d => props.onChange?.(d.value as string)} />
 }
 
 export default FixedScheduleForm
