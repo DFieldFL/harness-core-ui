@@ -153,7 +153,7 @@ export const ScheduleDescription: React.FC<ScheduleDescriptionProps> = props => 
       const sTime = `${props.schedule.startTime?.hour}:${props.schedule.startTime?.min}`
       timeStr = `from ${get24HourTimeIn12HourFormat(sTime)}`
     }
-    if (!_isEmpty(props.schedule.endTime)) {
+    if (!props.schedule.allDay && !_isEmpty(props.schedule.endTime)) {
       const eTime = `${props.schedule.endTime?.hour}:${props.schedule.endTime?.min}`
       timeStr += ` to ${get24HourTimeIn12HourFormat(eTime)}`
     }
