@@ -15,6 +15,7 @@ interface UseFixedScheduleEditorProps {
   schedule?: FixedScheduleClient
   addSchedule: (schedule: FixedScheduleClient) => void
   isEdit?: boolean
+  allCreatedSchedules: FixedScheduleClient[]
 }
 
 const useFixedScheduleEditor = (props: UseFixedScheduleEditorProps) => {
@@ -31,6 +32,7 @@ const useFixedScheduleEditor = (props: UseFixedScheduleEditorProps) => {
           closeDialog={closeModal}
           addSchedule={onAddition}
           isEdit={props.isEdit}
+          allSchedules={props.allCreatedSchedules}
         />
       </FixedScheduleDialog>
     ),

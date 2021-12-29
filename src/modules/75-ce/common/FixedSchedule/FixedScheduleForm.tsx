@@ -22,7 +22,8 @@ import {
   Label,
   Layout,
   Text,
-  PillToggle
+  PillToggle,
+  Checkbox
 } from '@wings-software/uicore'
 import type { FormikProps } from 'formik'
 import { useParams } from 'react-router-dom'
@@ -33,6 +34,7 @@ import { getStaticSchedulePeriodString, getStaticSchedulePeriodTime, getUserTime
 import type { FixedScheduleClient, ScheduleTime } from '@ce/components/COCreateGateway/models'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import { useValidateStaticScheduleList } from 'services/lw'
+import { DaysOfWeek } from '@ce/constants'
 import { Utils } from '../Utils'
 import { ScheduleDescription } from '../FixedSchedulesList/FixedSchedulesList'
 import TimezoneSelector from '../TimeZoneSelector/TimeZoneSelector'
@@ -43,6 +45,7 @@ interface FixedScheduleFormProps {
   closeDialog: () => void
   isEdit?: boolean
   addSchedule: (schedule: FixedScheduleClient) => void
+  allSchedules: FixedScheduleClient[]
 }
 
 interface DaysAndTimeSelectorProps {
@@ -75,8 +78,8 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
       ({
         name: '',
         type: 'uptime',
-        beginsOn: '',
-        endsOn: '',
+        beginsOn: null,
+        endsOn: null,
         startTime: null,
         endTime: null,
         allDay: true,
@@ -90,14 +93,10 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
 
   const getUpdatedScheduleData = (data: FixedScheduleClient) => {
     const updatedData = { ...data }
-    if (data.everyday || !_isEmpty(data.repeats)) {
-      const date = getTime(null)
-      if (_isEmpty(data.startTime)) {
-        updatedData.startTime = { hour: date.getHours(), min: date.getMinutes() }
-      }
-      if (_isEmpty(data.endTime)) {
-        updatedData.endTime = { hour: date.getHours(), min: date.getMinutes() }
-      }
+    if (data.everyday && _isEmpty(data.repeats)) {
+      updatedData.repeats = Object.keys(DaysOfWeek)
+        .filter(val => isNaN(Number(val)))
+        .map((_k, i) => i)
     }
     return updatedData
   }
@@ -105,14 +104,16 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
   const handleSubmit = async (data: FixedScheduleClient): Promise<FixedScheduleClient> => {
     const updatedData = getUpdatedScheduleData(data)
     try {
+      const idParams = {
+        accountId,
+        userId: _defaultTo(currentUserInfo.uuid, ''),
+        ruleId: 0
+      }
       await validateSchedules(
         {
           schedules: [
-            Utils.convertScheduleClientToSchedule(updatedData, {
-              accountId,
-              userId: _defaultTo(currentUserInfo.uuid, ''),
-              ruleId: 0
-            })
+            ...props.allSchedules.map(s => Utils.convertScheduleClientToSchedule(s, idParams)),
+            Utils.convertScheduleClientToSchedule(updatedData, idParams)
           ]
         },
         {
@@ -197,7 +198,7 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
               <Button
                 text={getString('common.apply')}
                 intent="primary"
-                // onClick={_formikProps.submitForm}
+                disabled={!_formikProps.isValid}
                 type="submit"
               />
               <Button text={getString('cancel')} onClick={props.closeDialog} />
@@ -211,6 +212,26 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
 
 const PeriodSelection = ({ formikProps }: PeriodSelectionProps) => {
   const { getString } = useStrings()
+  const [neverEnds, setNeverEnds] = useState(
+    !_isEmpty(formikProps.values.beginsOn) ? _isEmpty(formikProps.values.endsOn) : true
+  )
+
+  const handleStartDateChange = (value: string | undefined, _err?: string) => {
+    formikProps.setFieldValue('beginsOn', !_isEmpty(value) ? getStaticSchedulePeriodString(Number(value)) : null)
+  }
+
+  const handleEndDateChange = (value: string | undefined, _err?: string) => {
+    formikProps.setFieldValue('endsOn', getStaticSchedulePeriodString(Number(value)))
+  }
+
+  const handleNeverEndsChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const checked = e.currentTarget.checked
+    if (checked) {
+      formikProps.setFieldValue('endsOn', null)
+    }
+    setNeverEnds(checked)
+  }
+
   return (
     <Container className={css.inputRow}>
       <Heading level={3} className={css.heading}>
@@ -229,31 +250,42 @@ const PeriodSelection = ({ formikProps }: PeriodSelectionProps) => {
             value={
               formikProps.values.beginsOn ? `${getStaticSchedulePeriodTime(formikProps.values.beginsOn)}` : undefined
             }
-            onChange={(value, _err) => {
-              formikProps.setFieldValue('beginsOn', getStaticSchedulePeriodString(Number(value)))
-            }}
+            onChange={handleStartDateChange}
             data-testid="beginsOn"
           />
         </div>
         <div style={{ flex: 1 }}>
           <Label>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.endsOn')}</Label>
-          <DateInput
-            timePrecision="minute"
-            disabled={true}
-            dateProps={{
-              timePickerProps: { useAmPm: true },
-              defaultValue: !_isEmpty(formikProps.values.beginsOn) ? new Date(formikProps.values.beginsOn) : new Date(),
-              minDate: !_isEmpty(formikProps.values.beginsOn) ? new Date(formikProps.values.beginsOn) : new Date()
-            }}
-            value={formikProps.values.endsOn ? `${getStaticSchedulePeriodTime(formikProps.values.endsOn)}` : undefined}
-            onChange={(value, _err) => {
-              formikProps.setFieldValue('endsOn', getStaticSchedulePeriodString(Number(value)))
-            }}
-            data-testid="endsOn"
-          />
+          {neverEnds && (
+            <div className={css.disabledDateInput}>
+              <DateInput disabled timePrecision="minute" dateProps={{ timePickerProps: { useAmPm: true } }} />
+            </div>
+          )}
+          {!neverEnds && (
+            <DateInput
+              timePrecision="minute"
+              disabled={true}
+              dateProps={{
+                timePickerProps: { useAmPm: true },
+                defaultValue: !_isEmpty(formikProps.values.beginsOn)
+                  ? new Date(formikProps.values.beginsOn as string)
+                  : new Date(),
+                minDate: !_isEmpty(formikProps.values.beginsOn)
+                  ? new Date(formikProps.values.beginsOn as string)
+                  : new Date()
+              }}
+              value={
+                !_isEmpty(formikProps.values.endsOn)
+                  ? `${getStaticSchedulePeriodTime(formikProps.values.endsOn as string)}`
+                  : ''
+              }
+              onChange={handleEndDateChange}
+              data-testid="endsOn"
+            />
+          )}
         </div>
       </Layout.Horizontal>
-      <FormInput.CheckBox name={'neverEnds'} label={'Never ends'} />
+      <Checkbox name={'neverEnds'} label={'Never ends'} checked={neverEnds} onChange={handleNeverEndsChange} />
     </Container>
   )
 }
@@ -283,17 +315,20 @@ const DaysAndTimeSelector = ({ formikProps }: DaysAndTimeSelectorProps) => {
               label=""
               value="somedays"
               checked={!formikProps.values.everyday}
-              onChange={_ => formikProps.setFieldValue('everyday', false)}
+              onChange={_ => {
+                formikProps.setFieldValue('everyday', false)
+                formikProps.setFieldValue('repeats', [])
+              }}
             />
             <DaysOfWeekSelector
               disable={formikProps.values.everyday}
               selection={formikProps.values.repeats}
               onChange={days => {
-                formikProps.setFieldValue(
-                  'repeats',
-                  days.map(d => d.id)
-                )
-                formikProps.setFieldValue('everyday', days.length === 7)
+                const allDaysSelected = days.length === 7
+                if (allDaysSelected) {
+                  formikProps.setFieldValue('everyday', true)
+                }
+                formikProps.setFieldValue('repeats', allDaysSelected ? [] : days.map(d => d.id))
                 if (days.length === 0) {
                   formikProps.setFieldValue('startTime', null)
                   formikProps.setFieldValue('endTime', null)
@@ -309,7 +344,11 @@ const DaysAndTimeSelector = ({ formikProps }: DaysAndTimeSelectorProps) => {
             label={getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.allDay')}
             value={'allDay'}
             checked={formikProps.values.allDay}
-            onChange={_ => formikProps.setFieldValue('allDay', true)}
+            onChange={_ => {
+              formikProps.setFieldValue('allDay', true)
+              formikProps.setFieldValue('startTime', null)
+              formikProps.setFieldValue('endTime', null)
+            }}
           />
           <Layout.Horizontal flex={{ alignItems: 'baseline', justifyContent: 'start' }}>
             <Radio
@@ -319,7 +358,7 @@ const DaysAndTimeSelector = ({ formikProps }: DaysAndTimeSelectorProps) => {
               onChange={_ => formikProps.setFieldValue('allDay', false)}
             />
             <Container>
-              <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }}>
+              <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }} className={css.fromTime}>
                 <Text>{'from'}</Text>
                 <TimePicker
                   useAmPm
@@ -330,7 +369,7 @@ const DaysAndTimeSelector = ({ formikProps }: DaysAndTimeSelectorProps) => {
                   }}
                 />
               </Layout.Horizontal>
-              <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }}>
+              <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }} className={css.toTime}>
                 <Text>{'to'}</Text>
                 <TimePicker
                   useAmPm

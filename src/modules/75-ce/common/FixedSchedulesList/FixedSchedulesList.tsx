@@ -56,7 +56,7 @@ const ScheduleItem: React.FC<ScheduleItemProps> = props => {
   const gerPeriodString = () => {
     let str = ''
     if (!_isEmpty(schedule.beginsOn)) {
-      str += getTimePeriodString(schedule.beginsOn, dateFormat)
+      str += getTimePeriodString(schedule.beginsOn as string, dateFormat)
     }
     if (str.length && !_isEmpty(schedule.endsOn)) {
       str += ` - ${getTimePeriodString(schedule.endsOn as string, dateFormat)}`
@@ -130,7 +130,7 @@ export const ScheduleDescription: React.FC<ScheduleDescriptionProps> = props => 
     const state = Utils.getConditionalResult(props.schedule.type === 'uptime', 'up', 'down')
     let periodStr = ''
     if (!_isEmpty(props.schedule.beginsOn)) {
-      periodStr = `starting from ${getTimePeriodString(props.schedule.beginsOn, dateFormat)}`
+      periodStr = `starting from ${getTimePeriodString(props.schedule.beginsOn as string, dateFormat)}`
     }
     if (!_isEmpty(props.schedule.endsOn)) {
       periodStr += ` and ending on ${getTimePeriodString(props.schedule.endsOn as string, dateFormat)}`

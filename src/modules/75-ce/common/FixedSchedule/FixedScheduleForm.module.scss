@@ -52,6 +52,24 @@
     .ctaContainer {
       margin-top: var(--spacing-xxlarge);
     }
+
+    .disabledDateInput {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .fromTime {
+      margin-bottom: 7px;
+      > p {
+        margin-right: 10px;
+      }
+    }
+
+    .toTime {
+      > p {
+        margin-right: 27px;
+      }
+    }
   }
 
   .errorDisplayContainer {

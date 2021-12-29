@@ -13,6 +13,9 @@ declare const styles: {
   readonly typeToggle: string
   readonly allDayCheckbox: string
   readonly ctaContainer: string
+  readonly disabledDateInput: string
+  readonly fromTime: string
+  readonly toTime: string
   readonly errorDisplayContainer: string
   readonly fixedScheduleFormContainer: string
   readonly typeToggle: string
