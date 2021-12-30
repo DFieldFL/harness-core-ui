@@ -52,7 +52,7 @@ describe('ZeroNorth Step', () => {
   describe('Edit View', () => {
     test('should render properly', () => {
       const { container } = render(
-        <TestStepWidget initialValues={{}} type={StepType.Plugin} stepViewType={StepViewType.Edit} />
+        <TestStepWidget initialValues={{}} type={StepType.ZeroNorth} stepViewType={StepViewType.Edit} />
       )
 
       expect(container).toMatchSnapshot()
@@ -84,7 +84,7 @@ describe('ZeroNorth Step', () => {
       const { container } = render(
         <TestStepWidget
           initialValues={initialValues}
-          type={StepType.Plugin}
+          type={StepType.ZeroNorth}
           stepViewType={StepViewType.Edit}
           onUpdate={onUpdate}
           ref={ref}
@@ -294,57 +294,57 @@ describe('ZeroNorth Step', () => {
             metadataMap: {
               'step-name': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.name',
-                  localName: 'step.plugin.name'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.name',
+                  localName: 'step.zeronorth.name'
                 }
               },
               'step-description': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.description',
-                  localName: 'step.plugin.description'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.description',
+                  localName: 'step.zeronorth.description'
                 }
               },
               'step-timeout': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.timeout',
-                  localName: 'step.plugin.timeout'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.timeout',
+                  localName: 'step.zeronorth.timeout'
                 }
               },
               'step-connectorRef': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.spec.connectorRef',
-                  localName: 'step.plugin.spec.connectorRef'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.spec.connectorRef',
+                  localName: 'step.zeronorth.spec.connectorRef'
                 }
               },
               'step-image': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.spec.image',
-                  localName: 'step.plugin.spec.image'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.spec.image',
+                  localName: 'step.zeronorth.spec.image'
                 }
               },
               'step-settings': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.spec.settings',
-                  localName: 'step.plugin.spec.settings'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.spec.settings',
+                  localName: 'step.zeronorth.spec.settings'
                 }
               },
               // Right now we do not support Image Pull Policy but will do in the future
               // 'step-pull': {
               //   yamlProperties: {
-              //     fqn: 'pipeline.stages.qaStage.execution.steps.plugin.spec.pull',
-              //     localName: 'step.plugin.spec.pull'
+              //     fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.spec.pull',
+              //     localName: 'step.zeronorth.spec.pull'
               //   }
               // },
               'step-limitMemory': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.spec.resources.limits.memory',
-                  localName: 'step.plugin.spec.resources.limits.memory'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.spec.resources.limits.memory',
+                  localName: 'step.zeronorth.spec.resources.limits.memory'
                 }
               },
               'step-limitCPU': {
                 yamlProperties: {
-                  fqn: 'pipeline.stages.qaStage.execution.steps.plugin.spec.resources.limits.cpu',
-                  localName: 'step.plugin.resources.spec.limits.cpu'
+                  fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.spec.resources.limits.cpu',
+                  localName: 'step.zeronorth.resources.spec.limits.cpu'
                 }
               }
             },
