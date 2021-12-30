@@ -52,7 +52,7 @@ export interface ZeroNorthStepSpecUI
   connectorRef: MultiTypeConnectorRef
   reportPaths?: MultiTypeListUIType
   settings?: MultiTypeMapUIType
-  // TODO: Right now we do not support Image Pull Policy but will do in the future
+  // Right now we do not support Image Pull Policy but will do in the future
   // pull?: MultiTypeSelectOption
   runAsUser?: string
   limitMemory?: string

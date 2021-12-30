@@ -64,7 +64,7 @@ ZeroNorthStep.args = {
         key2: 'value2',
         key3: 'value3'
       },
-      // TODO: Right now we do not support Image Pull Policy but will do in the future
+      // Right now we do not support Image Pull Policy but will do in the future
       // pull: 'always',
       resources: {
         limits: {
@@ -91,7 +91,7 @@ ZeroNorthStep.args = {
       image: RUNTIME_INPUT_VALUE,
       privileged: RUNTIME_INPUT_VALUE,
       settings: RUNTIME_INPUT_VALUE,
-      // TODO: Right now we do not support Image Pull Policy but will do in the future
+      // Right now we do not support Image Pull Policy but will do in the future
       // pull: RUNTIME_INPUT_VALUE,
       resources: {
         limits: {
@@ -112,7 +112,7 @@ ZeroNorthStep.args = {
       image: RUNTIME_INPUT_VALUE,
       privileged: RUNTIME_INPUT_VALUE,
       settings: RUNTIME_INPUT_VALUE,
-      // TODO: Right now we do not support Image Pull Policy but will do in the future
+      // Right now we do not support Image Pull Policy but will do in the future
       // pull: RUNTIME_INPUT_VALUE,
       resources: {
         limits: {
@@ -161,7 +161,7 @@ ZeroNorthStep.args = {
           localName: 'step.zeronorth.spec.settings'
         }
       },
-      // TODO: Right now we do not support Image Pull Policy but will do in the future
+      // Right now we do not support Image Pull Policy but will do in the future
       // 'step-pull': {
       //   yamlProperties: {
       //     fqn: 'pipeline.stages.qaStage.execution.steps.zeronorth.spec.pull',
@@ -192,7 +192,7 @@ ZeroNorthStep.args = {
         image: 'step-image',
         settings: 'step-settings',
         privileged: false,
-        // TODO: Right now we do not support Image Pull Policy but will do in the future
+        // Right now we do not support Image Pull Policy but will do in the future
         // pull: 'step-pull',
         resources: {
           limits: {

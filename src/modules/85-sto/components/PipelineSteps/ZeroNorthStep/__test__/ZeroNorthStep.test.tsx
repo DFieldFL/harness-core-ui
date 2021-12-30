@@ -69,7 +69,7 @@ describe('ZeroNorth Step', () => {
           image: RUNTIME_INPUT_VALUE,
           privileged: RUNTIME_INPUT_VALUE,
           settings: RUNTIME_INPUT_VALUE,
-          // TODO: Right now we do not support Image Pull Policy but will do in the future
+          // Right now we do not support Image Pull Policy but will do in the future
           // pull: RUNTIME_INPUT_VALUE,
           resources: {
             limits: {
@@ -112,7 +112,7 @@ describe('ZeroNorth Step', () => {
             key2: 'value2',
             key3: 'value3'
           },
-          // TODO: Right now we do not support Image Pull Policy but will do in the future
+          // Right now we do not support Image Pull Policy but will do in the future
           // pull: 'always',
           resources: {
             limits: {
@@ -162,7 +162,7 @@ describe('ZeroNorth Step', () => {
           image: RUNTIME_INPUT_VALUE,
           privileged: RUNTIME_INPUT_VALUE,
           settings: RUNTIME_INPUT_VALUE,
-          // TODO: Right now we do not support Image Pull Policy but will do in the future
+          // Right now we do not support Image Pull Policy but will do in the future
           // pull: RUNTIME_INPUT_VALUE,
           resources: {
             limits: {
@@ -184,7 +184,7 @@ describe('ZeroNorth Step', () => {
           image: RUNTIME_INPUT_VALUE,
           privileged: RUNTIME_INPUT_VALUE,
           settings: RUNTIME_INPUT_VALUE,
-          // TODO: Right now we do not support Image Pull Policy but will do in the future
+          // Right now we do not support Image Pull Policy but will do in the future
           // pull: RUNTIME_INPUT_VALUE,
           resources: {
             limits: {
@@ -232,7 +232,7 @@ describe('ZeroNorth Step', () => {
             key2: 'value2',
             key3: 'value3'
           },
-          // TODO: Right now we do not support Image Pull Policy but will do in the future
+          // Right now we do not support Image Pull Policy but will do in the future
           // pull: 'always',
           resources: {
             limits: {
@@ -279,7 +279,7 @@ describe('ZeroNorth Step', () => {
                 key2: 'value2',
                 key3: 'value3'
               },
-              // TODO: Right now we do not support Image Pull Policy but will do in the future
+              // Right now we do not support Image Pull Policy but will do in the future
               // pull: 'always',
               resources: {
                 limits: {
@@ -328,7 +328,7 @@ describe('ZeroNorth Step', () => {
                   localName: 'step.plugin.spec.settings'
                 }
               },
-              // TODO: Right now we do not support Image Pull Policy but will do in the future
+              // Right now we do not support Image Pull Policy but will do in the future
               // 'step-pull': {
               //   yamlProperties: {
               //     fqn: 'pipeline.stages.qaStage.execution.steps.plugin.spec.pull',
@@ -359,7 +359,7 @@ describe('ZeroNorth Step', () => {
                 image: 'step-image',
                 privileged: 'step-privileged',
                 settings: 'step-settings',
-                // TODO: Right now we do not support Image Pull Policy but will do in the future
+                // Right now we do not support Image Pull Policy but will do in the future
                 // pull: 'step-pull',
                 resources: {
                   limits: {
