@@ -106,13 +106,18 @@ export const StepPalette: React.FC<StepPaletteProps> = ({
     fromApi?.forEach(stepCat => {
       if (stepCat?.stepCategories?.length) {
         if (featureZeroNorth) {
-          // Clone the Plugin Step to a "beta version" ZeroNorth Step
+          // TODO: remove - Inject a "beta version" ZeroNorth Step, until Portal is updated to list it
           if (stepCat.name === 'Continuous Integration') {
-            stepCat.stepCategories.forEach(subCat => {
-              const pluginStep = subCat?.stepsData?.find(step => step.type === 'Plugin')
-              if (pluginStep) {
-                subCat?.stepsData?.push({ ...pluginStep, name: 'Run Security Test', type: 'ZeroNorth' })
-              }
+            stepCat.stepCategories.push({
+              name: 'Security',
+              stepCategories: [],
+              stepsData: [
+                {
+                  name: 'Security Test',
+                  type: 'ZeroNorth',
+                  disabled: false
+                }
+              ]
             })
           }
         }
