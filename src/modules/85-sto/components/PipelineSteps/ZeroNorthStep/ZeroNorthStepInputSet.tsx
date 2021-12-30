@@ -9,17 +9,23 @@ import { CIStepOptionalConfig } from '@ci/components/PipelineSteps/CIStep/CIStep
 import type { ZeroNorthStepProps } from './ZeroNorthStep'
 import css from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
-export const ZeroNorthStepInputSet: React.FC<ZeroNorthStepProps> = ({ template, path, readonly, stepViewType }) => {
+export const ZeroNorthStepInputSet: React.FC<ZeroNorthStepProps> = ({
+  template,
+  path,
+  readonly,
+  stepViewType,
+  allowableTypes
+}) => {
   const { getString } = useStrings()
 
   const { expressions } = useVariablesExpression()
 
   return (
-    <FormikForm className={css.removeBpPopoverWrapperTopMargin} style={{ width: '50%' }}>
+    <FormikForm className={css.removeBpPopoverWrapperTopMargin}>
       <CIStep
         readonly={readonly}
         stepViewType={stepViewType}
-        allowableTypes={[MultiTypeInputType.EXPRESSION, MultiTypeInputType.FIXED]}
+        allowableTypes={allowableTypes}
         enableFields={{
           ...(getMultiTypeFromValue(template?.description) === MultiTypeInputType.RUNTIME && {
             description: {}
@@ -37,17 +43,14 @@ export const ZeroNorthStepInputSet: React.FC<ZeroNorthStepProps> = ({ template, 
                   {getString('pipelineSteps.connectorLabel')}
                 </Text>
               ),
-              type: [Connectors.GCP, Connectors.AWS, Connectors.DOCKER],
-              multiTypeProps: {
-                allowableTypes: [MultiTypeInputType.EXPRESSION, MultiTypeInputType.FIXED]
-              }
+              type: [Connectors.GCP, Connectors.AWS, Connectors.DOCKER]
             }
           }),
           ...(getMultiTypeFromValue(template?.spec?.image) === MultiTypeInputType.RUNTIME && {
             'spec.image': {
-              tooltipId: 'pluginImageInfo',
+              tooltipId: 'zeroNorthImageInfo',
               multiTextInputProps: {
-                placeholder: getString('pluginImagePlaceholder'),
+                placeholder: getString('sto.zeroNorthImagePlaceholder'),
                 disabled: readonly,
                 multiTextInputProps: {
                   expressions,
@@ -57,7 +60,7 @@ export const ZeroNorthStepInputSet: React.FC<ZeroNorthStepProps> = ({ template, 
             }
           })
         }}
-        isInputSetView={true}
+        path={path || ''}
       />
       <CIStepOptionalConfig
         readonly={readonly}
@@ -69,10 +72,17 @@ export const ZeroNorthStepInputSet: React.FC<ZeroNorthStepProps> = ({ template, 
             'spec.settings': {}
           })
         }}
-        allowableTypes={[MultiTypeInputType.EXPRESSION, MultiTypeInputType.FIXED]}
-        isInputSetView={true}
+        allowableTypes={allowableTypes}
+        stepViewType={stepViewType}
+        path={path || ''}
       />
-      <StepCommonFieldsInputSet path={path} readonly={readonly} template={template} />
+      <StepCommonFieldsInputSet
+        path={path}
+        readonly={readonly}
+        template={template}
+        allowableTypes={allowableTypes}
+        stepViewType={stepViewType}
+      />
     </FormikForm>
   )
 }

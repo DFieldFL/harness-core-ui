@@ -44,7 +44,7 @@ jest.mock('services/cd-ng', () => ({
   useGetConnector: jest.fn(() => ConnectorResponse)
 }))
 
-describe('Plugin Step', () => {
+describe('ZeroNorth Step', () => {
   beforeAll(() => {
     factory.registerStep(new ZeroNorthStep())
   })
@@ -60,8 +60,8 @@ describe('Plugin Step', () => {
 
     test('renders runtime inputs', async () => {
       const initialValues = {
-        identifier: 'My_Plugin_Step',
-        name: 'My Plugin Step',
+        identifier: 'My_ZeroNorth_Step',
+        name: 'My ZeroNorth Step',
         description: RUNTIME_INPUT_VALUE,
         timeout: RUNTIME_INPUT_VALUE,
         spec: {
@@ -99,8 +99,8 @@ describe('Plugin Step', () => {
 
     test('edit mode works', async () => {
       const initialValues = {
-        identifier: 'My_Plugin_Step',
-        name: 'My Plugin Step',
+        identifier: 'My_ZeroNorth_Step',
+        name: 'My ZeroNorth Step',
         description: 'Description',
         timeout: '10s',
         spec: {
@@ -127,7 +127,7 @@ describe('Plugin Step', () => {
       const { container } = render(
         <TestStepWidget
           initialValues={initialValues}
-          type={StepType.Plugin}
+          type={StepType.ZeroNorth}
           stepViewType={StepViewType.Edit}
           onUpdate={onUpdate}
           ref={ref}
@@ -145,7 +145,7 @@ describe('Plugin Step', () => {
   describe('InputSet View', () => {
     test('should render properly', () => {
       const { container } = render(
-        <TestStepWidget initialValues={{}} type={StepType.Plugin} stepViewType={StepViewType.InputSet} />
+        <TestStepWidget initialValues={{}} type={StepType.ZeroNorth} stepViewType={StepViewType.InputSet} />
       )
 
       expect(container).toMatchSnapshot()
@@ -153,8 +153,8 @@ describe('Plugin Step', () => {
 
     test('should render all fields', async () => {
       const template = {
-        type: StepType.Plugin,
-        identifier: 'My_Plugin_Step',
+        type: StepType.ZeroNorth,
+        identifier: 'My_ZeroNorth_Step',
         description: RUNTIME_INPUT_VALUE,
         timeout: RUNTIME_INPUT_VALUE,
         spec: {
@@ -174,9 +174,9 @@ describe('Plugin Step', () => {
       }
 
       const allValues = {
-        type: StepType.Plugin,
+        type: StepType.ZeroNorth,
         name: 'Test A',
-        identifier: 'My_Plugin_Step',
+        identifier: 'My_ZeroNorth_Step',
         description: RUNTIME_INPUT_VALUE,
         timeout: RUNTIME_INPUT_VALUE,
         spec: {
@@ -200,7 +200,7 @@ describe('Plugin Step', () => {
       const { container } = render(
         <TestStepWidget
           initialValues={{}}
-          type={StepType.Plugin}
+          type={StepType.ZeroNorth}
           template={template}
           allValues={allValues}
           stepViewType={StepViewType.InputSet}
@@ -213,14 +213,14 @@ describe('Plugin Step', () => {
 
     test('should not render any fields', async () => {
       const template = {
-        type: StepType.Plugin,
-        identifier: 'My_Plugin_Step'
+        type: StepType.ZeroNorth,
+        identifier: 'My_ZeroNorth_Step'
       }
 
       const allValues = {
-        type: StepType.Plugin,
-        identifier: 'My_Plugin_Step',
-        name: 'My Plugin Step',
+        type: StepType.ZeroNorth,
+        identifier: 'My_ZeroNorth_Step',
+        name: 'My ZeroNorth Step',
         description: 'Description',
         timeout: '10s',
         spec: {
@@ -248,7 +248,7 @@ describe('Plugin Step', () => {
       const { container } = render(
         <TestStepWidget
           initialValues={{}}
-          type={StepType.Plugin}
+          type={StepType.ZeroNorth}
           template={template}
           allValues={allValues}
           stepViewType={StepViewType.InputSet}
@@ -267,7 +267,7 @@ describe('Plugin Step', () => {
           initialValues={{
             identifier: 'Test_A',
             name: 'Test A',
-            type: StepType.Plugin,
+            type: StepType.ZeroNorth,
             description: 'Description',
             timeout: '10s',
             spec: {
@@ -349,8 +349,8 @@ describe('Plugin Step', () => {
               }
             },
             variablesData: {
-              type: StepType.Plugin,
-              identifier: 'plugin',
+              type: StepType.ZeroNorth,
+              identifier: 'ZeroNorth',
               name: 'step-name',
               description: 'step-description',
               timeout: 'step-timeout',
@@ -370,7 +370,7 @@ describe('Plugin Step', () => {
               }
             }
           }}
-          type={StepType.Plugin}
+          type={StepType.ZeroNorth}
           stepViewType={StepViewType.InputVariable}
         />
       )

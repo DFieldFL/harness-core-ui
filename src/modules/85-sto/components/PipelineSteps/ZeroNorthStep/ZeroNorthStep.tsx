@@ -25,7 +25,7 @@ import { getInputSetViewValidateFieldsConfig, transformValuesFieldsConfig } from
 export interface ZeroNorthStepSpec {
   connectorRef: string
   image: string
-  privileged: boolean
+  privileged?: boolean
   reports?: {
     type: 'JUnit'
     spec: {
@@ -85,6 +85,7 @@ export class ZeroNorthStep extends PipelineStep<ZeroNorthStepData> {
   protected type = StepType.ZeroNorth
   protected stepName = 'Configure ZeroNorth Step'
   protected stepIcon: IconName = 'shield'
+  protected stepIconColor = '#4F5162'
   protected stepDescription: keyof StringsMap = 'sto.stepDescription.ZeroNorth'
 
   protected stepPaletteVisible = false
@@ -94,8 +95,7 @@ export class ZeroNorthStep extends PipelineStep<ZeroNorthStepData> {
     type: StepType.ZeroNorth as string,
     spec: {
       connectorRef: '',
-      image: '',
-      privileged: false
+      image: ''
     }
   }
 
