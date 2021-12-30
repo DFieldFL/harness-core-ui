@@ -1,6 +1,12 @@
 import { Types as TransformValuesTypes } from '@pipeline/components/PipelineSteps/Steps/StepsTransformValuesUtils'
 import { Types as ValidationFieldTypes } from '@pipeline/components/PipelineSteps/Steps/StepsValidateUtils'
 
+const specConnectorRef = 'spec.connectorRef'
+const specImage = 'spec.image'
+const specPrivileged = 'spec.privileged'
+const specSettings = 'spec.settings'
+const specRunAsUser = 'spec.runAsUser'
+
 export const transformValuesFieldsConfig = [
   {
     name: 'identifier',
@@ -15,15 +21,15 @@ export const transformValuesFieldsConfig = [
     type: TransformValuesTypes.Text
   },
   {
-    name: 'spec.connectorRef',
+    name: specConnectorRef,
     type: TransformValuesTypes.Text
   },
   {
-    name: 'spec.image',
+    name: specImage,
     type: TransformValuesTypes.Text
   },
   {
-    name: 'spec.privileged',
+    name: specPrivileged,
     type: TransformValuesTypes.Boolean
   },
   {
@@ -31,7 +37,7 @@ export const transformValuesFieldsConfig = [
     type: TransformValuesTypes.ReportPaths
   },
   {
-    name: 'spec.settings',
+    name: specSettings,
     type: TransformValuesTypes.Map
   },
   {
@@ -39,7 +45,7 @@ export const transformValuesFieldsConfig = [
     type: TransformValuesTypes.ImagePullPolicy
   },
   {
-    name: 'spec.runAsUser',
+    name: specRunAsUser,
     type: TransformValuesTypes.Text
   },
   {
@@ -70,28 +76,28 @@ export const editViewValidateFieldsConfig = [
     isRequired: true
   },
   {
-    name: 'spec.connectorRef',
+    name: specConnectorRef,
     type: ValidationFieldTypes.Text,
     label: 'pipelineSteps.connectorLabel',
     isRequired: true
   },
   {
-    name: 'spec.image',
+    name: specImage,
     type: ValidationFieldTypes.Text,
     label: 'imageLabel',
     isRequired: true
   },
   {
-    name: 'spec.privileged',
+    name: specPrivileged,
     type: ValidationFieldTypes.Boolean
   },
   {
-    name: 'spec.settings',
+    name: specSettings,
     type: ValidationFieldTypes.Map
   },
   {
     label: 'pipeline.stepCommonFields.runAsUser',
-    name: 'spec.runAsUser',
+    name: specRunAsUser,
     type: ValidationFieldTypes.Numeric
   },
   {
@@ -113,23 +119,23 @@ export function getInputSetViewValidateFieldsConfig(
 ): Array<{ name: string; type: ValidationFieldTypes; label?: string; isRequired?: boolean }> {
   return [
     {
-      name: 'spec.connectorRef',
+      name: specConnectorRef,
       type: ValidationFieldTypes.Text,
       label: 'pipelineSteps.connectorLabel',
       isRequired
     },
     {
-      name: 'spec.image',
+      name: specImage,
       type: ValidationFieldTypes.Text,
       label: 'imageLabel',
       isRequired
     },
     {
-      name: 'spec.privileged',
+      name: specPrivileged,
       type: ValidationFieldTypes.Boolean
     },
     {
-      name: 'spec.settings',
+      name: specSettings,
       type: ValidationFieldTypes.Map
     },
     {
@@ -137,7 +143,7 @@ export function getInputSetViewValidateFieldsConfig(
       type: ValidationFieldTypes.ImagePullPolicy
     },
     {
-      name: 'spec.runAsUser',
+      name: specRunAsUser,
       type: ValidationFieldTypes.Numeric
     },
     {
