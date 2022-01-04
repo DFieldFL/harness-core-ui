@@ -25,6 +25,7 @@ rules:
         - modules/75-cf/*
         - modules/75-ci/*
         - modules/85-cv/*
+        - modules/85-sto/*
         - '@notifications/*'
         - '@audit-trail/*'
         - '@rbac/*'
@@ -46,6 +47,7 @@ rules:
         - '@cf/*'
         - '@ci/*'
         - '@cv/*'
+        - '@sto/*'
       paths:
         - lodash
         - name: yaml

@@ -4,16 +4,8 @@ rules:
     - patterns:
         - lodash.*
         - microfrontends/*
-        - modules/75-ce/*
-        - modules/75-cf/*
-        - modules/75-ci/*
         - modules/85-cv/*
-        - modules/85-sto/*
-        - '@ce/*'
-        - '@cf/*'
-        - '@ci/*'
         - '@cv/*'
-        - '@sto/*'
       paths:
         - lodash
         - name: yaml
