@@ -125,7 +125,8 @@ const FixedScheduleAccordion: React.FC<FixedScheduleAccordionProps> = props => {
   const { openEditor } = useFixedScheduleEditor({
     schedule: selectedSchedule,
     addSchedule: handleScheduleAddition,
-    isEdit: true
+    isEdit: true,
+    allCreatedSchedules: []
   })
 
   const onEditClick = (schedule: FixedScheduleClient) => {

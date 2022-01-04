@@ -82,7 +82,7 @@ describe('Static Schedule form tests', () => {
   test('form renders successfully', () => {
     const { container } = render(
       <TestWrapper pathParams={params}>
-        <FixedScheduleForm addSchedule={jest.fn()} closeDialog={jest.fn()} schedule={undefined} />
+        <FixedScheduleForm addSchedule={jest.fn()} closeDialog={jest.fn()} schedule={undefined} allSchedules={[]} />
       </TestWrapper>
     )
     expect(container).toMatchSnapshot()
@@ -91,7 +91,7 @@ describe('Static Schedule form tests', () => {
   test('able to fill all fields', async () => {
     const { container, getByTestId } = render(
       <TestWrapper pathParams={params}>
-        <FixedScheduleForm addSchedule={jest.fn()} closeDialog={jest.fn()} schedule={undefined} />
+        <FixedScheduleForm addSchedule={jest.fn()} closeDialog={jest.fn()} schedule={undefined} allSchedules={[]} />
       </TestWrapper>
     )
     const nameInput = container.querySelector('input[name="name"]') as HTMLInputElement
@@ -138,7 +138,12 @@ describe('Static Schedule form tests', () => {
     const addScheduleFn = jest.fn()
     const { container } = render(
       <TestWrapper pathParams={params}>
-        <FixedScheduleForm addSchedule={addScheduleFn} closeDialog={closeDialogFn} schedule={schedules[0]} />
+        <FixedScheduleForm
+          addSchedule={addScheduleFn}
+          closeDialog={closeDialogFn}
+          schedule={schedules[0]}
+          allSchedules={[]}
+        />
       </TestWrapper>
     )
     const submitBtn = container.querySelector('button[type="submit"]')
