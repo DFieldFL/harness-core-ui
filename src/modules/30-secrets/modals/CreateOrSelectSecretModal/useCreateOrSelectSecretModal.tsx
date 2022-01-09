@@ -41,7 +41,7 @@ const useCreateOrSelectSecretModal = (
         onClose={() => {
           hideModal()
         }}
-        title={ReferenceSelectDialogTitle(getString('secretType'))}
+        title={ReferenceSelectDialogTitle({ componentName: getString('secretType') })}
         className={css.dialog}
       >
         <CreateOrSelectSecret

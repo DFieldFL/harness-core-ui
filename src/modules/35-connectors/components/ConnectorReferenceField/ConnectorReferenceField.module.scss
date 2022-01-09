@@ -44,7 +44,8 @@
     display: none !important;
   }
   .gitInfo {
-    width: 100% !important;
+    background: var(--grey-100);
+    border-radius: 8px;
     .gitBranchIcon {
       padding-left: 10px;
       border-left: 1px var(--grey-600) solid;
@@ -153,4 +154,8 @@
   background-color: var(--orange-100) !important;
   color: var(--orange-900) !important;
   font-size: var(--font-size-xsmall) !important;
+}
+
+.connectorHeader {
+  // width: calc(100% - 50px) !important;
 }

@@ -5,8 +5,8 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React from 'react'
-import { FormGroup, IFormGroupProps, Intent, Tag as BTag } from '@blueprintjs/core'
+import React, { useState } from 'react'
+import { FormGroup, IFormGroupProps, Intent } from '@blueprintjs/core'
 import {
   Layout,
   Icon,
@@ -35,7 +35,8 @@ import {
   getConnectorListV2Promise,
   ConnectorFilterProperties,
   useGetConnector,
-  EntityGitDetails
+  EntityGitDetails,
+  ResponsePageConnectorResponse
 } from 'services/cd-ng'
 import {
   EntityReferenceResponse,
@@ -179,6 +180,7 @@ interface GetReferenceFieldMethodProps extends ConnectorReferenceFieldProps {
   getString(key: string, vars?: Record<string, any>): string
   openConnectorModal: UseCreateConnectorModalReturn['openConnectorModal']
   type: ConnectorInfoDTO['type'] | ConnectorInfoDTO['type'][]
+  setPagedConnectorData: (data: ResponsePageConnectorResponse) => void
 }
 
 interface RecordRenderProps {
@@ -188,6 +190,14 @@ interface RecordRenderProps {
   type: ConnectorInfoDTO['type'] | ConnectorInfoDTO['type'][]
   checked?: boolean
   getString(key: string, vars?: Record<string, any>): string
+}
+
+const CollapseRecordRender: React.FC<RecordRenderProps> = props => {
+  return (
+    <Layout.Horizontal>
+      <Text> Hi</Text>
+    </Layout.Horizontal>
+  )
 }
 
 const RecordRender: React.FC<RecordRenderProps> = props => {
@@ -204,60 +214,105 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
     []
   )
   return (
-    <>
-      <div className={cx(css.item)}>
-        <Layout.Vertical spacing="xsmall">
-          <Layout.Horizontal spacing="small" margin={{ right: 'small', bottom: 'small' }} className={css.connectorInfo}>
-            <Icon name={getIconByType(item.record.type)} size={30}></Icon>
-            <div className={css.connectorNameId}>
-              <Text lineClamp={1} font={{ weight: 'bold' }} color={Color.BLACK}>
-                {item.record.name}
-              </Text>
-              <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
-                {`${getString('common.ID')}: ${item.identifier}`}
-              </Text>
-            </div>
-          </Layout.Horizontal>
-          {item.record.gitDetails?.repoIdentifier && (
-            <Layout.Horizontal
-              margin={{ left: 'xsmall' }}
-              flex={{ alignItems: 'center', justifyContent: 'flex-start' }}
-              spacing="small"
-              className={css.gitInfo}
-            >
-              <Text
-                lineClamp={1}
-                font={{ size: 'small', weight: 'light' }}
-                color={Color.GREY_450}
-                icon="repository"
-                iconProps={{ size: 12 }}
-              >
-                {item.record.gitDetails.repoIdentifier}
-              </Text>
-              <Text
-                lineClamp={1}
-                font={{ size: 'small', weight: 'light' }}
-                color={Color.GREY_450}
-                className={cx(css.gitBranchIcon)}
-                icon="git-new-branch"
-                iconProps={{ size: 12 }}
-              >
-                {item.record.gitDetails.branch}
-              </Text>
-            </Layout.Horizontal>
-          )}
-          {item.record.status?.status !== 'SUCCESS' && item.record.status?.lastConnectedAt !== 0 && (
-            <BTag round className={css.lastConnected}>
-              {`${getString('common.lastConnectedOn')} ${getReadableDateTime(
-                item.record.status?.lastConnectedAt,
-                DATE_WITHOUT_TIME_FORMAT
-              )}`}
-            </BTag>
-          )}
-        </Layout.Vertical>
-      </div>
+    // <>
+    //   <div className={cx(css.item)}>
+    //     <Layout.Vertical spacing="xsmall">
+    //       <Layout.Horizontal spacing="small" margin={{ right: 'small', bottom: 'small' }} className={css.connectorInfo}>
+    //         <Icon name={getIconByType(item.record.type)} size={30}></Icon>
+    //         <div className={css.connectorNameId}>
+    //           <Text lineClamp={1} font={{ weight: 'bold' }} color={Color.BLACK}>
+    //             {item.record.name}
+    //           </Text>
+    //           <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
+    //             {`${getString('common.ID')}: ${item.identifier}`}
+    //           </Text>
+    //         </div>
+    //       </Layout.Horizontal>
+    //   {item.record.gitDetails?.repoIdentifier && (
+    //         <Layout.Horizontal
+    //           margin={{ left: 'xsmall' }}
+    //           flex={{ alignItems: 'center', justifyContent: 'flex-start' }}
+    //           spacing="small"
+    //           className={css.gitInfo}
+    //         >
+    //           <Text
+    //             lineClamp={1}
+    //             font={{ size: 'small', weight: 'light' }}
+    //             color={Color.GREY_450}
+    //             icon="repository"
+    //             iconProps={{ size: 12 }}
+    //           >
+    //             {item.record.gitDetails.repoIdentifier}
+    //           </Text>
+    //           <Text
+    //             lineClamp={1}
+    //             font={{ size: 'small', weight: 'light' }}
+    //             color={Color.GREY_450}
+    //             className={cx(css.gitBranchIcon)}
+    //             icon="git-new-branch"
+    //             iconProps={{ size: 12 }}
+    //           >
+    //             {item.record.gitDetails.branch}
+    //           </Text>
+    //         </Layout.Horizontal>
+    //       )}
+    //   {item.record.status?.status !== 'SUCCESS' && item.record.status?.lastConnectedAt !== 0 && (
+    //         <BTag round className={css.lastConnected}>
+    //           {`${getString('common.lastConnectedOn')} ${getReadableDateTime(
+    //             item.record.status?.lastConnectedAt,
+    //             DATE_WITHOUT_TIME_FORMAT
+    //           )}`}
+    //         </BTag>
+    //       )}
+    //     </Layout.Vertical>
+    //   </div>
 
-      <Layout.Horizontal spacing="small" flex={{ align: 'center-center' }}>
+    <Layout.Horizontal margin={{ left: 'small' }} flex={{ distribution: 'space-between' }}>
+      <Layout.Horizontal spacing="medium" flex={{ align: 'center-center' }}>
+        <Icon className={cx(css.iconCheck, { [css.iconChecked]: checked })} size={12} name="pipeline-approval" />
+        <Icon name={getIconByType(item.record.type)} size={30}></Icon>
+        <div className={css.connectorNameId}>
+          <Text lineClamp={1} font={{ weight: 'bold' }} color={Color.BLACK}>
+            {item.record.name}
+          </Text>
+          <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
+            {`${getString('common.ID')}: ${item.identifier}`}
+          </Text>
+        </div>
+      </Layout.Horizontal>
+
+      <Layout.Horizontal spacing="small">
+        {item.record.gitDetails?.repoIdentifier && (
+          <Layout.Horizontal flex={{ alignItems: 'center' }} spacing="small" className={css.gitInfo}>
+            <Text
+              lineClamp={1}
+              font={{ size: 'small', weight: 'light' }}
+              color={Color.GREY_450}
+              icon="repository"
+              iconProps={{ size: 12 }}
+            >
+              {item.record.gitDetails.repoIdentifier}
+            </Text>
+            <Text
+              lineClamp={1}
+              font={{ size: 'small', weight: 'light' }}
+              color={Color.GREY_450}
+              className={cx(css.gitBranchIcon)}
+              icon="git-new-branch"
+              iconProps={{ size: 12 }}
+            >
+              {item.record.gitDetails.branch}
+            </Text>
+          </Layout.Horizontal>
+        )}
+        <Icon
+          className={css.status}
+          name="full-circle"
+          size={10}
+          width={30}
+          color={item.record.status?.status === 'SUCCESS' ? Color.GREEN_500 : Color.RED_500}
+        />
+
         {canUpdate && !item.record.harnessManaged ? (
           <Button
             variation={ButtonVariation.ICON}
@@ -276,16 +331,36 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
         ) : (
           <></>
         )}
-        <Icon className={cx(css.iconCheck, { [css.iconChecked]: checked })} width={30} name="pipeline-approval" />
-        <Icon
-          className={css.status}
-          name="full-circle"
-          size={10}
-          width={30}
-          color={item.record.status?.status === 'SUCCESS' ? Color.GREEN_500 : Color.RED_500}
-        />
       </Layout.Horizontal>
-    </>
+    </Layout.Horizontal>
+    //  <Layout.Horizontal spacing="small" flex={{ align: 'center-center' }}>
+    //  {canUpdate && !item.record.harnessManaged ? (
+    //     <Button
+    //       variation={ButtonVariation.ICON}
+    //       iconProps={{ color: Color.GREY_600 }}
+    //       intent="none"
+    //       icon="Edit"
+    //       className={css.editBtn}
+    //       onClick={e => {
+    //         e.stopPropagation()
+    //         openConnectorModal(true, item.record?.type || type, {
+    //           connectorInfo: item.record,
+    //           gitDetails: { ...item.record?.gitDetails, getDefaultFromOtherRepo: false }
+    //         })
+    //       }}
+    //     />
+    //   ) : (
+    //     <></>
+    //   )}
+    //  <Icon className={cx(css.iconCheck, { [css.iconChecked]: checked })} width={30} name="pipeline-approval" />
+    //  <Icon
+    //       className={css.status}
+    //       name="full-circle"
+    //       size={10}
+    //       width={30}
+    //       color={item.record.status?.status === 'SUCCESS' ? Color.GREEN_500 : Color.RED_500}
+    //     />
+    //   </Layout.Horizontal>
   )
 }
 
@@ -302,8 +377,12 @@ export function getReferenceFieldProps({
   selected,
   placeholder,
   getString,
-  openConnectorModal
-}: GetReferenceFieldMethodProps): Omit<ReferenceSelectProps<ConnectorReferenceDTO>, 'onChange' | 'onCancel'> {
+  openConnectorModal,
+  setPagedConnectorData
+}: GetReferenceFieldMethodProps): Omit<
+  ReferenceSelectProps<ConnectorReferenceDTO>,
+  'onChange' | 'onCancel' | 'pagination'
+> {
   return {
     name,
     width,
@@ -314,7 +393,8 @@ export function getReferenceFieldProps({
     createNewLabel: getString('newConnector'),
     recordClassName: css.listItem,
     isNewConnectorLabelVisible: true,
-    fetchRecords: (scope, search = '', done) => {
+
+    fetchRecords: (page = 0, scope, search = '', done) => {
       const additionalParams = getAdditionalParams({ scope, projectIdentifier, orgIdentifier })
       const gitFilterParams =
         gitScope?.repo && gitScope?.branch
@@ -330,7 +410,9 @@ export function getReferenceFieldProps({
               accountIdentifier,
               searchTerm: search,
               ...additionalParams,
-              ...gitFilterParams
+              ...gitFilterParams,
+              pageIndex: page,
+              pageSize: 10
             },
             body: {
               ...(!category && { types: type }),
@@ -348,6 +430,8 @@ export function getReferenceFieldProps({
               ...gitFilterParams,
               category,
               searchTerm: search,
+              pageIndex: page,
+              pageSize: 10,
               projectIdentifier: scope === Scope.PROJECT ? projectIdentifier : undefined,
               orgIdentifier: scope === Scope.PROJECT || scope === Scope.ORG ? orgIdentifier : undefined
             }
@@ -357,6 +441,7 @@ export function getReferenceFieldProps({
         .then(responseData => {
           if (responseData?.data?.content) {
             const connectors = responseData.data.content
+            setPagedConnectorData(responseData)
             const response: EntityReferenceResponse<ConnectorReferenceDTO>[] = []
             connectors.forEach(connector => {
               response.push({
@@ -403,6 +488,21 @@ export function getReferenceFieldProps({
         getString
       }
       return <RecordRender {...recordRenderProps} />
+    },
+    collapsedRecordRender: function collapsedRecordRender({ item, selectedScope, selected: checked }) {
+      const recordRenderProps: RecordRenderProps = {
+        item,
+        resourceScope: {
+          accountIdentifier,
+          orgIdentifier: selectedScope === Scope.ORG || selectedScope === Scope.PROJECT ? orgIdentifier : undefined,
+          projectIdentifier: selectedScope === Scope.PROJECT ? projectIdentifier : undefined
+        },
+        openConnectorModal,
+        type,
+        checked,
+        getString
+      }
+      return <CollapseRecordRender {...recordRenderProps} />
     }
   }
 }
@@ -426,6 +526,8 @@ export const ConnectorReferenceField: React.FC<ConnectorReferenceFieldProps> = p
     ...rest
   } = props
 
+  const [pagedConnectorData, setPagedConnectorData] = useState<ResponsePageConnectorResponse>({})
+  const [page, setPage] = useState(0)
   const [inlineSelection, setInlineSelection] = React.useState<InlineSelectionInterface>({
     selected: false,
     inlineModalClosed: false
@@ -625,7 +727,8 @@ export const ConnectorReferenceField: React.FC<ConnectorReferenceFieldProps> = p
           label,
           getString,
           category,
-          openConnectorModal
+          openConnectorModal,
+          setPagedConnectorData
         })}
         hideModal={inlineSelection.selected && inlineSelection.inlineModalClosed}
         isNewConnectorLabelVisible={canUpdate}
@@ -634,6 +737,14 @@ export const ConnectorReferenceField: React.FC<ConnectorReferenceFieldProps> = p
         disabled={disabled || loading}
         componentName="Connector"
         noDataCard={{ image: ConnectorsEmptyState }}
+        pagination={{
+          itemCount: pagedConnectorData?.data?.totalItems || 0,
+          pageSize: pagedConnectorData?.data?.pageSize || 10,
+          pageCount: pagedConnectorData?.data?.totalPages || -1,
+          pageIndex: page || 0,
+          gotoPage: page => setPage(page)
+        }}
+        // pagination={{ pageSize: 10, itemCount: 10, pageIndex: 0, pageCount: 0 }}
       />
     </FormGroup>
   )

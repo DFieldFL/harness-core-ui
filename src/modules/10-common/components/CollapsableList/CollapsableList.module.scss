@@ -1,0 +1,54 @@
+.referenceList {
+  min-width: 770px;
+  height: 400px;
+  .listItem {
+    box-sizing: border-box;
+    padding: var(--spacing-medium) var(--spacing-medium) var(--spacing-medium);
+    border-bottom: 1px solid var(--grey-200);
+    display: flex;
+    align-items: center;
+    &:hover {
+      background-color: var(--primary-1);
+    }
+  }
+  .selectedItem {
+    background-color: var(--primary-2) !important;
+  }
+
+  [class*='Collapse--collapse'] {
+    margin: unset !important;
+    background-color: var(--grey-50);
+  }
+
+  .collapeTitle {
+    min-height: 50px;
+  }
+  .collapseHeader {
+    min-height: 50px;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+    padding-bottom: var(--spacing-small) !important;
+    box-shadow: 0px 0px 1px rgb(40 41 61 / 4%), 0px 2px 4px rgb(96 97 112 / 16%);
+    [class*='CollapseHeader--leftSection'] {
+      width: 100%;
+    }
+    .collapeHeaderContent {
+      width: 100%;
+    }
+  }
+  .collapseWrapper {
+    border-top: unset !important;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.04), 0px 2px 4px rgba(96, 97, 112, 0.16);
+    padding: unset !important;
+    margin-bottom: 10px;
+    min-height: 50px;
+    &:hover {
+      background-color: var(--primary-1);
+    }
+  }
+}
+
+.referenceListOverflow {
+  overflow-y: scroll;
+}

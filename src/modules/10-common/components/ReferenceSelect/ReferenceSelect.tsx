@@ -36,44 +36,68 @@ export interface Item {
   value: string
   scope: Scope
 }
-export interface ReferenceSelectProps<T extends MinimalObject> extends Omit<EntityReferenceProps<T>, 'onSelect'> {
+
+export interface ReferenceSelectDialogTitleProps {
+  componentName?: string
+  createNewLabel?: string
+  createNewHandler?: () => void
+  isNewConnectorLabelVisible?: boolean
+}
+export interface ReferenceSelectProps<T extends MinimalObject>
+  extends Omit<EntityReferenceProps<T>, 'onSelect'>,
+    ReferenceSelectDialogTitleProps {
   name: string
   placeholder: string
   selectAnReferenceLabel: string
   selected?: Item
-  createNewLabel?: string
-  createNewHandler?: () => void
+  // createNewLabel?: string
+  // createNewHandler?: () => void
   hideModal?: boolean
   selectedRenderer?: JSX.Element
   editRenderer?: JSX.Element
   width?: number
-  isNewConnectorLabelVisible?: boolean
+  // isNewConnectorLabelVisible?: boolean
   onChange: (record: T, scope: Scope) => void
   disabled?: boolean
-  componentName?: string
+  // componentName?: string
 }
 
-export const ReferenceSelectDialogTitle = (compName: string): JSX.Element => {
+export const ReferenceSelectDialogTitle = (props: ReferenceSelectDialogTitleProps): JSX.Element => {
   const { getString } = useStrings()
+  const { componentName, createNewHandler, createNewLabel, isNewConnectorLabelVisible } = props
   const { projectIdentifier, orgIdentifier } = useParams<ProjectPathProps & SecretsPathProps & ModulePathParams>()
   const projectScopeTitle = projectIdentifier ? `${getString('projectsText')} / ` : ''
   const orgScopeTitle = orgIdentifier ? `${getString('orgsText')} / ` : ''
   const scopes = `${projectScopeTitle}${orgScopeTitle}${getString('account')}`
   return (
-    <>
-      <Layout.Vertical spacing="xsmall" padding={{ top: 'xxxlarge', left: 'large', right: 'large' }}>
+    <Layout.Horizontal flex={{ distribution: 'space-between' }}>
+      <Layout.Vertical spacing="xsmall" padding={{ top: 'xlarge', left: 'large', right: 'large' }}>
         <Text font={{ variation: FontVariation.H4 }}>
           {getString('common.entityReferenceTitle', {
-            compName
+            componentName
           })}
         </Text>
         <Text font={{ variation: FontVariation.SMALL }} color={Color.GREY_350}>
           {`${getString('common.entityReferenceSubTitle', {
-            compName
+            componentName
           })} (${scopes})`}
         </Text>
       </Layout.Vertical>
-    </>
+
+      {createNewLabel && createNewHandler && isNewConnectorLabelVisible && (
+        <>
+          <Layout.Horizontal className={Classes.POPOVER_DISMISS}>
+            <Button
+              variation={ButtonVariation.SECONDARY}
+              onClick={() => {
+                props.createNewHandler?.()
+              }}
+              text={`+ ${createNewLabel}`}
+            ></Button>
+          </Layout.Horizontal>
+        </>
+      )}
+    </Layout.Horizontal>
   )
 }
 
@@ -127,10 +151,15 @@ export function ReferenceSelect<T extends MinimalObject>(props: ReferenceSelectP
         canOutsideClickClose
         onClose={() => setOpen(false)}
         className={cx(css.referenceSelect, css.dialog)}
-        title={ReferenceSelectDialogTitle(componentName)}
+        title={ReferenceSelectDialogTitle({
+          componentName,
+          createNewLabel,
+          createNewHandler,
+          isNewConnectorLabelVisible
+        })}
       >
         <div className={cx(css.contentContainer)}>
-          <Layout.Horizontal
+          {/* <Layout.Horizontal
             flex={{ justifyContent: 'space-between' }}
             style={{
               borderBottom: '1px solid var(--grey-200)',
@@ -138,21 +167,8 @@ export function ReferenceSelect<T extends MinimalObject>(props: ReferenceSelectP
               paddingBottom: 'var(--spacing-medium)'
             }}
           >
-            {createNewLabel && createNewHandler && isNewConnectorLabelVisible && (
-              <>
-                <Layout.Horizontal className={Classes.POPOVER_DISMISS}>
-                  <Button
-                    variation={ButtonVariation.SECONDARY}
-                    onClick={() => {
-                      createNewHandler?.()
-                    }}
-                    text={`+ ${createNewLabel}`}
-                  ></Button>
-                </Layout.Horizontal>
-              </>
-            )}
             {editRenderer && selected && selected.value && <Layout.Horizontal>{editRenderer}</Layout.Horizontal>}
-          </Layout.Horizontal>
+          </Layout.Horizontal> */}
           <EntityReference<T>
             {...referenceProps}
             onSelect={(record, scope) => {
