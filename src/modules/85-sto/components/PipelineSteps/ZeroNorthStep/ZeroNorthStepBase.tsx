@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Formik, FormikForm, Accordion, Color, Container } from '@wings-software/uicore'
+import { Text, Formik, FormikForm, Color } from '@wings-software/uicore'
 import type { FormikProps } from 'formik'
 import get from 'lodash/get'
 import type { K8sDirectInfraYaml } from 'services/ci'
@@ -112,32 +112,22 @@ export const ZeroNorthStepBase = (
               }}
               formik={formik}
             />
-            <Accordion className={css.accordion}>
-              <Accordion.Panel
-                id="optional-config"
-                summary={getString('common.optionalConfig')}
-                details={
-                  <Container margin={{ top: 'medium' }}>
-                    <CIStepOptionalConfig
-                      stepViewType={stepViewType}
-                      readonly={readonly}
-                      enableFields={{
-                        'spec.privileged': { shouldHide: buildInfrastructureType === 'VM' },
-                        'spec.settings': {},
-                        'spec.reportPaths': {}
-                      }}
-                      allowableTypes={allowableTypes}
-                    />
-                    <StepCommonFields
-                      enableFields={['spec.imagePullPolicy']}
-                      disabled={readonly}
-                      allowableTypes={allowableTypes}
-                      buildInfrastructureType={buildInfrastructureType}
-                    />
-                  </Container>
-                }
-              />
-            </Accordion>
+            <CIStepOptionalConfig
+              stepViewType={stepViewType}
+              readonly={readonly}
+              enableFields={{
+                'spec.privileged': { shouldHide: buildInfrastructureType === 'VM' },
+                'spec.settings': {},
+                'spec.reportPaths': {}
+              }}
+              allowableTypes={allowableTypes}
+            />
+            <StepCommonFields
+              enableFields={['spec.imagePullPolicy']}
+              disabled={readonly}
+              allowableTypes={allowableTypes}
+              buildInfrastructureType={buildInfrastructureType}
+            />
           </FormikForm>
         )
       }}
