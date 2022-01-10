@@ -7,7 +7,8 @@
 
 export enum HealthSoureSupportedConnectorTypes {
   APP_DYNAMICS = 'APP_DYNAMICS',
-  NEW_RELIC = 'NEW_RELIC'
+  NEW_RELIC = 'NEW_RELIC',
+  DYNATRACE = 'DYNATRACE'
 }
 
 export const StatusState = {

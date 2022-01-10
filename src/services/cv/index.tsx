@@ -640,6 +640,11 @@ export interface DataCollectionRequest {
     | 'NEWRELIC_SAMPLE_FETCH_REQUEST'
     | 'SYNC_DATA_COLLECTION'
     | 'CUSTOM_HEALTH_SAMPLE_DATA'
+    | 'DYNATRACE_SERVICE_LIST_REQUEST'
+    | 'DYNATRACE_SERVICE_DETAILS_REQUEST'
+    | 'DYNATRACE_VALIDATION_REQUEST'
+    | 'DYNATRACE_SAMPLE_DATA_REQUEST'
+    | 'DYNATRACE_METRIC_LIST_REQUEST'
 }
 
 export interface DataCollectionTaskDTO {
@@ -736,6 +741,7 @@ export interface DatasourceTypeDTO {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   verificationType?: 'TIME_SERIES' | 'LOG'
@@ -826,6 +832,49 @@ export type DynatraceConnectorDTO = ConnectorConfigDTO & {
   apiTokenRef: string
   delegateSelectors?: string[]
   url: string
+}
+
+export type DynatraceHealthSourceSpec = HealthSourceSpec & {
+  feature: string
+  metricDefinitions?: DynatraceMetricDefinition[]
+  metricPacks?: MetricPackDTO[]
+  serviceId?: string
+  serviceMethodIds?: string[]
+  serviceName?: string
+}
+
+export interface DynatraceMetricDTO {
+  displayName?: string
+  metricId?: string
+  unit?: string
+}
+
+export interface DynatraceMetricDefinition {
+  analysis?: AnalysisDTO
+  groupName?: string
+  identifier: string
+  isManualQuery?: boolean
+  metricName: string
+  metricSelector?: string
+  riskProfile?: RiskProfile
+  sli?: Slidto
+}
+
+export interface DynatraceSampleDataRequestDTO {
+  metricSelector?: string
+  serviceId?: string
+}
+
+export interface DynatraceServiceDTO {
+  displayName?: string
+  entityId?: string
+  serviceGroupIds?: string[]
+  serviceMethodIds?: string[]
+}
+
+export interface DynatraceValidateDataRequestDTO {
+  metricPacks?: MetricPackDTO[]
+  serviceMethodsIds?: string[]
 }
 
 export interface Edge {
@@ -1745,6 +1794,7 @@ export interface HealthSource {
     | 'Splunk'
     | 'DatadogMetrics'
     | 'DatadogLog'
+    | 'Dynatrace'
     | 'ErrorTracking'
     | 'CustomHealth'
 }
@@ -1762,6 +1812,7 @@ export interface HealthSourceDTO {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   verificationType?: 'TIME_SERIES' | 'LOG'
@@ -2190,6 +2241,7 @@ export interface MetricPack {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   identifier?: string
@@ -2213,6 +2265,7 @@ export interface MetricPackDTO {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   identifier?: string
@@ -2713,6 +2766,13 @@ export interface ResponseBoolean {
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
 }
 
+export interface ResponseDynatraceServiceDTO {
+  correlationId?: string
+  data?: DynatraceServiceDTO
+  metaData?: { [key: string]: any }
+  status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
 export interface ResponseHealthScoreDTO {
   correlationId?: string
   data?: HealthScoreDTO
@@ -2760,6 +2820,20 @@ export interface ResponseListAppDynamicsFileDefinition {
 export interface ResponseListDatadogDashboardDetail {
   correlationId?: string
   data?: DatadogDashboardDetail[]
+  metaData?: { [key: string]: any }
+  status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
+export interface ResponseListDynatraceMetricDTO {
+  correlationId?: string
+  data?: DynatraceMetricDTO[]
+  metaData?: { [key: string]: any }
+  status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
+export interface ResponseListDynatraceServiceDTO {
+  correlationId?: string
+  data?: DynatraceServiceDTO[]
   metaData?: { [key: string]: any }
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
 }
@@ -3249,6 +3323,13 @@ export interface ResponseSLORiskCountResponse {
 export interface ResponseSetAppdynamicsValidationResponse {
   correlationId?: string
   data?: AppdynamicsValidationResponse[]
+  metaData?: { [key: string]: any }
+  status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
+export interface ResponseSetMetricPackValidationResponse {
+  correlationId?: string
+  data?: MetricPackValidationResponse[]
   metaData?: { [key: string]: any }
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
 }
@@ -4166,6 +4247,7 @@ export interface TimeSeriesMetricDataDTO {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   environmentIdentifier?: string
@@ -4256,6 +4338,7 @@ export interface TimeSeriesThreshold {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   lastUpdatedAt?: number
@@ -4289,6 +4372,7 @@ export interface TimeSeriesThresholdDTO {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   metricGroupName?: string
@@ -4338,6 +4422,7 @@ export interface TransactionMetricInfo {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
   nodeRiskCountDTO?: NodeRiskCountDTO
@@ -6558,6 +6643,331 @@ export const getDeploymentTimeSeriesPromise = (
     GetDeploymentTimeSeriesPathParams
   >(getConfig('cv/api'), `/deployment-time-series-analysis/${verificationJobInstanceId}`, props, signal)
 
+export interface GetDynatraceSampleDataQueryParams {
+  accountId: string
+  orgIdentifier: string
+  projectIdentifier: string
+  connectorIdentifier: string
+  tracingId: string
+}
+
+export type GetDynatraceSampleDataProps = Omit<
+  MutateProps<
+    ResponseListTimeSeriesSampleDTO,
+    Failure | Error,
+    GetDynatraceSampleDataQueryParams,
+    DynatraceSampleDataRequestDTO,
+    void
+  >,
+  'path' | 'verb'
+>
+
+/**
+ * get dynatrace sample data
+ */
+export const GetDynatraceSampleData = (props: GetDynatraceSampleDataProps) => (
+  <Mutate<
+    ResponseListTimeSeriesSampleDTO,
+    Failure | Error,
+    GetDynatraceSampleDataQueryParams,
+    DynatraceSampleDataRequestDTO,
+    void
+  >
+    verb="POST"
+    path={`/dynatrace/fetch-sample-data`}
+    base={getConfig('cv/api')}
+    {...props}
+  />
+)
+
+export type UseGetDynatraceSampleDataProps = Omit<
+  UseMutateProps<
+    ResponseListTimeSeriesSampleDTO,
+    Failure | Error,
+    GetDynatraceSampleDataQueryParams,
+    DynatraceSampleDataRequestDTO,
+    void
+  >,
+  'path' | 'verb'
+>
+
+/**
+ * get dynatrace sample data
+ */
+export const useGetDynatraceSampleData = (props: UseGetDynatraceSampleDataProps) =>
+  useMutate<
+    ResponseListTimeSeriesSampleDTO,
+    Failure | Error,
+    GetDynatraceSampleDataQueryParams,
+    DynatraceSampleDataRequestDTO,
+    void
+  >('POST', `/dynatrace/fetch-sample-data`, { base: getConfig('cv/api'), ...props })
+
+/**
+ * get dynatrace sample data
+ */
+export const getDynatraceSampleDataPromise = (
+  props: MutateUsingFetchProps<
+    ResponseListTimeSeriesSampleDTO,
+    Failure | Error,
+    GetDynatraceSampleDataQueryParams,
+    DynatraceSampleDataRequestDTO,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  mutateUsingFetch<
+    ResponseListTimeSeriesSampleDTO,
+    Failure | Error,
+    GetDynatraceSampleDataQueryParams,
+    DynatraceSampleDataRequestDTO,
+    void
+  >('POST', getConfig('cv/api'), `/dynatrace/fetch-sample-data`, props, signal)
+
+export interface GetDynatraceMetricDataQueryParams {
+  accountId: string
+  orgIdentifier: string
+  projectIdentifier: string
+  connectorIdentifier: string
+  tracingId: string
+}
+
+export type GetDynatraceMetricDataProps = Omit<
+  MutateProps<
+    ResponseSetMetricPackValidationResponse,
+    Failure | Error,
+    GetDynatraceMetricDataQueryParams,
+    DynatraceValidateDataRequestDTO,
+    void
+  >,
+  'path' | 'verb'
+>
+
+/**
+ * get metric data for given metric packs
+ */
+export const GetDynatraceMetricData = (props: GetDynatraceMetricDataProps) => (
+  <Mutate<
+    ResponseSetMetricPackValidationResponse,
+    Failure | Error,
+    GetDynatraceMetricDataQueryParams,
+    DynatraceValidateDataRequestDTO,
+    void
+  >
+    verb="POST"
+    path={`/dynatrace/metric-data`}
+    base={getConfig('cv/api')}
+    {...props}
+  />
+)
+
+export type UseGetDynatraceMetricDataProps = Omit<
+  UseMutateProps<
+    ResponseSetMetricPackValidationResponse,
+    Failure | Error,
+    GetDynatraceMetricDataQueryParams,
+    DynatraceValidateDataRequestDTO,
+    void
+  >,
+  'path' | 'verb'
+>
+
+/**
+ * get metric data for given metric packs
+ */
+export const useGetDynatraceMetricData = (props: UseGetDynatraceMetricDataProps) =>
+  useMutate<
+    ResponseSetMetricPackValidationResponse,
+    Failure | Error,
+    GetDynatraceMetricDataQueryParams,
+    DynatraceValidateDataRequestDTO,
+    void
+  >('POST', `/dynatrace/metric-data`, { base: getConfig('cv/api'), ...props })
+
+/**
+ * get metric data for given metric packs
+ */
+export const getDynatraceMetricDataPromise = (
+  props: MutateUsingFetchProps<
+    ResponseSetMetricPackValidationResponse,
+    Failure | Error,
+    GetDynatraceMetricDataQueryParams,
+    DynatraceValidateDataRequestDTO,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  mutateUsingFetch<
+    ResponseSetMetricPackValidationResponse,
+    Failure | Error,
+    GetDynatraceMetricDataQueryParams,
+    DynatraceValidateDataRequestDTO,
+    void
+  >('POST', getConfig('cv/api'), `/dynatrace/metric-data`, props, signal)
+
+export interface GetAllDynatraceServiceMetricsQueryParams {
+  accountId: string
+  connectorIdentifier: string
+  orgIdentifier: string
+  projectIdentifier: string
+  tracingId: string
+}
+
+export type GetAllDynatraceServiceMetricsProps = Omit<
+  GetProps<ResponseListDynatraceMetricDTO, Failure | Error, GetAllDynatraceServiceMetricsQueryParams, void>,
+  'path'
+>
+
+/**
+ * get all dynatrace service metrics
+ */
+export const GetAllDynatraceServiceMetrics = (props: GetAllDynatraceServiceMetricsProps) => (
+  <Get<ResponseListDynatraceMetricDTO, Failure | Error, GetAllDynatraceServiceMetricsQueryParams, void>
+    path={`/dynatrace/metrics`}
+    base={getConfig('cv/api')}
+    {...props}
+  />
+)
+
+export type UseGetAllDynatraceServiceMetricsProps = Omit<
+  UseGetProps<ResponseListDynatraceMetricDTO, Failure | Error, GetAllDynatraceServiceMetricsQueryParams, void>,
+  'path'
+>
+
+/**
+ * get all dynatrace service metrics
+ */
+export const useGetAllDynatraceServiceMetrics = (props: UseGetAllDynatraceServiceMetricsProps) =>
+  useGet<ResponseListDynatraceMetricDTO, Failure | Error, GetAllDynatraceServiceMetricsQueryParams, void>(
+    `/dynatrace/metrics`,
+    { base: getConfig('cv/api'), ...props }
+  )
+
+/**
+ * get all dynatrace service metrics
+ */
+export const getAllDynatraceServiceMetricsPromise = (
+  props: GetUsingFetchProps<
+    ResponseListDynatraceMetricDTO,
+    Failure | Error,
+    GetAllDynatraceServiceMetricsQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  getUsingFetch<ResponseListDynatraceMetricDTO, Failure | Error, GetAllDynatraceServiceMetricsQueryParams, void>(
+    getConfig('cv/api'),
+    `/dynatrace/metrics`,
+    props,
+    signal
+  )
+
+export interface GetDynatraceServiceDetailsQueryParams {
+  accountId: string
+  connectorIdentifier: string
+  orgIdentifier: string
+  projectIdentifier: string
+  serviceId: string
+  tracingId: string
+}
+
+export type GetDynatraceServiceDetailsProps = Omit<
+  GetProps<ResponseDynatraceServiceDTO, Failure | Error, GetDynatraceServiceDetailsQueryParams, void>,
+  'path'
+>
+
+/**
+ * get dynatrace service details
+ */
+export const GetDynatraceServiceDetails = (props: GetDynatraceServiceDetailsProps) => (
+  <Get<ResponseDynatraceServiceDTO, Failure | Error, GetDynatraceServiceDetailsQueryParams, void>
+    path={`/dynatrace/service-details`}
+    base={getConfig('cv/api')}
+    {...props}
+  />
+)
+
+export type UseGetDynatraceServiceDetailsProps = Omit<
+  UseGetProps<ResponseDynatraceServiceDTO, Failure | Error, GetDynatraceServiceDetailsQueryParams, void>,
+  'path'
+>
+
+/**
+ * get dynatrace service details
+ */
+export const useGetDynatraceServiceDetails = (props: UseGetDynatraceServiceDetailsProps) =>
+  useGet<ResponseDynatraceServiceDTO, Failure | Error, GetDynatraceServiceDetailsQueryParams, void>(
+    `/dynatrace/service-details`,
+    { base: getConfig('cv/api'), ...props }
+  )
+
+/**
+ * get dynatrace service details
+ */
+export const getDynatraceServiceDetailsPromise = (
+  props: GetUsingFetchProps<ResponseDynatraceServiceDTO, Failure | Error, GetDynatraceServiceDetailsQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  getUsingFetch<ResponseDynatraceServiceDTO, Failure | Error, GetDynatraceServiceDetailsQueryParams, void>(
+    getConfig('cv/api'),
+    `/dynatrace/service-details`,
+    props,
+    signal
+  )
+
+export interface GetDynatraceServicesQueryParams {
+  accountId: string
+  connectorIdentifier: string
+  orgIdentifier: string
+  projectIdentifier: string
+  filter?: string
+  tracingId: string
+}
+
+export type GetDynatraceServicesProps = Omit<
+  GetProps<ResponseListDynatraceServiceDTO, Failure | Error, GetDynatraceServicesQueryParams, void>,
+  'path'
+>
+
+/**
+ * get all dynatrace services
+ */
+export const GetDynatraceServices = (props: GetDynatraceServicesProps) => (
+  <Get<ResponseListDynatraceServiceDTO, Failure | Error, GetDynatraceServicesQueryParams, void>
+    path={`/dynatrace/services`}
+    base={getConfig('cv/api')}
+    {...props}
+  />
+)
+
+export type UseGetDynatraceServicesProps = Omit<
+  UseGetProps<ResponseListDynatraceServiceDTO, Failure | Error, GetDynatraceServicesQueryParams, void>,
+  'path'
+>
+
+/**
+ * get all dynatrace services
+ */
+export const useGetDynatraceServices = (props: UseGetDynatraceServicesProps) =>
+  useGet<ResponseListDynatraceServiceDTO, Failure | Error, GetDynatraceServicesQueryParams, void>(
+    `/dynatrace/services`,
+    { base: getConfig('cv/api'), ...props }
+  )
+
+/**
+ * get all dynatrace services
+ */
+export const getDynatraceServicesPromise = (
+  props: GetUsingFetchProps<ResponseListDynatraceServiceDTO, Failure | Error, GetDynatraceServicesQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  getUsingFetch<ResponseListDynatraceServiceDTO, Failure | Error, GetDynatraceServicesQueryParams, void>(
+    getConfig('cv/api'),
+    `/dynatrace/services`,
+    props,
+    signal
+  )
+
 export interface GetNamespacesQueryParams {
   accountId: string
   orgIdentifier: string
@@ -7174,6 +7584,7 @@ export interface GetMetricPacksQueryParams {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
 }
@@ -7236,6 +7647,7 @@ export interface SaveMetricPacksQueryParams {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
 }
@@ -10238,6 +10650,7 @@ export interface GetAnomalousMetricDashboardDataQueryParams {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
 }
@@ -10314,6 +10727,7 @@ export interface GetMetricDataQueryParams {
     | 'PROMETHEUS'
     | 'DATADOG_METRICS'
     | 'DATADOG_LOG'
+    | 'DYNATRACE'
     | 'ERROR_TRACKING'
     | 'CUSTOM_HEALTH'
 }

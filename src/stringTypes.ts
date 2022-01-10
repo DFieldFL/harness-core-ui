@@ -4510,6 +4510,12 @@ export interface StringsMap {
   'cv.healthSource.connectors.AppDynamics.validation.metricPath': string
   'cv.healthSource.connectors.AppDynamics.validation.metricPathWithoutLeafNode': string
   'cv.healthSource.connectors.AppDynamics.validation.tier': string
+  'cv.healthSource.connectors.Dynatrace.defaultMetricName': string
+  'cv.healthSource.connectors.Dynatrace.keyRequestRequiredLabel': string
+  'cv.healthSource.connectors.Dynatrace.servicePlaceholder': string
+  'cv.healthSource.connectors.Dynatrace.servicesLabel': string
+  'cv.healthSource.connectors.Dynatrace.submitQueryLabel': string
+  'cv.healthSource.connectors.Dynatrace.validations.selectedService': string
   'cv.healthSource.connectors.NewRelic.applicationLabel': string
   'cv.healthSource.connectors.NewRelic.groupName': string
   'cv.healthSource.connectors.NewRelic.metricFields.metricValueJsonPath.label': string

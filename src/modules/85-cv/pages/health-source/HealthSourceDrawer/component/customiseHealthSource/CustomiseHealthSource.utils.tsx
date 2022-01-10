@@ -21,6 +21,7 @@ import { DatadogProduct } from '@cv/pages/health-source/connectors/DatadogMetric
 import { CustomHealthSource } from '@cv/pages/health-source/connectors/CustomHealthSource/CustomHealthSource'
 import { DatadogLogsHealthSource } from '@cv/pages/health-source/connectors/DatadogLogsHealthSource/DatadogLogsHealthSource'
 import ErrorTrackingHealthSource from '@cv/pages/health-source/connectors/ErrorTrackingHealthSource/ErrorTrackingHealthSource'
+import DynatraceHealthSourceContainer from '@cv/pages/health-source/connectors/Dynatrace/DynatraceHealthSourceContainer'
 import type { UpdatedHealthSource } from '../../HealthSourceDrawerContent.types'
 
 export const LoadSourceByType = ({
@@ -59,6 +60,8 @@ export const LoadSourceByType = ({
       return <PrometheusHealthSource data={data} onSubmit={onSubmit} />
     case Connectors.NEW_RELIC:
       return <NewrelicMonitoredSourceContainer data={data} onSubmit={onSubmit} />
+    case Connectors.DYNATRACE:
+      return <DynatraceHealthSourceContainer data={data} onSubmit={onSubmit} />
     case Connectors.SPLUNK:
       return <SplunkHealthSource data={data} onSubmit={onSubmit} />
     case Connectors.CUSTOM_HEALTH:

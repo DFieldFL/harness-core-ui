@@ -21,7 +21,10 @@ import {
   MetricPackValidationResponse,
   ResponseMetricPackValidationResponse,
   ResponseSetAppdynamicsValidationResponse,
-  HealthSource
+  HealthSource,
+  GetDynatraceMetricDataQueryParams,
+  getDynatraceMetricDataPromise,
+  DynatraceValidateDataRequestDTO
 } from 'services/cv'
 import { StatusOfValidation } from '@cv/pages/components/ValidationStatus/ValidationStatus.constants'
 import { StatusState, HealthSoureSupportedConnectorTypes } from './MonitoredServiceConnector.constants'
@@ -122,8 +125,11 @@ export const createMetricDataFormik = (metricPacks: MetricPackDTO[] | undefined)
 }
 
 export async function validateMetrics(
-  metricPacks: MetricPackDTOArrayRequestBody,
-  queryParams: GetAppDynamicsMetricDataQueryParams | GetNewRelicMetricDataQueryParams,
+  bodyData: MetricPackDTOArrayRequestBody | DynatraceValidateDataRequestDTO,
+  queryParams:
+    | GetAppDynamicsMetricDataQueryParams
+    | GetNewRelicMetricDataQueryParams
+    | GetDynatraceMetricDataQueryParams,
   connector: string
 ): Promise<{ validationStatus: string | undefined; validationResult?: AppdynamicsValidationResponse[]; error?: any }> {
   try {
@@ -133,14 +139,30 @@ export async function validateMetrics(
       case HealthSoureSupportedConnectorTypes.APP_DYNAMICS:
         if (queryParams) {
           const appDQueryParam = queryParams as GetAppDynamicsMetricDataQueryParams
-          response = await getAppDynamicsMetricDataPromise({ queryParams: appDQueryParam, body: metricPacks })
+          response = await getAppDynamicsMetricDataPromise({
+            queryParams: appDQueryParam,
+            body: bodyData as MetricPackDTOArrayRequestBody
+          })
           data = response?.data
         }
         break
       case HealthSoureSupportedConnectorTypes.NEW_RELIC:
         if (queryParams) {
           const newRelicQueryParam = queryParams as GetNewRelicMetricDataQueryParams
-          response = await getNewRelicMetricDataPromise({ queryParams: newRelicQueryParam, body: metricPacks })
+          response = await getNewRelicMetricDataPromise({
+            queryParams: newRelicQueryParam,
+            body: bodyData as MetricPackDTOArrayRequestBody
+          })
+          data = response?.data && transformNewRelicDataToAppd([response?.data])
+        }
+        break
+      case HealthSoureSupportedConnectorTypes.DYNATRACE:
+        if (queryParams) {
+          const dynatraceQueryParam = queryParams as GetDynatraceMetricDataQueryParams
+          response = await getDynatraceMetricDataPromise({
+            queryParams: dynatraceQueryParam,
+            body: bodyData as DynatraceValidateDataRequestDTO
+          })
           data = response?.data && transformNewRelicDataToAppd(response?.data)
         }
         break
@@ -169,18 +191,22 @@ export async function validateMetrics(
   }
 }
 
-export function transformNewRelicDataToAppd(metricData: MetricPackValidationResponse): AppdynamicsValidationResponse[] {
-  const appDMeticData: AppdynamicsValidationResponse = {
-    overallStatus: metricData.overallStatus,
-    metricPackName: metricData.metricPackName,
-    values: []
-  }
-  for (const newRelicData of metricData.metricValidationResponses || []) {
-    appDMeticData.values?.push({
-      value: newRelicData.value,
-      apiResponseStatus: newRelicData.status,
-      metricName: newRelicData.metricName
-    })
-  }
-  return [appDMeticData]
+export function transformNewRelicDataToAppd(
+  metricData: MetricPackValidationResponse[]
+): AppdynamicsValidationResponse[] {
+  return metricData.map(metricDataItem => {
+    const appDMeticData: AppdynamicsValidationResponse = {
+      overallStatus: metricDataItem.overallStatus,
+      metricPackName: metricDataItem.metricPackName,
+      values: []
+    }
+    for (const newRelicData of metricDataItem.metricValidationResponses || []) {
+      appDMeticData.values?.push({
+        value: newRelicData.value,
+        apiResponseStatus: newRelicData.status,
+        metricName: newRelicData.metricName
+      })
+    }
+    return appDMeticData
+  })
 }

@@ -14,7 +14,12 @@ import { GCOProduct } from '@cv/pages/health-source/connectors/GCOLogsMonitoring
 import { PrometheusProductNames } from '@cv/pages/health-source/connectors/PrometheusHealthSource/PrometheusHealthSource.constants'
 import { DatadogProduct } from '@cv/pages/health-source/connectors/DatadogMetricsHealthSource/DatadogMetricsHealthSource.utils'
 import { ErrorTrackingProductNames } from '@cv/pages/health-source/connectors/ErrorTrackingHealthSource/ErrorTrackingHealthSource.utils'
-import { NewRelicProductNames, ConnectorRefFieldName, SplunkProduct } from './DefineHealthSource.constant'
+import {
+  NewRelicProductNames,
+  ConnectorRefFieldName,
+  SplunkProduct,
+  DynatraceProductNames
+} from './DefineHealthSource.constant'
 import type { DefineHealthSourceFormInterface } from './DefineHealthSource.types'
 
 export const validate = (getString: UseStringsReturn['getString']) => {
@@ -87,6 +92,13 @@ export const getFeatureOption = (type: string, getString: UseStringsReturn['getS
       return [
         {
           value: NewRelicProductNames.APM,
+          label: getString('connectors.newRelic.products.fullStackObservability')
+        }
+      ]
+    case Connectors.DYNATRACE:
+      return [
+        {
+          value: DynatraceProductNames.APM,
           label: getString('connectors.newRelic.products.fullStackObservability')
         }
       ]

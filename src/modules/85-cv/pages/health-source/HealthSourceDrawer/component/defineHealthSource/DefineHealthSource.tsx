@@ -7,16 +7,16 @@
 
 import React, { useCallback, useContext, useMemo } from 'react'
 import {
+  Card,
   Color,
   Container,
-  Card,
   Formik,
   FormikForm,
   FormInput,
-  Text,
+  Icon,
   IconName,
   Layout,
-  Icon
+  Text
 } from '@wings-software/uicore'
 import { useParams } from 'react-router-dom'
 import cx from 'classnames'
@@ -32,7 +32,7 @@ import { SetupSourceTabsContext } from '@cv/components/CVSetupSourcesView/SetupS
 import { Connectors } from '@connectors/constants'
 import { HealthSourceTypes } from '@cv/pages/health-source/types'
 import { ConnectorRefFieldName, HEALTHSOURCE_LIST } from './DefineHealthSource.constant'
-import { validate, getFeatureOption, getInitialValues, validateDuplicateIdentifier } from './DefineHealthSource.utils'
+import { getFeatureOption, getInitialValues, validate, validateDuplicateIdentifier } from './DefineHealthSource.utils'
 import css from './DefineHealthSource.module.scss'
 
 interface DefineHealthSourceProps {
@@ -45,7 +45,19 @@ function DefineHealthSource(props: DefineHealthSourceProps): JSX.Element {
   const { onNext, sourceData } = useContext(SetupSourceTabsContext)
   const { orgIdentifier, projectIdentifier, accountId } = useParams<ProjectPathProps & { identifier: string }>()
   const { isEdit } = sourceData
+
   const isErrorTrackingEnabled = useFeatureFlag(FeatureFlag.ERROR_TRACKING_ENABLED)
+  const isDynatraceAPMEnabled = useFeatureFlag(FeatureFlag.DYNATRACE_APM_ENABLED)
+  const disabledByFF: string[] = useMemo(() => {
+    const disabledConnectorsList = []
+    if (!isDynatraceAPMEnabled) {
+      disabledConnectorsList.push(HealthSourceTypes.Dynatrace)
+    }
+    if (!isErrorTrackingEnabled) {
+      disabledConnectorsList.push(HealthSourceTypes.ErrorTracking)
+    }
+    return disabledConnectorsList
+  }, [isDynatraceAPMEnabled, isErrorTrackingEnabled])
 
   const initialValues = useMemo(() => {
     return getInitialValues(sourceData)
@@ -98,46 +110,46 @@ function DefineHealthSource(props: DefineHealthSourceProps): JSX.Element {
                           height={120}
                           margin={{ left: 'xxxlarge', right: 'xxxlarge' }}
                         >
-                          {HEALTHSOURCE_LIST.filter(({ name }) =>
-                            name === HealthSourceTypes.ErrorTracking ? isErrorTrackingEnabled : true
-                          ).map(({ name, icon }) => {
-                            const connectorTypeName =
-                              name === HealthSourceTypes.GoogleCloudOperations ? Connectors.GCP : name
-                            if (isCustomEnabled === false && name === HealthSourceTypes.CustomHealth) {
-                              return null
+                          {HEALTHSOURCE_LIST.filter(({ name }) => !disabledByFF.includes(name)).map(
+                            ({ name, icon }) => {
+                              const connectorTypeName =
+                                name === HealthSourceTypes.GoogleCloudOperations ? Connectors.GCP : name
+                              if (isCustomEnabled === false && name === HealthSourceTypes.CustomHealth) {
+                                return null
+                              }
+                              return (
+                                <div key={name} className={cx(css.squareCardContainer, isEdit && css.disabled)}>
+                                  <Card
+                                    disabled={false}
+                                    interactive={true}
+                                    selected={isCardSelected(connectorTypeName, formik)}
+                                    cornerSelected={isCardSelected(connectorTypeName, formik)}
+                                    className={css.squareCard}
+                                    onClick={() => {
+                                      formik.setFieldValue('sourceType', connectorTypeName)
+                                      formik.setFieldValue(
+                                        'product',
+                                        getFeatureOption(connectorTypeName, getString).length === 1
+                                          ? getFeatureOption(connectorTypeName, getString)[0]
+                                          : ''
+                                      )
+                                      formik.setFieldValue(ConnectorRefFieldName, null)
+                                    }}
+                                  >
+                                    <Icon name={icon as IconName} size={26} height={26} />
+                                  </Card>
+                                  <Text
+                                    className={css.healthSourceName}
+                                    style={{
+                                      color: name === formik.values.sourceType ? 'var(--grey-900)' : 'var(--grey-350)'
+                                    }}
+                                  >
+                                    {name}
+                                  </Text>
+                                </div>
+                              )
                             }
-                            return (
-                              <div key={name} className={cx(css.squareCardContainer, isEdit && css.disabled)}>
-                                <Card
-                                  disabled={false}
-                                  interactive={true}
-                                  selected={isCardSelected(connectorTypeName, formik)}
-                                  cornerSelected={isCardSelected(connectorTypeName, formik)}
-                                  className={css.squareCard}
-                                  onClick={() => {
-                                    formik.setFieldValue('sourceType', connectorTypeName)
-                                    formik.setFieldValue(
-                                      'product',
-                                      getFeatureOption(connectorTypeName, getString).length === 1
-                                        ? getFeatureOption(connectorTypeName, getString)[0]
-                                        : ''
-                                    )
-                                    formik.setFieldValue(ConnectorRefFieldName, null)
-                                  }}
-                                >
-                                  <Icon name={icon as IconName} size={26} height={26} />
-                                </Card>
-                                <Text
-                                  className={css.healthSourceName}
-                                  style={{
-                                    color: name === formik.values.sourceType ? 'var(--grey-900)' : 'var(--grey-350)'
-                                  }}
-                                >
-                                  {name}
-                                </Text>
-                              </div>
-                            )
-                          })}
+                          )}
                         </Layout.Horizontal>
                       )
                     }}

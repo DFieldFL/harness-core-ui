@@ -19,6 +19,7 @@ export const getTypeByFeature = (feature: string, getString: UseStringsReturn['g
     case Connectors.GCP:
     case Connectors.NEW_RELIC:
     case Connectors.PROMETHEUS:
+    case Connectors.DYNATRACE:
     case HealthSourceTypes.StackdriverMetrics:
     case HealthSourceTypes.DatadogMetrics:
       return getString('pipeline.verification.analysisTab.metrics')
@@ -75,6 +76,9 @@ export const getIconBySourceType = (type: string): IconName => {
       return 'service-pagerduty'
     case 'CustomHealth':
       return 'service-custom-connector'
+    case 'DYNATRACE':
+    case 'Dynatrace':
+      return 'service-dynatrace'
     default:
       return 'placeholder'
   }

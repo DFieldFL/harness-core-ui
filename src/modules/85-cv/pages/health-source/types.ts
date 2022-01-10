@@ -17,5 +17,6 @@ export enum HealthSourceTypes {
   DatadogLog = 'DatadogLog',
   Datadog = 'Datadog',
   CustomHealth = 'CustomHealth',
-  ErrorTracking = 'ErrorTracking'
+  ErrorTracking = 'ErrorTracking',
+  Dynatrace = 'Dynatrace'
 }

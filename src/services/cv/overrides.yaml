@@ -78,6 +78,12 @@ allowpaths:
   - /newrelic/applications
   - /newrelic/metric-data
   - /newrelic/fetch-sample-data
+  - /dynatrace/metric-data
+  - /dynatrace/fetch-sample-data
+  - /dynatrace/metric-data
+  - /dynatrace/metrics
+  - /dynatrace/service-details
+  - /dynatrace/services
   - /cvng-log
   - /verification-job/eligible-cdng-verification-jobs
   - /verification-job/{identifier}

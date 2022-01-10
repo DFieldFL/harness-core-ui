@@ -315,7 +315,7 @@ monitoringSources:
     validation:
       queryContains: 'Query must contain '
   datadogLogs:
-    submitQueryToSeeRecords: Submit query to see records from Dataodog Logs
+    submitQueryToSeeRecords: Submit query to see records from Datadog Logs
     datadogLogsQuery: Datadog Logs Query
     logIndexesLabel: Log indexes
   newRelic:
@@ -618,6 +618,15 @@ healthSource:
       selectedPathLabel: Selected path
     gco:
       selectDashboardTab: 'Select Dashboards'
+    Dynatrace:
+      servicesLabel: Find a Dynatrace service
+      servicePlaceholder: Type a service name
+      validations:
+        selectedService: Please select a service
+      defaultMetricName: Dynatrace metric
+      submitQueryLabel: Submit query to see Dynatrace metrics
+      keyRequestRequiredLabel: Only services with marked Key Requests are shown
+
 slos:
   title: SLOs
   editSLO: 'Edit SLO: {{name}}'

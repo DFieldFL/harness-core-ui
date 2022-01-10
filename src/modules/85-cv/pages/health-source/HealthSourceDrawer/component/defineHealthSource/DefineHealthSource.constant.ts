@@ -35,6 +35,10 @@ export const HEALTHSOURCE_LIST = [
     icon: getConnectorIconByType(Connectors.DATADOG)
   },
   {
+    name: HealthSourceTypes.Dynatrace,
+    icon: getConnectorIconByType(Connectors.DYNATRACE)
+  },
+  {
     name: HealthSourceTypes.CustomHealth,
     icon: getConnectorIconByType(Connectors.CUSTOM_HEALTH)
   },
@@ -46,6 +50,10 @@ export const HEALTHSOURCE_LIST = [
 
 export const NewRelicProductNames = {
   APM: 'apm'
+}
+
+export const DynatraceProductNames = {
+  APM: 'dynatrace_apm'
 }
 
 export const SplunkProduct = {
