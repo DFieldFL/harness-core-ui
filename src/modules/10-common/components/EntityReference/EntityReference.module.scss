@@ -7,84 +7,42 @@
 
 .container {
   width: 770px;
-  min-height: 160px;
-  // margin-top: var(--spacing-medium) !important;
   .tabsContainer {
     padding-bottom: 12px;
-    // margin-bottom: var(--spacing-medium);
     border-bottom: 1px solid var(--grey-200);
 
-    // height: 300px;
-    :global {
-      .bp3-tab[aria-selected='true'] div > span {
-        color: var(--primary-7) !important;
-      }
-      // .bp3-tab[aria-selected='true'] div > div > p:first-child {
-      //   color: var(--primary-7) !important;
-      //   font-weight: normal !important;
-      // }
+    .tabIcon {
+      margin-right: var(--spacing-xsmall) !important;
 
-      .bp3-tab[aria-selected='true'] {
-        background-color: var(--grey-50) !important;
+      > svg > path {
+        fill: var(--grey-700);
       }
-      .bp3-tab-indicator-wrapper {
-        background-color: transparent !important;
+    }
+    .searchBox {
+      .search {
+        margin-bottom: unset;
+        > div {
+          > span {
+            > svg {
+              margin-top: 1px;
+            }
+          }
+          > input {
+            background-color: var(--grey-50) !important;
+          }
+        }
       }
+    }
+
+    :global {
       .bp3-tab-list {
-        margin-bottom: var(--spacing-large) !important;
         border-bottom: 1px solid var(--grey-200);
       }
       .bp3-tab-panel {
         width: 100%;
         height: 500px;
-        // margin-left: var(--spacing-small);
-        // border-left: 1px solid var(--grey-200);
       }
     }
-  }
-
-  .referenceListOverflow {
-    overflow-y: scroll;
-  }
-
-  .referenceList {
-    width: 440px;
-    height: calc(300px - var(--spacing-xsmall));
-    .listItem {
-      box-sizing: border-box;
-      padding: var(--spacing-medium) var(--spacing-medium) var(--spacing-medium);
-      border-bottom: 1px solid var(--grey-200);
-      display: flex;
-      align-items: center;
-      &:hover {
-        background-color: var(--primary-1);
-      }
-    }
-    .selectedItem {
-      background-color: var(--primary-2) !important;
-    }
-  }
-
-  .searchBox {
-    display: flex;
-    .search {
-      flex: 1;
-      > div {
-        > span {
-          > svg {
-            margin-top: 1px;
-          }
-        }
-        > input {
-          background-color: var(--grey-50) !important;
-        }
-      }
-    }
-  }
-  .tabIcon {
-    margin-right: var(--spacing-xsmall) !important;
-    align-self: flex-start;
-    padding-top: 5px !important;
   }
 }
 

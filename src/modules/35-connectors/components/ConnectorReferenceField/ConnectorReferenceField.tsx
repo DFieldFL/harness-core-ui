@@ -21,7 +21,8 @@ import {
   DataTooltipInterface,
   HarnessDocTooltip,
   FontVariation,
-  ButtonVariation
+  ButtonVariation,
+  Container
 } from '@wings-software/uicore'
 import cx from 'classnames'
 import { isEmpty } from 'lodash-es'
@@ -59,6 +60,8 @@ import type { ResourceScope } from '@rbac/interfaces/ResourceScope'
 import type { IGitContextFormProps } from '@common/components/GitContextForm/GitContextForm'
 import { DATE_WITHOUT_TIME_FORMAT } from '@common/utils/StringUtils'
 import { getReadableDateTime } from '@common/utils/dateUtils'
+import { Connectors } from '@connectors/constants'
+import { LinkifyText } from '@common/components/LinkifyText/LinkifyText'
 import ConnectorsEmptyState from './connectors-no-data.png'
 import css from './ConnectorReferenceField.module.scss'
 
@@ -192,10 +195,122 @@ interface RecordRenderProps {
   getString(key: string, vars?: Record<string, any>): string
 }
 
-const CollapseRecordRender: React.FC<RecordRenderProps> = props => {
+const RenderGitHubDetails: React.FC<RecordRenderProps> = props => {
+  const { item, getString } = props
   return (
-    <Layout.Horizontal>
-      <Text> Hi</Text>
+    <Container width={'calc(100% - 150px)'} className={css.gitHubConnectorDetails}>
+      <Container>
+        <Text color={Color.GREY_500} font={{ variation: FontVariation.SMALL }}>
+          {/* {getString('connector.connectivityMode.title')} */}
+          Connectivity Mode
+        </Text>
+        <Text
+          icon={item.record.spec.executeOnDelegate === false ? 'harness-with-color' : 'delegates-icon'}
+          color={Color.GREY_900}
+          font={{ variation: FontVariation.SMALL_SEMI }}
+        >
+          {getString(
+            item.record.spec.executeOnDelegate === false ? 'common.harnessPlatform' : 'common.harnessDelegate'
+          )}
+        </Text>
+      </Container>
+      <Layout.Vertical className={css.gitUrl} width={'300px'}>
+        <Text>{getString('common.gitDetailsTitle')}</Text>
+
+        <LinkifyText
+          content={item.record.spec.url}
+          textProps={{ color: Color.BLACK, font: { variation: FontVariation.SMALL }, lineClamp: 1 }}
+          linkStyles={css.gitUrlStyle}
+        />
+      </Layout.Vertical>
+      <Container background={Color.GREEN_50} padding={{ left: 'xsmall', right: 'xsmall' }}>
+        <Text color={Color.GREY_500} font={{ variation: FontVariation.SMALL }}>
+          API Status
+        </Text>
+        {item.record.spec.apiAccess ? (
+          <Text color={Color.GREEN_700} icon="success-tick" font={{ variation: FontVariation.SMALL_SEMI }}>
+            Enabled
+          </Text>
+        ) : (
+          <Text font={{ variation: FontVariation.SMALL_SEMI }}>Not Enabled</Text>
+        )}
+      </Container>
+    </Container>
+  )
+}
+
+const RenderConnectorDetails: React.FC<RecordRenderProps> = props => {
+  const { item } = props
+
+  switch (item.record.type) {
+    case Connectors.KUBERNETES_CLUSTER:
+      return <></>
+    case Connectors.GIT:
+      return <></>
+    case Connectors.Jira:
+      return <></>
+    case Connectors.GITHUB:
+      return <RenderGitHubDetails {...props} />
+    case Connectors.GITLAB:
+      return <></>
+    case Connectors.BITBUCKET:
+      return <></> //
+    case Connectors.DOCKER:
+      return <></>
+    case Connectors.HttpHelmRepo:
+      return <></>
+    case Connectors.GCP:
+      return <></>
+    case Connectors.AWS:
+      return <></>
+    case Connectors.NEXUS:
+      return <></>
+    case Connectors.ARTIFACTORY:
+      return <></>
+    case Connectors.VAULT:
+    case Connectors.LOCAL:
+      return <></>
+    case Connectors.AWS_KMS:
+      return <></>
+    case Connectors.AWS_SECRET_MANAGER:
+      return <></>
+    case Connectors.AWS_CODECOMMIT:
+      return <></>
+    case Connectors.GCP_KMS:
+      return <></>
+    case Connectors.DATADOG:
+      return <></>
+    case Connectors.AZURE_KEY_VAULT:
+      return <></>
+    case Connectors.SUMOLOGIC:
+      return <></>
+    case Connectors.SERVICE_NOW:
+      return <></>
+    default:
+      return <></>
+  }
+}
+
+const CollapseRecordRender: React.FC<RecordRenderProps> = props => {
+  const { item, getString } = props
+  return (
+    <Layout.Horizontal
+      margin={{ left: 'large', right: 'large' }}
+      spacing={'large'}
+      flex={{ alignItems: 'center' }}
+      className={css.connectorDetails}
+    >
+      <RenderConnectorDetails {...props} />
+      {item.record.status?.status !== 'SUCCESS' && item.record.status?.lastConnectedAt !== 0 ? (
+        <Container width={'130px'}>
+          <Text color={Color.GREY_500} font={{ variation: FontVariation.SMALL }}>
+            {getString('common.lastConnected')}
+          </Text>
+          <Text color={Color.GREY_900} font={{ variation: FontVariation.SMALL_SEMI }}>
+            {getReadableDateTime(item.record.status?.lastConnectedAt, DATE_WITHOUT_TIME_FORMAT)}
+          </Text>
+        </Container>
+      ) : null}
     </Layout.Horizontal>
   )
 }
@@ -214,61 +329,8 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
     []
   )
   return (
-    // <>
-    //   <div className={cx(css.item)}>
-    //     <Layout.Vertical spacing="xsmall">
-    //       <Layout.Horizontal spacing="small" margin={{ right: 'small', bottom: 'small' }} className={css.connectorInfo}>
-    //         <Icon name={getIconByType(item.record.type)} size={30}></Icon>
-    //         <div className={css.connectorNameId}>
-    //           <Text lineClamp={1} font={{ weight: 'bold' }} color={Color.BLACK}>
-    //             {item.record.name}
-    //           </Text>
-    //           <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
-    //             {`${getString('common.ID')}: ${item.identifier}`}
-    //           </Text>
-    //         </div>
-    //       </Layout.Horizontal>
-    //   {item.record.gitDetails?.repoIdentifier && (
-    //         <Layout.Horizontal
-    //           margin={{ left: 'xsmall' }}
-    //           flex={{ alignItems: 'center', justifyContent: 'flex-start' }}
-    //           spacing="small"
-    //           className={css.gitInfo}
-    //         >
-    //           <Text
-    //             lineClamp={1}
-    //             font={{ size: 'small', weight: 'light' }}
-    //             color={Color.GREY_450}
-    //             icon="repository"
-    //             iconProps={{ size: 12 }}
-    //           >
-    //             {item.record.gitDetails.repoIdentifier}
-    //           </Text>
-    //           <Text
-    //             lineClamp={1}
-    //             font={{ size: 'small', weight: 'light' }}
-    //             color={Color.GREY_450}
-    //             className={cx(css.gitBranchIcon)}
-    //             icon="git-new-branch"
-    //             iconProps={{ size: 12 }}
-    //           >
-    //             {item.record.gitDetails.branch}
-    //           </Text>
-    //         </Layout.Horizontal>
-    //       )}
-    //   {item.record.status?.status !== 'SUCCESS' && item.record.status?.lastConnectedAt !== 0 && (
-    //         <BTag round className={css.lastConnected}>
-    //           {`${getString('common.lastConnectedOn')} ${getReadableDateTime(
-    //             item.record.status?.lastConnectedAt,
-    //             DATE_WITHOUT_TIME_FORMAT
-    //           )}`}
-    //         </BTag>
-    //       )}
-    //     </Layout.Vertical>
-    //   </div>
-
-    <Layout.Horizontal margin={{ left: 'small' }} flex={{ distribution: 'space-between' }}>
-      <Layout.Horizontal spacing="medium" flex={{ align: 'center-center' }}>
+    <Layout.Horizontal margin={{ left: 'small' }} flex={{ distribution: 'space-between' }} className={css.item}>
+      <Layout.Horizontal spacing="medium" className={css.leftInfo}>
         <Icon className={cx(css.iconCheck, { [css.iconChecked]: checked })} size={12} name="pipeline-approval" />
         <Icon name={getIconByType(item.record.type)} size={30}></Icon>
         <div className={css.connectorNameId}>
@@ -283,7 +345,13 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
 
       <Layout.Horizontal spacing="small">
         {item.record.gitDetails?.repoIdentifier && (
-          <Layout.Horizontal flex={{ alignItems: 'center' }} spacing="small" className={css.gitInfo}>
+          <Layout.Horizontal
+            flex={{ alignItems: 'center' }}
+            spacing="small"
+            className={css.gitInfo}
+            padding={{ left: 'small', right: 'small' }}
+            margin={{ right: 'small' }}
+          >
             <Text
               lineClamp={1}
               font={{ size: 'small', weight: 'light' }}
@@ -293,6 +361,7 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
             >
               {item.record.gitDetails.repoIdentifier}
             </Text>
+            {/* <div className={css.verticalBar}></div> */}
             <Text
               lineClamp={1}
               font={{ size: 'small', weight: 'light' }}
@@ -333,34 +402,6 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
         )}
       </Layout.Horizontal>
     </Layout.Horizontal>
-    //  <Layout.Horizontal spacing="small" flex={{ align: 'center-center' }}>
-    //  {canUpdate && !item.record.harnessManaged ? (
-    //     <Button
-    //       variation={ButtonVariation.ICON}
-    //       iconProps={{ color: Color.GREY_600 }}
-    //       intent="none"
-    //       icon="Edit"
-    //       className={css.editBtn}
-    //       onClick={e => {
-    //         e.stopPropagation()
-    //         openConnectorModal(true, item.record?.type || type, {
-    //           connectorInfo: item.record,
-    //           gitDetails: { ...item.record?.gitDetails, getDefaultFromOtherRepo: false }
-    //         })
-    //       }}
-    //     />
-    //   ) : (
-    //     <></>
-    //   )}
-    //  <Icon className={cx(css.iconCheck, { [css.iconChecked]: checked })} width={30} name="pipeline-approval" />
-    //  <Icon
-    //       className={css.status}
-    //       name="full-circle"
-    //       size={10}
-    //       width={30}
-    //       color={item.record.status?.status === 'SUCCESS' ? Color.GREEN_500 : Color.RED_500}
-    //     />
-    //   </Layout.Horizontal>
   )
 }
 
@@ -391,7 +432,7 @@ export function getReferenceFieldProps({
     placeholder,
     defaultScope,
     createNewLabel: getString('newConnector'),
-    recordClassName: css.listItem,
+    // recordClassName: css.listItem,
     isNewConnectorLabelVisible: true,
 
     fetchRecords: (page = 0, scope, search = '', done) => {
@@ -742,9 +783,8 @@ export const ConnectorReferenceField: React.FC<ConnectorReferenceFieldProps> = p
           pageSize: pagedConnectorData?.data?.pageSize || 10,
           pageCount: pagedConnectorData?.data?.totalPages || -1,
           pageIndex: page || 0,
-          gotoPage: page => setPage(page)
+          gotoPage: pageIndex => setPage(pageIndex)
         }}
-        // pagination={{ pageSize: 10, itemCount: 10, pageIndex: 0, pageCount: 0 }}
       />
     </FormGroup>
   )

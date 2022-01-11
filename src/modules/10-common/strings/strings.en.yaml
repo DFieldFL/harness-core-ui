@@ -13,6 +13,10 @@ projectSetup: Project Setup
 orgSetup: Org Setup
 delegateForTask: '{{delegate}} for {{taskName}}'
 noDelegateForTask: 'No delegate found for {{taskName}}'
+gitDetailsTitle: 'Git Details'
+lastConnected: 'Last Connected'
+harnessPlatform: 'Harness Platform'
+harnessDelegate: 'Harness Delegate'
 connectThroughPlatform: 'Connect through Harness Platform'
 connectThroughDelegate: 'Connect through a Harness Delegate'
 connectThroughPlatformInfo: 'Use this option to connect to a SaaS Git provider. Secure communication with the Git provider is done through the Harness Platform. All credentials are encrypted and stored in the Secret Manager configured in Harness.'

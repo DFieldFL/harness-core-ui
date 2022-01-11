@@ -33,8 +33,8 @@ import { useStrings } from 'framework/strings'
 import type { StringKeys } from 'framework/strings'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
-import css from './EntityReference.module.scss'
 import { CollapsableList } from '../CollapsableList/CollapsableList'
+import css from './EntityReference.module.scss'
 
 export interface ScopedObjectDTO {
   accountIdentifier?: string
@@ -184,7 +184,7 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
   }
 
   const iconProps = {
-    size: 12
+    size: 14
   }
 
   const enum TAB_ID {
@@ -197,7 +197,7 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
 
   const RenderList = () => {
     return (
-      <Layout.Vertical spacing="medium">
+      <Layout.Vertical spacing="large">
         <div className={css.searchBox}>
           <TextInput
             wrapperClassName={css.search}
@@ -236,36 +236,6 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
     )
   }
 
-  // const renderedList = loading ? (
-  //   <Container flex={{ align: 'center-center' }} padding="small">
-  //     <Icon name="spinner" size={24} color={Color.PRIMARY_7} />
-  //   </Container>
-  // ) : error ? (
-  //   <Container>
-  //     <PageError message={error} onClick={fetchData} />
-  //   </Container>
-  // ) : data.length ? (
-  //   <>
-  //     <div className={cx(css.referenceList, { [css.referenceListOverflow]: data.length > 5 })}>
-  //       {data.map((item: EntityReferenceResponse<T>) => (
-  //         <div
-  //           key={item.identifier}
-  //           className={cx(css.listItem, recordClassName, {
-  //             [css.selectedItem]: selectedRecord === item.record
-  //           })}
-  //           onClick={() => setSelectedRecord(selectedRecord === item.record ? undefined : item.record)}
-  //         >
-  //           {recordRender({ item, selectedScope, selected: selectedRecord === item.record })}
-  //         </div>
-  //       ))}
-  //     </div>
-  //   </>
-  // ) : (
-  //   <Container padding={{ top: 'xlarge' }} flex={{ align: 'center-center' }} className={css.noDataContainer}>
-  //     <NoDataCard {...noDataCard} containerClassName={css.noDataCardImg} />
-  //   </Container>
-  // )
-
   const renderTab = (
     show: boolean,
     id: string,
@@ -281,23 +251,21 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
           <Layout.Horizontal
             onClick={() => onScopeChange(scope)}
             flex={{ alignItems: 'center', justifyContent: 'flex-start' }}
-            // padding={{ top: 'small', bottom: 'small' }}
           >
             <Icon name={icon} {...iconProps} className={css.tabIcon} />
-            {/* <Layout.Vertical
-              
-              padding={{ left: 'small' }}
-              className={css.tabTitleContainer}
-            > */}
+
             <Text lineClamp={1} font={{ variation: FontVariation.H6, weight: 'light' }}>
               {getString(title)}
             </Text>
             {renderTabSubHeading && tabDesc && (
-              <Text lineClamp={1} font={{ variation: FontVariation.FORM_LABEL, weight: 'light' }}>
+              <Text
+                lineClamp={1}
+                font={{ variation: FontVariation.FORM_LABEL, weight: 'light' }}
+                padding={{ left: 'xsmall' }}
+              >
                 {`[${tabDesc}]`}
               </Text>
             )}
-            {/* </Layout.Vertical> */}
           </Layout.Horizontal>
         }
         panel={RenderList()}
@@ -309,13 +277,20 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
     <Container className={cx(css.container, className)}>
       <div className={css.tabsContainer}>
         <Tabs id={'selectScope'} defaultSelectedTabId={defaultTab}>
-          {renderTab(!!projectIdentifier, TAB_ID.PROJECT, Scope.PROJECT, 'cube', 'projectLabel', selectedProject?.name)}
+          {renderTab(
+            !!projectIdentifier,
+            TAB_ID.PROJECT,
+            Scope.PROJECT,
+            'projects-wizard',
+            'projectLabel',
+            selectedProject?.name
+          )}
           {renderTab(!!orgIdentifier, TAB_ID.ORGANIZATION, Scope.ORG, 'diagram-tree', 'orgLabel', selectedOrg?.name)}
           {renderTab(true, TAB_ID.ACCOUNT, Scope.ACCOUNT, 'layers', 'account', selectedAccount?.accountName)}
         </Tabs>
       </div>
 
-      <Layout.Horizontal spacing="medium">
+      <Layout.Horizontal spacing="medium" padding={{ top: 'small', bottom: 'small' }}>
         <Button
           variation={ButtonVariation.PRIMARY}
           text={getString('entityReference.apply')}

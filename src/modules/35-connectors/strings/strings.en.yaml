@@ -74,6 +74,7 @@ addParameter: Add Parameter
 baseURL: Base URL
 requestMethod: Request Method
 connectivityMode:
+  title: 'Connectivity Mode'
   validation: 'Please select connectivity mode'
   connectToProvider: 'Connect to the provider'
   selectText: 'Select how you would like to connect to the provider'

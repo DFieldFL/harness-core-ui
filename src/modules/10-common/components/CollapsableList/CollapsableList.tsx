@@ -26,20 +26,6 @@ export function CollapsableList<T>(props: CollapsableTableProps<T>): JSX.Element
     <>
       <div className={cx(css.referenceList, { [css.referenceListOverflow]: props.data.length > 5 })}>
         {props.data.map((item: EntityReferenceResponse<T>) => (
-          //   <div
-          //     key={item.identifier}
-          //     className={cx(css.listItem, {
-          //       [css.selectedItem]: props.selectedRecord === item.record
-          //     })}
-          //     onClick={() => props.setSelectedRecord(props.selectedRecord === item.record ? undefined : item.record)}
-          //   >
-          //     {props.recordRender({
-          //       item,
-          //       selectedScope: props.selectedScope as any,
-          //       selected: props.selectedRecord === item.record
-          //     })}
-          //   </div>
-
           <Collapse
             key={item.identifier}
             collapsedIcon="main-chevron-right"
