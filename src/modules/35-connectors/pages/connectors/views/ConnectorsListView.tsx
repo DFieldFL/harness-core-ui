@@ -30,8 +30,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import ReactTimeago from 'react-timeago'
 import classNames from 'classnames'
 import { pick } from 'lodash-es'
-import { String, useStrings } from 'framework/strings'
-import type { StringKeys } from 'framework/strings'
+import { String, useStrings, StringKeys } from 'framework/strings'
 import {
   ConnectorResponse,
   useDeleteConnector,
@@ -69,13 +68,11 @@ interface ConnectorListViewProps {
   openConnectorModal: UseCreateConnectorModalReturn['openConnectorModal']
 }
 
-type CustomColumn<T extends Record<string, any>> = Column<T> & {
+type CustomColumn = Column<ConnectorResponse> & {
   reload?: () => Promise<void>
 }
 
 export type ErrorMessage = ConnectorValidationResult & { useErrorHandler?: boolean }
-
-const stopPropagation = (e: React.MouseEvent<Element, MouseEvent>) => e.stopPropagation()
 
 const linkRenderer = (value: string): JSX.Element =>
   value ? (
@@ -83,7 +80,7 @@ const linkRenderer = (value: string): JSX.Element =>
       margin={{ left: 'xsmall' }}
       className={css.link}
       href={value}
-      onClick={stopPropagation}
+      onClick={e => e.stopPropagation()}
       target="_blank"
       title={value}
     >
@@ -391,7 +388,9 @@ const RenderColumnStatus: Renderer<CellProps<ConnectorResponse>> = ({ row }) => 
   const stepName = GetTestConnectionValidationTextByType(data.connector?.type)
 
   useEffect(() => {
-    if (testing) executeStepVerify()
+    if (testing) {
+      executeStepVerify()
+    }
   }, [testing])
 
   const isStatusSuccess = status === ConnectorStatus.SUCCESS || data.status?.status === ConnectorStatus.SUCCESS
@@ -565,7 +564,9 @@ const RenderColumnMenu: Renderer<CellProps<ConnectorResponse>> = ({ row, column 
             headers: { 'content-type': 'application/json' }
           })
 
-          if (deleted) showSuccess(`Connector ${data.connector?.name} deleted`)
+          if (deleted) {
+            showSuccess(`Connector ${data.connector?.name} deleted`)
+          }
           ;(column as any).reload?.()
         } catch (err) {
           showError(err?.data?.message || err?.message)
@@ -577,7 +578,9 @@ const RenderColumnMenu: Renderer<CellProps<ConnectorResponse>> = ({ row, column 
   const handleDelete = (e: React.MouseEvent<HTMLElement, MouseEvent>): void => {
     e.stopPropagation()
     setMenuOpen(false)
-    if (!data?.connector?.identifier) return
+    if (!data?.connector?.identifier) {
+      return
+    }
     openDialog()
   }
 
@@ -585,7 +588,9 @@ const RenderColumnMenu: Renderer<CellProps<ConnectorResponse>> = ({ row, column 
     const isEntityInvalid = data.entityValidityDetails?.valid === false
     e.stopPropagation()
     setMenuOpen(false)
-    if (!data?.connector?.identifier) return
+    if (!data?.connector?.identifier) {
+      return
+    }
     if (!isEntityInvalid) {
       ;(column as any).openConnectorModal(true, row?.original?.connector?.type as ConnectorInfoDTO['type'], {
         connectorInfo: row.original.connector,
@@ -633,7 +638,7 @@ const ConnectorsListView: React.FC<ConnectorListViewProps> = props => {
   const { getString } = useStrings()
   const { isGitSyncEnabled } = useAppStore()
   const listData: ConnectorResponse[] = useMemo(() => data?.content || [], [data?.content])
-  const columns: CustomColumn<ConnectorResponse>[] = useMemo(
+  const columns: CustomColumn[] = useMemo(
     () => [
       {
         Header: getString('connector').toUpperCase(),
