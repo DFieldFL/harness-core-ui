@@ -4452,6 +4452,7 @@ export interface StepData {
     | 'TERRAFORM_DESTROY'
     | 'TERRAFORM_ROLLBACK'
     | 'INTEGRATED_APPROVALS_WITH_SERVICE_NOW'
+    | 'ZERONORTH_STEP'
     | 'DEVELOPERS'
     | 'MONTHLY_ACTIVE_USERS'
   name?: string

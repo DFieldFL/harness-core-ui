@@ -83,7 +83,7 @@ export class ZeroNorthStep extends PipelineStep<ZeroNorthStepData> {
   }
 
   protected type = StepType.ZeroNorth
-  protected stepName = 'Configure ZeroNorth Step'
+  protected stepName = 'Configure Security Scan Step'
   protected stepIcon: IconName = 'shield'
   protected stepIconColor = '#4F5162'
   protected stepDescription: keyof StringsMap = 'sto.stepDescription.ZeroNorth'

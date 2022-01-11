@@ -55,5 +55,5 @@ export enum StepType {
   ResourceConstraint = 'ResourceConstraint',
   FlagConfiguration = 'FlagConfiguration',
   Template = 'Template',
-  ZeroNorth = 'ZeroNorth'
+  ZeroNorth = 'Security'
 }
