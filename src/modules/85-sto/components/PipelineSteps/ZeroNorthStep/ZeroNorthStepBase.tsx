@@ -116,9 +116,8 @@ export const ZeroNorthStepBase = (
               stepViewType={stepViewType}
               readonly={readonly}
               enableFields={{
-                'spec.privileged': { shouldHide: buildInfrastructureType === 'VM' },
-                'spec.settings': {},
-                'spec.reportPaths': {}
+                'spec.settings': {}
+                // 'spec.reportPaths': {}
               }}
               allowableTypes={allowableTypes}
             />
