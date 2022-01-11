@@ -8,7 +8,6 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import {
   Text,
-  Link,
   Layout,
   Color,
   Icon,
@@ -30,7 +29,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import ReactTimeago from 'react-timeago'
 import classNames from 'classnames'
 import { pick } from 'lodash-es'
-import { String, useStrings, StringKeys } from 'framework/strings'
+import { useStrings } from 'framework/strings'
 import {
   ConnectorResponse,
   useDeleteConnector,
@@ -43,8 +42,8 @@ import {
 } from 'services/cd-ng'
 
 import { StepIndex, STEP } from '@connectors/common/VerifyOutOfClusterDelegate/VerifyOutOfClusterDelegate'
-import { StepDetails, CredTypeValues } from '@connectors/interfaces/ConnectorInterface'
-import { ConnectorStatus, Connectors } from '@connectors/constants'
+import type { StepDetails } from '@connectors/interfaces/ConnectorInterface'
+import { ConnectorStatus } from '@connectors/constants'
 import type { UseCreateConnectorModalReturn } from '@connectors/modals/ConnectorModal/useCreateConnectorModal'
 import useTestConnectionErrorModal from '@connectors/common/useTestConnectionErrorModal/useTestConnectionErrorModal'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
@@ -53,12 +52,8 @@ import { usePermission } from '@rbac/hooks/usePermission'
 import type { PipelineType, ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import routes from '@common/RouteDefinitions'
-import {
-  getIconByType,
-  GetTestConnectionValidationTextByType,
-  DelegateTypes,
-  isSMConnector
-} from '../utils/ConnectorUtils'
+import { getIconByType, GetTestConnectionValidationTextByType, isSMConnector } from '../utils/ConnectorUtils'
+import { getConnectorDisplaySummary } from '../utils/ConnectorListViewUtils'
 import css from './ConnectorsListView.module.scss'
 
 interface ConnectorListViewProps {
@@ -73,130 +68,6 @@ type CustomColumn = Column<ConnectorResponse> & {
 }
 
 export type ErrorMessage = ConnectorValidationResult & { useErrorHandler?: boolean }
-
-const linkRenderer = (value: string): JSX.Element =>
-  value ? (
-    <Link
-      margin={{ left: 'xsmall' }}
-      className={css.link}
-      href={value}
-      onClick={e => e.stopPropagation()}
-      target="_blank"
-      title={value}
-    >
-      {value}
-    </Link>
-  ) : (
-    <></>
-  )
-
-const textRenderer = (value: string): JSX.Element =>
-  value ? (
-    <Text inline margin={{ left: 'xsmall' }} color={Color.BLACK}>
-      {value}
-    </Text>
-  ) : (
-    <></>
-  )
-
-const getConnectorDisplaySummaryLabel = (titleStringId: StringKeys, Element: JSX.Element): JSX.Element | string => {
-  return (
-    <div className={classNames(css.name, css.flex)}>
-      {titleStringId ? (
-        <Text inline color={Color.BLACK}>
-          <String stringID={titleStringId} />:
-        </Text>
-      ) : null}
-      {Element}
-    </div>
-  )
-}
-
-const displayDelegatesTagsSummary = (delegateSelectors: []): JSX.Element => {
-  return (
-    <div className={classNames(css.name)}>
-      <Text inline color={Color.BLACK}>
-        <String stringID={'delegate.delegateTags'} />:
-      </Text>
-      <Text inline margin={{ left: 'xsmall' }} color={Color.GREY_400}>
-        {delegateSelectors?.join?.(', ')}
-      </Text>
-    </div>
-  )
-}
-
-const getAWSDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER ||
-    connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER_IRSA
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel(
-        'connectors.aws.accessKey',
-        textRenderer(connector?.spec?.credential?.spec?.accessKeyRef || connector?.spec?.credential?.spec?.accessKey)
-      )
-}
-
-const getGCPDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel(
-        'encryptedKeyLabel',
-        textRenderer(connector?.spec?.credential?.spec?.secretKeyRef)
-      )
-}
-
-const getK8DisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.credential?.spec?.masterUrl))
-}
-
-const getAWSSecretManagerSummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type !== CredTypeValues.ManualConfig
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel(
-        'connectors.aws.accessKey',
-        textRenderer(connector?.spec?.credential?.spec?.accessKey)
-      )
-}
-
-const getConnectorDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  switch (connector?.type) {
-    case Connectors.KUBERNETES_CLUSTER:
-      return getK8DisplaySummary(connector)
-    case Connectors.HttpHelmRepo:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.helmRepoUrl))
-    case Connectors.Jira:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.jiraUrl))
-    case Connectors.SERVICE_NOW:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.serviceNowUrl))
-    case Connectors.GIT:
-    case Connectors.GITHUB:
-    case Connectors.GITLAB:
-    case Connectors.BITBUCKET:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.url))
-    case Connectors.DOCKER:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.dockerRegistryUrl))
-    case Connectors.NEXUS:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.nexusServerUrl))
-    case Connectors.ARTIFACTORY:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.artifactoryServerUrl))
-    case Connectors.AWS:
-      return getAWSDisplaySummary(connector)
-    case Connectors.GCP:
-      return getGCPDisplaySummary(connector)
-    case Connectors.NEW_RELIC:
-    case Connectors.DATADOG:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.url))
-    case Connectors.APP_DYNAMICS:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.controllerUrl))
-    case Connectors.SPLUNK:
-      return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.splunkUrl))
-    case Connectors.AWS_SECRET_MANAGER:
-      return getAWSSecretManagerSummary(connector)
-    default:
-      return ''
-  }
-}
 
 export const RenderColumnConnector: Renderer<CellProps<ConnectorResponse>> = ({ row }) => {
   const data = row.original
