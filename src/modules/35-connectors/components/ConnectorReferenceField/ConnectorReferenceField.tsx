@@ -62,6 +62,7 @@ import { DATE_WITHOUT_TIME_FORMAT } from '@common/utils/StringUtils'
 import { getReadableDateTime } from '@common/utils/dateUtils'
 import { Connectors } from '@connectors/constants'
 import { LinkifyText } from '@common/components/LinkifyText/LinkifyText'
+import RbacButton from '@rbac/components/Button/Button'
 import ConnectorsEmptyState from './connectors-no-data.png'
 import css from './ConnectorReferenceField.module.scss'
 
@@ -317,17 +318,7 @@ const CollapseRecordRender: React.FC<RecordRenderProps> = props => {
 
 const RecordRender: React.FC<RecordRenderProps> = props => {
   const { item, resourceScope, openConnectorModal, type, checked, getString } = props
-  const [canUpdate] = usePermission(
-    {
-      resource: {
-        resourceType: ResourceType.CONNECTOR,
-        resourceIdentifier: item.identifier || ''
-      },
-      permissions: [PermissionIdentifier.UPDATE_CONNECTOR],
-      resourceScope
-    },
-    []
-  )
+
   return (
     <Layout.Horizontal margin={{ left: 'small' }} flex={{ distribution: 'space-between' }} className={css.item}>
       <Layout.Horizontal spacing="medium" className={css.leftInfo}>
@@ -382,13 +373,11 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
           color={item.record.status?.status === 'SUCCESS' ? Color.GREEN_500 : Color.RED_500}
         />
 
-        {canUpdate && !item.record.harnessManaged ? (
-          <Button
-            variation={ButtonVariation.ICON}
-            iconProps={{ color: Color.GREY_600 }}
-            intent="none"
-            icon="Edit"
+        {!item.record.harnessManaged ? (
+          <RbacButton
+            minimal
             className={css.editBtn}
+            data-testid={`${name}-edit`}
             onClick={e => {
               e.stopPropagation()
               openConnectorModal(true, item.record?.type || type, {
@@ -396,6 +385,15 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
                 gitDetails: { ...item.record?.gitDetails, getDefaultFromOtherRepo: false }
               })
             }}
+            permission={{
+              permission: PermissionIdentifier.UPDATE_CONNECTOR,
+              resource: {
+                resourceType: ResourceType.CONNECTOR,
+                resourceIdentifier: item.identifier
+              },
+              resourceScope
+            }}
+            text={<Icon size={16} name={'Edit'} color={Color.GREY_600} />}
           />
         ) : (
           <></>
@@ -653,7 +651,7 @@ export const ConnectorReferenceField: React.FC<ConnectorReferenceFieldProps> = p
     } else {
       setSelectedValue(selected)
     }
-  }, [selected])
+  }, [selected, refetch])
 
   React.useEffect(() => {
     if (
@@ -785,6 +783,7 @@ export const ConnectorReferenceField: React.FC<ConnectorReferenceFieldProps> = p
           pageIndex: page || 0,
           gotoPage: pageIndex => setPage(pageIndex)
         }}
+        disableCollapse={!(type === 'Github')}
       />
     </FormGroup>
   )

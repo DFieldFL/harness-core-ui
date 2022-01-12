@@ -1,10 +1,13 @@
 import React from 'react'
 
 import cx from 'classnames'
-import type { Scope } from '@common/interfaces/SecretsInterface'
+
 import type { IconProps } from '@wings-software/uicore/dist/icons/Icon'
 import { Collapse, Pagination, PaginationProps } from '@wings-software/uicore'
+import type { Scope } from '@common/interfaces/SecretsInterface'
+
 import type { EntityReferenceResponse } from '../EntityReference/EntityReference'
+
 import css from './CollapsableList.module.scss'
 
 export interface CollapsableTableProps<T> {
@@ -19,9 +22,11 @@ export interface CollapsableTableProps<T> {
   }) => JSX.Element
   pagination: PaginationProps
   selectedScope: Scope
+  disableCollapse?: boolean
 }
 
 export function CollapsableList<T>(props: CollapsableTableProps<T>): JSX.Element {
+  const { disableCollapse = false } = props
   return (
     <>
       <div className={cx(css.referenceList, { [css.referenceListOverflow]: props.data.length > 5 })}>
@@ -35,7 +40,7 @@ export function CollapsableList<T>(props: CollapsableTableProps<T>): JSX.Element
             collapseClassName={cx(css.collapseWrapper, {
               [css.selectedItem]: props.selectedRecord === item.record
             })}
-            collapseHeaderClassName={css.collapseHeader}
+            collapseHeaderClassName={cx(css.collapseHeader, { [css.hideCollapseIcon]: disableCollapse })}
             heading={
               <div
                 onClick={e => {

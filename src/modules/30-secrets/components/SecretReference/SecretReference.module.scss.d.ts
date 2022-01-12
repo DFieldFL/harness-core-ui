@@ -8,6 +8,9 @@
 // this is an auto-generated file, do not update this manually
 declare const styles: {
   readonly createSecretsBtnLayout: string
+  readonly item: string
+  readonly editBtn: string
+  readonly leftInfo: string
   readonly iconCheck: string
   readonly iconChecked: string
   readonly item: string

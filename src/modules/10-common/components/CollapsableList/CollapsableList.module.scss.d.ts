@@ -7,6 +7,7 @@ declare const styles: {
   readonly collapeTitle: string
   readonly collapseHeader: string
   readonly collapeHeaderContent: string
+  readonly hideCollapseIcon: string
   readonly collapseWrapper: string
   readonly referenceListOverflow: string
 }

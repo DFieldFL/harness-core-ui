@@ -29,11 +29,20 @@
     padding-left: 15px !important;
     padding-bottom: var(--spacing-small) !important;
     box-shadow: 0px 0px 1px rgb(40 41 61 / 4%), 0px 2px 4px rgb(96 97 112 / 16%);
+
     [class*='CollapseHeader--leftSection'] {
       width: 100%;
     }
     .collapeHeaderContent {
       width: 100%;
+    }
+  }
+
+  .hideCollapseIcon {
+    [class*='CollapseHeader--leftSection'] {
+      > span {
+        display: none;
+      }
     }
   }
   .collapseWrapper {

@@ -24,8 +24,11 @@ import { EntityReferenceResponse, getScopeFromDTO } from '@common/components/Ent
 import { Scope } from '@common/interfaces/SecretsInterface'
 import { useStrings } from 'framework/strings'
 import useCreateUpdateSecretModal from '@secrets/modals/CreateSecretModal/useCreateUpdateSecretModal'
+import { ResourceType } from '@rbac/interfaces/ResourceType'
+import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
+import RbacButton from '@rbac/components/Button/Button'
 import SecretEmptyState from '../../pages/secrets/secrets-empty-state.png'
-import type { SecretFormData } from '../CreateUpdateSecret/CreateUpdateSecret'
+import type { SecretFormData, SecretIdentifiers } from '../CreateUpdateSecret/CreateUpdateSecret'
 import css from './SecretReference.module.scss'
 
 const CustomSelect = Select.ofType<SelectOption>()
@@ -211,7 +214,7 @@ const SecretReference: React.FC<SecretReferenceProps> = props => {
           containerClassName: css.noDataCardContainerSecret,
           className: css.noDataCardContainerSecret
         }}
-        recordClassName={css.listItem}
+        // recordClassName={css.listItem}
         fetchRecords={(page = 0, scope, search, done) => {
           const selectedType = type || (secretType?.value as SecretDTOV2['type'])
           fetchRecords(
@@ -241,39 +244,75 @@ const SecretReference: React.FC<SecretReferenceProps> = props => {
           pageIndex: pageNo || 0,
           gotoPage: pageIndex => setPageNo(pageIndex)
         }}
-        recordRender={({ item, selected }) => (
-          <>
-            <Layout.Horizontal className={css.item} flex={{ alignItems: 'center', justifyContent: 'space-between' }}>
-              <Layout.Horizontal flex={{ alignItems: 'center' }}>
-                {item.record.type === 'SecretText' || item.record.type === 'SecretFile' ? (
+        disableCollapse={true}
+        recordRender={({ item, selectedScope, selected }) => {
+          return (
+            <>
+              <Layout.Horizontal className={css.item} flex={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                <Layout.Horizontal spacing="medium" className={css.leftInfo}>
                   <Icon
-                    name={item.record.type === 'SecretText' ? 'text' : 'file'}
-                    size={24}
-                    className={css.secretIcon}
+                    className={cx(css.iconCheck, { [css.iconChecked]: selected })}
+                    size={12}
+                    name="pipeline-approval"
                   />
-                ) : null}
-                <Layout.Vertical>
-                  <Text lineClamp={1} font={{ weight: 'bold' }} color={Color.BLACK}>
-                    {item.record.name}
-                  </Text>
-                  {item.record.type === 'SecretText' || item.record.type === 'SecretFile' ? (
-                    <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
-                      {`${getString('common.ID')}: ${item.identifier}.${
-                        (item.record.spec as SecretTextSpecDTO).secretManagerIdentifier
-                      }`}
-                    </Text>
-                  ) : null}
-                  {item.record.type === 'SSHKey' ? (
-                    <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
-                      {`${getString('common.ID')}: ${item.identifier}`}
-                    </Text>
-                  ) : null}
-                </Layout.Vertical>
+                  <Layout.Horizontal flex={{ alignItems: 'center' }}>
+                    {item.record.type === 'SecretText' || item.record.type === 'SecretFile' ? (
+                      <Icon
+                        name={item.record.type === 'SecretText' ? 'text' : 'file'}
+                        size={24}
+                        // className={css.secretIcon}
+                      />
+                    ) : null}
+                    <Layout.Vertical padding={{ left: 'small' }}>
+                      <Text lineClamp={1} font={{ weight: 'bold' }} color={Color.BLACK}>
+                        {item.record.name}
+                      </Text>
+                      {item.record.type === 'SecretText' || item.record.type === 'SecretFile' ? (
+                        <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
+                          {`${getString('common.ID')}: ${item.identifier}.${
+                            (item.record.spec as SecretTextSpecDTO).secretManagerIdentifier
+                          }`}
+                        </Text>
+                      ) : null}
+                      {item.record.type === 'SSHKey' ? (
+                        <Text lineClamp={1} font={{ size: 'small', weight: 'light' }} color={Color.GREY_600}>
+                          {`${getString('common.ID')}: ${item.identifier}`}
+                        </Text>
+                      ) : null}
+                    </Layout.Vertical>
+                  </Layout.Horizontal>
+                </Layout.Horizontal>
+
+                <RbacButton
+                  minimal
+                  className={css.editBtn}
+                  data-testid={`${name}-edit`}
+                  onClick={() =>
+                    openCreateSecretModal(item.record.type, {
+                      identifier: item.identifier,
+                      projectIdentifier: item.record.projectIdentifier,
+                      orgIdentifier: item.record.orgIdentifier
+                    } as SecretIdentifiers)
+                  }
+                  permission={{
+                    permission: PermissionIdentifier.UPDATE_SECRET,
+                    resource: {
+                      resourceType: ResourceType.SECRET,
+                      resourceIdentifier: item.identifier
+                    },
+                    resourceScope: {
+                      accountIdentifier,
+                      orgIdentifier:
+                        selectedScope === Scope.ORG || selectedScope === Scope.PROJECT ? orgIdentifier : undefined,
+                      projectIdentifier: selectedScope === Scope.PROJECT ? projectIdentifier : undefined
+                    }
+                  }}
+                  text={<Icon size={16} name={'Edit'} color={Color.GREY_600} />}
+                />
               </Layout.Horizontal>
-              <Icon className={cx(css.iconCheck, { [css.iconChecked]: selected })} name="pipeline-approval" />
-            </Layout.Horizontal>
-          </>
-        )}
+            </>
+          )
+        }}
       />
     </Container>
   )
