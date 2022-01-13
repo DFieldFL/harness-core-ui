@@ -33,7 +33,7 @@
     padding-top: 10px !important;
     > svg {
       > path {
-        stroke: var(--primary-6);
+        stroke: var(--primary-7);
       }
     }
   }
@@ -70,6 +70,9 @@
   align-items: center;
   display: flex;
   align-content: center;
+  > svg {
+    margin: auto;
+  }
 
   /* for increased specificity */
   &.red-status:global(.bp3-icon) {
@@ -136,6 +139,7 @@
     grid-column-gap: 15px;
     .gitUrlStyle {
       width: 300px;
+      font-size: var(--font-size-small);
       max-width: 300px;
       overflow: hidden;
       white-space: nowrap;

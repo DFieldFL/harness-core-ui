@@ -293,7 +293,7 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
         </Tabs>
       </div>
 
-      <Layout.Horizontal spacing="medium" padding={{ top: 'small', bottom: 'small' }}>
+      <Layout.Horizontal spacing="medium" padding={{ top: 'medium' }}>
         <Button
           variation={ButtonVariation.PRIMARY}
           text={getString('entityReference.apply')}

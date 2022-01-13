@@ -216,7 +216,9 @@ const RenderGitHubDetails: React.FC<RecordRenderProps> = props => {
         </Text>
       </Container>
       <Layout.Vertical className={css.gitUrl} width={'300px'}>
-        <Text>{getString('common.gitDetailsTitle')}</Text>
+        <Text color={Color.GREY_500} font={{ variation: FontVariation.SMALL }}>
+          {getString('common.gitDetailsTitle')}
+        </Text>
 
         <LinkifyText
           content={item.record.spec.url}
@@ -322,7 +324,7 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
   return (
     <Layout.Horizontal margin={{ left: 'small' }} flex={{ distribution: 'space-between' }} className={css.item}>
       <Layout.Horizontal spacing="medium" className={css.leftInfo}>
-        <Icon className={cx(css.iconCheck, { [css.iconChecked]: checked })} size={12} name="pipeline-approval" />
+        <Icon className={cx(css.iconCheck, { [css.iconChecked]: checked })} size={14} name="pipeline-approval" />
         <Icon name={getIconByType(item.record.type)} size={30}></Icon>
         <div className={css.connectorNameId}>
           <Text lineClamp={1} font={{ weight: 'bold' }} color={Color.BLACK}>

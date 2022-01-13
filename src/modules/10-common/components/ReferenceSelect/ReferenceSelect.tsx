@@ -13,7 +13,6 @@ import {
   MultiTypeInputValue,
   Layout,
   Text,
-  Color,
   FixedTypeComponentProps,
   MultiTypeInputType,
   ButtonVariation,
@@ -21,10 +20,8 @@ import {
 } from '@wings-software/uicore'
 import { Classes, Dialog } from '@blueprintjs/core'
 import cx from 'classnames'
-import { useParams } from 'react-router-dom'
 import type { Scope } from '@common/interfaces/SecretsInterface'
 import { useStrings } from 'framework/strings'
-import type { ProjectPathProps, SecretsPathProps, ModulePathParams } from '@common/interfaces/RouteInterfaces'
 import { EntityReferenceProps, EntityReference } from '../EntityReference/EntityReference'
 import css from './ReferenceSelect.module.scss'
 export interface MinimalObject {
@@ -50,37 +47,28 @@ export interface ReferenceSelectProps<T extends MinimalObject>
   placeholder: string
   selectAnReferenceLabel: string
   selected?: Item
-  // createNewLabel?: string
-  // createNewHandler?: () => void
+  createNewLabel?: string
+  createNewHandler?: () => void
   hideModal?: boolean
   selectedRenderer?: JSX.Element
   editRenderer?: JSX.Element
   width?: number
-  // isNewConnectorLabelVisible?: boolean
+  isNewConnectorLabelVisible?: boolean
   onChange: (record: T, scope: Scope) => void
   disabled?: boolean
-  // componentName?: string
+  componentName?: string
 }
 
 export const ReferenceSelectDialogTitle = (props: ReferenceSelectDialogTitleProps): JSX.Element => {
   const { getString } = useStrings()
   const { componentName, createNewHandler, createNewLabel, isNewConnectorLabelVisible } = props
-  const { projectIdentifier, orgIdentifier } = useParams<ProjectPathProps & SecretsPathProps & ModulePathParams>()
-  const projectScopeTitle = projectIdentifier ? `${getString('projectsText')} / ` : ''
-  const orgScopeTitle = orgIdentifier ? `${getString('orgsText')} / ` : ''
-  const scopes = `${projectScopeTitle}${orgScopeTitle}${getString('account')}`
   return (
     <Layout.Horizontal flex={{ distribution: 'space-between' }}>
-      <Layout.Vertical spacing="xsmall" padding={{ top: 'xlarge', left: 'large', right: 'large' }}>
+      <Layout.Vertical spacing="xsmall">
         <Text font={{ variation: FontVariation.H4 }}>
           {getString('common.entityReferenceTitle', {
-            componentName
+            compName: componentName
           })}
-        </Text>
-        <Text font={{ variation: FontVariation.SMALL }} color={Color.GREY_350}>
-          {`${getString('common.entityReferenceSubTitle', {
-            componentName
-          })} (${scopes})`}
         </Text>
       </Layout.Vertical>
 
@@ -93,6 +81,7 @@ export const ReferenceSelectDialogTitle = (props: ReferenceSelectDialogTitleProp
                 props.createNewHandler?.()
               }}
               text={`+ ${createNewLabel}`}
+              margin={{ right: 'small' }}
             ></Button>
           </Layout.Horizontal>
         </>
