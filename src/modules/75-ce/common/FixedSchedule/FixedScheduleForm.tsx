@@ -285,7 +285,13 @@ const PeriodSelection = ({ formikProps }: PeriodSelectionProps) => {
           )}
         </div>
       </Layout.Horizontal>
-      <Checkbox name={'neverEnds'} label={'Never ends'} checked={neverEnds} onChange={handleNeverEndsChange} />
+      <Checkbox
+        name={'neverEnds'}
+        label={'Never ends'}
+        checked={neverEnds}
+        onChange={handleNeverEndsChange}
+        style={{ width: '20%' }}
+      />
     </Container>
   )
 }
