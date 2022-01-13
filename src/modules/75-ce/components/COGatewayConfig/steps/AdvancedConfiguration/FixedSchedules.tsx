@@ -50,7 +50,7 @@ const FixedSchedules: React.FC<FixedSchedulesProps> = props => {
   const { openEditor } = useFixedScheduleEditor({
     schedule: selectedSchedule,
     addSchedule: handleScheduleAddition,
-    allCreatedSchedules: props.schedules
+    allCreatedSchedules: props.schedules?.filter(s => !s.isDeleted)
   })
 
   const addFixedSchedule = () => {
