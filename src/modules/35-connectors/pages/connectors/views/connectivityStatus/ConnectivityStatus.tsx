@@ -26,6 +26,7 @@ import { StepIndex, STEP } from '@connectors/common/VerifyOutOfClusterDelegate/V
 import type { StepDetails } from '@connectors/interfaces/ConnectorInterface'
 import { ConnectorStatus } from '@connectors/constants'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
+import useTestConnectionErrorModal from '@connectors/common/useTestConnectionErrorModal/useTestConnectionErrorModal'
 import { GetTestConnectionValidationTextByType } from '../../utils/ConnectorUtils'
 import css from '../ConnectorsListView.module.scss'
 
@@ -49,6 +50,8 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
     intent: Intent.WARNING,
     status: 'PROCESS' // Replace when enum is added in uikit
   })
+
+  const { openErrorModal } = useTestConnectionErrorModal({})
 
   const { mutate: reloadTestConnection } = useGetTestConnectionResult({
     identifier: data.connector?.identifier || '',
@@ -138,13 +141,39 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
   const connectorStatus = status || data.status?.status
   const isStatusSuccess = connectorStatus === ConnectorStatus.SUCCESS
 
+  const renderTooltip = () => {
+    return errorMessage?.errorSummary || data?.status?.errorSummary ? (
+      <Layout.Vertical font={{ size: 'small' }} spacing="small" padding="small">
+        <Text font={{ size: 'small' }} color={Color.WHITE}>
+          {errorMessage?.errorSummary || data.status?.errorSummary}
+        </Text>
+        {errorMessage?.errors || data?.status?.errors ? (
+          <Text
+            color={Color.BLUE_400}
+            onClick={e => {
+              e.stopPropagation()
+              openErrorModal((errorMessage as ErrorMessage) || data?.status)
+            }}
+            className={css.viewDetails}
+          >
+            {getString('connectors.testConnectionStep.errorDetails')}
+          </Text>
+        ) : null}
+      </Layout.Vertical>
+    ) : (
+      <Text padding="small" color={Color.WHITE}>
+        {getString('noDetails')}
+      </Text>
+    )
+  }
+
   return (
     <Layout.Horizontal>
       {!testing ? (
         <>
           <Layout.Vertical width="100px">
             <Layout.Horizontal spacing="small">
-              {errorMessage
+              {connectorStatus || errorMessage
                 ? isStatusSuccess
                   ? renderStatusText(
                       'full-circle',
@@ -155,7 +184,7 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
                   : renderStatusText(
                       'warning-sign',
                       { size: 12, color: Color.RED_500 },
-                      '',
+                      renderTooltip(),
                       getString('failed').toLowerCase()
                     )
                 : undefined}
