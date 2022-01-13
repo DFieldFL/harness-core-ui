@@ -57,7 +57,6 @@ export function CollapsableList<T>(props: CollapsableTableProps<T>): JSX.Element
                 })}
               </div>
             }
-            enableIconClick={true}
           >
             {props.collapsedRecordRender?.({
               item,
