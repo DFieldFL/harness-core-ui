@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import cx from 'classnames'
 import {
   Container,
@@ -149,7 +149,7 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
 
   const delayedFetchRecords = useRef(debounce((fn: () => void) => fn(), 300)).current
 
-  const fetchData = useCallback(() => {
+  const fetchData = (searchTearmChange: boolean) => {
     try {
       setError(null)
       if (!searchTerm) {
@@ -159,9 +159,9 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
           setLoading(false)
         })
       } else {
-        // if (props.pagination.pageIndex !== 0) {
-        //   props.pagination.gotoPage?.(0)
-        // }
+        if (searchTearmChange && props.pagination.pageIndex !== 0) {
+          props.pagination.gotoPage?.(0)
+        }
         delayedFetchRecords(() => {
           setLoading(true)
           setSelectedRecord(undefined)
@@ -174,11 +174,15 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
     } catch (msg) {
       setError(msg)
     }
-  }, [props.pagination.pageIndex, selectedScope, delayedFetchRecords, searchTerm, searchInlineComponent])
+  }
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    fetchData(true)
+  }, [selectedScope, delayedFetchRecords, searchTerm, searchInlineComponent])
+
+  useEffect(() => {
+    fetchData(false)
+  }, [props.pagination.pageIndex])
 
   const onScopeChange = (scope: Scope): void => {
     setSelectedRecord(undefined)
@@ -217,7 +221,7 @@ export function EntityReference<T>(props: EntityReferenceProps<T>): JSX.Element 
           </Container>
         ) : error ? (
           <Container>
-            <PageError message={error} onClick={fetchData} />
+            <PageError message={error} onClick={() => fetchData(true)} />
           </Container>
         ) : data.length ? (
           <CollapsableList<T>
