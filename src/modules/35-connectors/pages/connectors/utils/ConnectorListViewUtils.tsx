@@ -8,14 +8,16 @@ import { CredTypeValues } from '@connectors/interfaces/ConnectorInterface'
 import { DelegateTypes } from './ConnectorUtils'
 import css from '../views/ConnectorsListView.module.scss'
 
-const textRenderer = (value: string): JSX.Element =>
-  value ? (
+const textRenderer = (value: string): JSX.Element => {
+  if (!value) {
+    return <></>
+  }
+  return (
     <Text inline margin={{ left: 'xsmall' }} color={Color.BLACK}>
       {value}
     </Text>
-  ) : (
-    <></>
   )
+}
 
 const getAWSDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
   return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER ||
@@ -27,8 +29,11 @@ const getAWSDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string
       )
 }
 
-const linkRenderer = (value: string): JSX.Element =>
-  value ? (
+const linkRenderer = (value: string): JSX.Element => {
+  if (!value) {
+    return <></>
+  }
+  return (
     <Link
       margin={{ left: 'xsmall' }}
       className={css.link}
@@ -39,9 +44,8 @@ const linkRenderer = (value: string): JSX.Element =>
     >
       {value}
     </Link>
-  ) : (
-    <></>
   )
+}
 
 const getGCPDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
   return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER
@@ -79,18 +83,20 @@ const displayDelegatesTagsSummary = (delegateSelectors: []): JSX.Element => {
 }
 
 const getK8DisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.credential?.spec?.masterUrl))
+  if (connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER) {
+    return displayDelegatesTagsSummary(connector.spec.delegateSelectors)
+  }
+  return getConnectorDisplaySummaryLabel('UrlLabel', linkRenderer(connector?.spec?.credential?.spec?.masterUrl))
 }
 
 const getAWSSecretManagerSummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type !== CredTypeValues.ManualConfig
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel(
-        'connectors.aws.accessKey',
-        textRenderer(connector?.spec?.credential?.spec?.accessKey)
-      )
+  if (connector?.spec?.credential?.type !== CredTypeValues.ManualConfig) {
+    return displayDelegatesTagsSummary(connector.spec.delegateSelectors)
+  }
+  return getConnectorDisplaySummaryLabel(
+    'connectors.aws.accessKey',
+    textRenderer(connector?.spec?.credential?.spec?.accessKey)
+  )
 }
 
 export const getConnectorDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
