@@ -6,17 +6,7 @@
  */
 
 import React, { useState } from 'react'
-import {
-  Icon,
-  SelectOption,
-  Text,
-  Button,
-  Container,
-  Layout,
-  ButtonVariation,
-  Color,
-  FontVariation
-} from '@wings-software/uicore'
+import { Icon, SelectOption, Text, Button, Container, Layout, Color } from '@wings-software/uicore'
 import { Select } from '@blueprintjs/select'
 import { MenuItem } from '@blueprintjs/core'
 import cx from 'classnames'
@@ -120,16 +110,7 @@ const fetchRecords = (
 }
 
 const SecretReference: React.FC<SecretReferenceProps> = props => {
-  const {
-    defaultScope,
-    accountIdentifier,
-    projectIdentifier,
-    orgIdentifier,
-    type,
-    mock,
-    connectorTypeContext,
-    handleInlineSSHSecretCreation
-  } = props
+  const { defaultScope, accountIdentifier, projectIdentifier, orgIdentifier, type, mock, connectorTypeContext } = props
   const { getString } = useStrings()
   const [pagedSecretData, setPagedSecretData] = useState<ResponsePageSecretResponseWrapper>({})
   const [pageNo, setPageNo] = useState(0)
@@ -184,39 +165,6 @@ const SecretReference: React.FC<SecretReferenceProps> = props => {
   )
   return (
     <Container className={css.secretRefContainer}>
-      <Layout.Horizontal flex={{ distribution: 'space-between' }} margin={{ bottom: 'large', right: 'xsmall' }}>
-        <Text font={{ variation: FontVariation.H4 }}>
-          {getString('common.entityReferenceTitle', {
-            compName: getString('secretType')
-          })}
-        </Text>
-        {type !== 'SSHKey' && (
-          <Button
-            text={
-              type === 'SecretText' || secretType.value === 'SecretText'
-                ? getString('secrets.secret.newSecretText')
-                : getString('secrets.secret.newSecretFile')
-            }
-            icon="plus"
-            onClick={() =>
-              openCreateSecretModal(
-                type === 'SecretText' || secretType.value === 'SecretText' ? 'SecretText' : 'SecretFile'
-              )
-            }
-            variation={ButtonVariation.SECONDARY}
-            margin={{ right: 'large' }}
-          />
-        )}
-        {type === 'SSHKey' && handleInlineSSHSecretCreation && (
-          <Button
-            text={getString('secrets.secret.newSSHCredential')}
-            icon="plus"
-            onClick={handleInlineSSHSecretCreation}
-            variation={ButtonVariation.SECONDARY}
-            margin={{ right: 'large' }}
-          />
-        )}
-      </Layout.Horizontal>
       <EntityReference<SecretRef>
         onSelect={(secret, scope) => {
           secret.scope = scope

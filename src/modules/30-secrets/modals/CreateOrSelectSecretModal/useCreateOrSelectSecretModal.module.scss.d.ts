@@ -7,6 +7,8 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
+  readonly createSelectSecret: string
+  readonly dialog: string
   readonly crossIcon: string
   readonly dialog: string
 }

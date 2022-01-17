@@ -61,7 +61,7 @@ export interface ReferenceSelectProps<T extends MinimalObject>
 
 export const ReferenceSelectDialogTitle = (props: ReferenceSelectDialogTitleProps): JSX.Element => {
   const { getString } = useStrings()
-  const { componentName, createNewHandler, createNewLabel, isNewConnectorLabelVisible } = props
+  const { componentName, createNewHandler, createNewLabel } = props
   return (
     <Layout.Horizontal flex={{ distribution: 'space-between' }}>
       <Layout.Vertical spacing="xsmall">
@@ -72,7 +72,8 @@ export const ReferenceSelectDialogTitle = (props: ReferenceSelectDialogTitleProp
         </Text>
       </Layout.Vertical>
 
-      {createNewLabel && createNewHandler && isNewConnectorLabelVisible && (
+      {createNewLabel && createNewHandler && (
+        // && isNewConnectorLabelVisible
         <>
           <Layout.Horizontal className={Classes.POPOVER_DISMISS}>
             <Button
