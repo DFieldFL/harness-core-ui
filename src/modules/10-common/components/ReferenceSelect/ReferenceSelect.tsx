@@ -149,16 +149,6 @@ export function ReferenceSelect<T extends MinimalObject>(props: ReferenceSelectP
         })}
       >
         <div className={cx(css.contentContainer)}>
-          {/* <Layout.Horizontal
-            flex={{ justifyContent: 'space-between' }}
-            style={{
-              borderBottom: '1px solid var(--grey-200)',
-              paddingTop: 'var(--spacing-xsmall)',
-              paddingBottom: 'var(--spacing-medium)'
-            }}
-          >
-            {editRenderer && selected && selected.value && <Layout.Horizontal>{editRenderer}</Layout.Horizontal>}
-          </Layout.Horizontal> */}
           <EntityReference<T>
             {...referenceProps}
             onSelect={(record, scope) => {

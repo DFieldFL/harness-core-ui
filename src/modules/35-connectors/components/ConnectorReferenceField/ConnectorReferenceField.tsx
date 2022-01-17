@@ -202,8 +202,7 @@ const RenderGitHubDetails: React.FC<RecordRenderProps> = props => {
     <Container width={'calc(100% - 150px)'} className={css.gitHubConnectorDetails}>
       <Container>
         <Text color={Color.GREY_500} font={{ variation: FontVariation.SMALL }}>
-          {/* {getString('connector.connectivityMode.title')} */}
-          Connectivity Mode
+          {getString('connectors.connectivityMode.title')}
         </Text>
         <Text
           icon={item.record.spec.executeOnDelegate === false ? 'harness-with-color' : 'delegates-icon'}
@@ -354,7 +353,6 @@ const RecordRender: React.FC<RecordRenderProps> = props => {
             >
               {item.record.gitDetails.repoIdentifier}
             </Text>
-            {/* <div className={css.verticalBar}></div> */}
             <Text
               lineClamp={1}
               font={{ size: 'small', weight: 'light' }}

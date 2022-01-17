@@ -9,6 +9,5 @@ declare const styles: {
   readonly collapeHeaderContent: string
   readonly hideCollapseIcon: string
   readonly collapseWrapper: string
-  readonly referenceListOverflow: string
 }
 export default styles

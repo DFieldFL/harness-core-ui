@@ -29,7 +29,7 @@ export function CollapsableList<T>(props: CollapsableTableProps<T>): JSX.Element
   const { disableCollapse = false } = props
   return (
     <>
-      <div className={cx(css.referenceList, { [css.referenceListOverflow]: props.data.length > 5 })}>
+      <div className={css.referenceList}>
         {props.data.map((item: EntityReferenceResponse<T>) => (
           <Collapse
             key={item.identifier}
@@ -52,7 +52,7 @@ export function CollapsableList<T>(props: CollapsableTableProps<T>): JSX.Element
               >
                 {props.recordRender({
                   item,
-                  selectedScope: props.selectedScope as any,
+                  selectedScope: props.selectedScope,
                   selected: props.selectedRecord === item.record
                 })}
               </div>
@@ -60,7 +60,7 @@ export function CollapsableList<T>(props: CollapsableTableProps<T>): JSX.Element
           >
             {props.collapsedRecordRender?.({
               item,
-              selectedScope: props.selectedScope as any,
+              selectedScope: props.selectedScope,
               selected: props.selectedRecord === item.record
             })}
           </Collapse>

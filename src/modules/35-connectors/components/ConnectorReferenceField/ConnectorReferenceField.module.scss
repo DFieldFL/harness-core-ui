@@ -19,6 +19,7 @@
     visibility: hidden;
     margin-right: var(--spacing-xsmall);
     cursor: pointer;
+    align-self: center;
 
     > svg {
       > path {
@@ -30,7 +31,6 @@
 
   .iconChecked {
     visibility: visible !important;
-    padding-top: 10px !important;
     > svg {
       > path {
         stroke: var(--primary-7);
@@ -45,7 +45,6 @@
     }
     .iconCheck {
       visibility: visible;
-      padding-top: 10px;
     }
   }
 }
@@ -125,7 +124,7 @@
   background: var(--grey-100) !important;
   border-radius: 8px !important;
   .gitBranchIcon {
-    padding-left: 10px !important;
+    padding-left: var(--spacing-small) !important;
     border-left: 1px var(--grey-600) solid;
   }
 }

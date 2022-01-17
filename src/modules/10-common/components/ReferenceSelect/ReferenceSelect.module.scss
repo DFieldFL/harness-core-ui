@@ -53,7 +53,7 @@
   }
 }
 .contentContainer {
-  margin-top: 10px;
+  margin-top: var(--spacing-small);
 
   .closeButton {
     position: absolute;
