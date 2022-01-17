@@ -46,9 +46,6 @@ describe('CreateOrSelectSecret', () => {
     )
 
     await waitFor(() => {
-      expect(getByText('secrets.secret.newSecretText')).toBeDefined()
-    })
-    await waitFor(() => {
       expect(getByText('demo-1')).toBeDefined()
     })
     expect(container).toMatchSnapshot()
