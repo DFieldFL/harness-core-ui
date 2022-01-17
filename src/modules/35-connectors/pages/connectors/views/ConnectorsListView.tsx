@@ -254,7 +254,7 @@ const RenderColumnMenu: Renderer<CellProps<ConnectorResponse>> = ({ row, column 
           })
 
           if (deleted) {
-            showSuccess(`Connector ${data.connector?.name} deleted`)
+            showSuccess(getString('connectors.deletedSuccssMessage', { name: data.connector?.name }))
           }
           ;(column as any).reload?.()
         } catch (err) {

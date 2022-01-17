@@ -48,12 +48,13 @@ const linkRenderer = (value: string): JSX.Element => {
 }
 
 const getGCPDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel(
-        'encryptedKeyLabel',
-        textRenderer(connector?.spec?.credential?.spec?.secretKeyRef)
-      )
+  if (connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER) {
+    return displayDelegatesTagsSummary(connector.spec.delegateSelectors)
+  }
+  return getConnectorDisplaySummaryLabel(
+    'encryptedKeyLabel',
+    textRenderer(connector?.spec?.credential?.spec?.secretKeyRef)
+  )
 }
 
 const getConnectorDisplaySummaryLabel = (titleStringId: StringKeys, Element: JSX.Element): JSX.Element | string => {

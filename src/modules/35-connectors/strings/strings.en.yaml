@@ -2,6 +2,7 @@ createNewConnector: Create New Connector
 confirmDeleteTitle: Delete Connector
 editConnector: Edit the Connector
 confirmDelete: Are you sure you want to delete the Connector
+deletedSuccssMessage: 'Connector {{name}} deleted'
 testInProgress: Test in progress
 artifactRepository: ' Artifact {{ $.repository }}'
 artifactRepoType: 'Artifact {{$.repositoryType}}'

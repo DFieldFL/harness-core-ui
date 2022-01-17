@@ -1688,6 +1688,7 @@ export interface StringsMap {
   'connectors.delegate.testDelegateConnectivity': string
   'connectors.delegate.waitingForConnection': string
   'connectors.delegateInClusterInfo': string
+  'connectors.deletedSuccssMessage': string
   'connectors.docker.dockerHub': string
   'connectors.docker.dockerProvideType': string
   'connectors.docker.dockerRegistryURL': string
