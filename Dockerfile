@@ -24,4 +24,6 @@ sed -i "s|<\!-- segmentToken -->|<script>window.segmentToken = '$SEGMENT_TOKEN'<
 sed -i "s|<\!-- bugsnagToken -->|<script>window.bugsnagToken = '$BUGSNAG_TOKEN'</script>|" index.html && \
 sed -i "s|<\!-- appDyEUMToken -->|<script>window.appDyEUMToken = '$APPDY_EUM_TOKEN'</script>|" index.html && \
 sed -i "s|<\!-- deploymentType -->|<script>window.deploymentType = '$DEPLOYMENT_TYPE'</script>|" index.html && \
+if [ "$CDN" = "1" ]; then sed -i "s|\"static\/main\.\(.*\)\.js\"|\"$HARNESS_NG_CDN_PATH_PLACEHOLDER/main.\1.js\"|" index.html; fi && \
+if [ "$CDN" = "1" ]; then sed -i "s|HARNESS_NG_CDN_PATH_PLACEHOLDER|$HARNESS_NG_CDN_PATH_PLACEHOLDER/|" index.html; else sed -i "s|HARNESS_NG_CDN_PATH_PLACEHOLDER||" index.html; fi && \
 nginx -c /etc/nginx/nginx.conf -g 'daemon off;'
