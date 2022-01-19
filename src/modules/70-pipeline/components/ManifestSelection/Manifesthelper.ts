@@ -40,7 +40,8 @@ export const allowedManifestTypes: Record<string, Array<ManifestTypes>> = {
     ManifestDataType.HelmChart,
     ManifestDataType.OpenshiftTemplate,
     ManifestDataType.OpenshiftParam,
-    ManifestDataType.Kustomize
+    ManifestDataType.Kustomize,
+    ManifestDataType.KustomizePatches
   ],
   NativeHelm: [ManifestDataType.Values, ManifestDataType.HelmChart]
 }

@@ -31,7 +31,6 @@ import { get, set } from 'lodash-es'
 import type { IconProps } from '@wings-software/uicore/dist/icons/Icon'
 import produce from 'immer'
 import { useStrings } from 'framework/strings'
-import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 
 import ConnectorDetailsStep from '@connectors/components/CreateConnector/commonSteps/ConnectorDetailsStep'
 import GitDetailsStep from '@connectors/components/CreateConnector/commonSteps/GitDetailsStep'
@@ -134,15 +133,6 @@ const ManifestListView = ({
   const { repoIdentifier, branch } = useQueryParams<GitQueryParams>()
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
-  const { VARIABLE_SUPPORT_FOR_KUSTOMIZE } = useFeatureFlags()
-  React.useEffect(() => {
-    if (
-      VARIABLE_SUPPORT_FOR_KUSTOMIZE &&
-      !allowedManifestTypes['Kubernetes'].includes(ManifestDataType.KustomizePatches)
-    ) {
-      allowedManifestTypes['Kubernetes'].push(ManifestDataType.KustomizePatches)
-    }
-  }, [VARIABLE_SUPPORT_FOR_KUSTOMIZE])
 
   const removeManifestConfig = (index: number): void => {
     listOfManifests.splice(index, 1)
