@@ -16,6 +16,10 @@ declare const styles: {
   readonly search: string
   readonly searchBox: string
   readonly selectedItem: string
+  readonly noDataCardImg: string
+  readonly noDataContainer: string
+  readonly search: string
+  readonly searchBox: string
   readonly tabIcon: string
   readonly tabTitleContainer: string
   readonly tabsContainer: string

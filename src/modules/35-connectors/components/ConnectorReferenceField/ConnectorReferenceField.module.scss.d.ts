@@ -13,14 +13,30 @@ declare const styles: {
   readonly editBtn: string
   readonly gitBranchIcon: string
   readonly gitInfo: string
+  readonly connectorDetails: string
+  readonly connectorLabel: string
+  readonly connectorNameId: string
+  readonly editBtn: string
+  readonly flexOne: string
+  readonly flexTwo: string
+  readonly gitBranchIcon: string
+  readonly gitHubConnectorDetails: string
+  readonly gitInfo: string
+  readonly gitUrl: string
+  readonly gitUrlStyle: string
   readonly greenStatus: string
   readonly iconCheck: string
   readonly iconChecked: string
   readonly item: string
+<<<<<<< HEAD
   readonly itemWithGit: string
   readonly label: string
   readonly lastConnected: string
   readonly listItem: string
+=======
+  readonly label: string
+  readonly leftInfo: string
+>>>>>>> feat: [PL-20872]: merged
   readonly noDataCardContainerConnector: string
   readonly noDataCardContainerContent: string
   readonly redStatus: string

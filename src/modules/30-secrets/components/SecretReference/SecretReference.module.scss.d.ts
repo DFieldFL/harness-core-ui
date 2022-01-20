@@ -17,6 +17,11 @@ declare const styles: {
   readonly item: string
   readonly listItem: string
   readonly meta: string
+  readonly editBtn: string
+  readonly iconCheck: string
+  readonly iconChecked: string
+  readonly item: string
+  readonly leftInfo: string
   readonly noDataCardContainerSecret: string
   readonly popoverWidth: string
   readonly secretIcon: string
