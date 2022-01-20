@@ -146,8 +146,10 @@ describe('Static Schedule form tests', () => {
         />
       </TestWrapper>
     )
-    const submitBtn = container.querySelector('button[type="submit"]')
-
+    const submitBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement
+    if (submitBtn) {
+      submitBtn.disabled = false
+    }
     expect(submitBtn).toBeDefined()
     act(() => {
       fireEvent.click(submitBtn!)
