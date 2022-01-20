@@ -1,0 +1,217 @@
+{
+  "data": {
+    "envIdentifiers": ["UAT"],
+    "environmentTypes": ["PreProduction"],
+    "infrastructureTypes": ["KubernetesDirect"],
+    "serviceDefinitionTypes": ["Kubernetes"],
+    "serviceIdentifiers": ["nginx", "testsvc_1", "service1"]
+  },
+  "nodeMap": {
+    "-47o03VPT_WXphDoCohlZQ": {
+      "nodeType": "Deployment",
+      "nodeGroup": "STAGE",
+      "nodeIdentifier": "s2",
+      "name": "s2",
+      "nodeUuid": "-47o03VPT_WXphDoCohlZQ",
+      "status": "Success",
+      "module": "cd",
+      "moduleInfo": {
+        "cd": {
+          "serviceInfo": {
+            "identifier": "testsvc_1",
+            "displayName": "testsvc_1",
+            "deploymentType": "Kubernetes",
+            "artifacts": {
+              "sidecars": []
+            }
+          },
+          "infraExecutionSummary": {
+            "identifier": "UAT",
+            "name": "UAT",
+            "type": "PreProduction"
+          }
+        }
+      },
+      "startTs": 1625204000520,
+      "endTs": 1625204029705,
+      "edgeLayoutList": { "currentNodeChildren": [], "nextIds": ["ASS_3acZRxiUiF_rPFdhvg"] },
+      "nodeRunInfo": {
+        "whenCondition": "<+OnPipelineSuccess>",
+        "evaluatedCondition": true,
+        "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+      }
+    },
+    "ASS_3acZRxiUiF_rPFdhvg": {
+      "nodeType": "Deployment",
+      "nodeGroup": "STAGE",
+      "nodeIdentifier": "s3",
+      "name": "s3",
+      "nodeUuid": "ASS_3acZRxiUiF_rPFdhvg",
+      "status": "Success",
+      "module": "cd",
+      "moduleInfo": {
+        "cd": {
+          "serviceInfo": {
+            "identifier": "service1",
+            "displayName": "service1",
+            "deploymentType": "Kubernetes",
+            "artifacts": {
+              "sidecars": []
+            }
+          },
+          "infraExecutionSummary": {
+            "identifier": "UAT",
+            "type": "PreProduction"
+          }
+        }
+      },
+      "startTs": 1625204031023,
+      "endTs": 1625204063416,
+      "edgeLayoutList": { "currentNodeChildren": [], "nextIds": ["76GwWrsLTXK3fNv56oYapQ"] },
+      "nodeRunInfo": {
+        "whenCondition": "<+OnPipelineSuccess>",
+        "evaluatedCondition": true,
+        "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+      }
+    },
+    "GAchztSITMeO0cKl5XFvGg": {
+      "nodeType": "Deployment",
+      "nodeGroup": "STAGE",
+      "nodeIdentifier": "s6",
+      "name": "s6",
+      "nodeUuid": "GAchztSITMeO0cKl5XFvGg",
+      "status": "Success",
+      "module": "cd",
+      "moduleInfo": {},
+      "startTs": 1625204173268,
+      "endTs": 1625204244332,
+      "edgeLayoutList": { "currentNodeChildren": [], "nextIds": ["CzgvBKTVTye5U4g6k9bEgw"] },
+      "nodeRunInfo": {
+        "whenCondition": "<+OnPipelineSuccess>",
+        "evaluatedCondition": true,
+        "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+      }
+    },
+    "r623par7Qa6xe69T1nmxOw": {
+      "nodeType": "Deployment",
+      "nodeGroup": "STAGE",
+      "nodeIdentifier": "s5",
+      "name": "s5",
+      "nodeUuid": "r623par7Qa6xe69T1nmxOw",
+      "status": "Success",
+      "module": "cd",
+      "startTs": 1625204103850,
+      "endTs": 1625204171802,
+      "edgeLayoutList": { "currentNodeChildren": [], "nextIds": ["GAchztSITMeO0cKl5XFvGg"] },
+      "nodeRunInfo": {
+        "whenCondition": "<+OnPipelineSuccess>",
+        "evaluatedCondition": true,
+        "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+      }
+    },
+    "76GwWrsLTXK3fNv56oYapQ": {
+      "nodeType": "Deployment",
+      "nodeGroup": "STAGE",
+      "nodeIdentifier": "s4",
+      "name": "s4",
+      "nodeUuid": "76GwWrsLTXK3fNv56oYapQ",
+      "status": "Success",
+      "module": "cd",
+      "moduleInfo": {
+        "cd": {
+          "serviceInfo": {
+            "identifier": "nginx",
+            "displayName": "todolist",
+            "deploymentType": "Kubernetes",
+            "artifacts": {
+              "sidecars": []
+            }
+          },
+          "infraExecutionSummary": {
+            "identifier": "UAT",
+            "name": "UAT",
+            "type": "PreProduction"
+          }
+        }
+      },
+      "startTs": 1625204064837,
+      "endTs": 1625204102362,
+      "edgeLayoutList": { "currentNodeChildren": [], "nextIds": ["r623par7Qa6xe69T1nmxOw"] },
+      "nodeRunInfo": {
+        "whenCondition": "<+OnPipelineSuccess>",
+        "evaluatedCondition": true,
+        "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+      }
+    },
+    "kjJeky0KS1KOLVk0FFnb4g": {
+      "nodeType": "Deployment",
+      "nodeGroup": "STAGE",
+      "nodeIdentifier": "s1",
+      "name": "s1",
+      "nodeUuid": "kjJeky0KS1KOLVk0FFnb4g",
+      "status": "Success",
+      "module": "cd",
+      "moduleInfo": {
+        "cd": {
+          "serviceInfo": {
+            "identifier": "nginx",
+            "displayName": "todolist",
+            "deploymentType": "Kubernetes",
+            "artifacts": {
+              "sidecars": []
+            }
+          },
+          "infraExecutionSummary": {
+            "identifier": "UAT",
+            "name": "UAT",
+            "type": "PreProduction"
+          }
+        }
+      },
+      "startTs": 1625203902498,
+      "endTs": 1625203999070,
+      "edgeLayoutList": { "currentNodeChildren": [], "nextIds": ["-47o03VPT_WXphDoCohlZQ"] },
+      "nodeRunInfo": {
+        "whenCondition": "<+OnPipelineSuccess>",
+        "evaluatedCondition": true,
+        "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+      }
+    },
+    "CzgvBKTVTye5U4g6k9bEgw": {
+      "nodeType": "Deployment",
+      "nodeGroup": "STAGE",
+      "nodeIdentifier": "s7",
+      "name": "s7",
+      "nodeUuid": "CzgvBKTVTye5U4g6k9bEgw",
+      "status": "Success",
+      "module": "cd",
+      "moduleInfo": {
+        "cd": {
+          "serviceInfo": {
+            "identifier": "nginx",
+            "displayName": "todolist",
+            "deploymentType": "Kubernetes",
+            "artifacts": {
+              "sidecars": []
+            }
+          },
+          "infraExecutionSummary": {
+            "identifier": "UAT",
+            "name": "UAT",
+            "type": "PreProduction"
+          }
+        }
+      },
+      "startTs": 1625204245858,
+      "endTs": 1625204278778,
+      "edgeLayoutList": { "currentNodeChildren": [], "nextIds": [] },
+      "nodeRunInfo": {
+        "whenCondition": "<+OnPipelineSuccess>",
+        "evaluatedCondition": true,
+        "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+      }
+    }
+  },
+  "startingNodeId": "kjJeky0KS1KOLVk0FFnb4g",
+  "variant": "Default"
+}
