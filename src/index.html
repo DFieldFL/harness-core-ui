@@ -40,6 +40,7 @@
       window.HARNESS_ENABLE_NG_AUTH_UI = 'HARNESS_ENABLE_NG_AUTH_UI_PLACEHOLDER' === 'true'
       window.HARNESS_ENABLE_FULL_STORY = 'HARNESS_ENABLE_FULL_STORY_PLACEHOLDER' === 'true'
       window.HARNESS_ENABLE_APPDY_EUM = 'HARNESS_ENABLE_APPDY_EUM_PLACEHOLDER' === 'true'
+      window.HARNESS_ENABLE_CDN = 'HARNESS_ENABLE_CDN_PLACEHOLDER' === 'true'
     </script>
     <% if (__DEV__) { %>
     <script>
@@ -75,7 +76,7 @@
       }
     </script>
     <script>
-      window.resourceBasePath = '<%= __CDN_PATH_PLACEHOLDER__ %>'
+      window.resourceBasePath = window.HARNESS_ENABLE_CDN ? '//static.harness.io/ng-static/' : ''
     </script>
   </head>
   <body>

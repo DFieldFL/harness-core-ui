@@ -231,8 +231,7 @@ const commonPlugins = [
     filename: 'index.html',
     minify: false,
     templateParameters: {
-      __DEV__: DEV,
-      __CDN_PATH_PLACEHOLDER__: DEV ? '' : 'HARNESS_NG_CDN_PATH_PLACEHOLDER'
+      __DEV__: DEV
     }
   }),
   new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
