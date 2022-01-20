@@ -27,11 +27,13 @@ export function CDExecutionSummary(props: ExecutionSummaryProps<CDPipelineModule
     const environments: string[] = []
 
     nodeMap.forEach(stage => {
-      const stageInfo = stage.moduleInfo?.cd || ({} as CDStageModuleInfo)
+      const stageInfo = stage.moduleInfo?.cd || /* istanbul ignore next */ ({} as CDStageModuleInfo)
+      // istanbul ignore else
       if (stageInfo.serviceInfo) {
         services.push(stageInfo.serviceInfo)
       }
 
+      // istanbul ignore else
       if (stageInfo.infraExecutionSummary?.name || stageInfo.infraExecutionSummary?.identifier) {
         environments.push(stageInfo.infraExecutionSummary.name || stageInfo.infraExecutionSummary.identifier)
       }
