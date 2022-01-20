@@ -23,20 +23,24 @@ export function ShellScriptVariablesView(props: ShellScriptVariablesViewProps): 
   const { variablesData = {} as ShellScriptData, originalData = {} as ShellScriptData, metadataMap } = props
   const data: Record<string, string> = pick(variablesData.spec, ['shell', 'onDelegate'])
 
+  // istanbul ignore else
   if (variablesData.spec?.executionTarget?.connectorRef) {
     data['executionTarget.connectorRef'] = variablesData.spec.executionTarget.connectorRef
   }
 
+  // istanbul ignore else
   if (variablesData.spec?.source?.spec?.script) {
     data['source.spec.script'] = variablesData.spec.source.spec.script
   }
 
+  // istanbul ignore else
   if (Array.isArray(variablesData.spec?.environmentVariables)) {
     variablesData.spec.environmentVariables.forEach((row, i) => {
       data[`environmentVariables[${i}].value`] = row.value as string
     })
   }
 
+  // istanbul ignore else
   if (Array.isArray(variablesData.spec?.outputVariables)) {
     variablesData.spec.outputVariables.forEach((row, i) => {
       data[`outputVariables[${i}].value`] = row.value as string
