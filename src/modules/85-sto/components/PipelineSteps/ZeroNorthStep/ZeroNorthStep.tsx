@@ -94,17 +94,17 @@ export class ZeroNorthStep extends PipelineStep<ZeroNorthStepData> {
     identifier: '',
     type: StepType.ZeroNorth as string,
     spec: {
-      connectorRef: 'org.gitlab_registry_zn',
+      connectorRef: 'harnessImage',
       image: 'registry.gitlab.com/zeronorth/registry/images/sto_plugin:dev',
-      imagePullPolicy: 'IfNotPresent',
+      imagePullPolicy: 'Always', // TODO - IfNotPresent?
       privileged: true,
       settings: {
         policy_type: 'orchestratedScan',
         scan_type: 'repository',
+        product_name: '',
+        product_config_name: '',
         repository_project: '<+pipeline.properties.ci.__encodedValue.codebase.repoName>',
-        repository_branch: '<+codebase.branch>',
-        product_name: 'brakeman',
-        product_config_name: 'brakeman-default'
+        repository_branch: '<+codebase.branch>'
       }
     }
   }

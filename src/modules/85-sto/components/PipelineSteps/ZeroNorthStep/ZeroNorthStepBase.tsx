@@ -70,6 +70,13 @@ export const ZeroNorthStepBase = (
           _values,
           transformValuesFieldsConfig
         )
+
+        // Set the proper values for running the ZeroNorth Integration Container
+        // schemaValues.spec.privileged = true
+        // schemaValues.spec.image = ''
+        // schemaValues.spec.connectorRef = '' // FIXME
+        // schemaValues.spec.imagePullPolicy = 'Always' // TODO: change to 'IfNotPresent' once versioned tags in place
+
         onUpdate?.(schemaValues)
       }}
     >

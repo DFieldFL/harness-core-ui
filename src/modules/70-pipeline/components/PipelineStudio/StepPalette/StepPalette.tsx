@@ -114,7 +114,7 @@ export const StepPalette: React.FC<StepPaletteProps> = ({
               stepCategories: [],
               stepsData: [
                 {
-                  name: 'Security Test',
+                  name: 'Security Scan',
                   type: StepType.ZeroNorth,
                   disabled: false
                 }

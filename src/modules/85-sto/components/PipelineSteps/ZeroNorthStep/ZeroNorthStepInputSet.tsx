@@ -65,9 +65,6 @@ export const ZeroNorthStepInputSet: React.FC<ZeroNorthStepProps> = ({
       <CIStepOptionalConfig
         readonly={readonly}
         enableFields={{
-          ...(getMultiTypeFromValue(template?.spec?.privileged) === MultiTypeInputType.RUNTIME && {
-            'spec.privileged': {}
-          }),
           ...(getMultiTypeFromValue(template?.spec?.settings as string) === MultiTypeInputType.RUNTIME && {
             'spec.settings': {}
           })
