@@ -15,7 +15,7 @@ import css from './NewProviderModal.module.scss'
 interface NewProviderModalProps {
   provider: GitopsProviderResponse | null
   isEditMode: boolean
-  onClose?(): void
+  onClose(): void
   onUpdateMode?(mode: boolean): void
   onLaunchArgoDashboard?: (provider: GitopsProviderResponse) => void
 }
@@ -32,7 +32,7 @@ const NewProviderModal: React.FC<NewProviderModalProps> = props => {
         icon="cross"
         iconProps={{ size: 18 }}
         onClick={() => {
-          props.onClose?.()
+          props.onClose()
         }}
         className={css.crossIcon}
       />
