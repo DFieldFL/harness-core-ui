@@ -77,6 +77,7 @@
     "generate-microfrontend-types": "rm -rf src/microfrontends/dist && webpack --config src/microfrontends/webpack.config.js",
     "publish-types": "yarn generate-microfrontend-types; yarn publish src/microfrontends;",
     "generate-certificate": "sh scripts/generate-certificate.sh",
+    "generate-eslint": "node scripts/generate-eslint-config-for-imports.mjs",
     "build-docker": "sh scripts/docker-build.sh"
   },
   "dependencies": {
