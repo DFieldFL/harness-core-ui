@@ -1,3 +1,10 @@
+/*
+ * Copyright 2022 Harness Inc. All rights reserved.
+ * Use of this source code is governed by the PolyForm Shield 1.0.0 license
+ * that can be found in the licenses directory at the root of this repository, also available at
+ * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
+ */
+
 import React from 'react'
 import { Text, Color, Link } from '@wings-software/uicore'
 import classNames from 'classnames'
@@ -20,13 +27,16 @@ const textRenderer = (value: string): JSX.Element => {
 }
 
 const getAWSDisplaySummary = (connector: ConnectorInfoDTO): JSX.Element | string => {
-  return connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER ||
+  if (
+    connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER ||
     connector?.spec?.credential?.type === DelegateTypes.DELEGATE_IN_CLUSTER_IRSA
-    ? displayDelegatesTagsSummary(connector.spec.delegateSelectors)
-    : getConnectorDisplaySummaryLabel(
-        'connectors.aws.accessKey',
-        textRenderer(connector?.spec?.credential?.spec?.accessKeyRef || connector?.spec?.credential?.spec?.accessKey)
-      )
+  ) {
+    return displayDelegatesTagsSummary(connector.spec.delegateSelectors)
+  }
+  return getConnectorDisplaySummaryLabel(
+    'connectors.aws.accessKey',
+    textRenderer(connector?.spec?.credential?.spec?.accessKeyRef || connector?.spec?.credential?.spec?.accessKey)
+  )
 }
 
 const linkRenderer = (value: string): JSX.Element => {
