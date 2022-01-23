@@ -7,28 +7,43 @@
 
 import React from 'react'
 import { render } from '@testing-library/react'
+import { MultiTypeInputType } from '@harness/uicore'
 
 import { TestWrapper } from '@common/utils/testUtils'
 
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
-import { KubernetesManifests } from '../KubernetesManifests/KubernetesManifests'
+import { KubernetesServiceSpecInputSetMode } from '../KubernetesServiceSpecInputSetMode'
 
-describe('<KubernetesManifests /> tests', () => {
-  test('snapshot test for kubernetes manifests', () => {
+describe('<KubernetesServiceSpecInputSetMode /> tests', () => {
+  test('snapshot test for kubernetes service spec input set mode', () => {
     const { container } = render(
       <TestWrapper>
-        <KubernetesManifests
+        <KubernetesServiceSpecInputSetMode
+          stageIdentifier=""
+          allowableTypes={[MultiTypeInputType.EXPRESSION]}
           initialValues={{}}
-          readonly
-          stageIdentifier="stage-0"
+          allValues={{
+            artifacts: {
+              primary: {
+                type: 'DockerRegistry',
+                spec: {}
+              }
+            }
+          }}
           template={{
             manifests: [
               {
                 manifest: {
-                  identifier: 'id',
+                  identifier: 'manifest_1',
                   spec: {},
                   type: 'K8sManifest'
                 }
+              }
+            ],
+            variables: [
+              {
+                type: 'String',
+                description: 'k8sVariable'
               }
             ]
           }}
