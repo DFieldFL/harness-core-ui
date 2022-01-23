@@ -69,7 +69,7 @@ export function KubernetesManifests(props: KubernetesManifestsProps): React.Reac
                 branch
               })}
             </>
-          ) : null
+          ) : /* istanbul ignore next*/ null
         })}
     </div>
   )
