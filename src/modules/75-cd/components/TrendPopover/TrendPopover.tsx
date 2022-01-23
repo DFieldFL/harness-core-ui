@@ -40,7 +40,7 @@ const Trend: React.FC<TrendPopoverProps> = props => {
               dataLabels: {
                 enabled: true,
                 color: 'var(--grey-600)',
-                formatter: function () {
+                formatter: /* istanbul ignore next */ function () {
                   return numberFormatter(this.y ? this.y : 0)
                 }
               }

@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TrendPopover /> tests snapshot test for trend popover 1`] = `
+<div>
+  <span
+    class="bp3-popover-wrapper"
+  >
+    <span
+      class="bp3-popover-target"
+    >
+      <div
+        class="Layout--vertical StyledProps--main StyledProps--padding-left-medium StyledProps--padding-right-medium StyledProps--padding-top-xsmall"
+        style="width: 676px; height: 200px;"
+      >
+        <div
+          class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-distribution-space-between StyledProps--flex-align-center-center StyledProps--margin-bottom-xsmall"
+        >
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey600 StyledProps--font-weight-semi-bold"
+          />
+          <span
+            class="bp3-icon bp3-icon-cross StyledProps--main bp3-popover-dismiss hover"
+            icon="cross"
+          >
+            <svg
+              data-icon="cross"
+              height="16"
+              viewBox="0 0 16 16"
+              width="16"
+            >
+              <desc>
+                cross
+              </desc>
+              <path
+                d="M9.41 8l3.29-3.29c.19-.18.3-.43.3-.71a1.003 1.003 0 00-1.71-.71L8 6.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42L6.59 8 3.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71L8 9.41l3.29 3.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71L9.41 8z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          class="sparklineChartContainer sparklineChartContainerStyles"
+        >
+          <div
+            data-highcharts-chart="0"
+            style="overflow: hidden;"
+          >
+            <div
+              class="highcharts-container "
+              dir="ltr"
+              id="highcharts-p1ie6da-0"
+              style="position: relative; overflow: hidden; width: 646px; height: 155px; text-align: left; line-height: normal; z-index: 0; user-select: none; outline: none;"
+            >
+              <svg
+                class="highcharts-root"
+                height="155"
+                style="font-family:\\"Lucida Grande\\", \\"Lucida Sans Unicode\\", Arial, Helvetica, sans-serif;font-size:12px;"
+                version="1.1"
+                viewBox="0 0 646 155"
+                width="646"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <desc>
+                  Created with Highcharts 9.2.0
+                </desc>
+                <defs>
+                  <clippath
+                    id="highcharts-p1ie6da-1-"
+                  >
+                    <rect
+                      fill="none"
+                      height="135"
+                      width="634"
+                      x="0"
+                      y="0"
+                    />
+                  </clippath>
+                </defs>
+                <rect
+                  class="highcharts-background"
+                  fill="none"
+                  height="155"
+                  rx="0"
+                  ry="0"
+                  width="646"
+                  x="0"
+                  y="0"
+                />
+                <rect
+                  class="highcharts-plot-background"
+                  fill="none"
+                  height="135"
+                  width="634"
+                  x="6"
+                  y="10"
+                />
+                <rect
+                  class="highcharts-plot-border"
+                  data-z-index="1"
+                  fill="none"
+                  height="135"
+                  width="634"
+                  x="6"
+                  y="10"
+                />
+                <g
+                  class="highcharts-series-group"
+                  data-z-index="3"
+                >
+                  <g
+                    class="highcharts-series highcharts-series-0 highcharts-line-series"
+                    clip-path="url(#highcharts-p1ie6da-1-)"
+                    data-z-index="0.1"
+                    opacity="1"
+                    transform="translate(6,10) scale(1 1)"
+                  />
+                  <g
+                    class="highcharts-markers highcharts-series-0 highcharts-line-series"
+                    clip-path="none"
+                    data-z-index="0.1"
+                    opacity="1"
+                    transform="translate(6,10) scale(1 1)"
+                  />
+                </g>
+                <text
+                  class="highcharts-title"
+                  data-z-index="4"
+                  style="color:#333333;font-size:18px;fill:#333333;"
+                  text-anchor="middle"
+                  x="323"
+                  y="24"
+                />
+                <text
+                  class="highcharts-subtitle"
+                  data-z-index="4"
+                  style="color:#666666;fill:#666666;"
+                  text-anchor="middle"
+                  x="323"
+                  y="10"
+                />
+                <text
+                  class="highcharts-caption"
+                  data-z-index="4"
+                  style="color:#666666;fill:#666666;"
+                  text-anchor="start"
+                  x="10"
+                  y="152"
+                />
+                <g
+                  class="highcharts-data-labels highcharts-series-0 highcharts-line-series"
+                  data-z-index="6"
+                  opacity="1"
+                  transform="translate(6,10) scale(1 1)"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </span>
+  </span>
+</div>
+`;
