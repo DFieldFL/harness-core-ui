@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ServicePopoverCard /> tests snapshot test for service popover card 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="title"
+    >
+      primaryArtifactText
+    </div>
+    <div>
+      artifactDisplay
+    </div>
+    <div
+      class="title"
+    >
+      sidecarsText
+    </div>
+    <div>
+      artifactDisplay
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ServicePopoverCard /> tests snapshot test when there are no artifacts 1`] = `
+<div>
+  <div
+    class="main"
+  >
+    <div
+      class="title"
+    >
+      primaryArtifactText
+    </div>
+    <div>
+      noArtifact
+    </div>
+  </div>
+</div>
+`;
