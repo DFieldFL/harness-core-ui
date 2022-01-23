@@ -48,7 +48,7 @@ exports[`<TrendPopover /> tests snapshot test for trend popover 1`] = `
             <div
               class="highcharts-container "
               dir="ltr"
-              id="highcharts-p1ie6da-0"
+              id="highcharts-wgo2dl5-0"
               style="position: relative; overflow: hidden; width: 646px; height: 155px; text-align: left; line-height: normal; z-index: 0; user-select: none; outline: none;"
             >
               <svg
@@ -65,7 +65,7 @@ exports[`<TrendPopover /> tests snapshot test for trend popover 1`] = `
                 </desc>
                 <defs>
                   <clippath
-                    id="highcharts-p1ie6da-1-"
+                    id="highcharts-wgo2dl5-1-"
                   >
                     <rect
                       fill="none"
@@ -109,7 +109,7 @@ exports[`<TrendPopover /> tests snapshot test for trend popover 1`] = `
                 >
                   <g
                     class="highcharts-series highcharts-series-0 highcharts-line-series"
-                    clip-path="url(#highcharts-p1ie6da-1-)"
+                    clip-path="url(#highcharts-wgo2dl5-1-)"
                     data-z-index="0.1"
                     opacity="1"
                     transform="translate(6,10) scale(1 1)"

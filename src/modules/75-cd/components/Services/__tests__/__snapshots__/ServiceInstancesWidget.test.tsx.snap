@@ -29,6 +29,23 @@ exports[`ServiceInstancesWidget render 1`] = `
             >
               10
             </p>
+            <span
+              class="bp3-popover-wrapper"
+            >
+              <span
+                class="bp3-popover-target"
+              >
+                <div
+                  class="sparklineChartContainer hover"
+                >
+                  <div
+                    class="title"
+                  >
+                    cd.serviceDashboard.6monthTrend
+                  </div>
+                </div>
+              </span>
+            </span>
           </div>
         </div>
       </div>
