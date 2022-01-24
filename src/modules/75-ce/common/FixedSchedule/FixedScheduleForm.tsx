@@ -8,7 +8,7 @@
 import React, { useState } from 'react'
 import { TimePicker } from '@blueprintjs/datetime'
 import { Radio } from '@blueprintjs/core'
-import { defaultTo as _defaultTo, isEmpty as _isEmpty } from 'lodash-es'
+import { defaultTo as _defaultTo, isEmpty as _isEmpty, capitalize as _capitalize } from 'lodash-es'
 import * as Yup from 'yup'
 import {
   Button,
@@ -150,11 +150,11 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
         {_formikProps => (
           <FormikForm>
             <Layout.Vertical spacing={'large'}>
-              <FormInput.Text name="name" label="Name*" />
+              <FormInput.Text name="name" label={getString('name') + '*'} />
               <Container className={css.inputRow}>
                 <Layout.Horizontal spacing={'large'}>
                   <Container style={{ flex: 1 }}>
-                    <Label>{'Type*'}</Label>
+                    <Label>{_capitalize(getString('ce.co.gatewayReview.type')) + '*'}</Label>
                     <PillToggle
                       selectedView={_formikProps.values.type}
                       options={[
@@ -178,7 +178,7 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
                     />
                   </Container>
                   <Container style={{ flex: 1 }}>
-                    <Label>{'Timezone*'}</Label>
+                    <Label>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.timezone')}</Label>
                     <TimezoneSelector
                       onTimezoneSelect={val => {
                         _formikProps.setFieldValue('timezone', val)
@@ -287,7 +287,7 @@ const PeriodSelection = ({ formikProps }: PeriodSelectionProps) => {
       </Layout.Horizontal>
       <Checkbox
         name={'neverEnds'}
-        label={'Never ends'}
+        label={getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.neverEnds')}
         checked={neverEnds}
         onChange={handleNeverEndsChange}
         style={{ width: '20%' }}
@@ -345,7 +345,7 @@ const DaysAndTimeSelector = ({ formikProps }: DaysAndTimeSelectorProps) => {
           </Layout.Horizontal>
         </Container>
         <Container style={{ flex: 1 }}>
-          <Label>{'Time'}</Label>
+          <Label>{getString('timeLabel')}</Label>
           <Radio
             label={getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.allDay')}
             value={'allDay'}

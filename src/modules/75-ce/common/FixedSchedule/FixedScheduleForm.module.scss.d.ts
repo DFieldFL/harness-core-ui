@@ -7,17 +7,15 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
-  readonly fixedScheduleFormContainer: string
-  readonly heading: string
-  readonly inputRow: string
-  readonly typeToggle: string
   readonly allDayCheckbox: string
   readonly ctaContainer: string
   readonly disabledDateInput: string
-  readonly fromTime: string
-  readonly toTime: string
   readonly errorDisplayContainer: string
   readonly fixedScheduleFormContainer: string
+  readonly fromTime: string
+  readonly heading: string
+  readonly inputRow: string
+  readonly toTime: string
   readonly typeToggle: string
 }
 export default styles
