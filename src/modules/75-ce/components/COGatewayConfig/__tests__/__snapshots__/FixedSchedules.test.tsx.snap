@@ -436,7 +436,7 @@ exports[`Static Schedule form tests form renders successfully 1`] = `
                         <p
                           class="StyledProps--font StyledProps--main"
                         >
-                          from
+                          ce.co.autoStoppingRule.configuration.step4.tabs.schedules.fromText
                         </p>
                         <div
                           class="bp3-timepicker bp3-disabled"
@@ -511,7 +511,7 @@ exports[`Static Schedule form tests form renders successfully 1`] = `
                         <p
                           class="StyledProps--font StyledProps--main"
                         >
-                          to
+                          ce.co.autoStoppingRule.configuration.step4.tabs.schedules.toText
                         </p>
                         <div
                           class="bp3-timepicker bp3-disabled"
