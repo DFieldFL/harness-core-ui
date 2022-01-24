@@ -115,6 +115,8 @@ co:
             allDay: 'All Day'
             schedule: 'schedule'
             timezone: 'Time Zone'
+            toText: 'to'
+            fromText: 'from'
             successfulSaveMessage: 'Static Schedule {{name}} saved successfully'
             deleteScheduleTitle: 'Delete Static schedule'
             successfullyDeletedSchedule: 'Schedule {{name}} deleted successfully'

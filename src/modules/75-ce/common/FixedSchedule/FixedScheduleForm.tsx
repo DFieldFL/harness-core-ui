@@ -365,7 +365,7 @@ const DaysAndTimeSelector = ({ formikProps }: DaysAndTimeSelectorProps) => {
             />
             <Container>
               <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }} className={css.fromTime}>
-                <Text>{'from'}</Text>
+                <Text>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.fromText')}</Text>
                 <TimePicker
                   useAmPm
                   value={getTime(formikProps.values.startTime)}
@@ -376,7 +376,7 @@ const DaysAndTimeSelector = ({ formikProps }: DaysAndTimeSelectorProps) => {
                 />
               </Layout.Horizontal>
               <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'start' }} className={css.toTime}>
-                <Text>{'to'}</Text>
+                <Text>{getString('ce.co.autoStoppingRule.configuration.step4.tabs.schedules.toText')}</Text>
                 <TimePicker
                   useAmPm
                   value={getTime(formikProps.values.endTime)}
