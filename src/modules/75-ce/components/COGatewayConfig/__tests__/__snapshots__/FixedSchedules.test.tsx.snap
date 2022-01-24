@@ -33,7 +33,7 @@ exports[`Static Schedule form tests form renders successfully 1`] = `
                   class="Tooltip--acenter"
                   data-tooltip-id="newScheduleForm_name"
                 >
-                  Name*
+                  name*
                 </span>
                  
                 <span
@@ -69,7 +69,7 @@ exports[`Static Schedule form tests form renders successfully 1`] = `
                   <label
                     class="Label--main"
                   >
-                    Type*
+                    Ce.co.gatewayreview.type*
                   </label>
                   <div
                     class="PillToggle--optionBtns typeToggle"
@@ -99,7 +99,7 @@ exports[`Static Schedule form tests form renders successfully 1`] = `
                   <label
                     class="Label--main"
                   >
-                    Timezone*
+                    ce.co.autoStoppingRule.configuration.step4.tabs.schedules.timezone
                   </label>
                   <span
                     class="bp3-popover-wrapper"
@@ -290,7 +290,7 @@ exports[`Static Schedule form tests form renders successfully 1`] = `
                 <span
                   class="bp3-control-indicator"
                 />
-                Never ends
+                ce.co.autoStoppingRule.configuration.step4.tabs.schedules.neverEnds
               </label>
             </div>
             <div
@@ -397,7 +397,7 @@ exports[`Static Schedule form tests form renders successfully 1`] = `
                   <label
                     class="Label--main"
                   >
-                    Time
+                    timeLabel
                   </label>
                   <label
                     class="bp3-control bp3-radio"
