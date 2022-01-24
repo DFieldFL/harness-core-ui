@@ -110,7 +110,6 @@ serviceDashboard:
   helmChartName: Helm Chart Name
   helmRopoUrl: Repo URL
 gitOps: GitOps
-enterpriseGitOps: Enterprise GitOps
 newAdapter: New Adapter
 newGitOpsServer: New GitOps Server
 adapterDetails: Adapter Details

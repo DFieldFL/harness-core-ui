@@ -3075,7 +3075,6 @@ export interface StringsMap {
   'cd.duplicateGitOpsServerIdError': string
   'cd.duplicateIdError': string
   'cd.dynamicProvisioning': string
-  'cd.enterpriseGitOps': string
   'cd.environmentCreated': string
   'cd.environmentUpdated': string
   'cd.featureRestriction.banners.deploymentsPerMonthLevelUp': string
