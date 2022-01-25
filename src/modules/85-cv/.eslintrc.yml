@@ -4,8 +4,8 @@ rules:
     - patterns:
         - lodash.*
         - microfrontends/*
-        - modules/85-sto/*
-        - '@sto/*'
+        - modules/85-sto-steps/*
+        - '@sto-steps/*'
       paths:
         - lodash
         - name: yaml

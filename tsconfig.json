@@ -46,7 +46,7 @@
       "@cf/*": ["modules/75-cf/*"],
       "@ci/*": ["modules/75-ci/*"],
       "@cv/*": ["modules/85-cv/*"],
-      "@sto/*": ["modules/85-sto/*"],
+      "@sto-steps/*": ["modules/85-sto-steps/*"],
       "@ce/*": ["modules/75-ce/*"],
       "@wings-software/*": ["../node_modules/@harness/*"]
     }

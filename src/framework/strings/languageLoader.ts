@@ -1,3 +1,10 @@
+/*
+ * Copyright 2021 Harness Inc. All rights reserved.
+ * Use of this source code is governed by the PolyForm Shield 1.0.0 license
+ * that can be found in the licenses directory at the root of this repository, also available at
+ * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
+ */
+
 /* eslint-disable */
 /**
  * This file is auto-generated. Please do not modify this file manually.
@@ -25,7 +32,7 @@ import ce from '@ce/strings/strings.en.yaml'
 import cf from '@cf/strings/strings.en.yaml'
 import ci from '@ci/strings/strings.en.yaml'
 import cv from '@cv/strings/strings.en.yaml'
-import sto from '@sto/strings/strings.en.yaml'
+import stoSteps from '@sto-steps/strings/strings.en.yaml'
 
 export default function languageLoader() {
   return {
@@ -51,6 +58,6 @@ export default function languageLoader() {
     cf,
     ci,
     cv,
-    sto
+    stoSteps
   }
 }

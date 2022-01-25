@@ -20,7 +20,7 @@ rules:
         - modules/75-cf/*
         - modules/75-ci/*
         - modules/85-cv/*
-        - modules/85-sto/*
+        - modules/85-sto-steps/*
         - '@sto/*'
         - '@delegates/*'
         - '@secrets/*'
@@ -37,7 +37,7 @@ rules:
         - '@cf/*'
         - '@ci/*'
         - '@cv/*'
-        - '@sto/*'
+        - '@sto-steps/*'
       paths:
         - lodash
         - name: yaml
