@@ -6,9 +6,9 @@
  */
 
 import React, { ReactElement } from 'react'
-import { isEmpty } from 'lodash-es'
 import { ButtonSize, Color, FontVariation, Layout, Text, Popover } from '@harness/uicore'
 import { PopoverInteractionKind } from '@blueprintjs/core'
+import { capitalize } from 'lodash-es'
 import { useStrings } from 'framework/strings'
 import { FeatureDescriptor, CustomFeatureDescriptor } from 'framework/featureStore/FeatureDescriptor'
 import type { Module } from '@common/interfaces/RouteInterfaces'
@@ -20,9 +20,7 @@ import css from './FeatureWarning.module.scss'
 interface FeatureWarningTooltipProps {
   featureName: FeatureIdentifier
   warningMessage?: string
-  isDarkMode?: boolean
 }
-
 export interface FeatureWarningProps {
   featureName: FeatureIdentifier
   warningMessage?: string
@@ -55,41 +53,46 @@ export const WarningText = ({ tooltip }: WarningTextProps): ReactElement => {
   )
 }
 
-export const FeatureWarningTooltip = ({
-  featureName,
-  warningMessage,
-  isDarkMode = false
-}: FeatureWarningTooltipProps): ReactElement => {
+export const FeatureWarningTooltip = ({ featureName, warningMessage }: FeatureWarningTooltipProps): ReactElement => {
   const { getString } = useStrings()
-  const featureDescription = FeatureDescriptor[featureName] ? FeatureDescriptor[featureName] : featureName
+  const featureNameStr = capitalize(featureName.split('_').join(' '))
+  const featureDescription = FeatureDescriptor[featureName] ? FeatureDescriptor[featureName] : featureNameStr
   const customFeatureDescription = CustomFeatureDescriptor[featureName]
   const requiredPlans = useFeatureRequiredPlans(featureName)
-  const requiredPlansStr = requiredPlans.join(' or ')
+  const requiredPlansStr = requiredPlans.length > 0 ? requiredPlans.join(' or ') : 'upgrade'
+  const upgradeDescription = getString('common.feature.levelUp.planMessage', {
+    plan: requiredPlansStr
+  })
 
-  function getDescription(): string {
-    return isEmpty(requiredPlans)
-      ? getString('common.feature.upgradeRequired.pleaseUpgrade')
-      : getString('common.feature.upgradeRequired.requiredPlans', { requiredPlans: requiredPlansStr })
+  function getBody(): React.ReactNode {
+    if (warningMessage || customFeatureDescription) {
+      return (
+        <Text font={{ size: 'small' }} color={Color.WHITE}>
+          {warningMessage || customFeatureDescription}
+        </Text>
+      )
+    }
+    return (
+      <Text font={{ size: 'small' }} color={Color.WHITE}>
+        {upgradeDescription} {featureDescription}
+      </Text>
+    )
   }
 
   return (
     <Layout.Vertical padding="medium" className={css.tooltip}>
       <Text
-        font={{ size: 'medium', weight: 'semi-bold' }}
-        color={isDarkMode ? Color.GREY_100 : Color.GREY_800}
-        padding={{ bottom: 'small' }}
+        icon="flash"
+        color={Color.ORANGE_800}
+        font={{ variation: FontVariation.FORM_MESSAGE_WARNING, weight: 'bold' }}
+        iconProps={{ color: Color.ORANGE_800, size: 25 }}
+        padding={{ bottom: 'xsmall' }}
       >
-        {getString('common.feature.upgradeRequired.title')}
+        {getString('common.levelUp')}
       </Text>
       <Layout.Vertical spacing="small">
-        <Text font={{ size: 'small' }} color={isDarkMode ? Color.GREY_200 : Color.GREY_800}>
-          {!warningMessage && !customFeatureDescription && getString('common.feature.upgradeRequired.description')}
-          {warningMessage || customFeatureDescription || featureDescription}
-        </Text>
-        <Text font={{ size: 'small' }} color={isDarkMode ? Color.GREY_200 : Color.GREY_800}>
-          {!warningMessage && !customFeatureDescription && getDescription()}
-        </Text>
-        <ExplorePlansBtn featureName={featureName} />
+        {getBody()}
+        <ExplorePlansBtn featureName={featureName} className={css.btn} />
       </Layout.Vertical>
     </Layout.Vertical>
   )

@@ -29,8 +29,9 @@ export interface FeatureInfoBannerProps {
 }
 
 export interface ExplorePlansBtnProps {
-  featureName: FeatureIdentifier
+  featureName?: FeatureIdentifier
   size?: ButtonSize
+  className?: string
 }
 
 export function getPlanModule(licenseStatus: LicenseStatusProps, moduleType?: ModuleType): Module | undefined {
@@ -63,7 +64,7 @@ function getDefaultPlanModule(licenseStatus: LicenseStatusProps): Module | undef
 }
 
 // this is to find the plan page that a feature goes to
-function useGetFeaturePlanModule(featureName: FeatureIdentifier): Module | undefined {
+function useGetFeaturePlanModule(featureName?: FeatureIdentifier): Module | undefined {
   const moduleType = useFeatureModule(featureName)
   const { CD_LICENSE_STATE, CI_LICENSE_STATE, FF_LICENSE_STATE, CCM_LICENSE_STATE } = useLicenseStore()
   const licenseStatus = {
@@ -75,14 +76,15 @@ function useGetFeaturePlanModule(featureName: FeatureIdentifier): Module | undef
   return getPlanModule(licenseStatus, moduleType)
 }
 
-export const ExplorePlansBtn = ({ featureName, size }: ExplorePlansBtnProps): ReactElement => {
+export const ExplorePlansBtn = ({ featureName, size, className }: ExplorePlansBtnProps): ReactElement => {
   const { getString } = useStrings()
   const history = useHistory()
   const { accountId } = useParams<AccountPathProps>()
   const planModule = useGetFeaturePlanModule(featureName)
   return (
     <Button
-      variation={ButtonVariation.SECONDARY}
+      className={className}
+      variation={ButtonVariation.PRIMARY}
       size={size || ButtonSize.SMALL}
       onClick={e => {
         e.preventDefault()
@@ -95,7 +97,9 @@ export const ExplorePlansBtn = ({ featureName, size }: ExplorePlansBtnProps): Re
   )
 }
 
-function useRedirectToOverviewPage(featureName: FeatureIdentifier): (e: React.MouseEvent<Element, MouseEvent>) => void {
+function useRedirectToOverviewPage(
+  featureName?: FeatureIdentifier
+): (e: React.MouseEvent<Element, MouseEvent>) => void {
   const history = useHistory()
   const { accountId } = useParams<AccountPathProps>()
   const planModule = useGetFeaturePlanModule(featureName)

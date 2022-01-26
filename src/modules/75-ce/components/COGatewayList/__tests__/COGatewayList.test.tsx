@@ -9,6 +9,8 @@ import React from 'react'
 import { fireEvent, render } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import * as lwServices from 'services/lw'
+import type { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
+import type { CheckFeatureReturn } from 'framework/featureStore/featureStoreUtil'
 import { TestWrapper } from '@common/utils/testUtils'
 import COGatewayList from '../COGatewayList'
 
@@ -28,6 +30,9 @@ jest.mock('@common/hooks/useFeatures', () => {
     },
     useGetFirstDisabledFeature: () => {
       return checkFeatureDisabledReturnMock
+    },
+    useFeatures: () => {
+      return { features: new Map<FeatureIdentifier, CheckFeatureReturn>() }
     }
   }
 })

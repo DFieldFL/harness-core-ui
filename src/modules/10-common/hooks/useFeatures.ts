@@ -160,9 +160,9 @@ export function useFeatures(props: FeaturesProps): CheckFeaturesReturn {
   return { features }
 }
 
-export function useFeatureModule(featureName: FeatureIdentifier): ModuleType {
+export function useFeatureModule(featureName?: FeatureIdentifier): ModuleType {
   const { featureMap } = useFeaturesContext()
-  return featureMap.get(featureName)?.moduleType
+  return featureName && featureMap.get(featureName)?.moduleType
 }
 
 export function useGetFirstDisabledFeature(featuresRequest?: FeaturesRequest): FirstDisabledFeatureReturn {
@@ -187,7 +187,7 @@ export function useGetFirstDisabledFeature(featuresRequest?: FeaturesRequest): F
   return { featureEnabled, disabledFeatureName }
 }
 
-export function useFeatureRequiredPlans(featureName: FeatureIdentifier): string[] {
+export function useFeatureRequiredPlans(featureName?: FeatureIdentifier): string[] {
   const { featureMap, getEdition } = useFeaturesContext()
   const { licenseInformation, CI_LICENSE_STATE, CD_LICENSE_STATE, FF_LICENSE_STATE, CCM_LICENSE_STATE } =
     useLicenseStore()
@@ -198,14 +198,15 @@ export function useFeatureRequiredPlans(featureName: FeatureIdentifier): string[
     return []
   }
 
-  const moduleType = featureMap.get(featureName)?.moduleType
+  const moduleType = featureName && featureMap.get(featureName)?.moduleType
   const currentEdition = getEdition({
     moduleType,
     licenseInformation,
     licenseState: { CI_LICENSE_STATE, CD_LICENSE_STATE, FF_LICENSE_STATE, CCM_LICENSE_STATE },
     isCommunity
   })
-  return getRequiredPlans(currentEdition, featureMap.get(featureName)?.restrictionMetadataMap)
+  const restrictionMetadataMap = featureName && featureMap.get(featureName)?.restrictionMetadataMap
+  return getRequiredPlans(currentEdition, restrictionMetadataMap)
 }
 
 function getRequiredPlans(currentEdition?: Editions, map?: RestrictionMetadataMap): string[] {

@@ -6,28 +6,43 @@ exports[`FeatureWarning FeatureWarningTooltip 1`] = `
     class="Layout--vertical StyledProps--main tooltip StyledProps--padding-medium"
   >
     <p
-      class="StyledProps--font StyledProps--main StyledProps--font-size-medium StyledProps--font-weight-semi-bold StyledProps--color StyledProps--color-grey800 StyledProps--padding-bottom-small"
+      class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-orange800 StyledProps--font-variation-form-message-warning StyledProps--font-weight-bold StyledProps--padding-bottom-xsmall"
+      style="display: flex; align-items: center;"
     >
-      common.feature.upgradeRequired.title
+      <span
+        class="bp3-icon StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-orange800"
+        data-icon="flash"
+      >
+        <svg
+          height="25"
+          viewBox="0 0 33 28"
+          width="25"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M3.773 17.341L20.885 1.75l-2.297 8.909h8.184L9.66 26.25l2.297-8.909z"
+            fill="#ff5310"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </span>
+      common.levelUp
     </p>
     <div
       class="Layout--vertical Layout--layout-spacing-small StyledProps--main"
     >
       <p
-        class="StyledProps--font StyledProps--main StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
+        class="StyledProps--font StyledProps--main StyledProps--font-size-small StyledProps--color StyledProps--color-white"
       >
-        common.feature.upgradeRequired.description
+        common.feature.levelUp.planMessage
+         
         <span>
           projectsOrgs.multipleProjects
         </span>
       </p>
-      <p
-        class="StyledProps--font StyledProps--main StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
-      >
-        common.feature.upgradeRequired.pleaseUpgrade
-      </p>
       <button
-        class="bp3-button Button--button StyledProps--font StyledProps--main Button--with-current-color Button--iconOnly Button--variation Button--variation-secondary Button--size Button--small"
+        class="bp3-button Button--button StyledProps--font StyledProps--main btn Button--with-current-color Button--iconOnly Button--variation Button--variation-primary Button--size Button--small"
         type="button"
       >
         <span

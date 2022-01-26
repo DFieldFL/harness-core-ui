@@ -76,7 +76,7 @@ function NewTemplatePopoverWrapper(): React.ReactElement {
       !canEdit ? (
         <RBACTooltip permission={PermissionIdentifier.EDIT_TEMPLATE} resourceType={ResourceType.TEMPLATE} />
       ) : !templatesEnabled ? (
-        <FeatureWarningTooltip featureName={FeatureIdentifier.TEMPLATE_SERVICE} isDarkMode />
+        <FeatureWarningTooltip featureName={FeatureIdentifier.TEMPLATE_SERVICE} />
       ) : undefined,
     [canEdit, templatesEnabled]
   )

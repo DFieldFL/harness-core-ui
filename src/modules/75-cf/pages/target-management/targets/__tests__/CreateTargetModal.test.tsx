@@ -20,6 +20,7 @@ import userEvent from '@testing-library/user-event'
 import { TestWrapper } from '@common/utils/testUtils'
 import * as useFeaturesMock from '@common/hooks/useFeatures'
 import * as usePlanEnforcementMock from '@cf/hooks/usePlanEnforcement'
+import type { CheckFeatureReturn } from 'framework/featureStore/featureStoreUtil'
 import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
 import CreateTargetModal, { CreateTargetModalProps } from '../CreateTargetModal'
 
@@ -158,9 +159,18 @@ describe('CreateTargetModal', () => {
 
   test('+ Target(s) button should show plan enforcement tooltip when user exceeds MAU limit', async () => {
     jest.spyOn(usePlanEnforcementMock, 'default').mockReturnValue({ isPlanEnforcementEnabled: true, isFreePlan: true })
-    jest
-      .spyOn(useFeaturesMock, 'useGetFirstDisabledFeature')
-      .mockReturnValue({ featureEnabled: false, disabledFeatureName: FeatureIdentifier.MAUS })
+    const mockedReturnValue = new Map<FeatureIdentifier, CheckFeatureReturn>()
+    mockedReturnValue.set(FeatureIdentifier.MAUS, {
+      enabled: false,
+      featureDetail: {
+        enabled: false,
+        featureName: FeatureIdentifier.MAUS,
+        moduleType: 'CF',
+        count: 100,
+        limit: 100
+      }
+    })
+    jest.spyOn(useFeaturesMock, 'useFeatures').mockReturnValue({ features: mockedReturnValue })
 
     renderComponent()
 

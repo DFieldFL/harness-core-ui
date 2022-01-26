@@ -11,6 +11,7 @@ import userEvent from '@testing-library/user-event'
 import { TestWrapper } from '@common/utils/testUtils'
 import * as useFeaturesMock from '@common/hooks/useFeatures'
 import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
+import type { CheckFeatureReturn } from 'framework/featureStore/featureStoreUtil'
 import * as usePlanEnforcementMock from '@cf/hooks/usePlanEnforcement'
 import AddToFlagButton, { AddToFlagButtonProps } from '../AddToFlagButton'
 
@@ -49,9 +50,18 @@ describe('AddToFlagButton', () => {
   })
 
   test('it should display plan enforcement popup when limits reached', async () => {
-    jest
-      .spyOn(useFeaturesMock, 'useGetFirstDisabledFeature')
-      .mockReturnValue({ featureEnabled: false, disabledFeatureName: FeatureIdentifier.MAUS })
+    const mockedReturnValue = new Map<FeatureIdentifier, CheckFeatureReturn>()
+    mockedReturnValue.set(FeatureIdentifier.MAUS, {
+      enabled: false,
+      featureDetail: {
+        enabled: false,
+        featureName: FeatureIdentifier.MAUS,
+        moduleType: 'CF',
+        count: 100,
+        limit: 100
+      }
+    })
+    jest.spyOn(useFeaturesMock, 'useFeatures').mockReturnValue({ features: mockedReturnValue })
 
     jest.spyOn(usePlanEnforcementMock, 'default').mockReturnValue({ isPlanEnforcementEnabled: true, isFreePlan: true })
 

@@ -51,7 +51,7 @@ exports[`FeatureWarningBanner FeatureWarningBanner 1`] = `
         </span>
       </p>
       <button
-        class="bp3-button Button--button StyledProps--font StyledProps--main Button--with-current-color Button--iconOnly Button--variation Button--variation-secondary Button--size Button--small"
+        class="bp3-button Button--button StyledProps--font StyledProps--main Button--with-current-color Button--iconOnly Button--variation Button--variation-primary Button--size Button--small"
         type="button"
       >
         <span

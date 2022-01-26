@@ -9,6 +9,7 @@
 declare const styles: {
   readonly bgColorOrange: string
   readonly bgColorWhite: string
+  readonly btn: string
   readonly expanded: string
   readonly explorePlans: string
   readonly infoIcon: string

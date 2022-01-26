@@ -41,6 +41,6 @@ describe('RBAC ThumbnailSelect', () => {
     act(() => {
       fireEvent.mouseOver(targetElement!)
     })
-    await waitFor(() => expect(queryByText('common.feature.upgradeRequired.title')).toBeTruthy())
+    await waitFor(() => expect(queryByText('common.levelUp')).toBeTruthy())
   })
 })

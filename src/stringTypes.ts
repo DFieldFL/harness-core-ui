@@ -200,6 +200,11 @@ export interface StringsMap {
   'common.failureRate': string
   'common.feature.keepGettingShipDone.requestUpgrade': string
   'common.feature.keepGettingShipDone.title': string
+  'common.feature.levelUp.description': string
+  'common.feature.levelUp.limitMessage.description': string
+  'common.feature.levelUp.limitMessage.includedInPlan': string
+  'common.feature.levelUp.limitMessage.thisMonth': string
+  'common.feature.levelUp.planMessage': string
   'common.feature.overuse.title': string
   'common.feature.upgradeRequired.description': string
   'common.feature.upgradeRequired.pleaseUpgrade': string
