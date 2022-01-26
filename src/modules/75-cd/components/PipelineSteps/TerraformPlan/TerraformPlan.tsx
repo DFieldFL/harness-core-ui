@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Accordion,
   Button,
@@ -20,7 +20,7 @@ import {
   MultiTypeInputType,
   Text
 } from '@wings-software/uicore'
-import { Classes, Dialog, IOptionProps } from '@blueprintjs/core'
+import { Classes, Dialog, IOptionProps, IDialogProps } from '@blueprintjs/core'
 import * as Yup from 'yup'
 import { v4 as uuid } from 'uuid'
 
@@ -58,16 +58,19 @@ import MultiTypeFieldSelector from '@common/components/MultiTypeFieldSelector/Mu
 
 import { useQueryParams } from '@common/hooks'
 import type { GitQueryParams } from '@common/interfaces/RouteInterfaces'
-import type { StringNGVariable } from 'services/cd-ng'
+import type { StringNGVariable, TerraformVarFileWrapper } from 'services/cd-ng'
 
 import type { StringsMap } from 'stringTypes'
 import { getNameAndIdentifierSchema } from '@pipeline/components/PipelineSteps/Steps/StepsValidateUtils'
+import TerraformPlanWizard from './TerraformPlanWizard'
+
 import {
   CommandTypes,
   onSubmitTFPlanData,
   TerraformPlanProps,
   TerraformPlanVariableStepProps,
-  TFPlanFormData
+  TFPlanFormData,
+  TerraformStoreTypes
 } from '../Common/Terraform/TerraformInterfaces'
 import TfVarFileList from './TfPlanVarFileList'
 import ConfigForm from './TfPlanConfigForm'
@@ -112,7 +115,43 @@ function TerraformPlanWidget(
   const query = useQueryParams()
   const sectionId = (query as any).sectionId || ''
 
-  const [showModal, setShowModal] = React.useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [showRemoteWizard, setShowRemoteWizard] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
+
+  const inlineInitValues: TerraformVarFileWrapper = {
+    varFile: {
+      identifier: '',
+      spec: {},
+      type: TerraformStoreTypes.Inline
+    }
+  }
+  const [selectedVar, setSelectedVar] = useState(inlineInitValues as any)
+
+  const DIALOG_PROPS: IDialogProps = {
+    isOpen: true,
+    usePortal: true,
+    autoFocus: true,
+    canEscapeKeyClose: true,
+    canOutsideClickClose: true,
+    enforceFocus: false,
+    style: { width: 1175, minHeight: 640, borderLeft: 0, paddingBottom: 0, position: 'relative', overflow: 'hidden' }
+  }
+
+  const remoteInitialValues: TerraformVarFileWrapper = {
+    varFile: {
+      identifier: '',
+      spec: {},
+      type: TerraformStoreTypes.Remote
+    }
+  }
+
+  const onCloseOfRemoteWizard = () => {
+    setShowRemoteWizard(false)
+    setIsEditMode(false)
+    setSelectedVar(remoteInitialValues)
+  }
+
   return (
     <Formik<TFPlanFormData>
       onSubmit={values => {
@@ -244,7 +283,7 @@ function TerraformPlanWidget(
                 <div className={cx(css.configFile, css.addMarginBottom)}>
                   <div className={css.configField}>
                     {!formik.values?.spec?.configuration?.configFiles?.store?.spec?.folderPath && (
-                      <a className={css.configPlaceHolder} onClick={() => setShowModal(true)}>
+                      <a className={css.configPlaceHolder} onClick={() => setShowRemoteWizard(true)}>
                         {getString('cd.configFilePlaceHolder')}
                       </a>
                     )}
@@ -259,7 +298,7 @@ function TerraformPlanWidget(
                         icon="Edit"
                         withoutBoxShadow
                         iconProps={{ size: 16 }}
-                        onClick={() => setShowModal(true)}
+                        onClick={() => setShowRemoteWizard(true)}
                         data-name="config-edit"
                         withoutCurrentColor={true}
                         className={css.editBtn}
@@ -391,6 +430,47 @@ function TerraformPlanWidget(
                 />
               </Accordion>
             </>
+            {showRemoteWizard && (
+              <Dialog
+                {...DIALOG_PROPS}
+                isOpen={true}
+                isCloseButtonShown
+                onClose={() => {
+                  setShowRemoteWizard(false)
+                }}
+                className={cx(css.modal, Classes.DIALOG)}
+              >
+                <TerraformPlanWizard
+                  formik={formik}
+                  isEditMode={isEditMode}
+                  selectedVar={selectedVar}
+                  remoteInitialValues={remoteInitialValues}
+                  allowableTypes={allowableTypes}
+                  setIsEditMode={setIsEditMode}
+                  onSubmitCallBack={(data: any) => {
+                    window.console.log('data: ', data)
+                    const configObject = {
+                      ...data.spec?.configuration?.configFiles
+                    }
+
+                    if (configObject?.store.spec.gitFetchType === 'Branch') {
+                      delete configObject.store.spec.commitId
+                    } else if (configObject?.store.spec.gitFetchType === 'Commit') {
+                      delete configObject.store.spec.branch
+                    }
+
+                    const valObj = cloneDeep(formik.values)
+                    configObject.store.type = configObject?.store?.spec?.connectorRef?.connector?.type || 'Git'
+                    set(valObj, 'spec.configuration.configFiles', { ...configObject })
+
+                    formik.setValues(valObj)
+
+                    setShowRemoteWizard(false)
+                  }}
+                  onCloseOfRemoteWizard={onCloseOfRemoteWizard}
+                />
+              </Dialog>
+            )}
 
             {showModal && (
               <Dialog

@@ -1,0 +1,351 @@
+/*
+ * Copyright 2021 Harness Inc. All rights reserved.
+ * Use of this source code is governed by the PolyForm Shield 1.0.0 license
+ * that can be found in the licenses directory at the root of this repository, also available at
+ * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
+ */
+
+import React, { useState, useEffect } from 'react'
+import {
+  Button,
+  Color,
+  Formik,
+  Layout,
+  Text,
+  Heading,
+  Card,
+  Icon,
+  ButtonVariation,
+  ButtonSize,
+  FormInput,
+  SelectOption,
+  getMultiTypeFromValue,
+  MultiTypeInputType
+} from '@wings-software/uicore'
+import * as Yup from 'yup'
+import { useParams } from 'react-router-dom'
+import { Form } from 'formik'
+import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
+import { useStrings } from 'framework/strings'
+import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
+import { ConfigureOptions } from '@common/components/ConfigureOptions/ConfigureOptions'
+import type { Connector } from '../Common/Terraform/TerraformInterfaces'
+
+import css from '../Common/Terraform/Editview/TerraformVarfile.module.scss'
+
+const allowedTypes = ['Git', 'Github', 'GitLab', 'Bitbucket']
+const tfVarIcons: any = {
+  Git: 'service-github',
+  Github: 'github',
+  GitLab: 'service-gotlab',
+  Bitbucket: 'bitbucket'
+}
+export type TFVarStores = 'Git' | 'Github' | 'GitLab' | 'Bitbucket'
+
+export const TerraformConfigStepOne: React.FC<any> = props => {
+  const { setConnectorView, setSelectedConnector, data, isReadonly, allowableTypes, nextStep, isEditMode } = props
+  window.console.log('data: ', data)
+  const { getString } = useStrings()
+  const { expressions } = useVariablesExpression()
+
+  const { accountId, projectIdentifier, orgIdentifier } = useParams<{
+    projectIdentifier: string
+    orgIdentifier: string
+    accountId: string
+  }>()
+
+  const [selectedType, setSelectedType] = useState('')
+
+  useEffect(() => {
+    setSelectedType(data?.spec?.configuration?.configFiles?.store?.type)
+  }, [isEditMode])
+
+  return (
+    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfVarStore}>
+      <Heading level={2} style={{ color: Color.GREY_800, fontSize: 24 }} margin={{ bottom: 'large' }}>
+        {getString('pipelineSteps.configFiles')}
+      </Heading>
+
+      <Layout.Horizontal flex={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+        {allowedTypes.map(item => (
+          <div key={item} className={css.squareCardContainer}>
+            <Card
+              className={css.manifestIcon}
+              selected={item === selectedType}
+              data-testid={`varStore-${item}`}
+              onClick={() => {
+                setSelectedType(item)
+                setSelectedConnector(item)
+              }}
+            >
+              <Icon name={tfVarIcons[item]} size={26} />
+            </Card>
+            <Text color={Color.BLACK_100}>{item}</Text>
+          </div>
+        ))}
+      </Layout.Horizontal>
+
+      <Formik
+        formName="tfPlanConfigForm"
+        enableReinitialize={true}
+        onSubmit={() => {
+          /* istanbul ignore next */
+          setSelectedType('')
+        }}
+        initialValues={data}
+        validationSchema={Yup.object().shape({
+          spec: Yup.object().shape({
+            configuration: Yup.object().shape({
+              configFiles: Yup.object().shape({
+                store: Yup.object().shape({
+                  spec: Yup.object().shape({
+                    connectorRef: Yup.string().required(getString('pipelineSteps.build.create.connectorRequiredError'))
+                  })
+                })
+              })
+            })
+          })
+        })}
+      >
+        {formik => {
+          return (
+            <Form>
+              <div className={css.formContainerStepOne}>
+                {selectedType && (
+                  <Layout.Horizontal
+                    spacing={'medium'}
+                    flex={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}
+                  >
+                    <FormMultiTypeConnectorField
+                      label={getString('connector')}
+                      type={['Git', 'Github', 'Gitlab', 'Bitbucket']}
+                      width={260}
+                      name="spec.configuration.configFiles.store.spec.connectorRef"
+                      placeholder={getString('select')}
+                      accountIdentifier={accountId}
+                      projectIdentifier={projectIdentifier}
+                      orgIdentifier={orgIdentifier}
+                      style={{ marginBottom: 10 }}
+                      multiTypeProps={{ expressions, allowableTypes }}
+                    />
+                    <Button
+                      variation={ButtonVariation.LINK}
+                      size={ButtonSize.SMALL}
+                      disabled={isReadonly}
+                      id="new-config-connector"
+                      text="New Connector"
+                      // className={css.addNewManifest}
+                      icon="plus"
+                      iconProps={{ size: 12 }}
+                      onClick={() => {
+                        setConnectorView(true)
+                        nextStep?.({ ...data, selectedType })
+                      }}
+                    />
+                  </Layout.Horizontal>
+                )}
+              </div>
+
+              <Layout.Horizontal spacing="xxlarge">
+                <Button
+                  variation={ButtonVariation.PRIMARY}
+                  type="submit"
+                  text={getString('continue')}
+                  rightIcon="chevron-right"
+                  onClick={() => nextStep?.({ ...formik.values, selectedType })}
+                  // disabled={}
+                />
+              </Layout.Horizontal>
+            </Form>
+          )
+        }}
+      </Formik>
+    </Layout.Vertical>
+  )
+}
+
+export const TerraformConfigStepTwo: React.FC<any> = props => {
+  const { previousStep, prevStepData, onSubmitCallBack, isReadonly = false, allowableTypes } = props
+  const { getString } = useStrings()
+  const { expressions } = useVariablesExpression()
+
+  const gitFetchTypes: SelectOption[] = [
+    { label: getString('gitFetchTypes.fromBranch'), value: getString('pipelineSteps.deploy.inputSet.branch') },
+    { label: getString('gitFetchTypes.fromCommit'), value: getString('pipelineSteps.commitIdValue') }
+  ]
+
+  return (
+    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfVarStore}>
+      <Text font="large" color={Color.GREY_800}>
+        {getString('cd.varFileDetails')}
+      </Text>
+      <Formik
+        formName="tfRemoteWizardForm"
+        initialValues={prevStepData}
+        onSubmit={onSubmitCallBack}
+        validationSchema={Yup.object().shape({
+          spec: Yup.object().shape({
+            configuration: Yup.object().shape({
+              configFiles: Yup.object().shape({
+                store: Yup.object().shape({
+                  spec: Yup.object().shape({
+                    gitFetchType: Yup.string().required(getString('cd.gitFetchTypeRequired')),
+                    branch: Yup.string().when('gitFetchType', {
+                      is: 'Branch',
+                      then: Yup.string().trim().required(getString('validation.branchName'))
+                    }),
+                    commitId: Yup.string().when('gitFetchType', {
+                      is: 'CommitId',
+                      then: Yup.string().trim().required(getString('validation.commitId'))
+                    }),
+                    folderPath: Yup.string().required(getString('pipeline.manifestType.folderPathRequired'))
+                  })
+                })
+              })
+            })
+          })
+        })}
+      >
+        {formik => {
+          const connectorValue = formik.values.spec?.configuration?.configFiles?.store?.spec?.connectorRef as Connector
+          return (
+            <Form>
+              <div className={css.tfRemoteForm}>
+                {(connectorValue?.connector?.spec?.connectionType === 'Account' ||
+                  connectorValue?.connector?.spec?.type === 'Account') && (
+                  <div>
+                    <FormInput.MultiTextInput
+                      label={getString('pipelineSteps.repoName')}
+                      name="spec.configuration.configFiles.store.spec.repoName"
+                      placeholder={getString('pipelineSteps.repoName')}
+                      multiTextInputProps={{ expressions, allowableTypes: allowableTypes }}
+                    />
+                    {getMultiTypeFromValue(formik.values?.spec?.configuration?.configFiles?.store?.spec?.repoName) ===
+                      MultiTypeInputType.RUNTIME && (
+                      <ConfigureOptions
+                        style={{ alignSelf: 'center', marginTop: 1 }}
+                        value={formik.values?.spec?.configuration?.configFiles?.store?.spec?.repoName as string}
+                        type="String"
+                        variableName="configuration.configFiles.store.spec.repoName"
+                        showRequiredField={false}
+                        showDefaultField={false}
+                        showAdvanced={true}
+                        onChange={value => formik.setFieldValue('configuration.configFiles.store.spec.repoName', value)}
+                        isReadonly={props.isReadonly}
+                      />
+                    )}
+                  </div>
+                )}
+                <div>
+                  <FormInput.Select
+                    items={gitFetchTypes}
+                    name="spec.configuration.configFiles.store.spec.gitFetchType"
+                    label={getString('pipeline.manifestType.gitFetchTypeLabel')}
+                    placeholder={getString('pipeline.manifestType.gitFetchTypeLabel')}
+                  />
+                </div>
+                {formik.values?.spec?.configuration?.configFiles?.store?.spec?.gitFetchType ===
+                  gitFetchTypes[0].value && (
+                  <div>
+                    <FormInput.MultiTextInput
+                      label={getString('pipelineSteps.deploy.inputSet.branch')}
+                      placeholder={getString('pipeline.manifestType.branchPlaceholder')}
+                      name="spec.configuration.configFiles.store.spec.branch"
+                      multiTextInputProps={{ expressions, allowableTypes: props.allowableTypes }}
+                    />
+                    {getMultiTypeFromValue(formik.values?.spec?.configuration?.configFiles?.store?.spec?.branch) ===
+                      MultiTypeInputType.RUNTIME && (
+                      <ConfigureOptions
+                        style={{ alignSelf: 'center', marginTop: 1 }}
+                        value={formik.values?.spec?.configuration?.configFiles?.store?.spec?.branch as string}
+                        type="String"
+                        variableName="configuration.spec.configFiles.store.spec.branch"
+                        showRequiredField={false}
+                        showDefaultField={false}
+                        showAdvanced={true}
+                        onChange={value => formik.setFieldValue('configuration.configFiles.store.spec.branch', value)}
+                        isReadonly={props.isReadonly}
+                      />
+                    )}
+                  </div>
+                )}
+
+                {formik.values?.spec?.configuration?.configFiles?.store?.spec?.gitFetchType ===
+                  gitFetchTypes[1].value && (
+                  <div>
+                    <FormInput.MultiTextInput
+                      label={getString('pipeline.manifestType.commitId')}
+                      placeholder={getString('pipeline.manifestType.commitPlaceholder')}
+                      name="spec.configuration.configFiles.store.spec.commitId"
+                      multiTextInputProps={{ expressions, allowableTypes: props.allowableTypes }}
+                    />
+                    {getMultiTypeFromValue(formik.values?.spec?.configuration?.configFiles?.store?.spec?.commitId) ===
+                      MultiTypeInputType.RUNTIME && (
+                      <ConfigureOptions
+                        style={{ alignSelf: 'center', marginTop: 1 }}
+                        value={formik.values?.spec?.configuration?.configFiles?.store?.spec?.commitId as string}
+                        type="String"
+                        variableName="spec.configuration.configFiles.store.spec.commitId"
+                        showRequiredField={false}
+                        showDefaultField={false}
+                        showAdvanced={true}
+                        onChange={value =>
+                          formik.setFieldValue('spec.configuration.configFiles.spec.store.spec.commitId', value)
+                        }
+                        isReadonly={isReadonly}
+                      />
+                    )}
+                  </div>
+                )}
+
+                <div>
+                  <FormInput.MultiTextInput
+                    label={getString('cd.folderPath')}
+                    placeholder={getString('pipeline.manifestType.pathPlaceholder')}
+                    name="spec.configuration.configFiles.store.spec.folderPath"
+                    multiTextInputProps={{ expressions, allowableTypes: props.allowableTypes }}
+                  />
+                  {getMultiTypeFromValue(formik.values?.spec?.configuration?.configFiles?.store?.spec?.folderPath) ===
+                    MultiTypeInputType.RUNTIME && (
+                    <ConfigureOptions
+                      style={{ alignSelf: 'center', marginTop: 1 }}
+                      value={formik.values?.spec?.configuration?.configFiles?.store?.spec?.folderPath as string}
+                      type="String"
+                      variableName="formik.values.spec?.configuration?.configFiles?.store.spec?.folderPath"
+                      showRequiredField={false}
+                      showDefaultField={false}
+                      showAdvanced={true}
+                      onChange={value =>
+                        formik.setFieldValue(
+                          'formik.values.spec?.configuration?.configFiles?.store.spec?.folderPath',
+                          value
+                        )
+                      }
+                      isReadonly={props.isReadonly}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <Layout.Horizontal spacing="xxlarge">
+                <Button
+                  text={getString('back')}
+                  variation={ButtonVariation.SECONDARY}
+                  icon="chevron-left"
+                  onClick={() => previousStep?.()}
+                  data-name="tf-remote-back-btn"
+                />
+                <Button
+                  type="submit"
+                  variation={ButtonVariation.PRIMARY}
+                  text={getString('submit')}
+                  rightIcon="chevron-right"
+                />
+              </Layout.Horizontal>
+            </Form>
+          )
+        }}
+      </Formik>
+    </Layout.Vertical>
+  )
+}

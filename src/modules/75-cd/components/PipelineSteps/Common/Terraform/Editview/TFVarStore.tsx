@@ -21,7 +21,8 @@ import {
   Layout,
   MultiTypeInputType,
   StepProps,
-  Text
+  Text,
+  ButtonSize
 } from '@wings-software/uicore'
 
 import { Form } from 'formik'
@@ -44,6 +45,7 @@ export const TFConnectorMap: Record<TFVarStores | string, ConnectorInfoDTO['type
 }
 
 const allowedTypes = ['Git', 'Github', 'GitLab', 'Bitbucket']
+type ConnectorTypes = 'Git' | 'Github' | 'GitLab' | 'Bitbucket'
 
 const tfVarIcons: any = {
   Git: 'service-github',
@@ -56,13 +58,16 @@ interface TFVarStoreProps {
   initialValues: any
   isEditMode: boolean
   allowableTypes: MultiTypeInputType[]
+  handleConnectorViewChange?: (val: ConnectorTypes) => void
 }
 
 export const TFVarStore: React.FC<StepProps<any> & TFVarStoreProps> = ({
+  prevStepData,
   nextStep,
   initialValues,
   isEditMode,
-  allowableTypes
+  allowableTypes,
+  handleConnectorViewChange
 }) => {
   const [selectedType, setSelectedType] = React.useState('')
   const { getString } = useStrings()
@@ -133,28 +138,49 @@ export const TFVarStore: React.FC<StepProps<any> & TFVarStoreProps> = ({
             <Form>
               <div className={css.formContainerStepOne}>
                 {selectedType && (
-                  <FormMultiTypeConnectorField
-                    label={
-                      <Text style={{ display: 'flex', alignItems: 'center' }}>
-                        {selectedType} {getString('connector')}
-                        <Button
-                          icon="question"
-                          minimal
-                          tooltip={getString('connectors.title.gitConnector')}
-                          iconProps={{ size: 14 }}
-                        />
-                      </Text>
-                    }
-                    type={TFConnectorMap[selectedType]}
-                    width={400}
-                    name="varFile.spec.store.spec.connectorRef"
-                    placeholder={`${getString('select')} ${selectedType} ${getString('connector')}`}
-                    accountIdentifier={accountId}
-                    projectIdentifier={projectIdentifier}
-                    orgIdentifier={orgIdentifier}
-                    style={{ marginBottom: 10 }}
-                    multiTypeProps={{ expressions, allowableTypes }}
-                  />
+                  <Layout.Horizontal
+                    spacing={'medium'}
+                    flex={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}
+                  >
+                    <FormMultiTypeConnectorField
+                      label={
+                        <Text style={{ display: 'flex', alignItems: 'center' }}>
+                          {selectedType} {getString('connector')}
+                          <Button
+                            icon="question"
+                            minimal
+                            tooltip={getString('connectors.title.gitConnector')}
+                            iconProps={{ size: 14 }}
+                          />
+                        </Text>
+                      }
+                      type={TFConnectorMap[selectedType]}
+                      width={400}
+                      name="varFile.spec.store.spec.connectorRef"
+                      placeholder={`${getString('select')} ${selectedType} ${getString('connector')}`}
+                      accountIdentifier={accountId}
+                      projectIdentifier={projectIdentifier}
+                      orgIdentifier={orgIdentifier}
+                      style={{ marginBottom: 10 }}
+                      multiTypeProps={{ expressions, allowableTypes }}
+                    />
+                    <Button
+                      variation={ButtonVariation.LINK}
+                      size={ButtonSize.SMALL}
+                      // disabled={isReadonly || !canCreate}
+                      id="new-manifest-connector"
+                      text="New Connector"
+                      // className={css.addNewManifest}
+                      icon="plus"
+                      iconProps={{ size: 12 }}
+                      onClick={() => {
+                        if (handleConnectorViewChange) {
+                          handleConnectorViewChange(selectedType as ConnectorTypes)
+                        }
+                        nextStep?.({ ...prevStepData, store: selectedType })
+                      }}
+                    />
+                  </Layout.Horizontal>
                 )}
               </div>
 
