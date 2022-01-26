@@ -89,7 +89,7 @@
     "@harness/monaco-yaml": "^1.0.0",
     "@harness/ng-tooltip": "^1.30.68",
     "@harness/telemetry": "^1.0.37",
-    "@harness/uicore": "^1.23.0",
+    "@harness/uicore": "^1.32.0",
     "@popperjs/core": "^2.4.2",
     "@projectstorm/react-diagrams-core": "^6.6.0",
     "@urql/exchange-request-policy": "^0.1.3",
