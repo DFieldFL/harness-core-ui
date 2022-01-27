@@ -7,12 +7,6 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
-  readonly connectorInfo: string
-  readonly connectorLabel: string
-  readonly connectorNameId: string
-  readonly editBtn: string
-  readonly gitBranchIcon: string
-  readonly gitInfo: string
   readonly connectorDetails: string
   readonly connectorLabel: string
   readonly connectorNameId: string
@@ -28,15 +22,8 @@ declare const styles: {
   readonly iconCheck: string
   readonly iconChecked: string
   readonly item: string
-<<<<<<< HEAD
-  readonly itemWithGit: string
-  readonly label: string
-  readonly lastConnected: string
-  readonly listItem: string
-=======
   readonly label: string
   readonly leftInfo: string
->>>>>>> feat: [PL-20872]: merged
   readonly noDataCardContainerConnector: string
   readonly noDataCardContainerContent: string
   readonly redStatus: string

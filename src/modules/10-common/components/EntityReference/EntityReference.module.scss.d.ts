@@ -8,14 +8,6 @@
 // this is an auto-generated file, do not update this manually
 declare const styles: {
   readonly container: string
-  readonly listItem: string
-  readonly noDataCardImg: string
-  readonly noDataContainer: string
-  readonly referenceList: string
-  readonly referenceListOverflow: string
-  readonly search: string
-  readonly searchBox: string
-  readonly selectedItem: string
   readonly noDataCardImg: string
   readonly noDataContainer: string
   readonly search: string
