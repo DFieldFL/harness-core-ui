@@ -133,7 +133,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
                     <FormMultiTypeConnectorField
                       label={getString('connector')}
                       type={ConnectorMap[selectedType]}
-                      width={260}
+                      width={400}
                       name="spec.configuration.configFiles.store.spec.connectorRef"
                       placeholder={getString('select')}
                       accountIdentifier={accountId}
