@@ -20,7 +20,8 @@ import {
   FormInput,
   SelectOption,
   getMultiTypeFromValue,
-  MultiTypeInputType
+  MultiTypeInputType,
+  StepProps
 } from '@wings-software/uicore'
 import cx from 'classnames'
 import * as Yup from 'yup'
@@ -37,7 +38,16 @@ import type { Connector } from '../Common/Terraform/TerraformInterfaces'
 import css from './TerraformConfigForm.module.scss'
 import stepCss from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
-export const TerraformConfigStepOne: React.FC<any> = ({
+interface TerraformConfigStepOneProps {
+  data: any
+  isReadonly: boolean
+  allowableTypes: MultiTypeInputType[]
+  isEditMode: boolean
+  setConnectorView: (val: boolean) => void
+  setSelectedConnector: (val: ConnectorTypes) => void
+}
+
+export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigStepOneProps> = ({
   data,
   isReadonly,
   allowableTypes,
@@ -79,7 +89,7 @@ export const TerraformConfigStepOne: React.FC<any> = ({
               data-testid={`varStore-${item}`}
               onClick={() => {
                 setSelectedType(item)
-                setSelectedConnector(item)
+                setSelectedConnector(item as ConnectorTypes)
               }}
             >
               <Icon name={tfVarIcons[item]} size={26} />
@@ -168,7 +178,13 @@ export const TerraformConfigStepOne: React.FC<any> = ({
   )
 }
 
-export const TerraformConfigStepTwo: React.FC<any> = ({
+interface TerraformConfigStepTwoProps {
+  allowableTypes: MultiTypeInputType[]
+  isReadonly: boolean
+  onSubmitCallBack: any
+}
+
+export const TerraformConfigStepTwo: React.FC<StepProps<any> & TerraformConfigStepTwoProps> = ({
   previousStep,
   prevStepData,
   onSubmitCallBack,
