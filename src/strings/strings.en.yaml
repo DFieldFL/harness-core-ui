@@ -658,7 +658,7 @@ delegate:
   delegateSizeUndefined: 'Delegate Size is undefined'
   hostName: 'Hostname'
   useExistingSelectors: 'Use existing Delegate selectors'
-  verifyDelegateYamlCmnd: '$ kubectl apply -f harness-delegate.yaml'
+  verifyDelegateYamlCmnd: '$ kubectl apply -f harness-delegate.yml'
   delegateNameRequired: 'Delegate Name is Required.'
   delegateSizeRequired: 'Delegate Size is Required.'
   totalMem: 'Total Mem'

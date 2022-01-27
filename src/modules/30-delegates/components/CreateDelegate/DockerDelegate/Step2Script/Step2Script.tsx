@@ -20,8 +20,8 @@ import { useGenerateDockerDelegateYAML, DelegateSetupDetails } from 'services/po
 import type { DockerDelegateWizardData } from '../CreateDockerDelegate'
 import css from './Step2Script.module.scss'
 
-const dockerFileName = 'docker-compose.yaml'
-const dockerComposeCommand = 'docker-compose -f docker-compose.yaml up -d'
+const dockerFileName = 'docker-compose.yml'
+const dockerComposeCommand = `docker-compose -f ${dockerFileName} up -d`
 
 const getCommandBlock = (label: string, command: string) => (
   <>

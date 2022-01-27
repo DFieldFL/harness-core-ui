@@ -18,6 +18,8 @@ import type { K8sDelegateWizardData } from '../DelegateSetupStep/DelegateSetupSt
 
 import css from '../CreateK8sDelegate.module.scss'
 
+const k8sFileName = 'harness-delegate.yml'
+
 const Stepk8ReviewScript: React.FC<StepProps<K8sDelegateWizardData>> = props => {
   const { getString } = useStrings()
   const { accountId, orgIdentifier, projectIdentifier } = useParams<ProjectPathProps>()
@@ -51,7 +53,7 @@ const Stepk8ReviewScript: React.FC<StepProps<K8sDelegateWizardData>> = props => 
     if (linkRef?.current) {
       const content = new Blob([generatedYaml as BlobPart], { type: 'data:text/plain;charset=utf-8' })
       linkRef.current.href = window.URL.createObjectURL(content)
-      linkRef.current.download = `harness-delegate.yaml`
+      linkRef.current.download = k8sFileName
       linkRef.current.click()
     }
   }
@@ -62,7 +64,7 @@ const Stepk8ReviewScript: React.FC<StepProps<K8sDelegateWizardData>> = props => 
           <div className={css.collapseDiv}>
             <YamlBuilder
               entityType="Delegates"
-              fileName={`harness-delegate.yaml`}
+              fileName={k8sFileName}
               isReadOnlyMode={true}
               isEditModeSupported={false}
               existingYaml={generatedYaml}

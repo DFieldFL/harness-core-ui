@@ -173,7 +173,7 @@ exports[`Create Docker Step2Script render component and go back 1`] = `
           <p
             class="StyledProps--font StyledProps--main StyledProps--margin-right-xxlarge StyledProps--font-small"
           >
-            $ docker-compose -f docker-compose.yaml up -d
+            $ docker-compose -f docker-compose.yml up -d
           </p>
           <span
             class="bp3-popover-wrapper"
