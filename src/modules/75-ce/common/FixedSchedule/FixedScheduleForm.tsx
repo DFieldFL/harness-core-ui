@@ -42,6 +42,7 @@ import css from './FixedScheduleForm.module.scss'
 
 interface FixedScheduleFormProps {
   schedule?: FixedScheduleClient
+  scheduleIndex?: number
   closeDialog: () => void
   isEdit?: boolean
   addSchedule: (schedule: FixedScheduleClient) => void
@@ -112,7 +113,9 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
       await validateSchedules(
         {
           schedules: [
-            ...props.allSchedules.map(s => Utils.convertScheduleClientToSchedule(s, idParams)),
+            ...props.allSchedules
+              .filter((_, i) => i !== props.scheduleIndex)
+              .map(s => Utils.convertScheduleClientToSchedule(s, idParams)),
             Utils.convertScheduleClientToSchedule(updatedData, idParams)
           ]
         },

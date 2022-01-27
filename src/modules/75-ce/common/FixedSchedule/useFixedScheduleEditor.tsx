@@ -13,6 +13,7 @@ import FixedScheduleForm from './FixedScheduleForm'
 
 interface UseFixedScheduleEditorProps {
   schedule?: FixedScheduleClient
+  scheduleIndex?: number
   addSchedule: (schedule: FixedScheduleClient) => void
   isEdit?: boolean
   allCreatedSchedules: FixedScheduleClient[]
@@ -29,6 +30,7 @@ const useFixedScheduleEditor = (props: UseFixedScheduleEditorProps) => {
       <FixedScheduleDialog onClose={closeModal}>
         <FixedScheduleForm
           schedule={props.schedule}
+          scheduleIndex={props.scheduleIndex}
           closeDialog={closeModal}
           addSchedule={onAddition}
           isEdit={props.isEdit}
