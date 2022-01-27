@@ -23,6 +23,7 @@ interface GridProps<T extends Record<string, unknown>> {
   gridPageIndex?: number
   pageSize?: number
   fetchData?: (pageIndex: number, pageSize: number) => void
+  isRowClickable?: boolean
 }
 
 const Grid = <T extends Record<string, unknown>>(props: GridProps<T>): JSX.Element => {
@@ -34,7 +35,8 @@ const Grid = <T extends Record<string, unknown>>(props: GridProps<T>): JSX.Eleme
     fetchData,
     totalItemCount = 0,
     pageSize: PAGE_SIZE = 10,
-    gridPageIndex = 0
+    gridPageIndex = 0,
+    isRowClickable
   } = props
 
   const defaultColumn = React.useMemo(
@@ -80,7 +82,7 @@ const Grid = <T extends Record<string, unknown>>(props: GridProps<T>): JSX.Eleme
             return (
               <div
                 {...row.getRowProps()}
-                className={css.tr}
+                className={cx(css.tr, { [css.pointer]: isRowClickable })}
                 key={idx}
                 onClick={() => {
                   onRowClick && onRowClick(row)

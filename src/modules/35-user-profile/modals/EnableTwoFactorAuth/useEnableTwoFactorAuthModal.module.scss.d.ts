@@ -10,7 +10,6 @@ declare const styles: {
   readonly copy: string
   readonly crossIcon: string
   readonly description: string
-  readonly dialog: string
   readonly qrCode: string
   readonly view: string
 }

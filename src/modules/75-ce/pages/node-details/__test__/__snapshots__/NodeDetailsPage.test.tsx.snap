@@ -67,6 +67,12 @@ exports[`test cases for Node details Page should be able to render the details p
           </div>
         </div>
       </div>
+      <h2
+        class="StyledProps--font StyledProps--font-h2 StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold"
+        level="2"
+      >
+        name
+      </h2>
     </div>
   </div>
   <div

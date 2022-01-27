@@ -8,6 +8,7 @@
 // this is an auto-generated file, do not update this manually
 declare const styles: {
   readonly durationAndStatus: string
+  readonly flexLayout: string
   readonly main: string
   readonly progressBar: string
   readonly waitAFew: string

@@ -77,9 +77,9 @@ import {
 } from '@pipeline/utils/runPipelineUtils'
 import { useMutateAsGet, useQueryParams } from '@common/hooks'
 import { yamlStringify } from '@common/utils/YamlHelperMethods'
-import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import { PipelineActions } from '@common/constants/TrackingConstants'
 import { useTelemetry } from '@common/hooks/useTelemetry'
+import { useGetYamlWithTemplateRefsResolved } from 'services/template-ng'
 import type { InputSetDTO } from '../InputSetForm/InputSetForm'
 import { InputSetSelector, InputSetSelectorProps } from '../InputSetSelector/InputSetSelector'
 import { clearRuntimeInput, validatePipeline, getErrorsList } from '../PipelineStudio/StepUtil'
@@ -148,7 +148,6 @@ function RunPipelineFormBasic({
   const { getString } = useStrings()
   const { isGitSyncEnabled } = useAppStore()
   const [runClicked, setRunClicked] = useState(false)
-  const { RUN_INDIVIDUAL_STAGE } = useFeatureFlags()
   const [expressionFormState, setExpressionFormState] = useState<KVPair>({})
   const stageSelectionRef = useRef(false)
   const [selectedStageData, setSelectedStageData] = useState<StageSelectionData>({
@@ -158,7 +157,7 @@ function RunPipelineFormBasic({
   })
   const [loadingInputSetUpdate, setLoadingInputSetUpdate] = useState(false)
 
-  const { data: stageExecutionData, refetch: getStagesExecutionList } = useGetStagesExecutionList({
+  const { data: stageExecutionData } = useGetStagesExecutionList({
     queryParams: {
       accountIdentifier: accountId,
       orgIdentifier,
@@ -166,15 +165,12 @@ function RunPipelineFormBasic({
       pipelineIdentifier,
       branch,
       repoIdentifier
-    },
-    lazy: true,
-    debounce: 500
+    }
   })
 
   useEffect(() => {
     getInputSetsList()
     getTemplateFromPipeline()
-    RUN_INDIVIDUAL_STAGE && getStagesExecutionList()
   }, [])
 
   const { mutate: createInputSet, loading: createInputSetLoading } = useCreateInputSetForPipeline({
@@ -255,6 +251,21 @@ function RunPipelineFormBasic({
       branch
     }
   })
+
+  const { data: templateRefsResolvedPipeline, loading: loadingResolvedPipeline } = useMutateAsGet(
+    useGetYamlWithTemplateRefsResolved,
+    {
+      queryParams: {
+        accountIdentifier: accountId,
+        orgIdentifier,
+        pipelineIdentifier,
+        projectIdentifier
+      },
+      body: {
+        originalEntityYaml: yamlStringify(parse(defaultTo(pipelineResponse?.data?.yamlPipeline, ''))?.pipeline)
+      }
+    }
+  )
 
   const { mutate: runPipeline, loading: runLoading } = usePostPipelineExecuteWithInputSetYaml({
     queryParams: {
@@ -500,6 +511,10 @@ function RunPipelineFormBasic({
   ])
 
   const pipeline: PipelineInfoConfig | undefined = parse(defaultTo(pipelineResponse?.data?.yamlPipeline, ''))?.pipeline
+
+  const resolvedPipeline: PipelineInfoConfig | undefined = parse(
+    defaultTo(templateRefsResolvedPipeline?.data?.mergedPipelineYaml, '')
+  )
 
   const valuesPipelineRef = useRef<PipelineInfoConfig>()
 
@@ -761,6 +776,7 @@ function RunPipelineFormBasic({
   const shouldShowPageSpinner = useCallback(() => {
     return (
       loadingPipeline ||
+      loadingResolvedPipeline ||
       loadingTemplate ||
       runLoading ||
       runStageLoading ||
@@ -768,7 +784,16 @@ function RunPipelineFormBasic({
       reRunLoading ||
       reRunStagesLoading
     )
-  }, [loadingPipeline, loadingTemplate, runLoading, runStageLoading, inputSetLoading, reRunLoading, reRunStagesLoading])
+  }, [
+    loadingPipeline,
+    loadingResolvedPipeline,
+    loadingTemplate,
+    runLoading,
+    runStageLoading,
+    inputSetLoading,
+    reRunLoading,
+    reRunStagesLoading
+  ])
 
   if (shouldShowPageSpinner()) {
     return <PageSpinner />
@@ -779,7 +804,7 @@ function RunPipelineFormBasic({
       return getString('pipeline.inputSets.noRuntimeInputsWhileExecution')
     } else if (
       !executionView &&
-      pipeline &&
+      resolvedPipeline &&
       currentPipeline &&
       !template?.data?.inputSetTemplateYaml &&
       !getTemplateError
@@ -811,13 +836,13 @@ function RunPipelineFormBasic({
         />
       )
     }
-    if (currentPipeline?.pipeline && pipeline && template?.data?.inputSetTemplateYaml) {
+    if (currentPipeline?.pipeline && resolvedPipeline && template?.data?.inputSetTemplateYaml) {
       const templateSource = executionView ? executionInputSetTemplateYaml : template.data.inputSetTemplateYaml
       return (
         <>
           {existingProvide === 'existing' ? <div className={css.divider} /> : null}
           <PipelineInputSetForm
-            originalPipeline={{ ...pipeline }}
+            originalPipeline={resolvedPipeline}
             template={parse(templateSource)?.pipeline}
             readonly={executionView}
             path=""
@@ -902,7 +927,7 @@ function RunPipelineFormBasic({
           </GitSyncStoreProvider>
         )}
 
-        <div className={cx({ [css.noDisplay]: !RUN_INDIVIDUAL_STAGE })}>
+        <div>
           <MultiSelectDropDown
             popoverClassName={css.disabledStageDropdown}
             hideItemCount={selectedStageData.allStagesSelected}
@@ -938,8 +963,8 @@ function RunPipelineFormBasic({
     )
   }
 
-  const runIndividualStageInfo = () => {
-    return RUN_INDIVIDUAL_STAGE ? (
+  const runIndividualStageInfo = (): JSX.Element => {
+    return (
       <>
         <RequiredStagesInfo
           selectedStageData={selectedStageData}
@@ -953,7 +978,7 @@ function RunPipelineFormBasic({
           expressions={template?.data?.replacedExpressions}
         />
       </>
-    ) : null
+    )
   }
 
   const showInputSetSelector = () => {
@@ -968,13 +993,27 @@ function RunPipelineFormBasic({
     return existingProvide === 'existing' && selectedInputSets?.length
   }
 
-  const visualView = () => {
+  const visualView = (submitForm: () => void) => {
     const noRuntimeInputs = checkIfRuntimeInputsNotPresent()
     return (
       <div
         className={cx(executionView ? css.runModalFormContentExecutionView : css.runModalFormContent, {
           [css.noRuntimeInput]: (template as any)?.data?.replacedExpressions?.length > 0 && noRuntimeInputs
         })}
+        data-testid="runPipelineVisualView"
+        onKeyDown={ev => {
+          if (ev.key === 'Enter') {
+            ev.preventDefault()
+            ev.stopPropagation()
+            setRunClicked(true)
+
+            if ((!selectedInputSets || selectedInputSets.length === 0) && existingProvide === 'existing') {
+              setExistingProvide('provide')
+            } else {
+              submitForm()
+            }
+          }
+        }}
       >
         <FormikForm>
           {noRuntimeInputs ? (
@@ -1076,7 +1115,7 @@ function RunPipelineFormBasic({
               )}
               {runIndividualStageInfo()}
               {selectedView === SelectedView.VISUAL ? (
-                visualView()
+                visualView(submitForm)
               ) : (
                 <div className={css.editor}>
                   <Layout.Vertical className={css.content} padding="xlarge">
@@ -1144,7 +1183,6 @@ function RunPipelineFormBasic({
                   </Layout.Horizontal>
                   <SaveAsInputSet
                     key="saveasinput"
-                    disabled={!selectedStageData.allStagesSelected}
                     pipeline={pipeline}
                     currentPipeline={currentPipeline}
                     values={values}

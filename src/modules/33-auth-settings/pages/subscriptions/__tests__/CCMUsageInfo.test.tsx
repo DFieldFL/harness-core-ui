@@ -8,7 +8,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import { TestWrapper } from '@common/utils/testUtils'
-import * as useGetUsageAndLimit from '@auth-settings/hooks/useGetUsageAndLimit'
+import * as useGetUsageAndLimit from '@common/hooks/useGetUsageAndLimit'
 import CCMUsageInfo from '../overview/CCMUsageInfo'
 
 const useGetUsageAndLimitReturnMock = {

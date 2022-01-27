@@ -7,15 +7,14 @@
 
 import React from 'react'
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso'
+import { Button, ButtonSize, ButtonVariation } from '@harness/uicore'
 
-import type { UseActionCreatorReturn } from '../LogsState/actions'
-import type { State } from '../LogsState/types'
 import { MultiLogLine } from './MultiLogLine/MultiLogLine'
+import type { CommonLogsProps } from './LogsProps'
 
-export interface SingleSectionLogsProps {
-  state: State
-  actions: UseActionCreatorReturn
-}
+import css from '../LogsContent.module.scss'
+
+export type SingleSectionLogsProps = CommonLogsProps
 
 export function SingleSectionLogs(
   props: SingleSectionLogsProps,
@@ -26,23 +25,47 @@ export function SingleSectionLogs(
   const unitKey = state.logKeys[0]
   const unit = state.dataMap[unitKey]
   const length = unit.data.length
+  const [isAtBottom, setIsAtBottom] = React.useState(false)
+
+  function handleClick(): void {
+    if (!ref || !(ref as React.MutableRefObject<VirtuosoHandle | null>).current) {
+      return
+    }
+
+    const handle = (ref as React.MutableRefObject<VirtuosoHandle>).current
+
+    handle.scrollToIndex(isAtBottom ? 0 : length)
+  }
 
   return (
-    <Virtuoso
-      overscan={50}
-      totalCount={length}
-      ref={ref}
-      followOutput="auto"
-      itemContent={index => (
-        <MultiLogLine
-          {...unit.data[index]}
-          lineNumber={index}
-          limit={length}
-          searchText={state.searchData.text}
-          currentSearchIndex={state.searchData.currentIndex}
-        />
-      )}
-    />
+    <pre className={css.container}>
+      <Virtuoso
+        overscan={50}
+        totalCount={length}
+        atBottomThreshold={Math.ceil(length / 3)}
+        atBottomStateChange={setIsAtBottom}
+        ref={ref}
+        followOutput="auto"
+        itemContent={index => (
+          <MultiLogLine
+            {...unit.data[index]}
+            lineNumber={index}
+            limit={length}
+            searchText={state.searchData.text}
+            currentSearchIndex={state.searchData.currentIndex}
+          />
+        )}
+      />
+      <Button
+        className={css.singleSectionScrollBtn}
+        variation={ButtonVariation.PRIMARY}
+        size={ButtonSize.SMALL}
+        iconProps={{ size: 10 }}
+        icon={isAtBottom ? 'arrow-up' : 'arrow-down'}
+        text={isAtBottom ? 'Top' : 'Bottom'}
+        onClick={handleClick}
+      />
+    </pre>
   )
 }
 

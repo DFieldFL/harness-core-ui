@@ -70,6 +70,7 @@ const SelectStagetoRetry = ({
           flex={{ justifyContent: 'flex-start', alignItems: 'flex-end' }}
         >
           <Select
+            name={'selectRetryStage'}
             value={selectedStage}
             items={stageList}
             onChange={handleStageChange as any}

@@ -32,7 +32,7 @@ import NotFoundPage from '@common/pages/404/NotFoundPage'
 import { String } from 'framework/strings'
 import { ResourceCategory, ResourceType } from '@rbac/interfaces/ResourceType'
 import RbacFactory from '@rbac/factories/RbacFactory'
-import { PermissionIdentifier } from 'microfrontends'
+import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 
 export const AccountSideNavProps: SidebarContext = {
   navComponent: AccountSideNav,

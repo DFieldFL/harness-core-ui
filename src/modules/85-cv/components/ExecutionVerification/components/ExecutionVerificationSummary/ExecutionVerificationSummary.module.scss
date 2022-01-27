@@ -6,9 +6,10 @@
  */
 
 .main {
-  height: 100% !important;
   position: relative;
   padding: var(--spacing-small) var(--spacing-large) !important;
+  width: 300px;
+  min-width: 300px;
 
   .failureMessage {
     margin-bottom: var(--spacing-small) !important;
@@ -27,4 +28,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+}
+
+.fullWidth.main {
+  width: 100%;
+  min-width: 100%;
 }

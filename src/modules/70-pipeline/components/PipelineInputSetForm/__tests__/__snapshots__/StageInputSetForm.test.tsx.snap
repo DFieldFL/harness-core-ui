@@ -40,7 +40,7 @@ exports[`stageinputset tests viewType DeploymentForm initial render 1`] = `
             data-tooltip-id="namespace"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--font-small StyledProps--margin-bottom-xsmall"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipelineSteps.build.infraSpecifications.namespace
             </p>
@@ -105,7 +105,11 @@ exports[`stageinputset tests viewType DeploymentForm initial render 1`] = `
           class="bp3-label"
           for="stages[1].stage.spec.infrastructure.spec.serviceAccountName"
         >
-          pipeline.infraSpecifications.serviceAccountName
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
+          >
+            pipeline.infraSpecifications.serviceAccountName
+          </p>
            
           <span
             class="bp3-text-muted"
@@ -171,7 +175,7 @@ exports[`stageinputset tests viewType DeploymentForm initial render 1`] = `
             data-tooltip-id="timeout"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--flex-justifyContent-start StyledProps--font-small"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipeline.infraSpecifications.initTimeout
             </p>
@@ -285,17 +289,6 @@ exports[`stageinputset tests viewType DeploymentForm initial render 1`] = `
               <div
                 class="StyledProps--font StyledProps--main formGroup sm"
               />
-              <div>
-                <div
-                  style="min-height: 8px;"
-                />
-                <div
-                  class="separator"
-                />
-                <div
-                  style="min-height: 24px;"
-                />
-              </div>
             </div>
           </form>
         </div>
@@ -389,7 +382,7 @@ exports[`stageinputset tests viewType DeploymentForm initial render2 1`] = `
             data-tooltip-id="namespace"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--font-small StyledProps--margin-bottom-xsmall"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipelineSteps.build.infraSpecifications.namespace
             </p>
@@ -454,7 +447,11 @@ exports[`stageinputset tests viewType DeploymentForm initial render2 1`] = `
           class="bp3-label"
           for="stages[1].stage.spec.infrastructure.spec.serviceAccountName"
         >
-          pipeline.infraSpecifications.serviceAccountName
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
+          >
+            pipeline.infraSpecifications.serviceAccountName
+          </p>
            
           <span
             class="bp3-text-muted"
@@ -520,7 +517,7 @@ exports[`stageinputset tests viewType DeploymentForm initial render2 1`] = `
             data-tooltip-id="timeout"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--flex-justifyContent-start StyledProps--font-small"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipeline.infraSpecifications.initTimeout
             </p>
@@ -634,17 +631,6 @@ exports[`stageinputset tests viewType DeploymentForm initial render2 1`] = `
               <div
                 class="StyledProps--font StyledProps--main formGroup sm"
               />
-              <div>
-                <div
-                  style="min-height: 8px;"
-                />
-                <div
-                  class="separator"
-                />
-                <div
-                  style="min-height: 24px;"
-                />
-              </div>
             </div>
           </form>
         </div>
@@ -738,7 +724,7 @@ exports[`stageinputset tests viewType InputSet initial render 1`] = `
             data-tooltip-id="namespace"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--font-small StyledProps--margin-bottom-xsmall"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipelineSteps.build.infraSpecifications.namespace
             </p>
@@ -803,7 +789,11 @@ exports[`stageinputset tests viewType InputSet initial render 1`] = `
           class="bp3-label"
           for="stages[1].stage.spec.infrastructure.spec.serviceAccountName"
         >
-          pipeline.infraSpecifications.serviceAccountName
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
+          >
+            pipeline.infraSpecifications.serviceAccountName
+          </p>
            
           <span
             class="bp3-text-muted"
@@ -869,7 +859,7 @@ exports[`stageinputset tests viewType InputSet initial render 1`] = `
             data-tooltip-id="timeout"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--flex-justifyContent-start StyledProps--font-small"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipeline.infraSpecifications.initTimeout
             </p>
@@ -983,17 +973,6 @@ exports[`stageinputset tests viewType InputSet initial render 1`] = `
               <div
                 class="StyledProps--font StyledProps--main formGroup lg"
               />
-              <div>
-                <div
-                  style="min-height: 8px;"
-                />
-                <div
-                  class="separator"
-                />
-                <div
-                  style="min-height: 24px;"
-                />
-              </div>
             </div>
           </form>
         </div>
@@ -1087,7 +1066,7 @@ exports[`stageinputset tests viewType InputSet initial render2 1`] = `
             data-tooltip-id="namespace"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--font-small StyledProps--margin-bottom-xsmall"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipelineSteps.build.infraSpecifications.namespace
             </p>
@@ -1152,7 +1131,11 @@ exports[`stageinputset tests viewType InputSet initial render2 1`] = `
           class="bp3-label"
           for="stages[1].stage.spec.infrastructure.spec.serviceAccountName"
         >
-          pipeline.infraSpecifications.serviceAccountName
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
+          >
+            pipeline.infraSpecifications.serviceAccountName
+          </p>
            
           <span
             class="bp3-text-muted"
@@ -1218,7 +1201,7 @@ exports[`stageinputset tests viewType InputSet initial render2 1`] = `
             data-tooltip-id="timeout"
           >
             <p
-              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--flex-justifyContent-start StyledProps--font-small"
+              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
             >
               pipeline.infraSpecifications.initTimeout
             </p>
@@ -1332,17 +1315,6 @@ exports[`stageinputset tests viewType InputSet initial render2 1`] = `
               <div
                 class="StyledProps--font StyledProps--main formGroup lg"
               />
-              <div>
-                <div
-                  style="min-height: 8px;"
-                />
-                <div
-                  class="separator"
-                />
-                <div
-                  style="min-height: 24px;"
-                />
-              </div>
             </div>
           </form>
         </div>

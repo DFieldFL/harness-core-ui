@@ -71,71 +71,11 @@ exports[`SegmentsPage No data view should be rendered 1`] = `
     data-name="body"
     style="height: calc(100% - 80px); overflow: hidden; background-color: rgb(248, 250, 251);"
   >
-    <div
-      class="StyledProps--font StyledProps--main"
-      data-name="toolbar"
-      style="height: 64px; border-bottom: 0.5px solid #d9dae6; align-items: center; top: 0px; z-index: 1;"
-    >
-      <div
-        class="Layout--horizontal Layout--layout-spacing-medium StyledProps--main"
-      >
-        <button
-          class="bp3-button Button--button StyledProps--font StyledProps--main StyledProps--intent-primary Button--with-current-color"
-          type="button"
-        >
-          <span
-            class="bp3-button-text"
-          >
-            cf.segments.create
-          </span>
-        </button>
-        <p
-          class="StyledProps--font StyledProps--main StyledProps--font-size-small StyledProps--color StyledProps--color-grey400"
-          style="align-self: center;"
-        >
-          cf.segments.pageDescription
-        </p>
-        <span
-          style="flex-grow: 1;"
-        />
-        <div
-          class="bp3-input-group ui-search-box ExpandingSearchInput--main    ExpandingSearchInput--light"
-          data-name="findFlag"
-        >
-          <span
-            class="bp3-icon StyledProps--main ExpandingSearchInput--icon StyledProps--color StyledProps--color-grey700"
-            data-icon="thinner-search"
-          >
-            <svg
-              fill="none"
-              height="14"
-              viewBox="0 0 16 16"
-              width="14"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.125 13.25c1.617 0 3.32-.695 4.375-1.75L15 15l-3.5-3.5c1.021-1.005 1.75-2.894 1.75-4.375a6.125 6.125 0 10-6.125 6.125z"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <input
-            class="bp3-input  ExpandingSearchInput--filter"
-            dir="auto"
-            placeholder="search"
-            style="padding-right: 0px;"
-            type="search"
-            value=""
-          />
-        </div>
-      </div>
-    </div>
+    
     <div
       class="StyledProps--font StyledProps--main"
       data-name="content"
-      style="height: calc(100% - 64px - 0px); overflow: auto;"
+      style="height: calc(100% - 0px - 0px); overflow: auto;"
     >
       <div
         class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--flex-align-center-center"
@@ -511,7 +451,7 @@ exports[`SegmentsPage SegmentsPage should render data correctly 1`] = `
           style="flex-grow: 1;"
         />
         <div
-          class="bp3-input-group ui-search-box ExpandingSearchInput--main    ExpandingSearchInput--light"
+          class="bp3-input-group ui-search-box ExpandingSearchInput--main   ExpandingSearchInput--alwaysExpanded ExpandingSearchInput--light"
           data-name="findFlag"
         >
           <span
@@ -537,7 +477,7 @@ exports[`SegmentsPage SegmentsPage should render data correctly 1`] = `
             class="bp3-input  ExpandingSearchInput--filter"
             dir="auto"
             placeholder="search"
-            style="padding-right: 0px;"
+            style="padding-right: 38px;"
             type="search"
             value=""
           />

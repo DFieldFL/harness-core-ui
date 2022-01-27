@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActiveServiceInstancePopover should render ActiveServiceInstancePopover 1`] = `
+<div>
+  <div
+    class="bp3-card bp3-elevation-0 Card--card activeServiceInstancePopover"
+  >
+    <div
+      class="Layout--vertical StyledProps--main"
+    >
+      <div
+        class="Layout--vertical StyledProps--main activeServiceInstancePopoverSection"
+      >
+        <p
+          class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--margin-bottom-small StyledProps--color StyledProps--color-grey800"
+        >
+          cd.serviceDashboard.instanceDetails
+        </p>
+        <div
+          class="Layout--vertical StyledProps--main"
+        >
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey500 StyledProps--margin-right-medium StyledProps--margin-bottom-xsmall"
+            >
+              cd.serviceDashboard.pod:
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main sectionValue StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
+            >
+              release-893b57260532de1e28c01603f3ec71620b7eadfb-todolist-llk7p
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="Layout--vertical StyledProps--main activeServiceInstancePopoverSection"
+      >
+        <p
+          class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--margin-bottom-small StyledProps--color StyledProps--color-grey800"
+        >
+          infrastructureText
+        </p>
+        <div
+          class="Layout--vertical StyledProps--main"
+        >
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey500 StyledProps--margin-right-medium StyledProps--margin-bottom-xsmall"
+            >
+              namespace:
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main sectionValue StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
+            >
+              default
+            </p>
+          </div>
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey500 StyledProps--margin-right-medium StyledProps--margin-bottom-xsmall"
+            >
+              releaseName:
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main sectionValue StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
+            >
+              release-893b57260532de1e28c01603f3ec71620b7eadfb
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="Layout--vertical StyledProps--main activeServiceInstancePopoverSection"
+      >
+        <p
+          class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--margin-bottom-small StyledProps--color StyledProps--color-grey800"
+        >
+          deploymentText
+        </p>
+        <div
+          class="Layout--vertical StyledProps--main"
+        >
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey500 StyledProps--margin-right-medium StyledProps--margin-bottom-xsmall"
+            >
+              cd.serviceDashboard.deployedAt:
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main sectionValue StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
+            >
+              Jan 24, 2022 12:26 pm
+            </p>
+          </div>
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey500 StyledProps--margin-right-medium StyledProps--margin-bottom-xsmall"
+            >
+              cd.serviceDashboard.deployedBy:
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main sectionValue StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
+            >
+              AUTO_SCALED
+            </p>
+          </div>
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey500 StyledProps--margin-right-medium StyledProps--margin-bottom-xsmall"
+            >
+              common.pipeline:
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main sectionValue StyledProps--font-weight-semi-bold StyledProps--font-size-small StyledProps--color StyledProps--color-grey800"
+            >
+              AUTO_SCALED
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -8,7 +8,7 @@
 import React, { ReactElement } from 'react'
 import FeatureWarningUpgradeBanner from '@common/components/FeatureWarning/FeatureWarningUpgradeBanner'
 import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
-import { useGetUsageAndLimit } from '@auth-settings/hooks/useGetUsageAndLimit'
+import { useGetUsageAndLimit } from '@common/hooks/useGetUsageAndLimit'
 import { ModuleName } from 'framework/types/ModuleName'
 import FeatureWarningSubscriptionInfoBanner from '@common/components/FeatureWarning/FeatureWarningSubscriptionInfoBanner'
 import FeatureWarningInfoBanner from '@common/components/FeatureWarning/FeatureWarningInfoBanner'
@@ -16,11 +16,14 @@ import FeatureWarningSubscriptionUpgradeBanner from '@common/components/FeatureW
 import { useLicenseStore } from 'framework/LicenseStore/LicenseStoreContext'
 import { formatToCompactNumber } from '@cf/utils/CFUtils'
 import { useStrings } from 'framework/strings'
+import usePlanEnforcement from '@cf/hooks/usePlanEnforcement'
 
 const UsageLimitBanner = (): ReactElement => {
   const { getString } = useStrings()
+
   const { limitData, usageData } = useGetUsageAndLimit(ModuleName.CF)
   const license = useLicenseStore()
+  const { isPlanEnforcementEnabled } = usePlanEnforcement()
 
   const isFreeSubscription = license.licenseInformation.CF?.edition === 'FREE'
 
@@ -36,6 +39,10 @@ const UsageLimitBanner = (): ReactElement => {
 
   const showInfoBanner = clientMauPlanLimit > 0 && clientMauUsagePercentage >= 90 && clientMauUsagePercentage < 100
   const showWarningBanner = clientMauPlanLimit > 0 && clientMauUsagePercentage >= 100
+
+  if (!isPlanEnforcementEnabled) {
+    return <></>
+  }
 
   return (
     <>

@@ -20,6 +20,10 @@ import ExecutionInputsView from '../ExecutionInputsView'
 
 jest.mock('@common/components/YAMLBuilder/YamlBuilder')
 jest.mock('@common/utils/YamlUtils', () => ({}))
+jest.mock('@common/hooks', () => ({
+  ...(jest.requireActual('@common/hooks') as any),
+  useMutateAsGet: jest.fn().mockImplementation(() => ({ data: null, refetch: jest.fn() }))
+}))
 jest.mock('services/pipeline-ng', () => ({
   useGetInputsetYaml: jest.fn(() => ({ data: null })),
   useGetTemplateFromPipeline: jest.fn(() => ({ data: null })),

@@ -166,6 +166,7 @@ testConnectionStep:
     serviceNow: Validating ServiceNow authentication and permissions
     sumologic: Validating Sumologic authentication and permissions
     gcpKms: Validating GCP Key Management Service authentication and permissions
+    testingURLReachability: Testing reachability to the URL
 validation:
   serviceNowUrl: 'ServiceNow URL is required.'
 httpHelm:

@@ -16,7 +16,8 @@ import {
   listUserJourneysCallResponse,
   updatedListSLOsCallResponse,
   getServiceLevelObjective,
-  getServiceLevelObjectivesRiskCount
+  getServiceLevelObjectivesRiskCount,
+  saveSLO
 } from '../../../support/85-cv/slos/constants'
 
 describe('Create SLO', () => {
@@ -49,7 +50,7 @@ describe('Create SLO', () => {
     cy.contains('p', 'new-one').click({ force: true })
 
     cy.wait(2000)
-    cy.contains('span', 'Continue').click()
+    cy.contains('span', 'Continue').click({ force: true })
 
     // selecting monitored service
     cy.get('input[placeholder="- Select Monitored Service -"]').click()
@@ -81,17 +82,22 @@ describe('Create SLO', () => {
     cy.contains('p', '<').click({ force: true })
 
     cy.wait(2000)
-    cy.contains('span', 'Continue').click()
+    cy.contains('span', 'Continue').click({ force: true })
 
     // selecting condition for SLI value
     cy.get('input[name="periodLength"]').click()
     cy.contains('p', '7').click({ force: true })
 
-    cy.contains('span', 'Save').click()
+    cy.intercept('POST', saveSLO, { statusCode: 200 }).as('saveSLO')
+    cy.intercept('GET', listSLOsCall, updatedListSLOsCallResponse).as('updatedListSLOsCallResponse')
 
-    cy.intercept('GET', listSLOsCall, updatedListSLOsCallResponse)
+    cy.contains('span', 'Save').click({ force: true })
+    cy.wait('@saveSLO')
 
     cy.contains('span', 'SLO created successfully').should('be.visible')
+
+    cy.wait('@updatedListSLOsCallResponse')
+
     cy.contains('p', 'cvng_prod').should('be.visible')
     cy.contains('p', 'Latency').should('be.visible')
     cy.contains('p', 'appd_cvng_prod').should('be.visible')

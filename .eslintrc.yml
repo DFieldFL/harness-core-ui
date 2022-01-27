@@ -99,6 +99,7 @@ rules:
     - error
     - patterns:
         - lodash.*
+        - microfrontends/*
       paths:
         - lodash
         - name: yaml
@@ -107,6 +108,8 @@ rules:
           message: 'Please use yamlStringify from @common/utils/YamlHelperMethods instead of this'
         - name: react-router
           message: 'import from "react-router-dom" instead'
+        - name: microfrontends
+          message: Import from 'microfrontends' is only allowed in child apps
   no-restricted-syntax:
     - error
     - selector: "CallExpression[callee.name='useContext'][arguments.0.name='PipelineContext']"

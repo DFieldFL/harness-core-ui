@@ -7,10 +7,8 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
-  readonly additionalEntitiesCount: string
   readonly cardBtns: string
   readonly deploymentsCount: string
-  readonly entityContainer: string
   readonly firstEntity: string
   readonly infoContainer: string
   readonly label: string

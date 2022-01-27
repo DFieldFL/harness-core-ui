@@ -11,6 +11,7 @@ declare const styles: {
   readonly cellValue: string
   readonly gridCtn: string
   readonly header: string
+  readonly pointer: string
   readonly sticky: string
   readonly table: string
   readonly td: string

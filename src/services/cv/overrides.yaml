@@ -41,6 +41,7 @@ allowpaths:
   - /activity/{activityId}/activity-risks
   - /activity/{activityId}/deployment-activity-summary
   - /activity/{activityId}/deployment-timeseries-data
+  - /verify-step/{verifyStepExecutionId}/deployment-timeseries-data
   - /activity/{activityId}/datasource-types
   - /activity/list
   - /setup/status
@@ -123,6 +124,8 @@ allowpaths:
   - /custom-health/sample-data
   - /parse-sample-data
   - /slo-dashboard/risk-count
+  - /verify-step/{verifyStepExecutionId}/all-transaction-names
+  - /verify-step/{verifyStepExecutionId}/all-node-names
 operationIdOverrides:
   /appdynamics/applications.get: getAppDynamicsApplications
   /appdynamics/metric-data.post: getAppDynamicsMetricData

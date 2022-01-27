@@ -10,9 +10,9 @@ totalMemUnit: ' GB'
 delegatePermissions:
   title: 'Delegate Permissions'
   clusterWriteTitle: 'Install Delegate with cluster-wide read/write access'
-  clusterWriteContent: 'Creates a new namespace called "harness-delegate-ng" with the service account bound to Cluster Admin role. This Delegate will be able to write tasks (deployments needed for Harness Continuous Delivery) and read tasks (capture change events etc., needed for Harness Cloud Cost Management and Harness Continuous Verification) anywhere on the k8s cluster where the Delegate is installed.'
+  clusterWriteContent: 'Creates a new namespace called "harness-delegate-ng" with the service account bound to Cluster Admin role. This Delegate will be able to write tasks (deployments needed for Harness Continuous Delivery and Harness Continuous Integration) and read tasks (capture change events etc., needed for Harness Cloud Cost Management and Harness Continuous Verification) anywhere on the k8s cluster where the Delegate is installed.'
   clusterReadTitle: 'Install Delegate with cluster-wide read access'
-  clusterReadContent: '(Requires read only Cluster Admin role) Creates a new namespace called "harness-delegate-ng" with the service account bound to Cluster Admin role. This Delegate will be able to perform read-only tasks (capture change events etc., needed for Harness Cloud Cost Management and Harness Continuous Verification) anywhere on the k8s cluster where the Delegate is installed.'
+  clusterReadContent: '(Requires read only Cluster Admin role) Creates a new namespace called "harness-delegate-ng" with the service account bound to Cluster Admin role. This Delegate will be able to perform read-only tasks (capture change events etc., needed for Harness Continuous Integration, Harness Cloud Cost Management and Harness Continuous Verification) anywhere on the k8s cluster where the Delegate is installed.'
   specificNamespaceTitle: 'Install Delegate with specific namespace access'
   specificNamespaceContent: '(Requires namespace admin roles) Specify the namespace where the Harness Delegate is installed. This Delegate will be able to perform tasks (deployments, capture change events etc.) only on the specific namespace.'
 delegateNamespaceRequired: 'Namespace is required'
@@ -29,6 +29,8 @@ verification: 'Verification '
 openTroubleshooter: 'Open Troubleshooter'
 troubleshootOption: '(Troubleshoot)'
 harnessDocs: 'Check Harness Documentation'
+successVerification:
+  checkingForHeartbeat: Checking for heartbeat
 delegateNotInstalled:
   title: 'Delegate not installed'
   verifyField2: 'kubectl logs -f <harnessDelegateName> -n <namespace>'

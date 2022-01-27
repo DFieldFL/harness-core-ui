@@ -5,6 +5,8 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
+import type { Dispatch, SetStateAction } from 'react'
+import type { FormikProps } from 'formik'
 import type { IOptionProps } from '@blueprintjs/core'
 import { isNumber, isEmpty } from 'lodash-es'
 import type {
@@ -12,14 +14,17 @@ import type {
   MetricPackDTO,
   TimeSeriesSampleDTO,
   StackdriverMetricHealthSourceSpec,
-  StackdriverDefinition
+  StackdriverDefinition,
+  StackdriverDashboardDetail
 } from 'services/cv'
+import type { MetricWidget } from '@cv/components/MetricDashboardWidgetNav/MetricDashboardWidgetNav.type'
 import type { StringKeys } from 'framework/strings'
 import type { GCOMetricInfo, GCOMetricSetupSource } from './GCOMetricsHealthSource.type'
 import type { UpdatedHealthSource } from '../../HealthSourceDrawer/HealthSourceDrawerContent.types'
 import { HealthSourceTypes } from '../../types'
 import { chartsConfig } from './GCOWidgetChartConfig'
 import { OVERALL } from './GCOMetricsHealthSource.constants'
+import { MANUAL_INPUT_QUERY } from './components/ManualInputQueryModal/ManualInputQueryModal'
 
 export const GCOProduct = {
   CLOUD_METRICS: 'Cloud Metrics',
@@ -57,7 +62,9 @@ export function transformGCOMetricHealthSourceToGCOMetricSetupSource(sourceData:
 
   const setupSource: GCOMetricSetupSource = {
     selectedDashboards: sourceData.selectedDashboards || [],
-    metricDefinition: sourceData.metricDefinition || new Map(),
+    metricDefinition:
+      new Map([...(sourceData.metricDefinition || new Map()), ...(sourceData.selectedMetrics || new Map())]) ||
+      new Map(),
     isEdit: sourceData.isEdit,
     healthSourceName: sourceData.healthSourceName,
     healthSourceIdentifier: sourceData.healthSourceIdentifier,
@@ -102,8 +109,9 @@ export function transformGCOMetricHealthSourceToGCOMetricSetupSource(sourceData:
       lowerBaselineDeviation: metricDefinition.riskProfile?.thresholdTypes?.includes('ACT_WHEN_LOWER'),
       query: JSON.stringify(metricDefinition.jsonMetricDefinition, null, 2),
       sli: metricDefinition.sli?.enabled,
-      continuousVerification: metricDefinition?.analysis?.deploymentVerification?.enabled,
-      healthScore: metricDefinition?.analysis?.liveMonitoring?.enabled
+      continuousVerification: metricDefinition.analysis?.deploymentVerification?.enabled,
+      healthScore: metricDefinition.analysis?.liveMonitoring?.enabled,
+      serviceInstanceField: metricDefinition.serviceInstanceField
     })
   }
 
@@ -136,8 +144,8 @@ export function transformGCOMetricSetupSourceToGCOHealthSource(setupSource: GCOM
 
     const spec: StackdriverMetricHealthSourceSpec = healthSource.spec || []
     spec.metricDefinitions?.push({
-      dashboardName: metricInfo.dashboardName as string,
-      dashboardPath: metricInfo.dashboardPath as string,
+      dashboardName: (metricInfo.dashboardName || '') as string,
+      dashboardPath: (metricInfo.dashboardPath || '') as string,
       metricName: metricInfo.metricName as string,
       metricTags: Object.keys(metricInfo.metricTags || {}),
       identifier: metricInfo.identifier,
@@ -149,16 +157,16 @@ export function transformGCOMetricSetupSourceToGCOHealthSource(setupSource: GCOM
         thresholdTypes
       },
       sli: { enabled: metricInfo?.sli || false },
+      serviceInstanceField: metricInfo.continuousVerification ? metricInfo.serviceInstanceField : null,
       analysis: {
         riskProfile: {
           category: category as RiskProfile['category'],
           metricType: metricType,
           thresholdTypes
         },
-        liveMonitoring: { enabled: metricInfo?.healthScore || false },
+        liveMonitoring: { enabled: metricInfo.healthScore || false },
         deploymentVerification: {
-          enabled: metricInfo?.continuousVerification || false,
-          serviceInstanceFieldName: metricInfo?.serviceInstance || ''
+          enabled: metricInfo.continuousVerification || false
         }
       }
     } as StackdriverDefinition)
@@ -204,6 +212,10 @@ export function ensureFieldsAreFilled(
     if (!(values.higherBaselineDeviation || values.lowerBaselineDeviation)) {
       ret.higherBaselineDeviation = getString('cv.monitoringSources.gco.mapMetricsToServicesPage.validation.baseline')
     }
+  }
+
+  if (values.continuousVerification && !values.serviceInstanceField) {
+    ret.serviceInstanceField = getString('cv.monitoringSources.prometheus.validation.serviceInstanceIdentifier')
   }
 
   if (!values.identifier?.trim()) {
@@ -329,4 +341,66 @@ export function getPlaceholderForIdentifier(
 
   // Default maxInput for InputWithIdentifier is 63
   return metricName.substr(-63).replace(/[^a-zA-Z_ ]/g, '')
+}
+
+export function mapstackdriverDashboardDetailToMetricWidget(
+  _: string,
+  stackdriverDashboardDetail: StackdriverDashboardDetail
+): MetricWidget {
+  const widgetName = stackdriverDashboardDetail.widgetName
+  return {
+    widgetName: widgetName || '',
+    dataSets:
+      stackdriverDashboardDetail.dataSetList?.map(dataSet => {
+        return {
+          id: `${dataSet.metricName}`,
+          name: `${dataSet.metricName}`,
+          query: dataSet.timeSeriesQuery || ''
+        }
+      }) || []
+  }
+}
+
+export const onSelectNavItem = ({
+  id,
+  metricName,
+  query,
+  widget,
+  dashboardId,
+  dashboardTitle,
+  updatedData,
+  setUpdatedData,
+  selectedMetric,
+  formikProps
+}: {
+  id: string
+  metricName: string
+  query: string
+  widget?: string
+  dashboardId?: string
+  dashboardTitle?: string
+  updatedData: Map<string, GCOMetricInfo>
+  setUpdatedData: Dispatch<SetStateAction<Map<string, GCOMetricInfo>>>
+  selectedMetric?: string
+  formikProps: FormikProps<GCOMetricInfo>
+}): void => {
+  let metricInfo: GCOMetricInfo | undefined = updatedData.get(metricName)
+  if (!metricInfo) {
+    metricInfo = {
+      metricName,
+      identifier: id,
+      query,
+      metricTags: { [widget as string]: '' },
+      isManualQuery: query === MANUAL_INPUT_QUERY,
+      dashboardName: dashboardTitle,
+      dashboardPath: dashboardId
+    }
+  }
+
+  metricInfo.query = formatJSON(metricInfo.query) || ''
+  updatedData.set(metricName, metricInfo)
+  if (selectedMetric) {
+    updatedData.set(selectedMetric as string, { ...formikProps.values })
+  }
+  setUpdatedData(new Map(updatedData))
 }

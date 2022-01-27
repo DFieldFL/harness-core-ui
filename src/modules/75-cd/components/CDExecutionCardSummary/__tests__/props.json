@@ -17,19 +17,12 @@
       "module": "cd",
       "moduleInfo": {
         "cd": {
-          "serviceInfo": {
-            "identifier": "testsvc_1",
-            "displayName": "testsvc_1",
-            "deploymentType": "Kubernetes",
-            "artifacts": {
-              "sidecars": []
-            }
-          },
-          "infraExecutionSummary": {
-            "identifier": "UAT",
-            "name": "UAT",
-            "type": "PreProduction"
-          }
+          "__recast": "io.harness.cdng.pipeline.executions.beans.CDPipelineModuleInfo",
+          "envIdentifiers": ["prod_environment", "fdsggg", "asdasd", "Very_Long_Env_asd_asd_asd_Kapil", "Devsf"],
+          "environmentTypes": ["Production"],
+          "infrastructureTypes": ["KubernetesDirect"],
+          "serviceDefinitionTypes": ["Kubernetes"],
+          "serviceIdentifiers": ["web", "test", "Very_Big_Service_Name_Really", "gfgfgf", "Normal_Service"]
         }
       },
       "startTs": 1625204000520,

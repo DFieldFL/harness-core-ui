@@ -90,6 +90,10 @@ class RbacFactory {
   getResourceTypeLabelKey(resourceType: ResourceType): keyof StringsMap | undefined {
     return this.map.get(resourceType)?.label
   }
+
+  isRegisteredResourceType(resourceType: ResourceType): boolean {
+    return this.map.has(resourceType)
+  }
 }
 
 export default new RbacFactory()

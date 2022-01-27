@@ -6,7 +6,21 @@
  */
 
 import React, { useEffect, useState } from 'react'
-import { Text, Layout, Container, Color, Icon, ButtonVariation, useToaster, Page } from '@wings-software/uicore'
+import {
+  Text,
+  Layout,
+  Container,
+  Color,
+  Icon,
+  ButtonVariation,
+  useToaster,
+  Page,
+  getErrorInfoFromErrorObject,
+  Card,
+  Button,
+  DropDown,
+  FontVariation
+} from '@wings-software/uicore'
 import { useParams } from 'react-router-dom'
 import ReactTimeago from 'react-timeago'
 import { defaultTo } from 'lodash-es'
@@ -29,11 +43,20 @@ import { useDocumentTitle } from '@common/hooks/useDocumentTitle'
 import RbacButton from '@rbac/components/Button/Button'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import { usePermission } from '@rbac/hooks/usePermission'
+import { SelectionType } from '@rbac/utils/utils'
+import { getScopeFromDTO } from '@common/components/EntityReference/EntityReference'
 import {
+  cleanUpResourcesMap,
   computeResourceMapOnChange,
   computeResourceMapOnMultiChange,
+  getFilteredResourceTypes,
+  getFormattedDataForApi,
+  getResourceSelectionType,
   getResourceSelectorsfromMap,
+  getScopeDropDownItems,
+  getScopeForResourceGroup,
   getSelectedResourcesMap,
+  SelectorScope,
   validateResourceSelectors
 } from './utils'
 import css from './ResourceGroupDetails.module.scss'
@@ -45,10 +68,13 @@ const ResourceGroupDetails: React.FC = () => {
   const { getString } = useStrings()
   const { showError, showSuccess } = useToaster()
   const [isUpdated, setIsUpdated] = useState<boolean>(false)
-
+  const [selectedScope, setSelectedScope] = useState<SelectorScope>(SelectorScope.CURRENT)
+  const [selectionType, setSelectionType] = useState<SelectionType>(SelectionType.SPECIFIED)
   const [selectedResourcesMap, setSelectedResourceMap] = useState<Map<ResourceType, string[] | string>>(new Map())
+  const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([])
   const [resourceCategoryMap, setResourceCategoryMap] =
     useState<Map<ResourceType | ResourceCategory, ResourceType[] | undefined>>()
+  const scope = getScopeFromDTO({ accountIdentifier: accountId, orgIdentifier, projectIdentifier })
 
   const [canEdit] = usePermission(
     {
@@ -84,17 +110,21 @@ const ResourceGroupDetails: React.FC = () => {
   })
 
   useEffect(() => {
-    setResourceCategoryMap(
-      RbacFactory.getResourceCategoryList(
-        (resourceTypeData?.data?.resourceTypes?.map(val => val.name) || []) as ResourceType[]
-      )
+    const selectors = resourceGroupDetails?.data?.resourceGroup.resourceSelectors
+    setSelectedResourceMap(
+      getSelectedResourcesMap(resourceTypes, resourceGroupDetails?.data?.resourceGroup.resourceSelectors)
     )
-  }, [resourceTypeData?.data])
+    setIsUpdated(false)
+    setSelectionType(getResourceSelectionType(selectors))
+    setSelectedScope(getScopeForResourceGroup(selectors))
+  }, [resourceGroupDetails?.data?.resourceGroup])
 
   useEffect(() => {
-    setSelectedResourceMap(getSelectedResourcesMap(resourceGroupDetails?.data?.resourceGroup.resourceSelectors))
-    setIsUpdated(false)
-  }, [resourceGroupDetails?.data?.resourceGroup])
+    const types = getFilteredResourceTypes(resourceTypeData, selectedScope)
+    setResourceTypes(types)
+    setResourceCategoryMap(_map => RbacFactory.getResourceCategoryList(types))
+    setSelectedResourceMap(_selectedResourcesMap => cleanUpResourcesMap(types, _selectedResourcesMap, selectionType))
+  }, [selectedScope, resourceTypeData])
 
   const { mutate: updateResourceGroup, loading: updating } = useUpdateResourceGroup({
     identifier: defaultTo(resourceGroupIdentifier, ''),
@@ -106,7 +136,7 @@ const ResourceGroupDetails: React.FC = () => {
   })
 
   const updateResourceGroupData = async (data: ResourceGroupDTO): Promise<void> => {
-    const resourceSelectors = getResourceSelectorsfromMap(selectedResourcesMap)
+    const resourceSelectors = getResourceSelectorsfromMap(selectedResourcesMap, selectedScope)
     const invalidResources = validateResourceSelectors(resourceSelectors)?.map(val =>
       getString(defaultTo(RbacFactory.getResourceTypeLabelKey(val), 'string'))
     )
@@ -114,12 +144,13 @@ const ResourceGroupDetails: React.FC = () => {
       showError(getString('rbac.resourceSelectorErrorMessage', { resources: invalidResources.toString() }))
       return
     }
-    const dataToSubmit: ResourceGroupRequestRequestBody = {
-      resourcegroup: {
-        ...data,
-        resourceSelectors
-      }
-    }
+    const dataToSubmit: ResourceGroupRequestRequestBody = getFormattedDataForApi(
+      data,
+      selectionType,
+      selectedScope,
+      resourceSelectors
+    )
+
     try {
       const updated = await updateResourceGroup(dataToSubmit)
       if (updated) {
@@ -127,13 +158,25 @@ const ResourceGroupDetails: React.FC = () => {
         refetch()
       }
     } /* istanbul ignore next */ catch (err) {
-      showError(defaultTo(err.data?.message, err.message))
+      showError(getErrorInfoFromErrorObject(err))
     }
+  }
+
+  const disableSelection = (): boolean => {
+    return selectionType === SelectionType.ALL || selectedScope === SelectorScope.INCLUDE_CHILD_SCOPES
   }
 
   const onResourceSelectionChange = (resourceType: ResourceType, isAdd: boolean, identifiers?: string[]): void => {
     setIsUpdated(true)
     computeResourceMapOnChange(setSelectedResourceMap, selectedResourcesMap, resourceType, isAdd, identifiers)
+  }
+
+  const onSelectionTypeChange = (type: SelectionType): void => {
+    setSelectionType(type)
+    setIsUpdated(true)
+    if (type === SelectionType.ALL) {
+      computeResourceMapOnMultiChange(setSelectedResourceMap, selectedResourcesMap, resourceTypes, true)
+    }
   }
 
   const onResourceCategorySelect = (types: ResourceType[], isAdd: boolean): void => {
@@ -143,7 +186,7 @@ const ResourceGroupDetails: React.FC = () => {
 
   const resourceGroup = resourceGroupDetails?.data?.resourceGroup
   const isHarnessManaged = resourceGroupDetails?.data?.harnessManaged
-  const disableAddingResources = isHarnessManaged || !canEdit
+  const disableAddingResources = isHarnessManaged || !canEdit || selectionType === SelectionType.ALL
 
   useDocumentTitle([defaultTo(resourceGroup?.name, ''), getString('resourceGroups')])
 
@@ -219,89 +262,116 @@ const ResourceGroupDetails: React.FC = () => {
           </Layout.Horizontal>
         }
       />
-      <Page.Body loading={updating || loading} className={css.pageContainer}>
-        <Container padding="xlarge" className={css.resourceTypeListContainer}>
-          <ResourceTypeList
-            resourceCategoryMap={resourceCategoryMap}
-            onResourceSelectionChange={onResourceSelectionChange}
-            onResourceCategorySelect={onResourceCategorySelect}
-            preSelectedResourceList={Array.from(selectedResourcesMap.keys())}
-            disableAddingResources={disableAddingResources}
-          />
-        </Container>
-        <Container
-          padding="xlarge"
-          onDrop={event => {
-            const resourceCategory: ResourceType | ResourceCategory = event.dataTransfer.getData('text/plain') as
-              | ResourceType
-              | ResourceCategory
-            const types = resourceCategoryMap?.get(resourceCategory)
-            if (types) {
-              onResourceCategorySelect(types, true)
-            } else onResourceSelectionChange(resourceCategory as ResourceType, true)
-
-            event.preventDefault()
-            event.stopPropagation()
-          }}
-          onDragOver={event => {
-            event.dataTransfer.dropEffect = 'copy'
-            event.preventDefault()
-          }}
-        >
-          {!isHarnessManaged && (
-            <Layout.Vertical flex={{ alignItems: 'flex-end' }} padding="medium">
-              <Layout.Horizontal flex={{ justifyContent: 'space-between' }} width="100%">
-                <Text color={Color.BLACK}>
-                  {getString('rbac.resourceGroup.limitAccess', { name: getString('resources').toLowerCase() })}
-                </Text>
-                <Layout.Horizontal flex={{ justifyContent: 'flex-end' }} spacing="medium">
-                  {isUpdated && (
-                    <Layout.Horizontal spacing="xsmall" flex>
-                      <Icon name="dot" color={Color.ORANGE_600} size={20} />
-                      <Text color={Color.ORANGE_600}>{getString('unsavedChanges')}</Text>
-                    </Layout.Horizontal>
-                  )}
-                  <RbacButton
-                    text={getString('applyChanges')}
-                    onClick={() => updateResourceGroupData(resourceGroup)}
-                    disabled={updating || !isUpdated}
-                    variation={ButtonVariation.PRIMARY}
-                    permission={{
-                      resource: {
-                        resourceType: ResourceType.RESOURCEGROUP,
-                        resourceIdentifier: resourceGroupIdentifier
-                      },
-                      permission: PermissionIdentifier.UPDATE_RESOURCEGROUP
-                    }}
-                  />
-                </Layout.Horizontal>
+      <Page.Body loading={updating || loading} className={css.resourceGroupDetails}>
+        {!isHarnessManaged && (
+          <Card className={css.subHeader}>
+            <Layout.Horizontal flex={{ justifyContent: 'space-between' }} width="100%">
+              <Text color={Color.BLACK}>{getString('rbac.resourceGroup.selectionHeading')}</Text>
+              <Layout.Horizontal flex={{ justifyContent: 'flex-end' }} spacing="medium">
+                {isUpdated && (
+                  <Layout.Horizontal spacing="xsmall" flex>
+                    <Icon name="dot" color={Color.ORANGE_600} size={20} />
+                    <Text color={Color.ORANGE_600}>{getString('unsavedChanges')}</Text>
+                  </Layout.Horizontal>
+                )}
+                <RbacButton
+                  text={getString('applyChanges')}
+                  onClick={() => updateResourceGroupData(resourceGroup)}
+                  disabled={updating || !isUpdated}
+                  variation={ButtonVariation.PRIMARY}
+                  permission={{
+                    resource: {
+                      resourceType: ResourceType.RESOURCEGROUP,
+                      resourceIdentifier: resourceGroupIdentifier
+                    },
+                    permission: PermissionIdentifier.UPDATE_RESOURCEGROUP
+                  }}
+                />
+                <Button
+                  text={getString('common.discard')}
+                  onClick={() => refetch()}
+                  disabled={!isUpdated}
+                  variation={ButtonVariation.TERTIARY}
+                />
               </Layout.Horizontal>
+            </Layout.Horizontal>
+          </Card>
+        )}
+        <Container className={css.pageContainer}>
+          <Container padding="xlarge" className={css.resourceTypeListContainer}>
+            <ResourceTypeList
+              selectionType={selectionType}
+              resourceCategoryMap={resourceCategoryMap}
+              onResourceSelectionChange={onResourceSelectionChange}
+              onResourceCategorySelect={onResourceCategorySelect}
+              preSelectedResourceList={Array.from(selectedResourcesMap.keys())}
+              disableAddingResources={disableAddingResources}
+              onSelectionTypeChange={onSelectionTypeChange}
+            />
+          </Container>
+          <Container
+            padding="xlarge"
+            onDrop={event => {
+              const resourceCategory: ResourceType | ResourceCategory = event.dataTransfer.getData('text/plain') as
+                | ResourceType
+                | ResourceCategory
+              const types = resourceCategoryMap?.get(resourceCategory)
+              if (types) {
+                onResourceCategorySelect(types, true)
+              } else onResourceSelectionChange(resourceCategory as ResourceType, true)
+
+              event.preventDefault()
+              event.stopPropagation()
+            }}
+            onDragOver={event => {
+              event.dataTransfer.dropEffect = 'copy'
+              event.preventDefault()
+            }}
+          >
+            <Layout.Vertical spacing="small">
+              <Layout.Horizontal spacing="small" flex={{ justifyContent: 'flex-start' }} padding={{ bottom: 'small' }}>
+                <Text font={{ variation: FontVariation.H6 }} color={Color.GREY_800}>
+                  {getString('common.scope')}
+                </Text>
+                <DropDown
+                  items={getScopeDropDownItems(scope, getString)}
+                  icon="settings"
+                  value={selectedScope}
+                  onChange={item => {
+                    setIsUpdated(true)
+                    setSelectedScope(item.value as SelectorScope)
+                  }}
+                  width={300}
+                  filterable={false}
+                />
+              </Layout.Horizontal>
+
+              {Array.from(selectedResourcesMap.keys()).length === 0 && (
+                <Page.NoDataCard
+                  message={getString('rbac.resourceGroup.dragAndDropData')}
+                  icon="drag-handle-horizontal"
+                  iconSize={100}
+                />
+              )}
+              {Array.from(selectedResourcesMap.keys()).length !== 0 &&
+                Array.from(selectedResourcesMap.keys()).map(resourceType => {
+                  return (
+                    <ResourcesCard
+                      key={resourceType}
+                      resourceType={resourceType}
+                      resourceValues={defaultTo(selectedResourcesMap.get(resourceType), [])}
+                      onResourceSelectionChange={onResourceSelectionChange}
+                      disableAddingResources={isHarnessManaged}
+                      disableSelection={disableSelection()}
+                    />
+                  )
+                })}
             </Layout.Vertical>
-          )}
-          <Layout.Vertical spacing="small">
-            {Array.from(selectedResourcesMap.keys()).length === 0 && (
-              <Page.NoDataCard
-                message={getString('rbac.resourceGroup.dragAndDropData')}
-                icon="drag-handle-horizontal"
-                iconSize={100}
-              />
-            )}
-            {Array.from(selectedResourcesMap.keys()).length !== 0 &&
-              Array.from(selectedResourcesMap.keys()).map(resourceType => {
-                return (
-                  <ResourcesCard
-                    key={resourceType}
-                    resourceType={resourceType}
-                    resourceValues={defaultTo(selectedResourcesMap.get(resourceType), [])}
-                    onResourceSelectionChange={onResourceSelectionChange}
-                    disableAddingResources={isHarnessManaged}
-                  />
-                )
-              })}
-          </Layout.Vertical>
+          </Container>
         </Container>
       </Page.Body>
     </>
   )
 }
+
 export default ResourceGroupDetails

@@ -6,9 +6,6 @@ exports[`Unit tests for ExecutionVerificationView unit tests Ensure correct tabs
     class="StyledProps--font StyledProps--main main"
   >
     <div
-      class="summary"
-    />
-    <div
       class="bp3-tabs Tabs--main Tabs--horizontal"
     >
       <div
@@ -72,9 +69,6 @@ exports[`Unit tests for ExecutionVerificationView unit tests Ensure correct tabs
     class="StyledProps--font StyledProps--main main"
   >
     <div
-      class="summary"
-    />
-    <div
       class="bp3-tabs Tabs--main Tabs--horizontal"
     >
       <div
@@ -119,13 +113,21 @@ exports[`Unit tests for ExecutionVerificationView unit tests Ensure correct tabs
       <div
         aria-hidden="false"
         aria-labelledby="bp3-tab-title_AnalysisTypeTabs_pipeline.verification.analysisTab.metrics"
-        class="bp3-tab-panel"
+        class="bp3-tab-panel mainTabPanel"
         id="bp3-tab-panel_AnalysisTypeTabs_pipeline.verification.analysisTab.metrics"
         role="tabpanel"
       >
         <div
-          class="deploymentMetrics"
-        />
+          class="Layout--horizontal StyledProps--main"
+          style="height: 100%;"
+        >
+          <div
+            class="summary"
+          />
+          <div
+            class="deploymentMetrics"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -137,9 +139,6 @@ exports[`Unit tests for ExecutionVerificationView unit tests Ensure no analysis 
   <div
     class="StyledProps--font StyledProps--main main"
   >
-    <div
-      class="summary"
-    />
     <div
       class="StyledProps--font StyledProps--main noAnalysis"
     >
@@ -190,9 +189,6 @@ exports[`Unit tests for ExecutionVerificationView unit tests Ensure tabs are ren
     class="StyledProps--font StyledProps--main main"
   >
     <div
-      class="summary"
-    />
-    <div
       class="bp3-tabs Tabs--main Tabs--horizontal"
     >
       <div
@@ -237,13 +233,21 @@ exports[`Unit tests for ExecutionVerificationView unit tests Ensure tabs are ren
       <div
         aria-hidden="false"
         aria-labelledby="bp3-tab-title_AnalysisTypeTabs_pipeline.verification.analysisTab.metrics"
-        class="bp3-tab-panel"
+        class="bp3-tab-panel mainTabPanel"
         id="bp3-tab-panel_AnalysisTypeTabs_pipeline.verification.analysisTab.metrics"
         role="tabpanel"
       >
         <div
-          class="deploymentMetrics"
-        />
+          class="Layout--horizontal StyledProps--main"
+          style="height: 100%;"
+        >
+          <div
+            class="summary"
+          />
+          <div
+            class="deploymentMetrics"
+          />
+        </div>
       </div>
     </div>
   </div>

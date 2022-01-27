@@ -37,7 +37,7 @@ import { FormMultiTypeCheckboxField, FormMultiTypeTextAreaField, Separator } fro
 import MultiTypeList from '@common/components/MultiTypeList/MultiTypeList'
 import { usePipelineContext } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineContext'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
-import { useGitScope } from '@ci/services/CIUtils'
+import { useGitScope } from '@pipeline/utils/CIUtils'
 import { useStrings } from 'framework/strings'
 import type { StringsMap } from 'stringTypes'
 import { MultiTypeTextField } from '@common/components/MultiTypeText/MultiTypeText'

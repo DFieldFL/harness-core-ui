@@ -17,7 +17,9 @@ import {
   FontVariation,
   TableV2,
   useConfirmationDialog,
-  useToaster
+  useToaster,
+  useModalHook,
+  Dialog
 } from '@wings-software/uicore'
 import type { CellProps, Renderer, Column } from 'react-table'
 import { Classes, Position, Menu, Intent, PopoverInteractionKind, IconName, MenuItem } from '@blueprintjs/core'
@@ -42,6 +44,7 @@ import ManagePrincipalButton from '@rbac/components/ManagePrincipalButton/Manage
 import RbacMenuItem from '@rbac/components/MenuItem/MenuItem'
 import RbacAvatarGroup from '@rbac/components/RbacAvatarGroup/RbacAvatarGroup'
 import { isCDCommunity, useLicenseStore } from 'framework/LicenseStore/LicenseStoreContext'
+import CopyGroupForm from '../CopyGroupMenuItem/CopyGroupForm'
 import css from './UserGroupsListView.module.scss'
 
 interface UserGroupsListViewProps {
@@ -229,6 +232,19 @@ const RenderColumnMenu: Renderer<CellProps<UserGroupAggregateDTO>> = ({ row, col
     }
   })
 
+  const [openCopyGroupModal, closeCopyGroupModal] = useModalHook(() => {
+    return (
+      <Dialog
+        isOpen={true}
+        enforceFocus={false}
+        title={getString('rbac.copyGroup.title', { name: data.name })}
+        onClose={closeCopyGroupModal}
+      >
+        <CopyGroupForm closeModal={closeCopyGroupModal} identifier={identifier} />
+      </Dialog>
+    )
+  }, [])
+
   const handleDelete = (e: React.MouseEvent<HTMLElement, MouseEvent>): void => {
     e.stopPropagation()
     setMenuOpen(false)
@@ -239,6 +255,12 @@ const RenderColumnMenu: Renderer<CellProps<UserGroupAggregateDTO>> = ({ row, col
     e.stopPropagation()
     setMenuOpen(false)
     ;(column as any).openUserGroupModal(data)
+  }
+
+  const handleCopyUserGroup = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.stopPropagation()
+    setMenuOpen(false)
+    openCopyGroupModal()
   }
 
   const renderMenuItem = (
@@ -313,6 +335,9 @@ const RenderColumnMenu: Renderer<CellProps<UserGroupAggregateDTO>> = ({ row, col
               target: getString('rbac.group').toLowerCase()
             })
           )}
+          {data.externallyManaged ? (
+            <MenuItem icon="duplicate" text={getString('common.copy')} onClick={handleCopyUserGroup} />
+          ) : undefined}
         </Menu>
       </Popover>
     </Layout.Horizontal>

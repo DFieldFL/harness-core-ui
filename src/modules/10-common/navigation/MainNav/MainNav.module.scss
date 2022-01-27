@@ -75,6 +75,7 @@
 
   .userLink {
     height: 60px;
+    padding: 0px;
     border-bottom: none !important;
     &::after {
       content: none !important;
@@ -102,6 +103,16 @@
 
   .hiddenText {
     display: none;
+  }
+
+  .hoverText {
+    opacity: 0.65;
+    text-transform: uppercase;
+  }
+
+  .hoverNavLink:hover .hoverText,
+  .hoverNavLink.active .hoverText {
+    opacity: 1;
   }
 
   .text {

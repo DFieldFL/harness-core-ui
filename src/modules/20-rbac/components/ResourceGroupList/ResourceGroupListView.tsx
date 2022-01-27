@@ -9,7 +9,16 @@ import React, { useMemo } from 'react'
 import cx from 'classnames'
 import type { CellProps, Column, Renderer } from 'react-table'
 import ReactTimeago from 'react-timeago'
-import { Layout, Text, Color, Button, ButtonVariation, NoDataCard, TableV2 } from '@wings-software/uicore'
+import {
+  Layout,
+  Text,
+  Color,
+  Button,
+  ButtonVariation,
+  NoDataCard,
+  TableV2,
+  FontVariation
+} from '@wings-software/uicore'
 import { useHistory, useParams } from 'react-router-dom'
 import { get } from 'lodash-es'
 import { useStrings } from 'framework/strings'
@@ -22,7 +31,9 @@ import type {
 import routes from '@common/RouteDefinitions'
 import RbacFactory from '@rbac/factories/RbacFactory'
 import type { ModulePathParams, ProjectPathProps } from '@common/interfaces/RouteInterfaces'
-import { isDynamicResourceSelector } from '@rbac/utils/utils'
+import { isDynamicResourceSelector, isScopeResourceSelector } from '@rbac/utils/utils'
+import { getScopeLabelFromApi } from '@rbac/pages/ResourceGroupDetails/utils'
+import { getScopeFromDTO } from '@common/components/EntityReference/EntityReference'
 import ResourceGroupColumnMenu from './ResourceGroupColumnMenu'
 import css from './ResourceGroupList.module.scss'
 
@@ -71,33 +82,42 @@ export const RenderColumnLastUpdated: Renderer<CellProps<ResourceGroupResponse>>
 const RenderColumnSummary: Renderer<CellProps<ResourceGroupResponse>> = ({ row, column }) => {
   const { getString } = useStrings()
   const { resourceGroup, harnessManaged } = row.original
+  const scope = getScopeFromDTO(resourceGroup)
   const resourceSelectors = resourceGroup.resourceSelectors
   const resourceTypeName = (resource: ResourceSelector): string => {
-    const label = RbacFactory.getResourceTypeHandler(resource?.resourceType)?.label
-    if (label) {
-      if (isDynamicResourceSelector(get(resource, 'type'))) {
-        return getString('rbac.resourceGroup.all', {
-          name: getString(label)
-        })
+    if (isScopeResourceSelector(get(resource, 'type'))) {
+      return getString('rbac.resourceGroup.all')
+    } else {
+      const label = RbacFactory.getResourceTypeHandler(resource?.resourceType)?.label
+      if (label) {
+        if (isDynamicResourceSelector(get(resource, 'type'))) {
+          return getString('rbac.resourceGroup.all', {
+            name: getString(label)
+          })
+        }
+        return `${(resource as StaticResourceSelector).identifiers?.length || 0} ${getString(label)}`
       }
-      return `${(resource as StaticResourceSelector).identifiers?.length || 0} ${getString(label)}`
+      return get(resource, 'resourceType')
     }
-    return get(resource, 'type')
   }
   if (harnessManaged) {
     return <Text color={Color.BLACK}>{resourceGroup.name}</Text>
   }
   return resourceSelectors?.length ? (
-    <Text
-      color={Color.BLACK}
-      lineClamp={1}
-      onClick={() => {
-        ;(column as any).openResourceSelector(resourceGroup.identifier)
-      }}
-    >
-      {/* TODO: replace with the summary data  with resource number*/}
-      {resourceSelectors.map(ele => resourceTypeName(ele)).join(', ')}
-    </Text>
+    <Layout.Vertical padding={{ right: 'medium' }}>
+      <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'flex-start' }} spacing="small">
+        <Text color={Color.BLACK} font={{ variation: FontVariation.BODY2 }}>
+          {getString('resources')}:
+        </Text>
+        <Text lineClamp={1}>{resourceSelectors.map(ele => resourceTypeName(ele)).join(', ')}</Text>
+      </Layout.Horizontal>
+      <Layout.Horizontal flex={{ alignItems: 'center', justifyContent: 'flex-start' }} spacing="small">
+        <Text font={{ variation: FontVariation.BODY2 }} color={Color.BLACK}>
+          {getString('common.scope')}:
+        </Text>
+        <Text>{getScopeLabelFromApi(getString, scope, resourceSelectors)}</Text>
+      </Layout.Horizontal>
+    </Layout.Vertical>
   ) : (
     <Button
       variation={ButtonVariation.LINK}
@@ -134,14 +154,14 @@ const ResourceGroupListView: React.FC<ResourceGroupListViewProps> = props => {
         Header: getString('common.resourceGroupLabel'),
         accessor: row => row?.resourceGroup?.name,
         id: 'name',
-        width: '32%',
+        width: '30%',
         Cell: RenderColumnDetails
       },
       {
         Header: getString('rbac.resourceGroup.summary'),
         accessor: row => row?.resourceGroup?.resourceSelectors,
         id: 'summary',
-        width: '32%',
+        width: '50%',
         Cell: RenderColumnSummary,
         openResourceSelector
       },
@@ -149,7 +169,7 @@ const ResourceGroupListView: React.FC<ResourceGroupListViewProps> = props => {
         Header: getString('lastUpdated'),
         accessor: row => row?.lastModifiedAt,
         id: 'lastUpdated',
-        width: '32%',
+        width: '16%',
         Cell: RenderColumnLastUpdated
       },
       {
@@ -171,7 +191,9 @@ const ResourceGroupListView: React.FC<ResourceGroupListViewProps> = props => {
       columns={columns}
       data={listData}
       onRowClick={rowDetails => {
-        if (!rowDetails.harnessManaged) openResourceSelector(get(rowDetails, 'resourceGroup.identifier', ''))
+        if (!rowDetails.harnessManaged) {
+          openResourceSelector(get(rowDetails, 'resourceGroup.identifier', ''))
+        }
       }}
       pagination={{
         itemCount: data?.totalItems || 0,

@@ -10,7 +10,7 @@ import * as Yup from 'yup'
 import type { FormikErrors } from 'formik'
 import type { MutateMethod } from 'restful-react'
 import { omit } from 'lodash-es'
-import { Text, Button, ButtonVariation, Formik, Layout, Popover } from '@wings-software/uicore'
+import { Button, ButtonVariation, Formik, Layout, Popover } from '@wings-software/uicore'
 import { Classes } from '@blueprintjs/core'
 import type { PipelineInfoConfig } from 'services/cd-ng'
 import type {
@@ -51,7 +51,6 @@ interface SaveAsInputSetProps {
   isGitSyncEnabled?: boolean
   setFormErrors: Dispatch<SetStateAction<FormikErrors<InputSetDTO>>>
   getInputSetsList: () => void
-  disabled?: boolean
 }
 
 const SaveAsInputSet = ({
@@ -69,8 +68,7 @@ const SaveAsInputSet = ({
   branch,
   isGitSyncEnabled = false,
   setFormErrors,
-  getInputSetsList,
-  disabled
+  getInputSetsList
 }: SaveAsInputSetProps): JSX.Element | null => {
   const { getString } = useStrings()
 
@@ -239,18 +237,12 @@ const SaveAsInputSet = ({
         <RbacButton
           variation={ButtonVariation.SECONDARY}
           text={getString('inputSets.saveAsInputSet')}
-          disabled={disabled}
           permission={{
             permission: PermissionIdentifier.EDIT_PIPELINE,
             resource: {
               resourceType: ResourceType.PIPELINE
             }
           }}
-          tooltip={
-            disabled ? (
-              <Text padding="medium">{getString('pipeline.runPipelineForm.disallowStageExecution')}</Text>
-            ) : undefined
-          }
         />
       </Popover>
     )

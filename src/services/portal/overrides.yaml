@@ -43,7 +43,9 @@ allowpaths:
   - '/delegate-profiles/{delegateProfileId}.get'
   - '/delegate-profiles/v2/{delegateProfileId}'
   - '/setup/delegates/delegate-sizes.get'
+  - '/setup/delegates/validate-kubernetes-yaml.post'
   - '/setup/delegates/v3/validate-kubernetes-yaml.post'
+  - '/setup/delegates/v3/generate-kubernetes-yaml.post'
   - '/setup/delegates/v3/ng/generate-kubernetes-yaml'
   - '/delegates-verification/heartbeat'
   - '/delegates-verification/heartbeatV2'
@@ -88,8 +90,10 @@ operationIdOverrides:
   /delegate-profiles/v2/{delegateProfileId}.delete: deleteDelegateProfile
   /setup/delegates/delegate-selectors.get: getDelegateSelectors
   /delegate-profiles/{delegateProfileId}.get: getDelegateConfigFromId
-  /setup/delegates/v3/validate-kubernetes-yaml.post: validateKubernetesYaml
-  /setup/delegates/v3/ng/generate-kubernetes-yaml: generateKubernetesYaml
+  /setup/delegates/validate-kubernetes-yaml.post: validateKubernetesYaml
+  /setup/delegates/v3/validate-kubernetes-yaml.post: validateKubernetesYamlV3
+  /setup/delegates/v3/generate-kubernetes-yaml.post: generateKubernetesYaml
+  /setup/delegates/v3/ng/generate-kubernetes-yaml: generateKubernetesYamlUsingNgToken
   /delegates-verification/heartbeat: verifyDelegateHeartBeat
   /delegates-verification/heartbeatV2: verifyDelegateHeartBeatV2
   /delegates-verification/initialized: verifyDelegateInitialization

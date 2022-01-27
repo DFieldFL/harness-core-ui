@@ -34,7 +34,8 @@ import {
   getBasePathValue,
   getMetricPathValue,
   initializeGroupNames,
-  initGroupedCreatedMetrics
+  initGroupedCreatedMetrics,
+  defaultGroupedMetric
 } from './AppDMappedMetric.utils'
 import BasePath from '../BasePath/BasePath'
 import MetricChart from '../MetricChart/MetricChart'
@@ -109,7 +110,7 @@ export default function AppDMappedMetric({
   )
 
   const [groupedCreatedMetrics, setGroupedCreatedMetrics] = useState<GroupedCreatedMetrics>(
-    initGroupedCreatedMetrics(mappedMetrics)
+    initGroupedCreatedMetrics(mappedMetrics, getString)
   )
 
   useEffect(() => {
@@ -118,7 +119,8 @@ export default function AppDMappedMetric({
         updatedMetric: formikValues.metricName,
         oldMetric: oldState.selectedMetric,
         mappedMetrics: oldState.mappedMetrics,
-        formikValues
+        formikValues,
+        getString
       })
     })
   }, [formikValues?.groupName, formikValues?.metricName])
@@ -127,7 +129,7 @@ export default function AppDMappedMetric({
     const filteredList = Array.from(mappedMetrics?.values()).map((item, index) => {
       return {
         index,
-        groupName: item.groupName,
+        groupName: item.groupName || defaultGroupedMetric(getString),
         metricName: item.metricName
       }
     })
@@ -191,7 +193,8 @@ export default function AppDMappedMetric({
                 updatedMetric: newMetric,
                 oldMetric: oldState.selectedMetric,
                 mappedMetrics: oldState.mappedMetrics,
-                formikValues
+                formikValues,
+                getString
               })
             })
           }}
@@ -233,7 +236,11 @@ export default function AppDMappedMetric({
                       checked={formikValues?.pathType === PATHTYPE.FullPath}
                       onChange={() => formikSetField('pathType', PATHTYPE.FullPath)}
                     />
-                    <FormInput.Text name={PATHTYPE.FullPath} disabled={formikValues?.pathType !== PATHTYPE.FullPath} />
+                    <FormInput.Text
+                      className={css.fullPath}
+                      name={PATHTYPE.FullPath}
+                      disabled={formikValues?.pathType !== PATHTYPE.FullPath}
+                    />
                     <Radio
                       padding={{ bottom: 'medium', left: 'xlarge' }}
                       label={getString('cv.healthSource.connectors.AppDynamics.metricPathType.dropdown')}

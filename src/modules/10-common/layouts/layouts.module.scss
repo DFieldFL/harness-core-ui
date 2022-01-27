@@ -7,17 +7,18 @@
 
 .featuresBanner {
   height: 56px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid var(--grey-200);
 }
 
 .children {
-  height: 100vh;
-  min-height: 100%;
-  overflow: auto;
   background-color: var(--primary-bg);
 }
 
 .featuresBanner + .children {
-  height: calc(100vh - 56px);
+  height: calc(100vh - 58px);
 }
 
 .rhs {
@@ -26,13 +27,33 @@
 
 .main {
   display: grid;
-  grid-template-columns: 88px 184px 1fr;
+  grid-template-columns: 88px 184px calc(100vw - 272px);
 
   &[data-layout='minimal'] {
-    grid-template-columns: 88px 1fr;
+    grid-template-columns: 88px calc(100vw - 88px);
   }
 
   &[data-layout='empty'] {
     grid-template-columns: 1fr;
   }
+}
+
+.info {
+  background-color: var(--primary-1) !important;
+}
+
+.levelUp {
+  background-color: var(--orange-50) !important;
+}
+
+.overUse {
+  background-color: var(--yellow-100) !important;
+}
+
+.infoIcon {
+  color: var(--primary-6) !important;
+}
+
+.btn {
+  margin-top: 1px !important;
 }

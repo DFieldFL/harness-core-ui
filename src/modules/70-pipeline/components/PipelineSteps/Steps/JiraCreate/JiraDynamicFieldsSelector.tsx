@@ -14,6 +14,7 @@ import {
   FormInput,
   HarnessDocTooltip,
   MultiTypeInputType,
+  PageSpinner,
   Radio,
   Select,
   Text
@@ -88,7 +89,7 @@ const SelectFieldList = (props: JiraDynamicFieldsSelectorContentInterface) => {
       const issueTypeData = projectMetadata?.issuetypes[selectedIssueTypeKey || '']
       const fieldListToSet: JiraFieldNG[] = []
       const fieldKeys = Object.keys(issueTypeData?.fields || {})
-      fieldKeys.forEach(keyy => {
+      fieldKeys.sort().forEach(keyy => {
         if (issueTypeData?.fields[keyy] && keyy !== 'Summary' && keyy !== 'Description') {
           fieldListToSet.push(issueTypeData?.fields[keyy])
         }
@@ -146,6 +147,13 @@ const SelectFieldList = (props: JiraDynamicFieldsSelectorContentInterface) => {
           }}
         />
       </div>
+
+      {fetchingProjectMetadata ? (
+        <PageSpinner
+          message={getString('pipeline.jiraCreateStep.fetchingFields')}
+          className={css.fetchingPageSpinner}
+        />
+      ) : null}
 
       {!selectedIssueTypeKey ? (
         <div className={css.fieldsSelectorPlaceholder}>

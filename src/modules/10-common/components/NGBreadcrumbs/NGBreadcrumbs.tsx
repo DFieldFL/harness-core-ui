@@ -14,6 +14,7 @@ import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import type { ProjectPathProps, SecretsPathProps, ModulePathParams } from '@common/interfaces/RouteInterfaces'
 import { getModuleIcon } from '@common/utils/utils'
 import { ModuleName } from 'framework/types/ModuleName'
+import { useModuleInfo } from '@common/hooks/useModuleInfo'
 
 import paths from '@common/RouteDefinitions'
 import { useStrings } from 'framework/strings'
@@ -40,7 +41,8 @@ export const NGBreadcrumbs: React.FC<Partial<NGBreadcrumbsProps>> = ({
   const { getString } = useStrings()
   const originalParams = useParams<ProjectPathProps & SecretsPathProps & ModulePathParams>()
   const params = defaults(customPathParams, originalParams)
-  const { module, projectIdentifier, orgIdentifier } = params
+  const { module } = useModuleInfo()
+  const { projectIdentifier, orgIdentifier } = params
   const { selectedProject, selectedOrg } = useAppStore()
   const { pathname } = useLocation()
 

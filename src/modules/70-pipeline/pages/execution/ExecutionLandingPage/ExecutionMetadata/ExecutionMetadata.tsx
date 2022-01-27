@@ -14,7 +14,6 @@ import factory from '@pipeline/factories/ExecutionFactory'
 import { mapTriggerTypeToStringID } from '@pipeline/utils/triggerUtils'
 import { UserLabel } from '@common/components/UserLabel/UserLabel'
 
-import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import css from './ExecutionMetadata.module.scss'
 
 const ExecutionMetadataTrigger = () => {
@@ -67,9 +66,8 @@ export default function ExecutionMetadata(): React.ReactElement {
   const ciData = factory.getSummary(StageType.BUILD)
   const cdData = factory.getSummary(StageType.DEPLOY)
 
-  const { RUN_INDIVIDUAL_STAGE } = useFeatureFlags()
   const renderSingleStageExecutionInfo = (): React.ReactElement | null => {
-    return RUN_INDIVIDUAL_STAGE && pipelineExecutionSummary?.stagesExecuted?.length ? (
+    return pipelineExecutionSummary?.stagesExecuted?.length ? (
       <Tag className={css.singleExecutionTag}>{`${getString('pipeline.singleStageExecution')}   ${
         !!pipelineExecutionSummary.stagesExecutedNames &&
         Object.values(pipelineExecutionSummary.stagesExecutedNames).join(', ')

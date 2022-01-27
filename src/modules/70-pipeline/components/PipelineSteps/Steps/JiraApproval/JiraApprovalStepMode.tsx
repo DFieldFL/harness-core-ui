@@ -454,7 +454,9 @@ function JiraApprovalStepMode(props: JiraApprovalStepModeProps, formikRef: StepF
 
   return (
     <Formik<JiraApprovalData>
-      onSubmit={values => onUpdate?.(values)}
+      onSubmit={values => {
+        onUpdate?.(values)
+      }}
       formName="jiraApproval"
       initialValues={props.initialValues}
       validate={data => {

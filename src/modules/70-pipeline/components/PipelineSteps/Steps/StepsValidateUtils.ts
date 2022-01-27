@@ -296,16 +296,22 @@ export function generateSchemaForLimitMemory({ getString, isRequired = false }: 
             .string()
             .required()
             // ^$ in the end is to pass empty string because otherwise it will fail
-            // .matches(/^\d+$|^\d+(E|P|T|G|M|K|Ei|Pi|Ti|Gi|Mi|Ki)$|^$/, getString('validation.matchPattern'))
-            .matches(/^\d+(\.\d+)?$|^\d+(\.\d+)?(G|M|Gi|Mi)$|^$/, getString('validation.matchPattern'))
+            // .matches(/^\d+$|^\d+(E|P|T|G|M|K|Ei|Pi|Ti|Gi|Mi|Ki)$|^$/, getString('pipeline.stepCommonFields.validation.invalidLimitMemory'))
+            .matches(
+              /^\d+(\.\d+)?$|^\d+(\.\d+)?(G|M|Gi|Mi)$|^$/,
+              getString('pipeline.stepCommonFields.validation.invalidLimitMemory')
+            )
         : yup.string().required()
     }
     return getMultiTypeFromValue(value as string) === MultiTypeInputType.FIXED
       ? yup
           .string()
           // ^$ in the end is to pass empty string because otherwise it will fail
-          // .matches(/^\d+$|^\d+(E|P|T|G|M|K|Ei|Pi|Ti|Gi|Mi|Ki)$|^$/, getString('validation.matchPattern'))
-          .matches(/^\d+(\.\d+)?$|^\d+(\.\d+)?(G|M|Gi|Mi)$|^$/, getString('validation.matchPattern'))
+          // .matches(/^\d+$|^\d+(E|P|T|G|M|K|Ei|Pi|Ti|Gi|Mi|Ki)$|^$/, getString('pipeline.stepCommonFields.validation.invalidLimitMemory'))
+          .matches(
+            /^\d+(\.\d+)?$|^\d+(\.\d+)?(G|M|Gi|Mi)$|^$/,
+            getString('pipeline.stepCommonFields.validation.invalidLimitMemory')
+          )
       : yup.string()
   })
 }
@@ -314,7 +320,9 @@ export function generateSchemaForLimitCPU({ getString }: GenerateSchemaDependenc
   return yup.lazy(value =>
     getMultiTypeFromValue(value as string) === MultiTypeInputType.FIXED
       ? // ^$ in the end is to pass empty string because otherwise it will fail
-        yup.string().matches(/^\d+(\.\d+)?$|^\d+m$|^$/, getString('validation.matchPattern'))
+        yup
+          .string()
+          .matches(/^\d+(\.\d+)?$|^\d+m$|^$/, getString('pipeline.stepCommonFields.validation.invalidLimitCPU'))
       : yup.string()
   )
 }

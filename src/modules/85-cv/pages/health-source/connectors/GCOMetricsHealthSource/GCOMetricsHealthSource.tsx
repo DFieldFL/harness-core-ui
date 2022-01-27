@@ -29,15 +29,19 @@ import { Drawer } from '@blueprintjs/core'
 import isEmpty from 'lodash-es/isEmpty'
 import MonacoEditor from '@common/components/MonacoEditor/MonacoEditor'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
-import { StackdriverDefinition, useGetMetricPacks, useGetStackdriverSampleData } from 'services/cv'
+import {
+  StackdriverDefinition,
+  useGetMetricPacks,
+  useGetStackdriverDashboardDetail,
+  useGetStackdriverSampleData
+} from 'services/cv'
 import { useStrings } from 'framework/strings'
 import { getErrorMessage } from '@cv/utils/CommonUtils'
 import { SetupSourceLayout } from '@cv/components/CVSetupSourcesView/SetupSourceLayout/SetupSourceLayout'
 import { SetupSourceTabsContext } from '@cv/components/CVSetupSourcesView/SetupSourceTabs/SetupSourceTabs'
 import { QueryContent } from '@cv/components/QueryViewer/QueryViewer'
 import { NameId } from '@common/components/NameIdDescriptionTags/NameIdDescriptionTags'
-import { GCODashboardWidgetMetricNav } from './components/GCODashboardWidgetMetricNav/GCODashboardWidgetMetricNav'
-import { MANUAL_INPUT_QUERY } from './components/ManualInputQueryModal/ManualInputQueryModal'
+import MetricDashboardWidgetNav from '@cv/components/MetricDashboardWidgetNav/MetricDashboardWidgetNav'
 import {
   getManuallyCreatedQueries,
   formatJSON,
@@ -47,7 +51,9 @@ import {
   ensureFieldsAreFilled,
   transformGCOMetricSetupSourceToGCOHealthSource,
   transformGCOMetricHealthSourceToGCOMetricSetupSource,
-  getPlaceholderForIdentifier
+  getPlaceholderForIdentifier,
+  mapstackdriverDashboardDetailToMetricWidget,
+  onSelectNavItem
 } from './GCOMetricsHealthSource.utils'
 import DrawerFooter from '../../common/DrawerFooter/DrawerFooter'
 import type { GCOMetricInfo, GCOMetricsHealthSourceProps, ValidationChartProps } from './GCOMetricsHealthSource.type'
@@ -211,6 +217,8 @@ export function GCOMetricsHealthSource(props: GCOMetricsHealthSourceProps): JSX.
     [mutate, cancel]
   )
 
+  const stackDriverDashBoardRequest = useGetStackdriverDashboardDetail({ lazy: true })
+
   const metricPackResponse = useGetMetricPacks({
     queryParams: { projectIdentifier, orgIdentifier, accountId, dataSourceType: 'STACKDRIVER' }
   })
@@ -250,6 +258,14 @@ export function GCOMetricsHealthSource(props: GCOMetricsHealthSourceProps): JSX.
           )
           setIsIdentifierEdited(true)
         }
+
+        const dashboard: { itemId: string; title: string }[] = data.selectedDashboards.map(
+          (item: { id: string; name: string }) => {
+            return { itemId: item.id, title: item.name }
+          }
+        )
+
+        const isDashdoardEmpty = !Object.values(dashboard).filter(item => item.title).length
 
         return (
           <SetupSourceLayout
@@ -352,7 +368,12 @@ export function GCOMetricsHealthSource(props: GCOMetricsHealthSourceProps): JSX.
                   metricPackResponse={metricPackResponse}
                   hideServiceIdentifier
                 />
-
+                {formikProps.values.continuousVerification && (
+                  <FormInput.Text
+                    name={FieldNames.SERVICE_INSTANCE_FIELD}
+                    label={getString('cv.monitoringSources.serviceInstanceIdentifier')}
+                  />
+                )}
                 <FormInput.Text name={OVERALL} className={css.hiddenField} />
                 <DrawerFooter
                   onPrevious={onPrevious}
@@ -364,7 +385,8 @@ export function GCOMetricsHealthSource(props: GCOMetricsHealthSourceProps): JSX.
                       [FieldNames.SLI]: true,
                       [FieldNames.RISK_CATEGORY]: true,
                       [FieldNames.HIGHER_BASELINE_DEVIATION]: true,
-                      [FieldNames.LOWER_BASELINE_DEVIATION]: true
+                      [FieldNames.LOWER_BASELINE_DEVIATION]: true,
+                      [FieldNames.SERVICE_INSTANCE_FIELD]: true
                     } as any)
 
                     const errors = validate(formikProps.values, updatedData, getString)
@@ -396,32 +418,27 @@ export function GCOMetricsHealthSource(props: GCOMetricsHealthSourceProps): JSX.
               </FormikForm>
             }
             leftPanelContent={
-              <GCODashboardWidgetMetricNav
+              <MetricDashboardWidgetNav
+                dashboards={isDashdoardEmpty ? [] : dashboard}
+                dashboardWidgetMapper={mapstackdriverDashboardDetailToMetricWidget}
+                dashboardDetailsRequest={stackDriverDashBoardRequest}
+                addManualQueryTitle={'cv.monitoringSources.datadog.manualInputQueryModal.modalTitle'}
                 connectorIdentifier={data.connectorRef as string}
                 manuallyInputQueries={getManuallyCreatedQueries(updatedData)}
-                gcoDashboards={data.selectedDashboards}
                 showSpinnerOnLoad={!selectedMetric}
-                onSelectMetric={(metricName, query, widget, dashboardName, dashboardPath, identifier) => {
-                  let metricInfo: GCOMetricInfo | undefined = updatedData.get(metricName)
-                  if (!metricInfo) {
-                    metricInfo = {
-                      metricName,
-                      identifier,
-                      query,
-                      metricTags: { [widget]: '' },
-                      isManualQuery: query === MANUAL_INPUT_QUERY,
-                      dashboardName,
-                      dashboardPath
-                    }
-                  }
-
-                  metricInfo.query = formatJSON(metricInfo.query) || ''
-                  updatedData.set(metricName, metricInfo)
-                  if (selectedMetric) {
-                    updatedData.set(selectedMetric as string, { ...formikProps.values })
-                  }
-
-                  setUpdatedData(new Map(updatedData))
+                onSelectMetric={(id, metricName, query, widget, dashboardId, dashboardTitle) => {
+                  onSelectNavItem({
+                    id,
+                    metricName,
+                    query,
+                    widget,
+                    dashboardId,
+                    dashboardTitle,
+                    updatedData,
+                    setUpdatedData,
+                    selectedMetric,
+                    formikProps
+                  })
                   setSelectedMetric(metricName)
                   setShouldShowChart(false)
                   setError(undefined)

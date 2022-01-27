@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShellScriptVariablesView /> tests snapshot test for ShellScriptVariablesView 1`] = `
+<div>
+  <div
+    class="variablesListTable variablePaddingL3"
+  />
+</div>
+`;

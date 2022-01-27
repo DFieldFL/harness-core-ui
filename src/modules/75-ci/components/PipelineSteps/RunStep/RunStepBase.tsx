@@ -43,7 +43,7 @@ import {
   getFormValuesInCorrectFormat
 } from '@pipeline/components/PipelineSteps/Steps/StepsTransformValuesUtils'
 import { validate } from '@pipeline/components/PipelineSteps/Steps/StepsValidateUtils'
-import { useGitScope } from '@ci/services/CIUtils'
+import { useGitScope } from '@pipeline/utils/CIUtils'
 import type { RunStepProps, RunStepData, RunStepDataUI } from './RunStep'
 import { transformValuesFieldsConfig, getEditViewValidateFieldsConfig } from './RunStepFunctionConfigs'
 import { CIStepOptionalConfig, getOptionalSubLabel } from '../CIStep/CIStepOptionalConfig'

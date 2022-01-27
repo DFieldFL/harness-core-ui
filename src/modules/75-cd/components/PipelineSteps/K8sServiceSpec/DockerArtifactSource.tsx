@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
-import { cloneDeep, get } from 'lodash-es'
+import { cloneDeep, defaultTo, get } from 'lodash-es'
 import { parse } from 'yaml'
 import { Menu } from '@blueprintjs/core'
 
@@ -22,10 +22,10 @@ import {
 import { ArtifactSourceBase, ArtifactSourceRenderProps } from '@cd/factory/ArtifactSourceFactory/ArtifactSourceBase'
 import { yamlStringify } from '@common/utils/YamlHelperMethods'
 import { useMutateAsGet } from '@common/hooks'
-import { ErrorHandler } from '@common/components/ErrorHandler/ErrorHandler'
+import { ErrorHandler, ErrorHandlerProps } from '@common/components/ErrorHandler/ErrorHandler'
 import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
 import { EXPRESSION_STRING } from '@pipeline/utils/constants'
-import { useGetBuildDetailsForDockerWithYaml } from 'services/cd-ng'
+import { PipelineInfoConfig, useGetBuildDetailsForDockerWithYaml } from 'services/cd-ng'
 
 import ExperimentalInput from './K8sServiceSpecForms/ExperimentalInput'
 import { clearRuntimeInputValue, isFieldRuntime } from './K8sServiceSpecHelper'
@@ -35,7 +35,7 @@ interface DockerRenderContent extends ArtifactSourceRenderProps {
   isTagsSelectionDisabled: (data: ArtifactSourceRenderProps) => boolean
 }
 
-const Content = (props: DockerRenderContent) => {
+const Content = (props: DockerRenderContent): JSX.Element => {
   const {
     getString,
     isPrimaryArtifactsRuntime,
@@ -56,13 +56,16 @@ const Content = (props: DockerRenderContent) => {
     isTagsSelectionDisabled
   } = props
 
-  const getYamlData = () =>
+  const getYamlData = (): PipelineInfoConfig =>
     clearRuntimeInputValue(
       cloneDeep(
         parse(
-          JSON.stringify({
-            pipeline: formik?.values
-          }) || ''
+          defaultTo(
+            JSON.stringify({
+              pipeline: formik?.values
+            }),
+            ''
+          )
         )
       )
     )
@@ -106,8 +109,8 @@ const Content = (props: DockerRenderContent) => {
   useEffect(() => {
     if (Array.isArray(dockerdata?.data?.buildDetailsList)) {
       const toBeSetTagsList = dockerdata?.data?.buildDetailsList?.map(({ tag }) => ({
-        label: tag || '',
-        value: tag || ''
+        label: defaultTo(tag, ''),
+        value: defaultTo(tag, '')
       }))
       if (toBeSetTagsList) {
         setTagsList(toBeSetTagsList)
@@ -144,13 +147,17 @@ const Content = (props: DockerRenderContent) => {
                 onChange={() => {
                   const tagPath = `${path}.artifacts.primary.spec.tag`
                   const tagValue = get(formik?.values, tagPath, '')
-                  getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED &&
-                    tagValue?.length &&
+                  if (getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED && tagValue?.length) {
                     formik?.setFieldValue(tagPath, '')
+                  }
                 }}
                 className={css.connectorMargin}
                 type="DockerRegistry"
-                gitScope={{ repo: repoIdentifier || '', branch: branch || '', getDefaultFromOtherRepo: true }}
+                gitScope={{
+                  repo: defaultTo(repoIdentifier, ''),
+                  branch: defaultTo(branch, ''),
+                  getDefaultFromOtherRepo: true
+                }}
               />
             )}
 
@@ -166,9 +173,9 @@ const Content = (props: DockerRenderContent) => {
                 onChange={() => {
                   const tagPath = `${path}.artifacts.primary.spec.tag`
                   const tagValue = get(formik?.values, tagPath, '')
-                  getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED &&
-                    tagValue?.length &&
+                  if (getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED && tagValue?.length) {
                     formik?.setFieldValue(tagPath, '')
+                  }
                 }}
               />
             )}
@@ -222,7 +229,7 @@ const Content = (props: DockerRenderContent) => {
                   name={`${path}.artifacts.primary.spec.tag`}
                 />
                 {fetchTagsError ? (
-                  <ErrorHandler responseMessages={(fetchTagsError.data as any)?.responseMessages} />
+                  <ErrorHandler responseMessages={(fetchTagsError.data as ErrorHandlerProps)?.responseMessages} />
                 ) : null}
               </Layout.Vertical>
             )}
@@ -248,7 +255,7 @@ export class DockerArtifactSource extends ArtifactSourceBase<ArtifactSourceRende
   protected artifactType = 'DockerRegistry'
   protected isSidecar = false
 
-  isTagsSelectionDisabled(props: ArtifactSourceRenderProps) {
+  isTagsSelectionDisabled(props: ArtifactSourceRenderProps): boolean {
     const { artifacts, initialValues } = props
     const isImagePathPresent =
       getMultiTypeFromValue(artifacts?.primary?.spec?.imagePath) !== MultiTypeInputType.RUNTIME
@@ -261,7 +268,7 @@ export class DockerArtifactSource extends ArtifactSourceBase<ArtifactSourceRende
     return !(isImagePathPresent && isConnectorPresent)
   }
 
-  renderContent(props: ArtifactSourceRenderProps) {
+  renderContent(props: ArtifactSourceRenderProps): JSX.Element | null {
     if (!props.isArtifactsRuntime) {
       return null
     }

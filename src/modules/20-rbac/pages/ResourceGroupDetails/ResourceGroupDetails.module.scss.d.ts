@@ -9,6 +9,8 @@
 declare const styles: {
   readonly colorDiv: string
   readonly pageContainer: string
+  readonly resourceGroupDetails: string
   readonly resourceTypeListContainer: string
+  readonly subHeader: string
 }
 export default styles

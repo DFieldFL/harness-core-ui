@@ -9,7 +9,7 @@ import React from 'react'
 import { defaultTo } from 'lodash-es'
 
 import { Color, FontVariation, Icon, Layout, Text } from '@wings-software/uicore'
-import type { PipelineInfoConfig } from 'services/cd-ng'
+import type { GitSyncEntityDTO, PipelineInfoConfig } from 'services/cd-ng'
 import type { EntityGitDetails, NGTemplateInfoConfig } from 'services/template-ng'
 import { useGitSyncStore } from 'framework/GitRepoStore/GitSyncStoreContext'
 import { useStrings } from 'framework/strings'
@@ -17,6 +17,7 @@ import { getRepoDetailsByIndentifier } from '@common/utils/gitSyncUtils'
 import GitFilters, { GitFilterScope } from '@common/components/GitFilters/GitFilters'
 import { useQueryParams } from '@common/hooks'
 import type { GitQueryParams } from '@common/interfaces/RouteInterfaces'
+import { getEntityUrl, getRepoEntityObject } from '@gitsync/common/gitSyncUtils'
 import { DefaultNewPipelineId } from './PipelineContext/PipelineActions'
 import GitPopover from '../GitPopover/GitPopover'
 
@@ -33,7 +34,6 @@ const breakWord = 'break-word'
 
 export const GitDetails = (props: StudioGitPopoverProps): JSX.Element => {
   const { gitDetails, identifier, isReadonly, onGitBranchChange, entityType } = props
-
   const { repoIdentifier, branch } = useQueryParams<GitQueryParams>()
   const { gitSyncRepos, loadingRepos } = useGitSyncStore()
   const { getString } = useStrings()
@@ -43,43 +43,46 @@ export const GitDetails = (props: StudioGitPopoverProps): JSX.Element => {
   }
 
   if (gitDetails?.objectId || (identifier === DefaultNewPipelineId && gitDetails.repoIdentifier)) {
-    const repoName: string = defaultTo(getRepoDetailsByIndentifier(gitDetails?.repoIdentifier, gitSyncRepos)?.name, '')
-    const folderName = `${defaultTo(gitDetails?.rootFolder, '')}${defaultTo(gitDetails?.filePath, '')}`
+    const repo = getRepoDetailsByIndentifier(gitDetails?.repoIdentifier, gitSyncRepos)
+    const repoEntity: GitSyncEntityDTO = getRepoEntityObject(repo, gitDetails)
+    const repoName: string = defaultTo(repo?.name, '')
     return (
       <>
         <Layout.Vertical spacing="large">
-          {identifier === DefaultNewPipelineId && !loadingRepos ? (
-            <Text font={{ size: 'small' }} color={Color.GREY_400}>
-              {getString('repository')}
+          <Text font={{ size: 'small' }} color={Color.GREY_400}>
+            {getString('repository')}
+          </Text>
+          <Layout.Horizontal spacing="small" style={{ alignItems: 'center' }}>
+            <Icon name="repository" size={16} color={Color.GREY_700} />
+            <Text
+              font={FontVariation.SMALL}
+              style={{ wordWrap: breakWord, maxWidth: '200px' }}
+              lineClamp={1}
+              color={Color.GREY_800}
+            >
+              {repoName}
             </Text>
-          ) : (
+          </Layout.Horizontal>
+        </Layout.Vertical>
+        {identifier === DefaultNewPipelineId && !loadingRepos ? null : (
+          <Layout.Vertical spacing="large">
             <Text font={{ size: 'small' }} color={Color.GREY_400}>
               {getString('common.git.filePath')}
             </Text>
-          )}
-          <Layout.Horizontal spacing="small" style={{ alignItems: 'center' }}>
-            <Icon name="repository" size={16} color={Color.GREY_700} />
-            {identifier === DefaultNewPipelineId && !loadingRepos ? (
+            <Layout.Horizontal spacing="small" style={{ alignItems: 'center' }}>
+              <Icon name="repository" size={16} color={Color.GREY_700} />
               <Text
+                data-testid={`${repoEntity.folderPath}${repoEntity.entityGitPath}`}
                 font={FontVariation.SMALL}
                 style={{ wordWrap: breakWord, maxWidth: '200px' }}
                 lineClamp={1}
                 color={Color.GREY_800}
               >
-                {repoName}
+                {getEntityUrl(repoEntity)}
               </Text>
-            ) : (
-              <Text
-                font={FontVariation.SMALL}
-                style={{ wordWrap: breakWord, maxWidth: '200px' }}
-                lineClamp={1}
-                color={Color.GREY_800}
-              >
-                {folderName}
-              </Text>
-            )}
-          </Layout.Horizontal>
-        </Layout.Vertical>
+            </Layout.Horizontal>
+          </Layout.Vertical>
+        )}
 
         <Layout.Vertical spacing="large">
           <Text font={{ size: 'small' }} color={Color.GREY_400}>

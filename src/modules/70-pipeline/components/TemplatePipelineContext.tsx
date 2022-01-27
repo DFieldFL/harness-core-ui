@@ -39,6 +39,7 @@ import { useLicenseStore } from 'framework/LicenseStore/LicenseStoreContext'
 import { LICENSE_STATE_VALUES } from 'framework/LicenseStore/licenseStoreUtil'
 import type { PipelineSelectionState } from '@pipeline/components/PipelineStudio/PipelineQueryParamState/usePipelineQueryParam'
 import type { GetPipelineQueryParams } from 'services/pipeline-ng'
+import { getScopeFromDTO } from '@common/components/EntityReference/EntityReference'
 
 export const TemplatePipelineProvider: React.FC<{
   queryParams: GetPipelineQueryParams
@@ -176,6 +177,8 @@ export const TemplatePipelineProvider: React.FC<{
     [state.pipeline, state.pipeline?.stages]
   )
 
+  const scope = getScopeFromDTO(queryParams)
+
   React.useEffect(() => {
     fetchPipeline()
   }, [initialValue])
@@ -188,6 +191,7 @@ export const TemplatePipelineProvider: React.FC<{
         contextType,
         allowableTypes,
         setView,
+        scope,
         runPipeline: noop,
         stepsFactory: factory,
         setSchemaErrorView,

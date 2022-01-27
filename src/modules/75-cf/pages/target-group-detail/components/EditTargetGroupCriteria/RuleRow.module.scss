@@ -1,0 +1,12 @@
+.fields {
+  display: grid;
+  grid-template-columns: 160px 180px 1fr;
+  gap: var(--spacing-small);
+  padding: var(--spacing-medium);
+  background-color: var(--grey-100);
+  border-radius: 6px;
+
+  :global(.bp3-form-group) {
+    margin-bottom: 0;
+  }
+}

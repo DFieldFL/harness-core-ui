@@ -9,6 +9,7 @@
 declare const styles: {
   readonly executionSummary: string
   readonly main: string
+  readonly mainTabPanel: string
   readonly noAnalysis: string
 }
 export default styles

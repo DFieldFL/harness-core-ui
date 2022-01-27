@@ -8,19 +8,20 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
-  Layout,
   Card,
-  SelectOption,
   Checkbox,
-  FormikForm,
-  Container,
   Color,
+  Container,
+  FormikForm,
+  Layout,
+  RUNTIME_INPUT_VALUE,
+  SelectOption,
   Text,
   useToaster
 } from '@wings-software/uicore'
 
 import produce from 'immer'
-import { get, set, debounce, isEmpty } from 'lodash-es'
+import { debounce, get, isEmpty, set, unset } from 'lodash-es'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import { useStrings } from 'framework/strings'
 
@@ -30,8 +31,8 @@ import { ServiceConfig, StageElementConfig, useGetServiceList } from 'services/c
 import factory from '@pipeline/components/PipelineSteps/PipelineStepFactory'
 import { usePipelineContext } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineContext'
 import {
-  getStageIndexFromPipeline,
-  getFlattenedStages
+  getFlattenedStages,
+  getStageIndexFromPipeline
 } from '@pipeline/components/PipelineStudio/StageBuilder/StageBuilderUtil'
 import { StepWidget } from '@pipeline/components/AbstractSteps/StepWidget'
 import type { K8SDirectServiceStep } from '@cd/components/PipelineSteps/K8sServiceSpec/K8sServiceSpecInterface'
@@ -47,6 +48,7 @@ import type { DeploymentStageElementConfig } from '@pipeline/utils/pipelineTypes
 import { useDeepCompareEffect } from '@common/hooks'
 import { StageType } from '@pipeline/utils/stageHelpers'
 import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
+import { Scope } from '@common/interfaces/SecretsInterface'
 import stageCss from '../DeployStageSetupShell/DeployStage.module.scss'
 
 export default function DeployServiceSpecifications(props: React.PropsWithChildren<unknown>): JSX.Element {
@@ -59,6 +61,7 @@ export default function DeployServiceSpecifications(props: React.PropsWithChildr
     },
     allowableTypes,
     isReadonly,
+    scope,
     getStageFromPipeline,
     updateStage
   } = usePipelineContext()
@@ -205,7 +208,7 @@ export default function DeployServiceSpecifications(props: React.PropsWithChildr
         set(draft, 'stage.spec', {
           ...stage?.stage?.spec,
           serviceConfig: {
-            serviceRef: '',
+            serviceRef: getScopeBasedDefaultServiceRef(),
             serviceDefinition: {
               type: !NG_NATIVE_HELM ? 'Kubernetes' : undefined,
               spec: {
@@ -257,7 +260,7 @@ export default function DeployServiceSpecifications(props: React.PropsWithChildr
     } else {
       const stageData = produce(stage, draft => {
         if (stage?.stage?.spec?.serviceConfig?.stageOverrides) {
-          delete draft?.stage?.spec?.serviceConfig?.stageOverrides
+          unset(draft?.stage?.spec?.serviceConfig, 'stageOverrides')
         }
       })
 
@@ -294,6 +297,10 @@ export default function DeployServiceSpecifications(props: React.PropsWithChildr
       showError(err?.data?.message || err?.message)
     }
   }
+
+  const getScopeBasedDefaultServiceRef = React.useCallback(() => {
+    return scope === Scope.PROJECT ? '' : RUNTIME_INPUT_VALUE
+  }, [scope])
 
   return (
     <FormikForm>
@@ -336,10 +343,10 @@ export default function DeployServiceSpecifications(props: React.PropsWithChildr
               <Card className={stageCss.sectionCard} id="aboutService">
                 <StepWidget
                   type={StepType.DeployService}
-                  readonly={isReadonly}
+                  readonly={isReadonly || scope === Scope.ORG || scope === Scope.ACCOUNT}
                   initialValues={{
                     service: get(stage, 'stage.spec.serviceConfig.service', {}),
-                    serviceRef: get(stage, 'stage.spec.serviceConfig.serviceRef', '')
+                    serviceRef: get(stage, 'stage.spec.serviceConfig.serviceRef', getScopeBasedDefaultServiceRef())
                   }}
                   allowableTypes={allowableTypes}
                   onUpdate={data => updateService(data)}

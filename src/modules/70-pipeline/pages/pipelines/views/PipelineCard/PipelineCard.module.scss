@@ -14,20 +14,12 @@
   .label {
     flex-shrink: 0;
   }
-  .entityContainer {
-    display: flex;
-    color: var(--black);
-    font-size: var(--font-size-small);
-  }
   .firstEntity {
     max-width: 80px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  .additionalEntitiesCount {
-    margin-left: var(--spacing-4);
-    color: var(--grey-600);
+    color: var(--black) !important;
   }
   :global {
     .bp3-popover-wrapper {

@@ -34,7 +34,7 @@ import type { ToasterProps } from '@wings-software/uicore/dist/hooks/useToaster/
 import { useStrings } from 'framework/strings'
 import { useToaster } from '@common/components'
 import { CopyText } from '@common/components/CopyText/CopyText'
-import { useUploadSamlMetaData, useUpdateSamlMetaData, SamlSettings } from 'services/cd-ng'
+import { useUploadSamlMetaData, useUpdateSamlMetaData, SAMLSettings } from 'services/cd-ng'
 import { getSamlEndpoint } from '@auth-settings/constants/utils'
 import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
@@ -45,19 +45,14 @@ import {
   Providers,
   getSelectedSAMLProvider
 } from '@auth-settings/modals/SAMLProvider/utils'
-import SecretInput from '@secrets/components/SecretInput/SecretInput'
-import { SecretReferenceInterface, setSecretField } from '@secrets/utils/SecretField'
 import css from '../useSAMLProvider.module.scss'
 
 interface Props {
   onSubmit?: () => void
   onCancel: () => void
-  samlProvider?: SamlSettings
+  samlProvider?: SAMLSettings
 }
 
-interface SAMLFormsValues extends Omit<FormValues, 'clientSecret'> {
-  clientSecret: SecretReferenceInterface | void
-}
 const handleSuccess = (
   successCallback: ToasterProps['showSuccess'],
   isCreate: boolean,
@@ -82,12 +77,12 @@ const SAMLProviderForm: React.FC<Props> = ({ onSubmit, onCancel, samlProvider })
   const { showSuccess } = useToaster()
   const { AZURE_SAML_150_GROUPS_SUPPORT } = useFeatureFlags()
   const { accountId } = useParams<AccountPathProps>()
-  const [initialValues, setInitialValues] = React.useState<SAMLFormsValues>(defaultInitialData)
+  const [initialValues, setInitialValues] = React.useState<FormValues>(defaultInitialData)
   const [initialLoading, setIntitalLoading] = React.useState<boolean>(!!samlProvider)
   const [selected, setSelected] = React.useState<SAMLProviderType>()
   const [modalErrorHandler, setModalErrorHandler] = React.useState<ModalErrorHandlerBinding>()
   const hasSamlProvider = selected || samlProvider
-  const setupInitialData = async (): Promise<SAMLFormsValues> => {
+  const setupInitialData = async (): Promise<FormValues> => {
     return {
       displayName: defaultTo(samlProvider?.displayName, ''),
       authorizationEnabled: samlProvider ? !!samlProvider?.authorizationEnabled : true,
@@ -95,10 +90,7 @@ const SAMLProviderForm: React.FC<Props> = ({ onSubmit, onCancel, samlProvider })
       entityIdEnabled: samlProvider ? !!samlProvider?.entityIdentifier : false,
       entityIdentifier: defaultTo(samlProvider?.entityIdentifier, ''),
       enableClientIdAndSecret: samlProvider ? !!samlProvider?.clientSecret || !!samlProvider?.clientId : false,
-      clientSecret:
-        samlProvider && samlProvider?.clientSecret
-          ? await setSecretField(samlProvider?.clientSecret.toString(), { accountIdentifier: accountId })
-          : undefined,
+      clientSecret: samlProvider ? samlProvider?.clientSecret : undefined,
       clientId: samlProvider ? samlProvider?.clientId : '',
       samlProviderType:
         samlProvider && samlProvider?.samlProviderType ? (samlProvider?.samlProviderType as Providers) : undefined
@@ -182,7 +174,7 @@ const SAMLProviderForm: React.FC<Props> = ({ onSubmit, onCancel, samlProvider })
         {initialLoading ? (
           <Page.Spinner />
         ) : (
-          <Formik<SAMLFormsValues>
+          <Formik<FormValues>
             formName="samlProviderForm"
             initialValues={initialValues}
             validationSchema={yup.object().shape({
@@ -206,10 +198,7 @@ const SAMLProviderForm: React.FC<Props> = ({ onSubmit, onCancel, samlProvider })
               })
             })}
             onSubmit={values => {
-              const clientSecret = values.clientSecret
-                ? (values.clientSecret as SecretReferenceInterface).referenceString
-                : undefined
-              handleSubmit({ ...values, clientSecret: clientSecret })
+              handleSubmit({ ...values })
             }}
           >
             {({ values, setFieldValue }) => (
@@ -294,7 +283,11 @@ const SAMLProviderForm: React.FC<Props> = ({ onSubmit, onCancel, samlProvider })
                               {Providers.AZURE === values?.samlProviderType && values.enableClientIdAndSecret && (
                                 <Container width={300} margin={{ top: 'medium' }}>
                                   <FormInput.Text name="clientId" label={getString('common.clientId')} />
-                                  <SecretInput name="clientSecret" label={getString('common.clientSecret')} />
+                                  <FormInput.Text
+                                    name="clientSecret"
+                                    inputGroup={{ type: 'password' }}
+                                    label={getString('common.clientSecret')}
+                                  />
                                 </Container>
                               )}
                             </>

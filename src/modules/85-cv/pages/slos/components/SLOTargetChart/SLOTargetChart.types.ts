@@ -5,6 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
+import type Highcharts from 'highcharts'
 import type { ServiceLevelIndicatorDTO, TimeGraphResponse } from 'services/cv'
 
 export interface SLOTargetChartProps {

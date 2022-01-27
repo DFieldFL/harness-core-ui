@@ -30,6 +30,14 @@
   cursor: move;
 }
 
+.pageHeaderStyles {
+  > div {
+    &:first-child {
+      flex-grow: 1;
+    }
+  }
+}
+
 .dragging {
   background-color: var(--yellow-450) !important;
 }

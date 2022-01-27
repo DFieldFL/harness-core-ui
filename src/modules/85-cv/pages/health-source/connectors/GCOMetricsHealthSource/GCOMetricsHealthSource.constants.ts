@@ -16,7 +16,8 @@ export const FieldNames = {
   RISK_CATEGORY: 'riskCategory',
   HIGHER_BASELINE_DEVIATION: 'higherBaselineDeviation',
   LOWER_BASELINE_DEVIATION: 'lowerBaselineDeviation',
-  SLI: 'sli'
+  SLI: 'sli',
+  SERVICE_INSTANCE_FIELD: 'serviceInstanceField'
 }
 
 export const DrawerOptions = {

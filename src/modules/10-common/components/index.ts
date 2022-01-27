@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import { useToaster, PageSpinner, Page, TagsPopover } from '@wings-software/uicore'
+import { useToaster, PageSpinner, Page, TagsPopover, TableV2 as Table } from '@harness/uicore'
 import { AdminSelector } from '../navigation/AdminSelector/AdminSelector'
 import AddDrawer from './AddDrawer/AddDrawer'
 import ConnectorStats from './ConnectorStats/ConnectorStats'
@@ -18,7 +18,6 @@ import { NavigationCheck } from './NavigationCheck/NavigationCheck'
 import { NameIdDescriptionTags, Description } from './NameIdDescriptionTags/NameIdDescriptionTags'
 import { ReferenceSelect } from './ReferenceSelect/ReferenceSelect'
 import SnippetSection from './SnippetSection/SnippetSection'
-import Table from './Table/Table'
 import Toothpick from './Toothpick/Toothpick'
 import TimeSelect from './TimeSelect/TimeSelect'
 import { TimeAgo } from './TimeAgo/TimeAgo'

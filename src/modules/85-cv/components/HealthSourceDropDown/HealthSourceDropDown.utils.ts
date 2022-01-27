@@ -33,9 +33,5 @@ export const getDropdownOptions = (
     }
   }
 
-  if (options.length > 1) {
-    options.unshift({ label: getString('all'), value: 'all' })
-  }
-
   return options
 }

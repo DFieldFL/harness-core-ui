@@ -25,7 +25,7 @@ import { Menu, MenuItem } from '@blueprintjs/core'
 import { useToaster } from '@common/components'
 import { useStrings } from 'framework/strings'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
-import type { AuthenticationSettingsResponse, SamlSettings } from 'services/cd-ng'
+import type { AuthenticationSettingsResponse, SAMLSettings } from 'services/cd-ng'
 import { useDeleteSamlMetaData, useUpdateAuthMechanism, useGetSamlLoginTest } from 'services/cd-ng'
 import { AuthenticationMechanisms } from '@auth-settings/constants/utils'
 import { useSAMLProviderModal } from '@auth-settings/modals/SAMLProvider/useSAMLProvider'
@@ -60,7 +60,7 @@ const SAMLProvider: React.FC<Props> = ({
   const samlEnabled = authSettings.authenticationMechanism === AuthenticationMechanisms.SAML
   const samlSettings = authSettings.ngAuthSettings?.find(
     settings => settings.settingsType === AuthenticationMechanisms.SAML
-  ) as SamlSettings | undefined
+  ) as SAMLSettings | undefined
 
   const { enabled: featureEnabled } = useFeature({
     featureRequest: {

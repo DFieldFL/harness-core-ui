@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<KubernetesServiceSpecInputSetMode /> tests snapshot test for kubernetes service spec input set mode 1`] = `
+<div>
+  <div
+    class="Layout--vertical Layout--layout-spacing-medium StyledProps--main"
+  >
+    <div
+      class="nopadLeft accordionSummary"
+      id="Stage..Service.Manifests"
+    >
+      <div
+        class="subheading"
+      >
+        pipelineSteps.deploy.serviceSpecifications.deploymentTypes.manifests
+      </div>
+    </div>
+    <div
+      class="nopadLeft accordionSummary"
+      id="Stage..Service.Variables"
+    >
+      <div
+        class="subheading"
+      >
+        variablesText
+      </div>
+      <div
+        class="nestedAccordions"
+      />
+    </div>
+  </div>
+</div>
+`;

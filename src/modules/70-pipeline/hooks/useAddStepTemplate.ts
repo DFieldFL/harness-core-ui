@@ -5,9 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import produce from 'immer'
 import { cloneDeep, defaultTo, isNil, set } from 'lodash-es'
-import { parse } from 'yaml'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import type {
@@ -16,13 +14,9 @@ import type {
 } from '@pipeline/components/PipelineStudio/ExecutionGraph/ExecutionGraph'
 import { DrawerTypes, TemplateDrawerTypes } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineActions'
 import type { TemplateSummaryResponse } from 'services/template-ng'
-import type { StepElementConfig } from 'services/cd-ng'
-import {
-  addStepOrGroup,
-  generateRandomString
-} from '@pipeline/components/PipelineStudio/ExecutionGraph/ExecutionGraphUtil'
-import { StepCategory, TemplateStepNode, useGetStepsV2 } from 'services/pipeline-ng'
-import { getScopeBasedTemplateRef } from '@pipeline/utils/templateUtils'
+import { addStepOrGroup } from '@pipeline/components/PipelineStudio/ExecutionGraph/ExecutionGraphUtil'
+import { StepCategory, useGetStepsV2 } from 'services/pipeline-ng'
+import { createStepNodeFromTemplate } from '@pipeline/utils/templateUtils'
 import { AdvancedPanels } from '@pipeline/components/PipelineStudio/StepCommands/StepCommandTypes'
 import { usePipelineContext } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineContext'
 import { useMutateAsGet } from '@common/hooks'
@@ -95,20 +89,7 @@ export function useAddStepTemplate(props: AddStepTemplate): AddStepTemplateRetur
             templateType: 'Step',
             allChildTypes,
             onUseTemplate: async (template: TemplateSummaryResponse, isCopied = false) => {
-              const processNode = (isCopied
-                ? produce(defaultTo(parse(template?.yaml || '').template.spec, {}) as StepElementConfig, draft => {
-                    draft.name = defaultTo(template?.name, '')
-                    draft.identifier = generateRandomString(defaultTo(template?.name, ''))
-                  })
-                : produce({} as TemplateStepNode, draft => {
-                    draft.name = defaultTo(template?.name, '')
-                    draft.identifier = generateRandomString(defaultTo(template?.name, ''))
-                    set(draft, 'template.templateRef', getScopeBasedTemplateRef(template))
-                    if (template.versionLabel) {
-                      set(draft, 'template.versionLabel', template.versionLabel)
-                    }
-                  })) as unknown as StepElementConfig
-              const newStepData = { step: processNode }
+              const newStepData = { step: createStepNodeFromTemplate(template, isCopied) }
               const { stage: pipelineStage } = cloneDeep(getStageFromPipeline(selectedStageId || ''))
               if (pipelineStage && !pipelineStage.stage?.spec) {
                 set(pipelineStage, 'stage.spec', {})

@@ -8,6 +8,8 @@
 // this is an auto-generated file, do not update this manually
 declare const styles: {
   readonly canaryNodes: string
+  readonly details: string
+  readonly flexLayout: string
   readonly main: string
   readonly primaryNodes: string
 }

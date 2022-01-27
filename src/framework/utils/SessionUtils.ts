@@ -7,17 +7,16 @@
 
 interface GetLoginPageURL {
   returnUrl?: string
-  action?: 'signout'
 }
 
-export const getLoginPageURL = ({ returnUrl, action }: GetLoginPageURL): string => {
-  // pick current path, but remove `/ng/`
+export const getLoginPageURL = ({ returnUrl }: GetLoginPageURL): string => {
   const basePath = window.HARNESS_ENABLE_NG_AUTH_UI
     ? '/auth/#/signin'
-    : `${window.location.pathname.replace(/\/ng\//, '/')}#/login`
+    : `${window.location.pathname.replace(/\/ng\//, '/')}#/login` // pick current path, but remove `/ng/`
+
   return returnUrl
-    ? `${basePath}?returnUrl=${encodeURIComponent(returnUrl)}${action ? `&action=${action}` : ''}`
-    : `${basePath}${action ? `?action=${action}` : ''}`
+    ? `${basePath}?action=signout&returnUrl=${encodeURIComponent(returnUrl)}`
+    : `${basePath}?action=signout`
 }
 
 export const getForgotPasswordURL = (): string => {

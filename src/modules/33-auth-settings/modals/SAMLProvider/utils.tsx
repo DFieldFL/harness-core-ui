@@ -23,7 +23,7 @@ export interface FormValues {
 export enum Providers {
   AZURE = 'AZURE',
   OKTA = 'OKTA',
-  ONE_LOGIN = 'ONE_LOGIN',
+  ONE_LOGIN = 'ONELOGIN',
   OTHER = 'OTHER'
 }
 

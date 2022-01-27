@@ -11,26 +11,36 @@ import { sum } from 'lodash-es'
 
 import { GroupHeader, GroupHeaderProps, LogViewerAccordionStatus } from './GroupHeader/GroupHeader'
 import { MultiLogLine } from './MultiLogLine/MultiLogLine'
-import type { State } from '../LogsState/types'
-import type { UseActionCreatorReturn } from '../LogsState/actions'
+import type { CommonLogsProps } from './LogsProps'
+import css from '../LogsContent.module.scss'
 
 const STATUSES_FOR_ACCORDION_SKIP: LogViewerAccordionStatus[] = ['LOADING', 'NOT_STARTED']
 
-export interface GroupedLogsProps {
-  state: State
-  actions: UseActionCreatorReturn
-}
+export type GroupedLogsProps = CommonLogsProps
 
 export function GroupedLogs(
   props: GroupedLogsProps,
   ref: React.ForwardedRef<null | GroupedVirtuosoHandle>
 ): React.ReactElement {
   const { state, actions } = props
-
   const groupedCounts = state.logKeys.map(key => {
     const section = state.dataMap[key]
     return section.isOpen ? section.data.length : 0
   })
+
+  function handleGoToIndex(index: number) {
+    return (event: React.MouseEvent<Element, MouseEvent>) => {
+      event.stopPropagation()
+
+      if (!ref || !(ref as React.MutableRefObject<GroupedVirtuosoHandle | null>).current) {
+        return
+      }
+
+      const handle = (ref as React.MutableRefObject<GroupedVirtuosoHandle>).current
+
+      handle.scrollToIndex(index)
+    }
+  }
 
   function handleSectionClick(id: string, _props: GroupHeaderProps): boolean | void {
     const currentSection = state.dataMap[id]
@@ -49,39 +59,52 @@ export function GroupedLogs(
   }
 
   return (
-    <GroupedVirtuoso
-      overscan={50}
-      ref={ref}
-      groupCounts={groupedCounts}
-      followOutput="auto"
-      groupContent={index => {
-        const logKey = state.logKeys[index]
-        const unit = state.dataMap[logKey]
+    <pre className={css.container}>
+      <GroupedVirtuoso
+        overscan={50}
+        ref={ref}
+        groupCounts={groupedCounts}
+        atBottomThreshold={Math.ceil(sum(groupedCounts) / 3)}
+        followOutput="auto"
+        groupContent={index => {
+          const logKey = state.logKeys[index]
+          const unit = state.dataMap[logKey]
+          const startIndex = sum(groupedCounts.slice(0, index))
+          const endIndex = startIndex + groupedCounts[index] - 1
 
-        return <GroupHeader {...unit} id={logKey} onSectionClick={handleSectionClick} />
-      }}
-      itemContent={(index, groupIndex) => {
-        const logKey = state.logKeys[groupIndex]
-        const unit = state.dataMap[logKey]
-        const previousCount = sum(groupedCounts.slice(0, groupIndex))
-        const lineNumber = index - previousCount
-        const logData = unit.data[lineNumber]
+          return (
+            <GroupHeader
+              {...unit}
+              id={logKey}
+              onSectionClick={handleSectionClick}
+              onGoToTop={handleGoToIndex(startIndex)}
+              onGoToBottom={handleGoToIndex(endIndex)}
+            />
+          )
+        }}
+        itemContent={(index, groupIndex) => {
+          const logKey = state.logKeys[groupIndex]
+          const unit = state.dataMap[logKey]
+          const previousCount = sum(groupedCounts.slice(0, groupIndex))
+          const lineNumber = index - previousCount
+          const logData = unit.data[lineNumber]
 
-        if (!unit.isOpen) {
-          return <div style={{ height: '1px' }} />
-        }
+          if (!unit.isOpen) {
+            return <div style={{ height: '1px' }} />
+          }
 
-        return (
-          <MultiLogLine
-            {...logData}
-            lineNumber={lineNumber}
-            limit={unit.data.length}
-            searchText={state.searchData.text}
-            currentSearchIndex={state.searchData.currentIndex}
-          />
-        )
-      }}
-    />
+          return (
+            <MultiLogLine
+              {...logData}
+              lineNumber={lineNumber}
+              limit={unit.data.length}
+              searchText={state.searchData.text}
+              currentSearchIndex={state.searchData.currentIndex}
+            />
+          )
+        }}
+      />
+    </pre>
   )
 }
 

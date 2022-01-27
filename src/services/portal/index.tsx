@@ -22110,6 +22110,50 @@ export const getDelegateGroupFromIdV2Promise = (
     GetDelegateGroupFromIdV2PathParams
   >(getConfig('api'), `/setup/delegates/v2/${delegateGroupId}`, props, signal)
 
+export interface GenerateKubernetesYamlQueryParams {
+  accountId?: string
+  orgId?: string
+  projectId?: string
+}
+
+export type GenerateKubernetesYamlProps = Omit<
+  MutateProps<void, void, GenerateKubernetesYamlQueryParams, DelegateSetupDetailsRequestBody, void>,
+  'path' | 'verb'
+>
+
+export const GenerateKubernetesYaml = (props: GenerateKubernetesYamlProps) => (
+  <Mutate<void, void, GenerateKubernetesYamlQueryParams, DelegateSetupDetailsRequestBody, void>
+    verb="POST"
+    path={`/setup/delegates/v3/generate-kubernetes-yaml`}
+    base={getConfig('api')}
+    {...props}
+  />
+)
+
+export type UseGenerateKubernetesYamlProps = Omit<
+  UseMutateProps<void, void, GenerateKubernetesYamlQueryParams, DelegateSetupDetailsRequestBody, void>,
+  'path' | 'verb'
+>
+
+export const useGenerateKubernetesYaml = (props: UseGenerateKubernetesYamlProps) =>
+  useMutate<void, void, GenerateKubernetesYamlQueryParams, DelegateSetupDetailsRequestBody, void>(
+    'POST',
+    `/setup/delegates/v3/generate-kubernetes-yaml`,
+    { base: getConfig('api'), ...props }
+  )
+
+export const generateKubernetesYamlPromise = (
+  props: MutateUsingFetchProps<void, void, GenerateKubernetesYamlQueryParams, DelegateSetupDetailsRequestBody, void>,
+  signal?: RequestInit['signal']
+) =>
+  mutateUsingFetch<void, void, GenerateKubernetesYamlQueryParams, DelegateSetupDetailsRequestBody, void>(
+    'POST',
+    getConfig('api'),
+    `/setup/delegates/v3/generate-kubernetes-yaml`,
+    props,
+    signal
+  )
+
 export interface DeleteDelegateGroupByIdentifierQueryParams {
   accountId?: string
   orgId?: string
@@ -22379,6 +22423,76 @@ export const validateDockerDelegatePromise = (
     signal
   )
 
+export interface ValidateKubernetesYamlV3QueryParams {
+  accountId?: string
+  orgId?: string
+  projectId?: string
+}
+
+export type ValidateKubernetesYamlV3Props = Omit<
+  MutateProps<
+    RestResponseDelegateSetupDetails,
+    unknown,
+    ValidateKubernetesYamlV3QueryParams,
+    DelegateSetupDetailsRequestBody,
+    void
+  >,
+  'path' | 'verb'
+>
+
+export const ValidateKubernetesYamlV3 = (props: ValidateKubernetesYamlV3Props) => (
+  <Mutate<
+    RestResponseDelegateSetupDetails,
+    unknown,
+    ValidateKubernetesYamlV3QueryParams,
+    DelegateSetupDetailsRequestBody,
+    void
+  >
+    verb="POST"
+    path={`/setup/delegates/v3/validate-kubernetes-yaml`}
+    base={getConfig('api')}
+    {...props}
+  />
+)
+
+export type UseValidateKubernetesYamlV3Props = Omit<
+  UseMutateProps<
+    RestResponseDelegateSetupDetails,
+    unknown,
+    ValidateKubernetesYamlV3QueryParams,
+    DelegateSetupDetailsRequestBody,
+    void
+  >,
+  'path' | 'verb'
+>
+
+export const useValidateKubernetesYamlV3 = (props: UseValidateKubernetesYamlV3Props) =>
+  useMutate<
+    RestResponseDelegateSetupDetails,
+    unknown,
+    ValidateKubernetesYamlV3QueryParams,
+    DelegateSetupDetailsRequestBody,
+    void
+  >('POST', `/setup/delegates/v3/validate-kubernetes-yaml`, { base: getConfig('api'), ...props })
+
+export const validateKubernetesYamlV3Promise = (
+  props: MutateUsingFetchProps<
+    RestResponseDelegateSetupDetails,
+    unknown,
+    ValidateKubernetesYamlV3QueryParams,
+    DelegateSetupDetailsRequestBody,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  mutateUsingFetch<
+    RestResponseDelegateSetupDetails,
+    unknown,
+    ValidateKubernetesYamlV3QueryParams,
+    DelegateSetupDetailsRequestBody,
+    void
+  >('POST', getConfig('api'), `/setup/delegates/v3/validate-kubernetes-yaml`, props, signal)
+
 export interface ValidateKubernetesYamlQueryParams {
   accountId?: string
   orgId?: string
@@ -22405,7 +22519,7 @@ export const ValidateKubernetesYaml = (props: ValidateKubernetesYamlProps) => (
     void
   >
     verb="POST"
-    path={`/setup/delegates/v3/validate-kubernetes-yaml`}
+    path={`/setup/delegates/validate-kubernetes-yaml`}
     base={getConfig('api')}
     {...props}
   />
@@ -22429,7 +22543,7 @@ export const useValidateKubernetesYaml = (props: UseValidateKubernetesYamlProps)
     ValidateKubernetesYamlQueryParams,
     DelegateSetupDetailsRequestBody,
     void
-  >('POST', `/setup/delegates/v3/validate-kubernetes-yaml`, { base: getConfig('api'), ...props })
+  >('POST', `/setup/delegates/validate-kubernetes-yaml`, { base: getConfig('api'), ...props })
 
 export const validateKubernetesYamlPromise = (
   props: MutateUsingFetchProps<
@@ -22447,7 +22561,7 @@ export const validateKubernetesYamlPromise = (
     ValidateKubernetesYamlQueryParams,
     DelegateSetupDetailsRequestBody,
     void
-  >('POST', getConfig('api'), `/setup/delegates/v3/validate-kubernetes-yaml`, props, signal)
+  >('POST', getConfig('api'), `/setup/delegates/validate-kubernetes-yaml`, props, signal)
 
 export interface DeleteDelegateQueryParams {
   accountId?: string

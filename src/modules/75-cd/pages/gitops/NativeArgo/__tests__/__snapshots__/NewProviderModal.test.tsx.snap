@@ -1,0 +1,566 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NewProviderModal /> tests snapshot test for new provider modal 1`] = `
+<div>
+  <div
+    class="addNewProviderModal"
+  >
+    <div
+      class="providerModalContainer"
+    >
+      <div
+        class="StepWizard--main stepWizard StepWizard--navBar"
+      >
+        <div
+          class="StepWizard--navBarList"
+        >
+          <span
+            class="StepWizard--header"
+          >
+            <span
+              class="bp3-icon StyledProps--main"
+              data-icon="argo"
+            >
+              <svg
+                data-name="Layer 1"
+                height="50"
+                id="argo_svg__Layer_1"
+                viewBox="0 0 360 360"
+                width="50"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <clippath
+                    id="argo_svg__clip-path"
+                  >
+                    <path
+                      d="M241.019 115.687l-7.173 163.792H126.245l-5.978-163.792"
+                      fill="none"
+                    />
+                  </clippath>
+                  <style>
+                    .argo_svg__cls-2{fill:#e9654b}.argo_svg__cls-3{fill:#b6cfea}.argo_svg__cls-6{fill:#ee794b}.argo_svg__cls-12{fill:#010101}.argo_svg__cls-13{fill:#fff}
+                  </style>
+                </defs>
+                <path
+                  class="argo_svg__cls-2"
+                  d="M123.854 251.982s-2.391 7.173-5.978 10.76a10.854 10.854 0 01-8.369 3.586 138.606 138.606 0 01-17.933 3.587s8.369 1.196 17.933 2.391c3.587 0 3.587 0 5.978 1.196 5.978 0 8.37-3.587 8.37-3.587zm109.992 0s2.391 7.173 5.978 10.76a10.854 10.854 0 008.369 3.586 138.606 138.606 0 0017.933 3.587s-8.369 1.196-19.129 2.391c-3.587 0-3.587 0-5.978 1.196-7.173 0-8.369-3.587-8.369-3.587z"
+                />
+                <circle
+                  class="argo_svg__cls-3"
+                  cx="180.046"
+                  cy="133.621"
+                  r="129.121"
+                />
+                <circle
+                  cx="180.046"
+                  cy="133.621"
+                  fill="#e6f5f8"
+                  r="124.339"
+                />
+                <circle
+                  cx="180.046"
+                  cy="136.012"
+                  fill="#d0e8f0"
+                  r="101.623"
+                />
+                <g
+                  id="argo_svg__Body"
+                >
+                  <path
+                    class="argo_svg__cls-6"
+                    d="M120.267 183.834s8.37 135.1 8.37 137.49c0 1.196 1.195 3.587-4.783 5.978s-25.107 7.173-25.107 7.173h28.694c13.151 0 13.151-10.76 13.151-13.15s3.587-53.801 3.587-53.801 1.195 60.974 1.195 63.365-1.195 5.978-9.564 8.369l-23.912 4.782h27.498c16.738 0 16.738-10.76 16.738-10.76l3.587-53.8s1.196 53.8 1.196 59.778c0 4.782-3.587 8.369-16.738 10.76-8.37 2.39-19.13 4.782-19.13 4.782h31.085c15.543-1.195 17.934-11.956 17.934-11.956l26.302-133.903z"
+                  />
+                  <path
+                    class="argo_svg__cls-6"
+                    d="M239.824 183.834s-8.37 135.1-8.37 137.49c0 1.196-1.195 3.587 4.783 5.978s25.107 7.173 25.107 7.173H232.65c-13.15 0-13.15-10.76-13.15-13.15s-3.588-53.801-3.588-53.801-1.195 60.974-1.195 63.365 1.195 5.978 9.564 8.369l23.912 4.782h-27.498c-16.738 0-16.738-10.76-16.738-10.76l-3.587-53.8s-1.195 53.8-1.195 59.778c0 4.782 3.586 8.369 16.737 10.76 8.37 2.39 19.13 4.782 19.13 4.782h-31.085c-15.543-1.195-17.934-11.956-17.934-11.956l-26.302-133.903zm1.196-65.755c0 33.475-27.499 59.778-59.779 59.778s-59.778-27.498-59.778-59.778S148.961 58.3 181.241 58.3s59.778 26.303 59.778 59.779z"
+                  />
+                  <circle
+                    class="argo_svg__cls-6"
+                    clip-path="url(#argo_svg__clip-path)"
+                    cx="181.241"
+                    cy="150.359"
+                    r="106.405"
+                  />
+                  <path
+                    d="M237.433 183.834s7.173-63.364-2.392-87.276C217.108 54.714 175.263 58.3 175.263 58.3s23.912 9.565 25.107 45.432c1.196 25.107 0 62.169 0 62.169z"
+                    fill="#e34e3b"
+                    opacity="0.22"
+                  />
+                </g>
+                <g
+                  id="argo_svg__Face"
+                >
+                  <circle
+                    cx="156.134"
+                    cy="85.798"
+                    fill="#fbdfc3"
+                    opacity="0.5"
+                    r="8.369"
+                  />
+                  <path
+                    class="argo_svg__cls-12"
+                    d="M201.566 207.746c0 20.324-9.565 33.475-21.52 33.475s-21.52-15.542-21.52-35.866c0 0 9.564 19.129 22.715 19.129s20.325-16.738 20.325-16.738z"
+                  />
+                  <path
+                    class="argo_svg__cls-13"
+                    d="M201.566 207.746c0 13.15-9.565 20.324-21.52 20.324s-20.325-9.564-20.325-21.52c0 0 9.565 11.956 22.716 11.956s19.129-10.76 19.129-10.76z"
+                  />
+                  <circle
+                    class="argo_svg__cls-2"
+                    cx="221.89"
+                    cy="151.554"
+                    r="37.062"
+                  />
+                  <circle
+                    class="argo_svg__cls-2"
+                    cx="138.201"
+                    cy="151.554"
+                    r="37.062"
+                  />
+                  <circle
+                    class="argo_svg__cls-13"
+                    cx="221.89"
+                    cy="151.554"
+                    r="28.694"
+                  />
+                  <circle
+                    class="argo_svg__cls-13"
+                    cx="135.81"
+                    cy="151.554"
+                    r="28.694"
+                  />
+                  <circle
+                    class="argo_svg__cls-12"
+                    cx="135.81"
+                    cy="147.968"
+                    r="8.369"
+                  />
+                  <circle
+                    class="argo_svg__cls-12"
+                    cx="221.89"
+                    cy="147.968"
+                    r="8.369"
+                  />
+                </g>
+                <path
+                  class="argo_svg__cls-3"
+                  d="M48.534 165.901a5.648 5.648 0 01-5.978-5.978v-47.822a5.648 5.648 0 015.978-5.978 5.648 5.648 0 015.977 5.978v47.822a5.648 5.648 0 01-5.977 5.978zm260.632 0a5.648 5.648 0 01-5.977-5.978v-47.822a5.648 5.648 0 015.977-5.978 5.648 5.648 0 015.978 5.978v47.822a5.648 5.648 0 01-5.978 5.978z"
+                />
+                <circle
+                  class="argo_svg__cls-13"
+                  cx="139.396"
+                  cy="37.976"
+                  r="5.978"
+                />
+                <path
+                  class="argo_svg__cls-13"
+                  d="M96.356 199.377a4.392 4.392 0 01-3.587-1.196c-14.346-17.933-21.52-40.649-21.52-63.365a106.683 106.683 0 0114.347-53.8 117.01 117.01 0 0138.258-38.258 5.257 5.257 0 015.978 1.196 5.257 5.257 0 01-1.196 5.977 96.496 96.496 0 00-49.018 83.69 94.222 94.222 0 0020.325 58.582c1.195 1.196 1.195 4.783-1.196 5.978-1.195 1.196-1.195 1.196-2.39 1.196z"
+                />
+                <path
+                  class="argo_svg__cls-2"
+                  d="M233.846 255.568v-9.564c-16.738 9.564-34.671 19.129-56.192 19.129-23.91 0-39.453-10.76-54.995-19.13l1.195 9.565s17.934 19.13 54.996 19.13c34.671-1.196 54.996-19.13 54.996-19.13z"
+                  opacity="0.25"
+                />
+              </svg>
+            </span>
+          </span>
+          <span
+            class="StepWizard--title StepWizard--header"
+          >
+            cd.gitOpsWizardTitle
+          </span>
+          <div
+            class="StepWizard--navStep StepWizard--activeStep"
+          >
+            <span
+              class="StepWizard--number"
+            >
+              1
+            </span>
+            <p
+              class="StyledProps--font Text--lineclamp StyledProps--main StepWizard--stepName"
+              style="--text-line-clamp: 2; width: 200px;"
+            >
+              overview
+            </p>
+            <p
+              class="StyledProps--font Text--lineclamp StyledProps--main StepWizard--stepName"
+              style="--text-line-clamp: 2; width: 200px;"
+            >
+              
+            </p>
+          </div>
+          <div
+            class="StepWizard--navStep"
+          >
+            <span
+              class="StepWizard--number"
+            >
+              2
+            </span>
+            <p
+              class="StyledProps--font Text--lineclamp StyledProps--main StepWizard--stepName"
+              style="--text-line-clamp: 2; width: 200px;"
+            >
+              common.labelTestConnection
+            </p>
+          </div>
+        </div>
+        <div
+          class="StepWizard--stepDetails"
+        >
+           
+          <div
+            class="Layout--vertical Layout--layout-spacing-xxlarge StyledProps--main stepContainer"
+          >
+            <div
+              class="heading"
+            >
+              overview
+            </div>
+            <div
+              class="StyledProps--font StyledProps--main connectorForm"
+            >
+              <div
+                class="OverlaySpinner--overlaySpinner"
+              >
+                <form
+                  class="FormikForm--main"
+                >
+                  <div>
+                    <div
+                      class="StyledProps--font StyledProps--main mainContainer"
+                      style="min-height: 460px; max-height: 460px;"
+                    >
+                      <div
+                        class="contentContainer"
+                      >
+                        <div
+                          class="formContainer"
+                        >
+                          <div
+                            class="StyledProps--font StyledProps--main main formElm"
+                          >
+                            <div
+                              class="InputWithIdentifier--txtNameContainer TextInput--main"
+                            >
+                              <div
+                                class="Layout--horizontal Layout--layout-spacing-xsmall StyledProps--main InputWithIdentifier--txtIdContainer"
+                              >
+                                <div
+                                  class="Text--withDocsTooltip"
+                                  data-tooltip-id="GitOpsProviderStepFormundefined_identifier"
+                                >
+                                  <p
+                                    class="StyledProps--font StyledProps--main"
+                                  >
+                                    ID
+                                  </p>
+                                </div>
+                                <p
+                                  class="StyledProps--font StyledProps--main"
+                                >
+                                  :
+                                </p>
+                                <span
+                                  class="bp3-popover-wrapper"
+                                >
+                                  <span
+                                    class="bp3-popover-target"
+                                  >
+                                    <div
+                                      class="bp3-editable-text bp3-disabled bp3-editable-text-placeholder InputWithIdentifier--idValue"
+                                    >
+                                      <span
+                                        class="bp3-editable-text-content"
+                                        style="height: 1px; line-height: 1px; min-width: 0;"
+                                      />
+                                    </div>
+                                  </span>
+                                </span>
+                              </div>
+                              <div
+                                class="bp3-form-group"
+                                data-id="name-0"
+                              >
+                                <label
+                                  class="bp3-label"
+                                  for="name"
+                                >
+                                  <span
+                                    class="Tooltip--acenter"
+                                    data-tooltip-id="GitOpsProviderStepFormundefined_name"
+                                  >
+                                    name
+                                  </span>
+                                   
+                                  <span
+                                    class="bp3-text-muted"
+                                  />
+                                </label>
+                                <div
+                                  class="bp3-form-content"
+                                >
+                                  <div
+                                    class="bp3-input-group"
+                                  >
+                                    <input
+                                      autocomplete="off"
+                                      class="bp3-input"
+                                      name="name"
+                                      placeholder="common.namePlaceholder"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="StyledProps--font StyledProps--main"
+                            >
+                              <label
+                                class="Label--main bp3-label descriptionLabel"
+                                data-tooltip-id="GitOpsProviderStepFormNameIdDescriptionTags_description"
+                              >
+                                optionalField
+                                <span
+                                  class="bp3-icon StyledProps--main editOpen"
+                                  data-icon="Edit"
+                                  data-name="edit"
+                                  data-testid="description-edit"
+                                >
+                                  <svg
+                                    height="12"
+                                    viewBox="0 0 16 16"
+                                    width="12"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      clip-rule="evenodd"
+                                      d="M11.207.485a.5.5 0 01.354-.146 3.5 3.5 0 013.5 3.5.5.5 0 01-.146.353l-11 11a.5.5 0 01-.354.147h-3a.5.5 0 01-.5-.5v-3a.5.5 0 01.146-.354l11-11zm.553.862L1.061 12.046v2.293h2.293l10.7-10.7a2.5 2.5 0 00-2.294-2.292z"
+                                      fill="currentColor"
+                                      fill-rule="evenodd"
+                                    />
+                                    <path
+                                      clip-rule="evenodd"
+                                      d="M11.89 2.646a.5.5 0 010 .708L8.353 6.889a.5.5 0 01-.708-.707l3.536-3.536a.5.5 0 01.707 0z"
+                                      fill="currentColor"
+                                      fill-rule="evenodd"
+                                      opacity="0.3"
+                                    />
+                                  </svg>
+                                </span>
+                              </label>
+                            </div>
+                            <div
+                              class="StyledProps--font StyledProps--main"
+                            >
+                              <label
+                                class="Label--main bp3-label descriptionLabel"
+                                data-tooltip-id="GitOpsProviderStepFormNameIdDescriptionTags_tags"
+                              >
+                                optionalField
+                                <span
+                                  class="bp3-icon StyledProps--main editOpen"
+                                  data-icon="Edit"
+                                  data-name="edit"
+                                  data-testid="tags-edit"
+                                >
+                                  <svg
+                                    height="12"
+                                    viewBox="0 0 16 16"
+                                    width="12"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      clip-rule="evenodd"
+                                      d="M11.207.485a.5.5 0 01.354-.146 3.5 3.5 0 013.5 3.5.5.5 0 01-.146.353l-11 11a.5.5 0 01-.354.147h-3a.5.5 0 01-.5-.5v-3a.5.5 0 01.146-.354l11-11zm.553.862L1.061 12.046v2.293h2.293l10.7-10.7a2.5 2.5 0 00-2.294-2.292z"
+                                      fill="currentColor"
+                                      fill-rule="evenodd"
+                                    />
+                                    <path
+                                      clip-rule="evenodd"
+                                      d="M11.89 2.646a.5.5 0 010 .708L8.353 6.889a.5.5 0 01-.708-.707l3.536-3.536a.5.5 0 01.707 0z"
+                                      fill="currentColor"
+                                      fill-rule="evenodd"
+                                      opacity="0.3"
+                                    />
+                                  </svg>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div
+                            class="bp3-form-group adapterUrl"
+                            data-id="spec.adapterUrl-1"
+                          >
+                            <label
+                              class="bp3-label"
+                              for="spec.adapterUrl"
+                            >
+                              <span
+                                class="Tooltip--acenter"
+                                data-tooltip-id="GitOpsProviderStepFormundefined_spec.adapterUrl"
+                              >
+                                Adapter URL
+                              </span>
+                               
+                              <span
+                                class="bp3-text-muted"
+                              />
+                            </label>
+                            <div
+                              class="bp3-form-content"
+                            >
+                              <div
+                                class="bp3-input-group"
+                              >
+                                <input
+                                  autocomplete="off"
+                                  class="bp3-input"
+                                  name="spec.adapterUrl"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="aboutHarnessAdapterContainer"
+                        >
+                          <p
+                            class="StyledProps--font StyledProps--main aboutHarnessAdapterQuestion StyledProps--margin-bottom-small"
+                          >
+                            cd.whatIsHarnessAdapter
+                          </p>
+                          <p
+                            class="StyledProps--font StyledProps--main aboutHarnessAdapterAnswer StyledProps--margin-top-small StyledProps--margin-bottom-small"
+                          >
+                            cd.aboutHarnessAdapter
+                          </p>
+                          <img
+                            class="aboutHarnessAdapterIllustration"
+                            src="test-file-stub"
+                          />
+                          <div
+                            class="aboutHarnessAdapterUrl"
+                          >
+                            <span
+                              class="bp3-icon StyledProps--main StyledProps--intent-primary"
+                              data-icon="info"
+                              style="margin-right: 8px;"
+                            >
+                              <svg
+                                height="16"
+                                viewBox="0 0 12 12"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  clip-rule="evenodd"
+                                  d="M0 6a6 6 0 1012 0A6 6 0 000 6zm.75 0a5.25 5.25 0 1010.5 0A5.25 5.25 0 00.75 6zm4.206 3.104v.646h2.682v-.646l-.836-.144V4.203H4.956v.65l.836.144V8.96l-.836.144zm1.846-7.352v1.03h-1.01v-1.03h1.01z"
+                                  fill-rule="evenodd"
+                                />
+                              </svg>
+                            </span>
+                            <a
+                              href="https://ngdocs.harness.io/article/ptlvh7c6z2-harness-argo-cd-git-ops-quickstart"
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              cd.learnMoreAboutHarnessAdapter
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="Layout--horizontal StyledProps--main"
+                    >
+                      <button
+                        class="bp3-button Button--button StyledProps--font StyledProps--main Button--with-current-color Button--iconOnly Button--withRightIcon Button--variation Button--variation-primary"
+                        type="submit"
+                      >
+                        <span
+                          class="bp3-button-text"
+                        >
+                          <span>
+                            saveAndContinue
+                          </span>
+                        </span>
+                        <span
+                          class="bp3-icon bp3-icon-chevron-right StyledProps--main"
+                          icon="chevron-right"
+                        >
+                          <svg
+                            data-icon="chevron-right"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            width="16"
+                          >
+                            <desc>
+                              chevron-right
+                            </desc>
+                            <path
+                              d="M10.71 7.29l-4-4a1.003 1.003 0 00-1.42 1.42L8.59 8 5.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71l4-4c.18-.18.29-.43.29-.71 0-.28-.11-.53-.29-.71z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span
+          class="bp3-icon StyledProps--main StepWizard--harnessWatermark StyledProps--color StyledProps--color-grey50"
+          data-icon="harness-with-color"
+        >
+          <svg
+            height="346"
+            viewBox="0 0 25 25"
+            width="346"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M22.974 8.186L16.708 1.88a7.023 7.023 0 00-2.59-1.572C11.98-.409 9.858.154 8.135 1.88L1.868 8.186a7.081 7.081 0 00-1.562 2.606c-.713 2.153-.153 4.289 1.562 6.023l6.266 6.306a7.113 7.113 0 002.589 1.58 5.663 5.663 0 001.808.308c1.503 0 2.946-.64 4.177-1.88l6.266-6.305a7.08 7.08 0 001.562-2.606c.713-2.162.153-4.298-1.562-6.032zm-10.07-4.477c.706.213 1.232.7 1.274.735l1.851 1.862-3.608 3.631-3.608-3.63 1.859-1.872c.5-.496 1.197-1.034 2.233-.726zm-9.219 8.305c.212-.71.696-1.24.73-1.282l1.85-1.863 3.609 3.632-3.608 3.63-1.86-1.87c-.492-.504-1.027-1.214-.721-2.247zm8.252 9.279c-.705-.214-1.231-.701-1.273-.735l-1.851-1.863 3.608-3.631 3.608 3.631-1.86 1.871c-.5.496-1.205 1.034-2.232.726zm9.22-8.305c-.212.709-.696 1.239-.73 1.281l-1.851 1.863-3.608-3.631 3.608-3.632 1.86 1.872c.492.504 1.027 1.204.72 2.247z"
+              fill="currentColor"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+    <button
+      class="bp3-button Button--button StyledProps--font StyledProps--main crossIcon Button--with-current-color Button--iconOnly Button--withLeftIcon Button--variation Button--variation-icon"
+      type="button"
+    >
+      <span
+        class="bp3-icon bp3-icon-cross StyledProps--main"
+        icon="cross"
+      >
+        <svg
+          data-icon="cross"
+          height="18"
+          viewBox="0 0 16 16"
+          width="18"
+        >
+          <desc>
+            cross
+          </desc>
+          <path
+            d="M9.41 8l3.29-3.29c.19-.18.3-.43.3-.71a1.003 1.003 0 00-1.71-.71L8 6.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42L6.59 8 3.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71L8 9.41l3.29 3.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71L9.41 8z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
+`;

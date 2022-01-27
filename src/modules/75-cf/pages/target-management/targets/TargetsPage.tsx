@@ -49,6 +49,7 @@ import { ResourceType } from '@rbac/interfaces/ResourceType'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import usePlanEnforcement from '@cf/hooks/usePlanEnforcement'
 import UsageLimitBanner from '@cf/components/UsageLimitBanner/UsageLimitBanner'
+import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
 import { NoTargetsView } from './NoTargetsView'
 import { NewTargets } from './NewTarget'
 
@@ -107,6 +108,15 @@ export const TargetsPage: React.FC = () => {
   const title = getString('cf.shared.targets')
 
   const { isPlanEnforcementEnabled } = usePlanEnforcement()
+  const planEnforcementProps = isPlanEnforcementEnabled
+    ? {
+        featuresProps: {
+          featuresRequest: {
+            featureNames: [FeatureIdentifier.MAUS]
+          }
+        }
+      }
+    : undefined
 
   const toolbar = (
     <Layout.Horizontal spacing="medium">
@@ -124,9 +134,15 @@ export const TargetsPage: React.FC = () => {
         {getString('cf.targets.pageDescription')}
       </Text>
       <FlexExpander />
-      <ExpandingSearchInput name="findFlag" placeholder={getString('search')} onChange={onSearchInputChanged} />
+      <ExpandingSearchInput
+        alwaysExpanded
+        name="findFlag"
+        placeholder={getString('search')}
+        onChange={onSearchInputChanged}
+      />
     </Layout.Horizontal>
   )
+
   const gotoTargetDetailPage = useCallback(
     (identifier: string): void => {
       history.push(
@@ -276,6 +292,7 @@ export const TargetsPage: React.FC = () => {
                 }}
               >
                 <RbacOptionsMenuButton
+                  data-testid="rbac-options-menu-btn"
                   items={[
                     {
                       icon: 'edit',
@@ -286,7 +303,8 @@ export const TargetsPage: React.FC = () => {
                       permission: {
                         resource: { resourceType: ResourceType.ENVIRONMENT, resourceIdentifier: activeEnvironment },
                         permission: PermissionIdentifier.EDIT_FF_TARGETGROUP
-                      }
+                      },
+                      ...planEnforcementProps
                     },
                     {
                       icon: 'trash',
@@ -295,7 +313,8 @@ export const TargetsPage: React.FC = () => {
                       permission: {
                         resource: { resourceType: ResourceType.ENVIRONMENT, resourceIdentifier: activeEnvironment },
                         permission: PermissionIdentifier.DELETE_FF_TARGETGROUP
-                      }
+                      },
+                      ...planEnforcementProps
                     }
                   ]}
                 />
@@ -305,7 +324,7 @@ export const TargetsPage: React.FC = () => {
         }
       }
     ],
-    [getString, clear, deleteTarget, gotoTargetDetailPage, refetchTargets, showError]
+    [getString, clear, deleteTarget, gotoTargetDetailPage, refetchTargets, showError, planEnforcementProps]
   )
 
   useEffect(() => {
@@ -348,6 +367,8 @@ export const TargetsPage: React.FC = () => {
     </>
   )
 
+  const displayToolbar = !noEnvironmentExists && (!noTargetExists || searchTerm)
+
   return (
     <ListingPageTemplate
       pageTitle={title}
@@ -355,7 +376,7 @@ export const TargetsPage: React.FC = () => {
         <TargetManagementHeader environmentSelect={<EnvironmentSelect />} hasEnvironments={!!environments?.length} />
       }
       headerStyle={{ display: 'flex' }}
-      toolbar={!noEnvironmentExists && toolbar}
+      toolbar={displayToolbar && toolbar}
       content={((!error || noEnvironmentExists) && content) || null}
       pagination={
         !noEnvironmentExists &&

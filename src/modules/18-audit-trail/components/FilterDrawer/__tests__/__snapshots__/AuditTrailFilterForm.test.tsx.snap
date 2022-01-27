@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Audit trail filter form test render 1`] = `
+<div>
+  <div
+    class="bp3-form-group"
+  >
+    <label
+      class="bp3-label"
+      for="users"
+    >
+      common.userLabel
+       
+      <span
+        class="bp3-text-muted"
+      />
+    </label>
+    <div
+      class="bp3-form-content"
+    >
+      <div
+        class="bp3-popover-wrapper MultiSelect--main bp3-fill"
+      >
+        <div
+          class="bp3-popover-target"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="bp3-input bp3-tag-input bp3-multi-select"
+            >
+              <div
+                class="bp3-tag-input-values"
+              >
+                <input
+                  autocomplete="off"
+                  class="bp3-input-ghost bp3-multi-select-tag-input-input"
+                  name="users"
+                  placeholder="- Select -"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="bp3-form-group"
+  >
+    <label
+      class="bp3-label"
+      for="organizations"
+    >
+      orgLabel
+       
+      <span
+        class="bp3-text-muted"
+      />
+    </label>
+    <div
+      class="bp3-form-content"
+    >
+      <div
+        class="bp3-popover-wrapper MultiSelect--main bp3-fill"
+      >
+        <div
+          class="bp3-popover-target"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="bp3-input bp3-tag-input bp3-multi-select"
+            >
+              <div
+                class="bp3-tag-input-values"
+              >
+                <input
+                  autocomplete="off"
+                  class="bp3-input-ghost bp3-multi-select-tag-input-input"
+                  name="organizations"
+                  placeholder="- Select -"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="bp3-form-group"
+  >
+    <label
+      class="bp3-label"
+      for="projects"
+    >
+      projectLabel
+       
+      <span
+        class="bp3-text-muted"
+      />
+    </label>
+    <div
+      class="bp3-form-content"
+    >
+      <div
+        class="bp3-popover-wrapper MultiSelect--main bp3-fill"
+      >
+        <div
+          class="bp3-popover-target"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="bp3-input bp3-tag-input bp3-multi-select"
+            >
+              <div
+                class="bp3-tag-input-values"
+              >
+                <input
+                  autocomplete="off"
+                  class="bp3-input-ghost bp3-multi-select-tag-input-input"
+                  name="projects"
+                  placeholder="- Select -"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="bp3-form-group"
+  >
+    <label
+      class="bp3-label"
+      for="resourceType"
+    >
+      common.resourceTypeLabel
+       
+      <span
+        class="bp3-text-muted"
+      />
+    </label>
+    <div
+      class="bp3-form-content"
+    >
+      <div
+        class="bp3-popover-wrapper MultiSelect--main bp3-fill"
+      >
+        <div
+          class="bp3-popover-target"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="bp3-input bp3-tag-input bp3-multi-select"
+            >
+              <div
+                class="bp3-tag-input-values"
+              >
+                <input
+                  autocomplete="off"
+                  class="bp3-input-ghost bp3-multi-select-tag-input-input"
+                  name="resourceType"
+                  placeholder="- Select -"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="bp3-form-group"
+  >
+    <label
+      class="bp3-label"
+      for="actions"
+    >
+      action
+       
+      <span
+        class="bp3-text-muted"
+      />
+    </label>
+    <div
+      class="bp3-form-content"
+    >
+      <div
+        class="bp3-popover-wrapper MultiSelect--main bp3-fill"
+      >
+        <div
+          class="bp3-popover-target"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="bp3-input bp3-tag-input bp3-multi-select"
+            >
+              <div
+                class="bp3-tag-input-values"
+              >
+                <input
+                  autocomplete="off"
+                  class="bp3-input-ghost bp3-multi-select-tag-input-input"
+                  name="actions"
+                  placeholder="- Select -"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

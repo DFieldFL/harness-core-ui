@@ -14,6 +14,8 @@ describe('RUN PIPELINE MODAL', () => {
     '/pipeline/api/inputSets/template?routingId=accountId&accountIdentifier=accountId&orgIdentifier=default&pipelineIdentifier=testPipeline_Cypress&projectIdentifier=project1'
   const pipelineDetailsCall =
     '/pipeline/api/pipelines/testPipeline_Cypress?routingId=accountId&accountIdentifier=accountId&orgIdentifier=default&projectIdentifier=project1'
+  const resolvedPipelineDetailsCall =
+    '/template/api/templates/applyTemplates?routingId=accountId&accountIdentifier=accountId&orgIdentifier=default&pipelineIdentifier=testPipeline_Cypress&projectIdentifier=project1'
   const inputSetsGetCall =
     '/pipeline/api/inputSets?routingId=accountId&accountIdentifier=accountId&orgIdentifier=default&projectIdentifier=project1&pipelineIdentifier=testPipeline_Cypress'
   beforeEach(() => {
@@ -42,6 +44,7 @@ describe('RUN PIPELINE MODAL', () => {
     cy.intercept('POST', pipelineSave, { fixture: 'pipeline/api/pipelines.postsuccess' })
     cy.intercept('POST', inputSetsTemplateCall, { fixture: 'pipeline/api/runpipeline/inputsettemplate' })
     cy.intercept('GET', pipelineDetailsCall, { fixture: 'pipeline/api/runpipeline/getpipeline' })
+    cy.intercept('POST', resolvedPipelineDetailsCall, { fixture: 'template/api/getresolvedpipeline' })
     cy.intercept('GET', inputSetsGetCall, { fixture: 'pipeline/api/runpipeline/getinputsets' })
 
     cy.contains('span', 'Save').click({ force: true })

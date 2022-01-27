@@ -18,6 +18,7 @@ import {
 import { DrawerTypes, TemplateDrawerTypes } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineActions'
 import { factory } from '@pipeline/components/PipelineSteps/Steps/__tests__/StepTestUtil'
 import { CustomVariables } from '@pipeline/components/PipelineSteps/Steps/CustomVariables/CustomVariables'
+import { Scope } from '@common/interfaces/SecretsInterface'
 import StageOverview from '../StageOverview'
 
 jest.mock('@common/components/YAMLBuilder/YamlBuilder')
@@ -58,6 +59,7 @@ const getPipelineContext = (): PipelineContextInterface => ({
   updateEntityValidityDetails: jest.fn(),
   stagesMap: {},
   isReadonly: false,
+  scope: Scope.PROJECT,
   renderPipelineStage: jest.fn(),
   fetchPipeline: jest.fn(),
   setYamlHandler: jest.fn(),

@@ -2665,17 +2665,6 @@ exports[`RunTests Step InputSet View should not render any fields 1`] = `
         <div
           class="StyledProps--font StyledProps--main formGroup lg"
         />
-        <div>
-          <div
-            style="min-height: 8px;"
-          />
-          <div
-            class="separator"
-          />
-          <div
-            style="min-height: 24px;"
-          />
-        </div>
       </div>
     </form>
     <p
@@ -2781,17 +2770,6 @@ exports[`RunTests Step InputSet View should render all fields 1`] = `
               </div>
             </div>
           </div>
-        </div>
-        <div>
-          <div
-            style="min-height: 8px;"
-          />
-          <div
-            class="separator"
-          />
-          <div
-            style="min-height: 24px;"
-          />
         </div>
         <div
           class="StyledProps--font StyledProps--main bottomMargin3"
@@ -4048,17 +4026,6 @@ exports[`RunTests Step InputSet View should render all fields 1`] = `
             </div>
           </div>
         </div>
-        <div>
-          <div
-            style="min-height: 24px;"
-          />
-          <div
-            class="separator"
-          />
-          <div
-            style="min-height: 24px;"
-          />
-        </div>
         <div
           class="StyledProps--font StyledProps--main bottomMargin5"
         >
@@ -4076,11 +4043,16 @@ exports[`RunTests Step InputSet View should render all fields 1`] = `
             class="formGroup lg"
           >
             <div>
-              <p
-                class="StyledProps--font StyledProps--main inpLabel StyledProps--color StyledProps--color-grey600 StyledProps--font-size-small StyledProps--font-weight-semi-bold"
+              <div
+                class="Text--withDocsTooltip"
+                data-tooltip-id="limitCPULabel"
               >
-                pipelineSteps.limitCPULabel
-              </p>
+                <p
+                  class="StyledProps--font StyledProps--main inpLabel StyledProps--color StyledProps--color-grey600 StyledProps--font-size-small StyledProps--font-weight-semi-bold"
+                >
+                  pipelineSteps.limitCPULabel
+                </p>
+              </div>
               <div
                 style="display: flex; align-items: center;"
               >
@@ -4143,7 +4115,7 @@ exports[`RunTests Step InputSet View should render all fields 1`] = `
           </div>
         </div>
         <div
-          class="StyledProps--font StyledProps--main formGroup sm bottomMargin5 topMargin5"
+          class="StyledProps--font StyledProps--main formGroup sm bottomMargin5"
         >
           <div
             class="bp3-form-group removeBpLabelMargin"
@@ -4157,11 +4129,16 @@ exports[`RunTests Step InputSet View should render all fields 1`] = `
                 class="Tooltip--acenter"
                 data-tooltip-id="stepTestUtilForm_timeout"
               >
-                <p
-                  class="StyledProps--font StyledProps--main inpLabel StyledProps--color StyledProps--color-grey600 StyledProps--font-size-small StyledProps--font-weight-semi-bold"
+                <div
+                  class="Text--withDocsTooltip"
+                  data-tooltip-id="timeout"
                 >
-                  pipelineSteps.timeoutLabel
-                </p>
+                  <p
+                    class="StyledProps--font StyledProps--main inpLabel StyledProps--color StyledProps--color-grey600 StyledProps--font-size-small StyledProps--font-weight-semi-bold"
+                  >
+                    pipelineSteps.timeoutLabel
+                  </p>
+                </div>
               </span>
                
               <span
@@ -4258,17 +4235,6 @@ exports[`RunTests Step InputSet View should render properly 1`] = `
         <div
           class="StyledProps--font StyledProps--main formGroup lg"
         />
-        <div>
-          <div
-            style="min-height: 8px;"
-          />
-          <div
-            class="separator"
-          />
-          <div
-            style="min-height: 24px;"
-          />
-        </div>
       </div>
     </form>
     <p

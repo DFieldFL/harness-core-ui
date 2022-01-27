@@ -7,6 +7,7 @@
 
 import { defaultTo, get, isEmpty, set, unset } from 'lodash-es'
 import produce from 'immer'
+import { parse } from 'yaml'
 import type { StageElementConfig, StepElementConfig, TemplateLinkConfig } from 'services/cd-ng'
 import type { TemplateSummaryResponse } from 'services/template-ng'
 import { getIdentifierFromValue, getScopeFromDTO } from '@common/components/EntityReference/EntityReference'
@@ -15,6 +16,7 @@ import type { StepType } from '@pipeline/components/PipelineSteps/PipelineStepIn
 import type { TemplateStepNode } from 'services/pipeline-ng'
 import type { StageType } from '@pipeline/utils/stageHelpers'
 import type { StepOrStepGroupOrTemplateStepData } from '@pipeline/components/PipelineStudio/StepCommands/StepCommandTypes'
+import { generateRandomString } from '@pipeline/components/PipelineStudio/ExecutionGraph/ExecutionGraphUtil'
 
 export const TEMPLATE_INPUT_PATH = 'template.templateInputs'
 
@@ -31,15 +33,14 @@ export const getScopeBasedTemplateRef = (template: TemplateSummaryResponse): str
 export const getStageType = (stage?: StageElementConfig, templateTypes?: { [key: string]: string }): StageType => {
   return stage?.template
     ? templateTypes
-      ? (get(templateTypes, getIdentifierFromValue(defaultTo(stage?.template?.templateRef, ''))) as StageType)
-      : ((stage.template.templateInputs as StageElementConfig).type as StageType)
+      ? (get(templateTypes, getIdentifierFromValue(defaultTo(stage.template.templateRef, ''))) as StageType)
+      : ((stage.template.templateInputs as StageElementConfig)?.type as StageType)
     : (stage?.type as StageType)
 }
 
 export const getStepType = (step?: StepElementConfig | TemplateStepNode): StepType => {
-  const isTemplate = !!(step as TemplateStepNode)?.template
-  return isTemplate
-    ? (((step as TemplateStepNode)?.template?.templateInputs as StepElementConfig).type as StepType)
+  return (step as TemplateStepNode)?.template
+    ? (((step as TemplateStepNode).template.templateInputs as StepElementConfig)?.type as StepType)
     : ((step as StepElementConfig)?.type as StepType)
 }
 
@@ -68,4 +69,20 @@ export const createTemplate = <T extends StageElementConfig | StepOrStepGroupOrT
       }
     }
   })
+}
+
+export const createStepNodeFromTemplate = (template: TemplateSummaryResponse, isCopied = false) => {
+  return (isCopied
+    ? produce(defaultTo(parse(defaultTo(template?.yaml, ''))?.template.spec, {}) as StepElementConfig, draft => {
+        draft.name = defaultTo(template?.name, '')
+        draft.identifier = generateRandomString(defaultTo(template?.name, ''))
+      })
+    : produce({} as TemplateStepNode, draft => {
+        draft.name = defaultTo(template?.name, '')
+        draft.identifier = generateRandomString(defaultTo(template?.name, ''))
+        set(draft, 'template.templateRef', getScopeBasedTemplateRef(template))
+        if (template.versionLabel) {
+          set(draft, 'template.versionLabel', template.versionLabel)
+        }
+      })) as unknown as StepElementConfig
 }

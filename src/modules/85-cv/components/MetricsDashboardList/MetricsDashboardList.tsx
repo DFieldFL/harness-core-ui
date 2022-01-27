@@ -207,6 +207,7 @@ export default function MetricsDashboardList<T>(props: MetricsDashboardListProps
                   propsData.selectedMetrics = new Map()
                 }
                 propsData.selectedMetrics.set(values.metricName, {
+                  isManualQuery: true,
                   isCustomCreatedMetric: true,
                   metricName: values.metricName
                 })

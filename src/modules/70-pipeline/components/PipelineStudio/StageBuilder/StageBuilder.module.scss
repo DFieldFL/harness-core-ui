@@ -23,6 +23,7 @@ $dot-space: 10px;
 
   .canvas-wrapper {
     width: 100%;
+    height: calc(100vh - var(--page-header-height) - 49px);
 
     :global(.Resizer.horizontal) {
       height: 4px;

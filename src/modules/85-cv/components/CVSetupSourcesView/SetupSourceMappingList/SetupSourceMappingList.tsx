@@ -17,8 +17,9 @@ import {
   TableV2
 } from '@wings-software/uicore'
 import { Classes } from '@blueprintjs/core'
+import type { Column } from 'react-table'
+import type { TableProps } from '@harness/uicore'
 import { useStrings } from 'framework/strings'
-import type { TableProps } from '@common/components/Table/Table'
 import { TableFilter, TableFilterProps } from '@cv/components/TableFilter/TableFilter'
 import { SetupSourceCardHeaderProps, SetupSourceEmptyCardHeader } from '../SetupSourceCardHeader/SetupSourceCardHeader'
 import { StepLabel } from '../StepLabel/StepLabel'
@@ -32,7 +33,7 @@ interface TableFilterForSetupSourceMapping<T> extends Omit<TableFilterProps, 'on
   onFilterForMoreThan100Items?: (filterString: string) => void
 }
 export interface SetupSourceMappingListProps<T extends Record<string, unknown>> {
-  tableProps: TableProps<T>
+  tableProps: Omit<TableProps<T>, 'bpTableProps'> & { bpTableProps?: TableProps<T>['bpTableProps'] }
   mappingListHeaderProps: SetupSourceCardHeaderProps
   loading?: boolean
   error?: PageErrorProps
@@ -88,12 +89,12 @@ export function SetupSourceMappingList<T extends Record<string, unknown>>(
       <TableV2
         {...tableProps}
         columns={
-          loading
+          (loading
             ? tableProps?.columns?.map(col => ({
                 ...col,
                 Cell: <Container width="95%" className={Classes.SKELETON} height={15} />
               }))
-            : tableProps.columns
+            : tableProps.columns) as Column<any>[]
         }
         data={loading ? LoadingData : filteredData}
         className={css.mappingTable}

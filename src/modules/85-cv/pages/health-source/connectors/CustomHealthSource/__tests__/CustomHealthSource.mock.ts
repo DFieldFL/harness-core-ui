@@ -394,7 +394,7 @@ export const noErrorValidatation = {
   query: 'Select * from ',
   baseURL: '',
   pathURL:
-    'https://localhost:8181/#/account/kmpySmUISimoRrJL6NL73w/cv/orgs/default/projects/CustomHealthSource/monitoringservices/edit/Service_101_QA?tab=Configurations',
+    'https://localhost:8181/#/account/kmpySmUISimoRrJL6NL73w/cv/orgs/default/projects/CustomHealthSource/monitoringservices/edit/Service_101_QA?tab=Configurations?start_time=dfgdd&end_time=5433',
   metricValue: jsonPath,
   timestamp: jsonPath,
   timestampFormat: 'MMMM DD YY',

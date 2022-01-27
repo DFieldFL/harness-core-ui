@@ -43,7 +43,7 @@ import type { AccountPathProps, Module } from '@common/interfaces/RouteInterface
 import { handleUpdateLicenseStore, useLicenseStore } from 'framework/LicenseStore/LicenseStoreContext'
 import type { TrialBannerProps } from '@projects-orgs/pages/HomePageTemplate/HomePageTemplate'
 import type { Editions } from '@common/constants/SubscriptionTypes'
-import { useGetUsageAndLimit } from '@auth-settings/hooks/useGetUsageAndLimit'
+import { useGetUsageAndLimit } from '@common/hooks/useGetUsageAndLimit'
 import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
 import FeatureWarningUpgradeBanner from '@common/components/FeatureWarning/FeatureWarningUpgradeBanner'
 import { ENFORCEMENT_USAGE_THRESHOLD } from '@ce/constants'

@@ -8,7 +8,7 @@
 import React from 'react'
 import { Layout, PageError } from '@wings-software/uicore'
 import { useStrings } from 'framework/strings'
-import { useGetUsageAndLimit } from '@auth-settings/hooks/useGetUsageAndLimit'
+import { useGetUsageAndLimit } from '@common/hooks/useGetUsageAndLimit'
 import { ModuleName } from 'framework/types/ModuleName'
 import { ContainerSpinner } from '@common/components/ContainerSpinner/ContainerSpinner'
 import UsageInfoCard from './UsageInfoCard'

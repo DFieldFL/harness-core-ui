@@ -353,7 +353,8 @@ export default function MetricDashboardWidgetNav<T>(props: MetricDashboardWidget
           accountId,
           connectorIdentifier,
           tracingId: Utils.randomId(),
-          dashboardId: selectedDashboard.itemId
+          dashboardId: selectedDashboard.itemId,
+          path: selectedDashboard.itemId
         }
       })
     }

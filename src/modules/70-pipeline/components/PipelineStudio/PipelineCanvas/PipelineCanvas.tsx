@@ -70,7 +70,7 @@ import { RunPipelineForm } from '@pipeline/components/RunPipelineModal/RunPipeli
 import { PipelineFeatureLimitBreachedBanner } from '@pipeline/factories/PipelineFeatureRestrictionFactory/PipelineFeatureRestrictionFactory'
 import { EvaluationModal } from '@governance/EvaluationModal'
 import { createTemplate } from '@pipeline/utils/templateUtils'
-import { getStepFromStage } from '@pipeline/components/PipelineStudio/StepUtil'
+import { getStepFromStage, validateCICodebaseConfiguration } from '@pipeline/components/PipelineStudio/StepUtil'
 import { updateStepWithinStage } from '@pipeline/components/PipelineStudio/RightDrawer/RightDrawer'
 import type { TemplateSummaryResponse } from 'services/template-ng'
 import { savePipeline, usePipelineContext } from '../PipelineContext/PipelineContext'
@@ -478,6 +478,13 @@ export const PipelineCanvas: React.FC<PipelineCanvasProps> = ({
       } /* istanbul ignore next */ catch (err) {
         showError(err.message || err, undefined, 'pipeline.save.pipeline.error')
       }
+    }
+
+    const ciCodeBaseConfigurationError = validateCICodebaseConfiguration({ pipeline: latestPipeline, getString })
+    if (ciCodeBaseConfigurationError) {
+      clear()
+      showError(ciCodeBaseConfigurationError)
+      return
     }
 
     // if Git sync enabled then display modal

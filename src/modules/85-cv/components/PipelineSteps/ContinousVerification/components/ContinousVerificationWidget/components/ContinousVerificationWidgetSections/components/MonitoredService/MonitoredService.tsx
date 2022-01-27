@@ -18,7 +18,8 @@ import {
   useGetMonitoredServiceFromServiceAndEnvironment
 } from 'services/cv'
 import { useStrings } from 'framework/strings'
-import { PermissionIdentifier, ResourceType } from 'microfrontends'
+import { ResourceType } from '@rbac/interfaces/ResourceType'
+import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import RbacButton from '@rbac/components/Button/Button'
 import Card from '@cv/components/Card/Card'
 import VerifyStepHealthSourceTable from '@cv/pages/health-source/HealthSourceTable/VerifyStepHealthSourceTable'

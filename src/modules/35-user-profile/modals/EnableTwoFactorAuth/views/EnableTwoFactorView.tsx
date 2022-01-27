@@ -54,61 +54,56 @@ const EnableTwoFactorAuthView: React.FC<EnableTwoFactorAuthViewProps> = ({ isRes
   const authSettings = data?.data
   return (
     <>
-      <Layout.Vertical padding="huge">
-        <Text color={Color.GREY_900} font={{ size: 'medium', weight: 'semi-bold' }}>
-          {isReset ? getString('userProfile.twoFactor.resetTitle') : getString('userProfile.twoFactor.enableTitle')}
-        </Text>
-        <Container className={css.view}>
-          {authSettings ? (
-            <>
-              <Layout.Horizontal padding={{ top: 'large', bottom: 'huge' }}>
-                <Layout.Vertical>
-                  <Text padding={{ bottom: 'large' }} color={Color.BLACK_100}>
-                    {getString('userProfile.qrCode')}
-                  </Text>
-                  <Layout.Horizontal padding="medium" className={css.qrCode}>
-                    <QRCode value={authSettings.totpqrurl || ''} />
-                  </Layout.Horizontal>
-                </Layout.Vertical>
-                <Layout.Vertical padding="huge" className={css.description}>
-                  <Text color={Color.BLACK}>{getString('userProfile.twoFactor.description')}</Text>
-                  <Layout.Vertical spacing="small" padding={{ top: 'large' }}>
-                    <Text color={Color.BLACK} font={{ weight: 'semi-bold' }}>
-                      {getString('common.secretKey')}
-                    </Text>
-                    <TextInput
-                      readOnly
-                      value={authSettings.totpSecretKey}
-                      rightElement={
-                        (
-                          <CopyText
-                            className={css.copy}
-                            iconName="duplicate"
-                            textToCopy={authSettings.totpSecretKey || ''}
-                            iconAlwaysVisible
-                          />
-                        ) as any
-                      }
-                    />
-                  </Layout.Vertical>
-                </Layout.Vertical>
-              </Layout.Horizontal>
-              <Layout.Horizontal flex>
-                <Layout.Horizontal spacing="small">
-                  <Button
-                    variation={ButtonVariation.PRIMARY}
-                    text={isReset ? getString('save') : getString('enable')}
-                    onClick={() => handleEnableTwoFactorAuth(authSettings)}
-                  />
-                  <Button text={getString('cancel')} onClick={onCancel} variation={ButtonVariation.TERTIARY} />
+      <Container className={css.view}>
+        {authSettings ? (
+          <>
+            <Layout.Horizontal padding={{ top: 'large', bottom: 'huge' }}>
+              <Layout.Vertical>
+                <Text padding={{ bottom: 'large' }} color={Color.BLACK_100}>
+                  {getString('userProfile.qrCode')}
+                </Text>
+                <Layout.Horizontal padding="medium" className={css.qrCode}>
+                  <QRCode value={authSettings.totpqrurl || ''} />
                 </Layout.Horizontal>
-                <Button icon="reset" minimal onClick={() => refetchTwoFactorAuthSettings()} />
+              </Layout.Vertical>
+              <Layout.Vertical padding="huge" className={css.description}>
+                <Text color={Color.BLACK}>{getString('userProfile.twoFactor.description')}</Text>
+                <Layout.Vertical spacing="small" padding={{ top: 'large' }}>
+                  <Text color={Color.BLACK} font={{ weight: 'semi-bold' }}>
+                    {getString('common.secretKey')}
+                  </Text>
+                  <TextInput
+                    readOnly
+                    value={authSettings.totpSecretKey}
+                    rightElement={
+                      (
+                        <CopyText
+                          className={css.copy}
+                          iconName="duplicate"
+                          textToCopy={authSettings.totpSecretKey || ''}
+                          iconAlwaysVisible
+                        />
+                      ) as any
+                    }
+                  />
+                </Layout.Vertical>
+              </Layout.Vertical>
+            </Layout.Horizontal>
+            <Layout.Horizontal flex>
+              <Layout.Horizontal spacing="small">
+                <Button
+                  variation={ButtonVariation.PRIMARY}
+                  text={isReset ? getString('save') : getString('enable')}
+                  onClick={() => handleEnableTwoFactorAuth(authSettings)}
+                />
+                <Button text={getString('cancel')} onClick={onCancel} variation={ButtonVariation.TERTIARY} />
               </Layout.Horizontal>
-            </>
-          ) : null}
-        </Container>
-        {loading ? <PageSpinner /> : null}
-      </Layout.Vertical>
+              <Button icon="reset" minimal onClick={() => refetchTwoFactorAuthSettings()} />
+            </Layout.Horizontal>
+          </>
+        ) : null}
+      </Container>
+      {loading ? <PageSpinner /> : null}
     </>
   )
 }

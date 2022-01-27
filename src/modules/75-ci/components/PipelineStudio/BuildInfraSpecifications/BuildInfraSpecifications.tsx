@@ -46,7 +46,7 @@ import {
 import { MultiTypeTextField } from '@common/components/MultiTypeText/MultiTypeText'
 import { Separator } from '@common/components'
 import type { MultiTypeMapType, MultiTypeMapUIType, MapType } from '@pipeline/components/PipelineSteps/Steps/StepsTypes'
-import { useGitScope } from '@ci/services/CIUtils'
+import { useGitScope } from '@pipeline/utils/CIUtils'
 import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
 import type { BuildStageElementConfig } from '@pipeline/utils/pipelineTypes'
 import type { K8sDirectInfraYaml, UseFromStageInfraYaml, VmInfraYaml, VmPoolYaml } from 'services/ci'
@@ -59,7 +59,7 @@ import css from './BuildInfraSpecifications.module.scss'
 const logger = loggerFor(ModuleName.CD)
 const k8sClusterKeyRef = 'connectors.title.k8sCluster'
 const namespaceKeyRef = 'pipelineSteps.build.infraSpecifications.namespace'
-const poolIdKeyRef = 'ci.buildInfa.awsVM.poolId'
+const poolIdKeyRef = 'pipeline.buildInfra.poolId'
 
 interface BuildInfraTypeItem {
   label: string
@@ -517,7 +517,7 @@ export default function BuildInfraSpecifications({ children }: React.PropsWithCh
             font={{ variation: FontVariation.FORM_LABEL }}
             margin={{ bottom: 'xsmall' }}
           >
-            {getString('ci.buildInfa.awsVM.poolId')}
+            {getString('pipeline.buildInfra.poolId')}
           </Text>
         }
         name={'poolId'}

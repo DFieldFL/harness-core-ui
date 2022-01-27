@@ -213,7 +213,6 @@
       .bp3-card {
         margin-right: 30px;
         padding: 0;
-        box-sizing: border-box;
         height: 272.5px;
         width: 220.5px;
         box-sizing: border-box;
@@ -230,7 +229,6 @@
         // }
       }
     }
-    display: flex;
     // grid-auto-rows: auto;
     // grid-gap: var(--spacing-medium);
     // grid-template-columns: repeat(auto-fill, 180px);
@@ -305,7 +303,7 @@
       > label {
         margin-bottom: 10px;
         color: var(--pipeline-color-dark-grey);
-        font-family: Nunito;
+        font-family: var(--font-family);
         font-size: 12px;
         letter-spacing: 0.2px;
         line-height: 16px;
@@ -316,7 +314,7 @@
     margin-top: 15px;
     margin-bottom: 10px;
     color: var(--pipeline-color-dark-grey);
-    font-family: Nunito;
+    font-family: var(--font-family);
     font-size: 12px;
     letter-spacing: 0.2px;
     line-height: 16px;

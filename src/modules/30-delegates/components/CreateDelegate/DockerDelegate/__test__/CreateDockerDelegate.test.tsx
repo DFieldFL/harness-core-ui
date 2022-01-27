@@ -10,6 +10,10 @@ import { render } from '@testing-library/react'
 import { TestWrapper } from '@common/utils/testUtils'
 import CreateDockerDelegate from '../CreateDockerDelegate'
 
+const featureFlags = {
+  NG_SHOW_DEL_TOKENS: true
+}
+
 const onBack = jest.fn()
 jest.mock('services/portal', () => ({
   useCreateDelegateToken: jest.fn().mockImplementation(() => ({
@@ -47,7 +51,7 @@ jest.mock('services/portal', () => ({
 describe('Create Docker Delegate', () => {
   test('render data', () => {
     const { container } = render(
-      <TestWrapper>
+      <TestWrapper defaultAppStoreValues={{ featureFlags }}>
         <CreateDockerDelegate onBack={onBack} />
       </TestWrapper>
     )

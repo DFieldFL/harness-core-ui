@@ -562,7 +562,7 @@ exports[`Unit tests for SelectedAppsSideNav Ensure that when groupedSelectedApps
             <div
               aria-hidden="false"
               class="bp3-collapse-body"
-              style="transform: translateY(0);"
+              style="transform: translateY(-undefinedpx);"
             >
               <div
                 class="StyledProps--font StyledProps--main seletedAppContainer"
@@ -636,12 +636,12 @@ exports[`Unit tests for SelectedAppsSideNav Ensure that when groupedSelectedApps
         >
           <div
             class="bp3-collapse"
-            style="height: 0px;"
+            style="height: auto; overflow-y: visible; transition: none;"
           >
             <div
               aria-hidden="false"
               class="bp3-collapse-body"
-              style="transform: translateY(0);"
+              style="transform: translateY(0); transition: none;"
             >
               <div
                 class="StyledProps--font StyledProps--main seletedAppContainer"

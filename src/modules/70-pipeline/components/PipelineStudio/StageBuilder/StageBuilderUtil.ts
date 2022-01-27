@@ -180,7 +180,7 @@ export const getFlattenedStages = (
   stages: StageElementWrapperConfig[]
 } => {
   let stages = []
-  stages = flatMap(data.stages || [], (n: StageElementWrapperConfig) => {
+  stages = flatMap(data?.stages || [], (n: StageElementWrapperConfig) => {
     const k = []
     if (n.parallel) {
       k.push(...n['parallel'])

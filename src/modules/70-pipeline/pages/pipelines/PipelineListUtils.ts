@@ -29,7 +29,7 @@ interface IconProps {
 export const getIconsForPipeline = (data: PMSPipelineSummaryResponse): IconProps[] => {
   const icons: IconProps[] = []
   if (data.modules?.includes('cd')) {
-    icons.push({ icon: 'cd-main', size: 20 })
+    icons.push({ icon: 'cd-main', size: 16 })
   }
   if (data.modules?.includes('ci')) {
     icons.push({ icon: 'ci-main', size: 16 })

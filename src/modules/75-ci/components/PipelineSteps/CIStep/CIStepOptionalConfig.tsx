@@ -19,7 +19,6 @@ import MultiTypeList from '@common/components/MultiTypeList/MultiTypeList'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import { MultiTypeSelectField } from '@common/components/MultiTypeSelect/MultiTypeSelect'
-import { Separator } from '@common/components/Separator/Separator'
 import { ArchiveFormatOptions } from '../../../constants/Constants'
 import css from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
@@ -215,7 +214,6 @@ export const CIStepOptionalConfig: React.FC<CIStepOptionalConfigProps> = props =
           })}
         </Container>
       ) : null}
-      {Object.prototype.hasOwnProperty.call(enableFields, 'spec.reportPaths') ? <Separator topSeparation={16} /> : null}
       {Object.prototype.hasOwnProperty.call(enableFields, 'spec.envVariables') ? (
         <Container className={cx(css.formGroup, stepCss)}>
           <MultiTypeMap
@@ -241,9 +239,6 @@ export const CIStepOptionalConfig: React.FC<CIStepOptionalConfigProps> = props =
           />
         </Container>
       ) : null}
-      {Object.prototype.hasOwnProperty.call(enableFields, 'spec.envVariables') ? (
-        <Separator topSeparation={24} />
-      ) : null}
       {Object.prototype.hasOwnProperty.call(enableFields, 'spec.outputVariables') ? (
         <Container className={cx(css.formGroup, stepCss)}>
           {renderMultiTypeList({
@@ -253,9 +248,6 @@ export const CIStepOptionalConfig: React.FC<CIStepOptionalConfigProps> = props =
             allowedTypes: allowableTypes.filter(type => type !== MultiTypeInputType.RUNTIME)
           })}
         </Container>
-      ) : null}
-      {Object.prototype.hasOwnProperty.call(enableFields, 'spec.outputVariables') ? (
-        <Separator topSeparation={16} />
       ) : null}
       {Object.prototype.hasOwnProperty.call(enableFields, 'spec.entrypoint') ? (
         <Container className={cx(css.formGroup, stepCss, css.bottomMargin5)}>

@@ -33,7 +33,8 @@ const props = {
         namespace: 'test',
         serviceAccountName: 'name1',
         initTimeout: '1w'
-      }
+      },
+      type: 'KubernetesDirect'
     },
     execution: {
       steps: [

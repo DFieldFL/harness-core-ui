@@ -48,13 +48,13 @@ describe('Unit tests for SelectedAppsSideNav', () => {
       />
     )
     await waitFor(() => expect(container.querySelectorAll(`[class*="collapsePanel"]`).length).toBe(2))
-    await waitFor(() => expect(container.querySelectorAll(`[class*="selectedApp"]`).length).toBe(2))
+    await waitFor(() => expect(container.querySelectorAll(`[class*="selectedApp"]`).length).toBe(4))
     // Collapsed
     await waitFor(() =>
-      expect(container.querySelectorAll('.bp3-collapse-body')[0]).toHaveStyle(`transform: translateY(-undefinedpx);`)
+      expect(container.querySelectorAll('.bp3-collapse-body')[0]).toHaveStyle(`transform: translateY(0);`)
     )
     await waitFor(() =>
-      expect(container.querySelectorAll('.bp3-collapse-body')[1]).toHaveStyle(`transform: translateY(-undefinedpx);`)
+      expect(container.querySelectorAll('.bp3-collapse-body')[1]).toHaveStyle(`transform: translateY(0);`)
     )
 
     act(() => {

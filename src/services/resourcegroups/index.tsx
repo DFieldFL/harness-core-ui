@@ -18,6 +18,8 @@ export interface AccessControlCheckError {
     | 'INVALID_ARGUMENT'
     | 'INVALID_EMAIL'
     | 'DOMAIN_NOT_ALLOWED_TO_REGISTER'
+    | 'COMMNITY_EDITION_NOT_FOUND'
+    | 'DEPLOY_MODE_IS_NOT_ON_PREM'
     | 'USER_ALREADY_REGISTERED'
     | 'USER_INVITATION_DOES_NOT_EXIST'
     | 'USER_DOES_NOT_EXIST'
@@ -192,6 +194,8 @@ export interface AccessControlCheckError {
     | 'USAGE_RESTRICTION_ERROR'
     | 'STATE_EXECUTION_INSTANCE_NOT_FOUND'
     | 'DELEGATE_TASK_RETRY'
+    | 'KUBERNETES_API_TASK_EXCEPTION'
+    | 'KUBERNETES_TASK_EXCEPTION'
     | 'KUBERNETES_YAML_ERROR'
     | 'SAVE_FILE_INTO_GCP_STORAGE_FAILED'
     | 'READ_FILE_FROM_GCP_STORAGE_FAILED'
@@ -269,6 +273,7 @@ export interface AccessControlCheckError {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -301,10 +306,13 @@ export interface AccessControlCheckError {
     | 'SCM_NOT_MODIFIED'
     | 'APPROVAL_STEP_NG_ERROR'
     | 'BUCKET_SERVER_ERROR'
+    | 'GIT_SYNC_ERROR'
+    | 'TEMPLATE_EXCEPTION'
   correlationId?: string
   detailedMessage?: string
   failedPermissionChecks?: PermissionCheck[]
   message?: string
+  metadata?: ErrorMetadataDTO
   responseMessages?: ResponseMessage[]
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
 }
@@ -331,6 +339,7 @@ export interface AuditEventDTO {
     | 'REVOKE_INVITE'
     | 'ADD_COLLABORATOR'
     | 'REMOVE_COLLABORATOR'
+    | 'REVOKE_TOKEN'
     | 'ADD_MEMBERSHIP'
     | 'REMOVE_MEMBERSHIP'
   auditEventData?: AuditEventData
@@ -351,7 +360,12 @@ export interface AuditEventDTO {
 }
 
 export interface AuditEventData {
-  type: string
+  type:
+    | 'UserInvitationAuditEventData'
+    | 'AddCollaboratorAuditEventData'
+    | 'TemplateAuditEventData'
+    | 'USER_INVITE'
+    | 'USER_MEMBERSHIP'
 }
 
 export interface AuditFilterProperties {
@@ -366,6 +380,7 @@ export interface AuditFilterProperties {
     | 'REVOKE_INVITE'
     | 'ADD_COLLABORATOR'
     | 'REMOVE_COLLABORATOR'
+    | 'REVOKE_TOKEN'
     | 'ADD_MEMBERSHIP'
     | 'REMOVE_MEMBERSHIP'
   )[]
@@ -379,6 +394,7 @@ export interface AuditFilterProperties {
     | 'PipelineExecution'
     | 'Deployment'
     | 'Audit'
+    | 'Template'
   modules?: ('CD' | 'CI' | 'CV' | 'CF' | 'CE' | 'CORE' | 'PMS' | 'TEMPLATESERVICE')[]
   principals?: Principal[]
   resources?: ResourceDTO[]
@@ -401,6 +417,7 @@ export interface AuthenticationInfoDTO {
 }
 
 export type DynamicResourceSelector = ResourceSelector & {
+  includeChildScopes?: boolean
   resourceType: string
 }
 
@@ -420,6 +437,8 @@ export interface Error {
     | 'INVALID_ARGUMENT'
     | 'INVALID_EMAIL'
     | 'DOMAIN_NOT_ALLOWED_TO_REGISTER'
+    | 'COMMNITY_EDITION_NOT_FOUND'
+    | 'DEPLOY_MODE_IS_NOT_ON_PREM'
     | 'USER_ALREADY_REGISTERED'
     | 'USER_INVITATION_DOES_NOT_EXIST'
     | 'USER_DOES_NOT_EXIST'
@@ -594,6 +613,8 @@ export interface Error {
     | 'USAGE_RESTRICTION_ERROR'
     | 'STATE_EXECUTION_INSTANCE_NOT_FOUND'
     | 'DELEGATE_TASK_RETRY'
+    | 'KUBERNETES_API_TASK_EXCEPTION'
+    | 'KUBERNETES_TASK_EXCEPTION'
     | 'KUBERNETES_YAML_ERROR'
     | 'SAVE_FILE_INTO_GCP_STORAGE_FAILED'
     | 'READ_FILE_FROM_GCP_STORAGE_FAILED'
@@ -671,6 +692,7 @@ export interface Error {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -703,11 +725,18 @@ export interface Error {
     | 'SCM_NOT_MODIFIED'
     | 'APPROVAL_STEP_NG_ERROR'
     | 'BUCKET_SERVER_ERROR'
+    | 'GIT_SYNC_ERROR'
+    | 'TEMPLATE_EXCEPTION'
   correlationId?: string
   detailedMessage?: string
   message?: string
+  metadata?: ErrorMetadataDTO
   responseMessages?: ResponseMessage[]
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
+export interface ErrorMetadataDTO {
+  type?: string
 }
 
 export interface Failure {
@@ -716,6 +745,8 @@ export interface Failure {
     | 'INVALID_ARGUMENT'
     | 'INVALID_EMAIL'
     | 'DOMAIN_NOT_ALLOWED_TO_REGISTER'
+    | 'COMMNITY_EDITION_NOT_FOUND'
+    | 'DEPLOY_MODE_IS_NOT_ON_PREM'
     | 'USER_ALREADY_REGISTERED'
     | 'USER_INVITATION_DOES_NOT_EXIST'
     | 'USER_DOES_NOT_EXIST'
@@ -890,6 +921,8 @@ export interface Failure {
     | 'USAGE_RESTRICTION_ERROR'
     | 'STATE_EXECUTION_INSTANCE_NOT_FOUND'
     | 'DELEGATE_TASK_RETRY'
+    | 'KUBERNETES_API_TASK_EXCEPTION'
+    | 'KUBERNETES_TASK_EXCEPTION'
     | 'KUBERNETES_YAML_ERROR'
     | 'SAVE_FILE_INTO_GCP_STORAGE_FAILED'
     | 'READ_FILE_FROM_GCP_STORAGE_FAILED'
@@ -967,6 +1000,7 @@ export interface Failure {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -999,6 +1033,8 @@ export interface Failure {
     | 'SCM_NOT_MODIFIED'
     | 'APPROVAL_STEP_NG_ERROR'
     | 'BUCKET_SERVER_ERROR'
+    | 'GIT_SYNC_ERROR'
+    | 'TEMPLATE_EXCEPTION'
   correlationId?: string
   errors?: ValidationError[]
   message?: string
@@ -1023,6 +1059,7 @@ export interface FilterProperties {
     | 'PipelineExecution'
     | 'Deployment'
     | 'Audit'
+    | 'Template'
   tags?: {
     [key: string]: string
   }
@@ -1125,11 +1162,33 @@ export interface ResourceDTO {
   labels?: {
     [key: string]: string
   }
-  type: string
+  type:
+    | 'ORGANIZATION'
+    | 'PROJECT'
+    | 'USER_GROUP'
+    | 'SECRET'
+    | 'RESOURCE_GROUP'
+    | 'USER'
+    | 'ROLE'
+    | 'ROLE_ASSIGNMENT'
+    | 'PIPELINE'
+    | 'TRIGGER'
+    | 'TEMPLATE'
+    | 'INPUT_SET'
+    | 'DELEGATE_CONFIGURATION'
+    | 'SERVICE'
+    | 'ENVIRONMENT'
+    | 'DELEGATE'
+    | 'SERVICE_ACCOUNT'
+    | 'CONNECTOR'
+    | 'API_KEY'
+    | 'TOKEN'
+    | 'DELEGATE_TOKEN'
 }
 
 export interface ResourceGroupDTO {
   accountIdentifier: string
+  allowedScopeLevels?: string[]
   color?: string
   description?: string
   fullScopeSelected?: boolean
@@ -1147,8 +1206,10 @@ export interface ResourceGroupDTO {
 export interface ResourceGroupFilterDTO {
   accountIdentifier?: string
   identifierFilter?: string[]
+  managedFilter?: 'NO_FILTER' | 'ONLY_MANAGED' | 'ONLY_CUSTOM'
   orgIdentifier?: string
   projectIdentifier?: string
+  resourceSelectorFilterList?: ResourceSelectorFilter[]
   searchTerm?: string
 }
 
@@ -1170,7 +1231,7 @@ export interface ResourceScope {
 }
 
 export interface ResourceScopeDTO {
-  accountIdentifier: string
+  accountIdentifier?: string
   labels?: {
     [key: string]: string
   }
@@ -1182,9 +1243,19 @@ export interface ResourceSelector {
   [key: string]: any
 }
 
+export type ResourceSelectorByScope = ResourceSelector & {
+  includeChildScopes?: boolean
+  scope?: Scope
+}
+
+export interface ResourceSelectorFilter {
+  resourceIdentifier?: string
+  resourceType: string
+}
+
 export interface ResourceType {
   name?: string
-  validatorTypes?: ('STATIC' | 'DYNAMIC')[]
+  validatorTypes?: ('BY_RESOURCE_IDENTIFIER' | 'BY_RESOURCE_TYPE' | 'BY_RESOURCE_TYPE_INCLUDING_CHILD_SCOPES')[]
 }
 
 export interface ResourceTypeDTO {
@@ -1232,6 +1303,8 @@ export interface ResponseMessage {
     | 'INVALID_ARGUMENT'
     | 'INVALID_EMAIL'
     | 'DOMAIN_NOT_ALLOWED_TO_REGISTER'
+    | 'COMMNITY_EDITION_NOT_FOUND'
+    | 'DEPLOY_MODE_IS_NOT_ON_PREM'
     | 'USER_ALREADY_REGISTERED'
     | 'USER_INVITATION_DOES_NOT_EXIST'
     | 'USER_DOES_NOT_EXIST'
@@ -1406,6 +1479,8 @@ export interface ResponseMessage {
     | 'USAGE_RESTRICTION_ERROR'
     | 'STATE_EXECUTION_INSTANCE_NOT_FOUND'
     | 'DELEGATE_TASK_RETRY'
+    | 'KUBERNETES_API_TASK_EXCEPTION'
+    | 'KUBERNETES_TASK_EXCEPTION'
     | 'KUBERNETES_YAML_ERROR'
     | 'SAVE_FILE_INTO_GCP_STORAGE_FAILED'
     | 'READ_FILE_FROM_GCP_STORAGE_FAILED'
@@ -1483,6 +1558,7 @@ export interface ResponseMessage {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -1515,6 +1591,8 @@ export interface ResponseMessage {
     | 'SCM_NOT_MODIFIED'
     | 'APPROVAL_STEP_NG_ERROR'
     | 'BUCKET_SERVER_ERROR'
+    | 'GIT_SYNC_ERROR'
+    | 'TEMPLATE_EXCEPTION'
   exception?: Throwable
   failureTypes?: (
     | 'EXPIRED'
@@ -1605,6 +1683,12 @@ export interface RoleBinding {
   roleIdentifier?: string
 }
 
+export type SampleErrorMetadataDTO = ErrorMetadataDTO & {
+  sampleMap?: {
+    [key: string]: string
+  }
+}
+
 export interface Scope {
   accountIdentifier?: string
   orgIdentifier?: string
@@ -1647,6 +1731,24 @@ export interface TemplateDTO {
   identifier?: string
   lastModifiedAt?: number
   team?: 'OTHER' | 'CD' | 'CV' | 'CI' | 'FFM' | 'PIPELINE' | 'PL' | 'GTM' | 'UNRECOGNIZED'
+}
+
+export type TemplateEventData = AuditEventData & {
+  comments?: string
+  templateUpdateEventType?: string
+}
+
+export interface TemplateInputsErrorDTO {
+  fieldName?: string
+  identifierOfErrorSource?: string
+  message?: string
+}
+
+export type TemplateInputsErrorMetadataDTO = ErrorMetadataDTO & {
+  errorMap?: {
+    [key: string]: TemplateInputsErrorDTO
+  }
+  errorYaml?: string
 }
 
 export interface Throwable {
@@ -2006,7 +2108,7 @@ export type GetResourceGroupProps = Omit<
   GetResourceGroupPathParams
 
 /**
- * Get a resource group by identifier
+ * Get a resource group by Identifier
  */
 export const GetResourceGroup = ({ identifier, ...props }: GetResourceGroupProps) => (
   <Get<
@@ -2033,7 +2135,7 @@ export type UseGetResourceGroupProps = Omit<
   GetResourceGroupPathParams
 
 /**
- * Get a resource group by identifier
+ * Get a resource group by Identifier
  */
 export const useGetResourceGroup = ({ identifier, ...props }: UseGetResourceGroupProps) =>
   useGet<
@@ -2048,7 +2150,7 @@ export const useGetResourceGroup = ({ identifier, ...props }: UseGetResourceGrou
   })
 
 /**
- * Get a resource group by identifier
+ * Get a resource group by Identifier
  */
 export const getResourceGroupPromise = (
   {

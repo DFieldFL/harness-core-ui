@@ -7,16 +7,29 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
+  readonly accordionToggleButtons: string
+  readonly actualFail: string
+  readonly actualHealthy: string
+  readonly actualWarning: string
   readonly analysisRow: string
   readonly content: string
+  readonly deploymentMetricsAccordionPanel: string
+  readonly deploymentMetricsAccordionSummary: string
+  readonly deploymentMetricsLables: string
   readonly error: string
   readonly filterBy: string
+  readonly filterDropdown: string
+  readonly filterSecondRow: string
   readonly filters: string
+  readonly healthSourceLabel: string
+  readonly legend: string
   readonly loading: string
   readonly main: string
   readonly maxDropDownWidth: string
+  readonly metricName: string
   readonly noActivityId: string
   readonly noData: string
+  readonly predicted: string
   readonly refreshButton: string
 }
 export default styles

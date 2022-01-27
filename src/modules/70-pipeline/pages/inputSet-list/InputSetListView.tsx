@@ -85,13 +85,22 @@ const RenderColumnInputSet: Renderer<CellProps<InputSetLocal>> = ({ row }) => {
         color={data.inputSetType === 'INPUT_SET' ? Color.BLACK : Color.BLUE_500}
         size={30}
       />
-      <Layout.Horizontal flex={{ alignItems: 'center' }} spacing="small">
+      <Layout.Horizontal
+        flex={{ alignItems: 'center' }}
+        spacing="small"
+        style={{ flexShrink: 1 }}
+        padding={{ right: 'medium' }}
+      >
         <div>
           <Layout.Horizontal spacing="small" data-testid={data.identifier}>
-            <Text color={Color.BLACK}>{data.name}</Text>
+            <Text lineClamp={1} color={Color.BLACK}>
+              {data.name}
+            </Text>
             {data.tags && Object.keys(data.tags || {}).length ? <TagsPopover tags={data.tags} /> : null}
           </Layout.Horizontal>
-          <Text color={Color.GREY_400}>{getString('idLabel', { id: data.identifier })}</Text>
+          <Text lineClamp={1} color={Color.GREY_400}>
+            {getString('idLabel', { id: data.identifier })}
+          </Text>
         </div>
         {isInputSetInvalid(data) && (
           <Container padding={{ left: 'large' }}>
@@ -114,7 +123,7 @@ const RenderColumnInputSet: Renderer<CellProps<InputSetLocal>> = ({ row }) => {
 const RenderColumnDescription: Renderer<CellProps<InputSetLocal>> = ({ row }) => {
   const data = row.original
   return (
-    <Text lineClamp={2} color={Color.GREY_400}>
+    <Text padding={{ right: 'medium' }} lineClamp={2} color={Color.GREY_400}>
       {data.description}
     </Text>
   )
@@ -265,7 +274,7 @@ export const InputSetListView: React.FC<InputSetListViewProps> = ({
   const columns: CustomColumn<InputSetLocal>[] = React.useMemo(
     () => [
       {
-        Header: getString('inputSets.inputSetLabel').toUpperCase(),
+        Header: getString('pipeline.inputSets.inputSetNameLabel').toUpperCase(),
         accessor: 'name',
         width: isGitSyncEnabled ? '25%' : '30%',
         Cell: RenderColumnInputSet

@@ -104,7 +104,7 @@ exports[`Input Set List tests render Input Set List view 1`] = `
           <p
             class="StyledProps--font StyledProps--main StyledProps--font-variation-table-headers"
           >
-            INPUTSETS.INPUTSETLABEL
+            PIPELINE.INPUTSETS.INPUTSETNAMELABEL
           </p>
         </div>
         <div
@@ -194,7 +194,8 @@ exports[`Input Set List tests render Input Set List view 1`] = `
                 </svg>
               </span>
               <div
-                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--padding-right-medium"
+                style="flex-shrink: 1;"
               >
                 <div>
                   <div
@@ -202,13 +203,15 @@ exports[`Input Set List tests render Input Set List view 1`] = `
                     data-testid="OverLayInput"
                   >
                     <p
-                      class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black"
+                      class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
+                      style="--text-line-clamp: 1;"
                     >
                       OverLayInput
                     </p>
                   </div>
                   <p
-                    class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey400"
+                    class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-grey400"
+                    style="--text-line-clamp: 1;"
                   >
                     idLabel
                   </p>
@@ -259,7 +262,7 @@ exports[`Input Set List tests render Input Set List view 1`] = `
             style="width: 35%;"
           >
             <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-grey400"
+              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--padding-right-medium StyledProps--color StyledProps--color-grey400"
               style="--text-line-clamp: 2;"
             >
               OverLayInput
@@ -392,7 +395,8 @@ exports[`Input Set List tests render Input Set List view 1`] = `
                 </svg>
               </span>
               <div
-                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--padding-right-medium"
+                style="flex-shrink: 1;"
               >
                 <div>
                   <div
@@ -400,13 +404,15 @@ exports[`Input Set List tests render Input Set List view 1`] = `
                     data-testid="asd"
                   >
                     <p
-                      class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black"
+                      class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
+                      style="--text-line-clamp: 1;"
                     >
                       asd
                     </p>
                   </div>
                   <p
-                    class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey400"
+                    class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-grey400"
+                    style="--text-line-clamp: 1;"
                   >
                     idLabel
                   </p>
@@ -457,7 +463,7 @@ exports[`Input Set List tests render Input Set List view 1`] = `
             style="width: 35%;"
           >
             <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-grey400"
+              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--padding-right-medium StyledProps--color StyledProps--color-grey400"
               style="--text-line-clamp: 2;"
             >
               asd

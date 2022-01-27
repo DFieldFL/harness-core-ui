@@ -27,6 +27,7 @@ import { useParams } from 'react-router-dom'
 import { NgSmtpDTO, SmtpConfigDTO, useValidateName } from 'services/cd-ng'
 import { useStrings } from 'framework/strings'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
+import { NameSchema } from '@common/utils/Validation'
 import type { CreateSmtpWizardProps, SmtpSharedObj } from '../CreateSmtpWizard'
 import css from '../useCreateSmtpModal.module.scss'
 
@@ -84,7 +85,7 @@ const StepSmtpDetails: React.FC<StepProps<NgSmtpDTO> & SmtpSharedObj & CreateSmt
       }}
       formName="smtpStepDetailsForm"
       validationSchema={Yup.object().shape({
-        name: Yup.string().trim().required(getString('validation.nameRequired')),
+        name: NameSchema(),
         host: Yup.string().trim().required(getString('validation.hostRequired')),
         port: Yup.number()
           .moreThan(-1, getString('common.smtp.portPositive'))

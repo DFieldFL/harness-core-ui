@@ -37,6 +37,7 @@
 
   .count {
     text-decoration: underline;
+    color: var(--primary-9);
   }
 
   .environments {
@@ -45,7 +46,6 @@
     font-size: var(--font-size-small);
     color: var(--grey-800);
     margin-left: var(--spacing-7);
-    cursor: pointer;
 
     .envIcon {
       margin-right: var(--spacing-3) !important;

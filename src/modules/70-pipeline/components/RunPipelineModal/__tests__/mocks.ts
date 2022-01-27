@@ -17,6 +17,7 @@ import type {
   ResponsePreFlightDTO,
   ResponseVariableMergeServiceResponse
 } from 'services/pipeline-ng'
+import type { ResponseTemplateMergeResponse } from 'services/template-ng'
 
 export const mockCreateInputSetResponse: UseGetMockDataWithMutateAndRefetch<ResponseInputSetResponse> = {
   loading: false,
@@ -104,6 +105,21 @@ export const mockGetPipeline: UseGetMockDataWithMutateAndRefetch<ResponsePMSPipe
     data: {
       yamlPipeline:
         'pipeline:\n    name: TestPipeline\n    identifier: First\n    tags: {}\n    stages:\n        - stage:\n              name: Stage1\n              identifier: Stage1\n              description: ""\n              type: Approval\n              spec:\n                  execution:\n                      steps:\n                          - step:\n                                name: Approval\n                                identifier: approval\n                                type: HarnessApproval\n                                timeout: 1d\n                                spec:\n                                    includePipelineExecutionHistory: true\n                                    approvers:\n                                        disallowPipelineExecutor: false\n                                        minimumCount: 2\n                                        userGroups:\n                                            - Chirag\n                                    approverInputs: []\n                                    approvalMessage: ABC\n              tags: {}\n              variables: []\n    projectIdentifier: Chirag\n    orgIdentifier: harness\n    variables:\n        - name: checkVariable1\n          type: String\n          value: <+input>\n'
+    }
+  }
+}
+
+export const mockGetResolvedPipeline: UseGetMockDataWithMutateAndRefetch<ResponseTemplateMergeResponse> = {
+  loading: false,
+  refetch: jest.fn(),
+  mutate: jest.fn(),
+  data: {
+    correlationId: '',
+    status: 'SUCCESS',
+    metaData: null as unknown as undefined,
+    data: {
+      mergedPipelineYaml:
+        'name: TestPipeline\nidentifier: First\ntags: {}\nstages:\n  - stage:\n      name: Stage1\n      identifier: Stage1\n      description: ""\n      type: Approval\n      spec:\n        execution:\n          steps:\n            - step:\n                name: Approval\n                identifier: approval\n                type: HarnessApproval\n                timeout: 1d\n                spec:\n                  includePipelineExecutionHistory: true\n                  approvers:\n                    disallowPipelineExecutor: false\n                    minimumCount: 2\n                    userGroups:\n                      - Chirag\n                  approverInputs: []\n                  approvalMessage: ABC\n      tags: {}\n      variables: []\nprojectIdentifier: Chirag\norgIdentifier: harness\nvariables:\n  - name: checkVariable1\n    type: String\n    value: <+input>'
     }
   }
 }

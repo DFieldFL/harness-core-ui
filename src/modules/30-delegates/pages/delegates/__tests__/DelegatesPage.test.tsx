@@ -12,6 +12,10 @@ import DelegatesPage from '../DelegatesPage'
 import DelegateListing from '../DelegateListing'
 import ProfileMock from './ProfilesMock'
 
+const featureFlags = {
+  NG_SHOW_DEL_TOKENS: true
+}
+
 const mockGetCallFunction = jest.fn()
 jest.mock('services/portal', () => ({
   useGetDelegateGroupsNGV2WithFilter: jest.fn().mockImplementation(args => {
@@ -56,7 +60,11 @@ jest.mock('@common/components/YAMLBuilder/YamlBuilder')
 describe('Delegates Page', () => {
   test('render data', () => {
     const { container } = render(
-      <TestWrapper path="/account/:accountId/resources/delegates" pathParams={{ accountId: 'dummy' }}>
+      <TestWrapper
+        path="/account/:accountId/resources/delegates"
+        pathParams={{ accountId: 'dummy' }}
+        defaultAppStoreValues={{ featureFlags }}
+      >
         <DelegatesPage>
           <DelegateListing />
         </DelegatesPage>

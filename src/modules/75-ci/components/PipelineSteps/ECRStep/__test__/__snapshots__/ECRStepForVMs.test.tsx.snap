@@ -117,17 +117,6 @@ exports[`ECR Step Edit View should render properly for AWS VMs build infra 1`] =
         <div
           class="StyledProps--font StyledProps--main formGroup lg"
         />
-        <div>
-          <div
-            style="min-height: 8px;"
-          />
-          <div
-            class="separator"
-          />
-          <div
-            style="min-height: 24px;"
-          />
-        </div>
         <div
           class="StyledProps--font StyledProps--main bottomMargin3"
         >
@@ -1047,17 +1036,6 @@ exports[`ECR Step Edit View should render properly for AWS VMs build infra 1`] =
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <div
-                        style="min-height: 24px;"
-                      />
-                      <div
-                        class="separator"
-                      />
-                      <div
-                        style="min-height: 24px;"
-                      />
                     </div>
                     <div
                       class="StyledProps--font StyledProps--main formGroup sm bottomMargin5"

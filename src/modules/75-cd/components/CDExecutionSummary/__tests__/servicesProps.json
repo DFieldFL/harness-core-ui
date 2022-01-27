@@ -1,0 +1,28 @@
+[
+  {
+    "identifier": "testsvc_1",
+    "displayName": "testsvc_1",
+    "deploymentType": "Kubernetes",
+    "artifacts": {
+      "primary": {
+        "displayName": "primarty_sidecar_1"
+      },
+      "sidecars": [
+        {
+          "displayName": "sidecar_1"
+        }
+      ]
+    }
+  },
+  {
+    "identifier": "service1",
+    "displayName": "service1",
+    "deploymentType": "Kubernetes"
+  },
+  {
+    "identifier": "nginx",
+    "displayName": "todolist",
+    "deploymentType": "Kubernetes",
+    "artifacts": { "sidecars": [] }
+  }
+]

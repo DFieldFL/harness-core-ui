@@ -13,7 +13,7 @@ export interface MetricWidget {
   dataSets: {
     id: string
     name: string
-    query: string
+    query: string | { [key: string]: any }
   }[]
 }
 

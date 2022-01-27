@@ -7,12 +7,13 @@
 
 import React from 'react'
 import { cloneDeep } from 'lodash-es'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, render, waitFor, screen } from '@testing-library/react'
+import { useQueryParams } from '@common/hooks'
 import { TestWrapper } from '@common/utils/testUtils'
 import type { ExecutionNode } from 'services/pipeline-ng'
 import * as cvService from 'services/cv'
 import { DeploymentMetrics } from '../DeploymentMetrics'
-import { MetricTypeOptions } from '../DeploymentMetrics.constants'
+import { transactionNameMock, verifyStepNodeNameMock } from './DeploymentMetrics.mock'
 
 const ApiResponse = {
   metaData: {},
@@ -312,6 +313,11 @@ const MockExecutionNode: ExecutionNode = {
   }
 } as ExecutionNode
 
+jest.mock('@common/hooks', () => ({
+  ...(jest.requireActual('@common/hooks') as any),
+  useQueryParams: jest.fn(() => ({}))
+}))
+
 describe('Unit tests for Deployment metrics ', () => {
   beforeEach(() => {
     jest.clearAllTimers()
@@ -325,8 +331,20 @@ describe('Unit tests for Deployment metrics ', () => {
       refetch: jest.fn() as unknown
     } as any)
 
-    const useGetDeploymentMetricsSpy = jest.spyOn(cvService, 'useGetDeploymentMetrics').mockReturnValue({
+    const useGetDeploymentMetricsSpy = jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
       data: ApiResponse,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    const useGetVerifyStepTransactionNamesSpy = jest
+      .spyOn(cvService, 'useGetVerifyStepTransactionNames')
+      .mockReturnValue({
+        data: transactionNameMock,
+        refetch: jest.fn() as unknown
+      } as any)
+
+    const useGetVerifyStepNodeNamesSpy = jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
       refetch: jest.fn() as unknown
     } as any)
 
@@ -341,62 +359,66 @@ describe('Unit tests for Deployment metrics ', () => {
 
     await waitFor(() => expect(container.querySelector('[class*="main"]')).not.toBeNull())
     expect(useGetHealthSourcesSpy).toHaveBeenCalled()
+    expect(useGetVerifyStepNodeNamesSpy).toHaveBeenCalled()
+    expect(useGetVerifyStepTransactionNamesSpy).toHaveBeenCalled()
     expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-      activityId: '1234_activityId',
+      queryParamStringifyOptions: { arrayFormat: 'repeat' },
       queryParams: {
         accountId: undefined,
         anomalousMetricsOnly: false,
+        anomalousNodesOnly: false,
+        healthSources: undefined,
+        hostNames: undefined,
+        transactionNames: undefined,
         hostName: undefined,
         pageNumber: 0,
         pageSize: 10
       },
-      queryParamStringifyOptions: {
-        arrayFormat: 'repeat'
-      }
+      verifyStepExecutionId: '1234_activityId'
     })
 
-    const [anomalousFilter, healthSourceFilter] = container.querySelectorAll('[class*="maxDropDownWidth"]')
-
     // select anomalous filter
-    fireEvent.click(anomalousFilter.querySelector('[data-icon="chevron-down"]')!)
-    await waitFor(() => expect(document.querySelector('[class*="menuItem"]')).not.toBeNull())
-    fireEvent.click(getByText(MetricTypeOptions[1].label))
+    // fireEvent.click(anomalousFilter.querySelector('[data-icon="chevron-down"]')!)
+    fireEvent.click(screen.getByLabelText('pipeline.verification.anomalousMetricsFilterLabel'))
 
     await waitFor(() =>
       expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-        activityId: '1234_activityId',
+        queryParamStringifyOptions: { arrayFormat: 'repeat' },
         queryParams: {
           accountId: undefined,
           anomalousMetricsOnly: true,
+          anomalousNodesOnly: true,
+          healthSources: undefined,
           hostName: undefined,
+          hostNames: undefined,
           pageNumber: 0,
-          pageSize: 10
+          pageSize: 10,
+          transactionNames: undefined
         },
-        queryParamStringifyOptions: {
-          arrayFormat: 'repeat'
-        }
+        verifyStepExecutionId: '1234_activityId'
       })
     )
 
     // select stackdriver health source
-    fireEvent.click(healthSourceFilter.querySelector('[data-icon="chevron-down"]')!)
+    fireEvent.click(screen.getByTestId(/HealthSource_MultiSelect_DropDown/))
     await waitFor(() => expect(document.querySelector('[class*="menuItem"]')).not.toBeNull())
     fireEvent.click(getByText('Test Appd'))
 
     await waitFor(() =>
       expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-        activityId: '1234_activityId',
+        queryParamStringifyOptions: { arrayFormat: 'repeat' },
         queryParams: {
           accountId: undefined,
           anomalousMetricsOnly: true,
+          anomalousNodesOnly: true,
           healthSources: ['Without_Monitored_service/Test_Appd'],
           hostName: undefined,
+          hostNames: undefined,
           pageNumber: 0,
-          pageSize: 10
+          pageSize: 10,
+          transactionNames: undefined
         },
-        queryParamStringifyOptions: {
-          arrayFormat: 'repeat'
-        }
+        verifyStepExecutionId: '1234_activityId'
       })
     )
   })
@@ -407,8 +429,18 @@ describe('Unit tests for Deployment metrics ', () => {
       refetch: jest.fn() as unknown
     } as any)
 
-    const useGetDeploymentMetricsSpy = jest.spyOn(cvService, 'useGetDeploymentMetrics').mockReturnValue({
+    const useGetDeploymentMetricsSpy = jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
       data: ApiResponse,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
       refetch: jest.fn() as unknown
     } as any)
 
@@ -423,25 +455,32 @@ describe('Unit tests for Deployment metrics ', () => {
 
     await waitFor(() => expect(container.querySelector('[class*="main"]')).not.toBeNull())
 
+    // render all filters
+    expect(screen.getByTestId(/transaction_name_filter/)).toBeInTheDocument()
+    expect(screen.getByTestId(/node_name_filter/)).toBeInTheDocument()
+    expect(screen.getByTestId(/HealthSource_MultiSelect_DropDown/)).toBeInTheDocument()
+
     // add a filter
-    fireEvent.click(container.querySelector('[class*="filterBy"] input')!)
-    fireEvent.change(container.querySelector('[class*="filterBy"] input')!, { target: { value: 'sdfsfd' } })
+    fireEvent.click(screen.getByTestId(/node_name_filter/))
+    await waitFor(() => expect(document.querySelector('[class*="menuItem"]')).not.toBeNull())
+    fireEvent.click(screen.getByText('V'))
     jest.runTimersToTime(1000)
 
     await waitFor(() =>
       expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-        activityId: '1234_activityId',
+        queryParamStringifyOptions: { arrayFormat: 'repeat' },
         queryParams: {
           accountId: undefined,
           anomalousMetricsOnly: false,
-          filter: 'sdfsfd',
+          anomalousNodesOnly: false,
+          healthSources: undefined,
           hostName: undefined,
+          hostNames: ['V'],
           pageNumber: 0,
-          pageSize: 10
+          pageSize: 10,
+          transactionNames: undefined
         },
-        queryParamStringifyOptions: {
-          arrayFormat: 'repeat'
-        }
+        verifyStepExecutionId: '1234_activityId'
       })
     )
 
@@ -451,18 +490,19 @@ describe('Unit tests for Deployment metrics ', () => {
 
     await waitFor(() =>
       expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-        activityId: '1234_activityId',
+        queryParamStringifyOptions: { arrayFormat: 'repeat' },
         queryParams: {
           accountId: undefined,
           anomalousMetricsOnly: false,
-          filter: 'sdfsfd',
-          pageNumber: 2,
+          anomalousNodesOnly: false,
+          healthSources: undefined,
           hostName: undefined,
-          pageSize: 10
+          hostNames: ['V'],
+          pageNumber: 2,
+          pageSize: 10,
+          transactionNames: undefined
         },
-        queryParamStringifyOptions: {
-          arrayFormat: 'repeat'
-        }
+        verifyStepExecutionId: '1234_activityId'
       })
     )
   })
@@ -473,8 +513,18 @@ describe('Unit tests for Deployment metrics ', () => {
       refetch: jest.fn() as unknown
     } as any)
 
-    jest.spyOn(cvService, 'useGetDeploymentMetrics').mockReturnValue({
+    jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
       loading: true,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
       refetch: jest.fn() as unknown
     } as any)
 
@@ -497,9 +547,19 @@ describe('Unit tests for Deployment metrics ', () => {
     } as any)
 
     const refetchFn = jest.fn()
-    jest.spyOn(cvService, 'useGetDeploymentMetrics').mockReturnValue({
+    jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
       error: { data: { message: 'mockError' } } as any,
       refetch: refetchFn as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
+      refetch: jest.fn() as unknown
     } as any)
 
     const { container, getByText } = render(
@@ -525,9 +585,19 @@ describe('Unit tests for Deployment metrics ', () => {
     } as any)
 
     const refetchFn = jest.fn()
-    jest.spyOn(cvService, 'useGetDeploymentMetrics').mockReturnValue({
+    jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
       data: { resource: { content: [] } } as any,
       refetch: refetchFn as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
+      refetch: jest.fn() as unknown
     } as any)
 
     const { container, getByText } = render(
@@ -540,7 +610,7 @@ describe('Unit tests for Deployment metrics ', () => {
     )
 
     await waitFor(() => expect(container.querySelector('[class*="main"]')).not.toBeNull())
-    expect(getByText('pipeline.verification.noMetrics')).not.toBeNull()
+    expect(getByText('cv.monitoredServices.noAvailableData')).not.toBeNull()
   })
 
   test('Ensure that when new activityId is passed as prop view is reset', async () => {
@@ -550,9 +620,19 @@ describe('Unit tests for Deployment metrics ', () => {
     } as any)
 
     const refetchFn = jest.fn()
-    const useGetDeploymentMetricsSpy = jest.spyOn(cvService, 'useGetDeploymentMetrics').mockReturnValue({
+    const useGetDeploymentMetricsSpy = jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
       data: ApiResponse,
       refetch: refetchFn as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
+      refetch: jest.fn() as unknown
     } as any)
 
     const { container, rerender } = render(
@@ -566,17 +646,19 @@ describe('Unit tests for Deployment metrics ', () => {
 
     await waitFor(() => expect(container.querySelector('[class*="main"]')).not.toBeNull())
     expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-      activityId: '1234_activityId',
+      queryParamStringifyOptions: { arrayFormat: 'repeat' },
       queryParams: {
         accountId: undefined,
         anomalousMetricsOnly: false,
+        anomalousNodesOnly: false,
+        healthSources: undefined,
         hostName: undefined,
+        hostNames: undefined,
         pageNumber: 0,
-        pageSize: 10
+        pageSize: 10,
+        transactionNames: undefined
       },
-      queryParamStringifyOptions: {
-        arrayFormat: 'repeat'
-      }
+      verifyStepExecutionId: '1234_activityId'
     })
 
     // click on a page
@@ -585,17 +667,19 @@ describe('Unit tests for Deployment metrics ', () => {
 
     await waitFor(() =>
       expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-        activityId: '1234_activityId',
+        queryParamStringifyOptions: { arrayFormat: 'repeat' },
         queryParams: {
           accountId: undefined,
           anomalousMetricsOnly: false,
-          pageNumber: 3,
+          anomalousNodesOnly: false,
+          healthSources: undefined,
           hostName: undefined,
-          pageSize: 10
+          hostNames: undefined,
+          pageNumber: 3,
+          pageSize: 10,
+          transactionNames: undefined
         },
-        queryParamStringifyOptions: {
-          arrayFormat: 'repeat'
-        }
+        verifyStepExecutionId: '1234_activityId'
       })
     )
 
@@ -609,17 +693,19 @@ describe('Unit tests for Deployment metrics ', () => {
 
     await waitFor(() => expect(container.querySelector('[class*="main"]')).not.toBeNull())
     expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
-      activityId: '12312_activityId',
+      queryParamStringifyOptions: { arrayFormat: 'repeat' },
       queryParams: {
         accountId: undefined,
         anomalousMetricsOnly: false,
+        anomalousNodesOnly: false,
+        healthSources: undefined,
         hostName: undefined,
+        hostNames: undefined,
         pageNumber: 0,
-        pageSize: 10
+        pageSize: 10,
+        transactionNames: undefined
       },
-      queryParamStringifyOptions: {
-        arrayFormat: 'repeat'
-      }
+      verifyStepExecutionId: '12312_activityId'
     })
   })
 
@@ -633,9 +719,19 @@ describe('Unit tests for Deployment metrics ', () => {
     const clonedNode = cloneDeep(MockExecutionNode)
     clonedNode.status = 'Running'
 
-    jest.spyOn(cvService, 'useGetDeploymentMetrics').mockReturnValue({
+    jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
       data: ApiResponse,
       refetch: refetchFn as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
+      refetch: jest.fn() as unknown
     } as any)
 
     const { container } = render(
@@ -677,5 +773,91 @@ describe('Unit tests for Deployment metrics ', () => {
 
     jest.runTimersToTime(20000)
     await waitFor(() => expect(refetchFn).toHaveBeenCalledTimes(1))
+  })
+
+  test('should render accordion to display metrics', () => {
+    jest.spyOn(cvService, 'useGetHealthSources').mockReturnValue({
+      data: HealthSourcesResponse,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
+      data: ApiResponse,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    render(
+      <TestWrapper>
+        <DeploymentMetrics
+          step={MockExecutionNode}
+          activityId={MockExecutionNode!.progressData!.activityId as unknown as string}
+        />
+      </TestWrapper>
+    )
+
+    expect(screen.getByTestId(/\/todolist\/inside-Stall Count-undefined-panel/)).toBeInTheDocument()
+  })
+
+  test('should check whether the anomalous checkbox is checked by default if it has filterAnomalous query param set to true', async () => {
+    // eslint-disable-next-line
+    // @ts-ignore
+    useQueryParams.mockImplementation(() => ({ filterAnomalous: 'true' }))
+
+    jest.spyOn(cvService, 'useGetHealthSources').mockReturnValue({
+      data: HealthSourcesResponse,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    const useGetDeploymentMetricsSpy = jest.spyOn(cvService, 'useGetVerifyStepDeploymentMetrics').mockReturnValue({
+      data: ApiResponse,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepTransactionNames').mockReturnValue({
+      data: transactionNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    jest.spyOn(cvService, 'useGetVerifyStepNodeNames').mockReturnValue({
+      data: verifyStepNodeNameMock,
+      refetch: jest.fn() as unknown
+    } as any)
+
+    render(
+      <TestWrapper>
+        <DeploymentMetrics
+          step={MockExecutionNode}
+          activityId={MockExecutionNode!.progressData!.activityId as unknown as string}
+        />
+      </TestWrapper>
+    )
+
+    await waitFor(() =>
+      expect(useGetDeploymentMetricsSpy).toHaveBeenLastCalledWith({
+        queryParamStringifyOptions: { arrayFormat: 'repeat' },
+        queryParams: {
+          accountId: undefined,
+          anomalousMetricsOnly: true,
+          anomalousNodesOnly: true,
+          healthSources: undefined,
+          hostName: undefined,
+          hostNames: undefined,
+          pageNumber: 0,
+          pageSize: 10,
+          transactionNames: undefined
+        },
+        verifyStepExecutionId: '1234_activityId'
+      })
+    )
   })
 })

@@ -13,6 +13,7 @@ exports[`EXECUTION VIEW should should have the values prefilled and fields as di
       >
         <div
           class="runModalFormContentExecutionView"
+          data-testid="runPipelineVisualView"
         >
           <form
             class="FormikForm--main"
@@ -126,9 +127,7 @@ exports[`STUDIO MODE invalid input sets should not be applied 1`] = `
           >
             runPipeline
           </h2>
-          <div
-            class="noDisplay"
-          >
+          <div>
             <div
               class="bp3-popover-wrapper MultiSelectDropDown--main"
             >
@@ -198,6 +197,7 @@ exports[`STUDIO MODE invalid input sets should not be applied 1`] = `
         </div>
         <div
           class="runModalFormContent"
+          data-testid="runPipelineVisualView"
         >
           <form
             class="FormikForm--main"
@@ -625,9 +625,7 @@ exports[`STUDIO MODE should accept values from input sets and submit the form: a
           >
             runPipeline
           </h2>
-          <div
-            class="noDisplay"
-          >
+          <div>
             <div
               class="bp3-popover-wrapper MultiSelectDropDown--main"
             >
@@ -697,6 +695,7 @@ exports[`STUDIO MODE should accept values from input sets and submit the form: a
         </div>
         <div
           class="runModalFormContent"
+          data-testid="runPipelineVisualView"
         >
           <form
             class="FormikForm--main"

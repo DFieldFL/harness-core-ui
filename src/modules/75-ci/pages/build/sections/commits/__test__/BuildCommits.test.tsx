@@ -12,7 +12,7 @@ import { StringsContext } from 'framework/strings'
 import BuildCommits from '../BuildCommits'
 import BuildMock from './mock/build.json'
 
-jest.mock('@ci/services/CIUtils', () => ({
+jest.mock('@pipeline/utils/CIUtils', () => ({
   getTimeAgo: () => '1 day ago',
   getShortCommitId: () => 'abc'
 }))

@@ -190,7 +190,41 @@ describe('ExecutionUtils tests', () => {
         'Success'
       )
 
-      expect(stage).toBe('stage2.1')
+      expect(stage).toBe('stage2.2')
+    })
+
+    test('gives correct stage for completed process where last stage is skipped', () => {
+      const stage = utils.getActiveStageForPipeline(
+        {
+          layoutNodeMap: {
+            stage1: {
+              edgeLayoutList: {
+                nextIds: ['stage2']
+              },
+              status: 'Success',
+              nodeUuid: 'stage1'
+            },
+            stage2: {
+              edgeLayoutList: {
+                nextIds: ['stage3']
+              },
+              status: 'Success',
+              nodeUuid: 'stage2'
+            },
+            stage3: {
+              edgeLayoutList: {
+                nextIds: []
+              },
+              status: 'Skipped',
+              nodeUuid: 'stage3'
+            }
+          },
+          startingNodeId: 'stage1'
+        },
+        'Success'
+      )
+
+      expect(stage).toBe('stage2')
     })
 
     test('gives correct stage for errored process', () => {

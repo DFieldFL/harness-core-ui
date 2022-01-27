@@ -84,8 +84,9 @@ const PerspectiveGrid: React.FC<PerspectiveGridProps> = props => {
     )
   }
 
+  const { fieldName } = groupBy
+
   const onRowClick = (row: Row<GridData>) => {
-    const { fieldName } = groupBy
     if (fieldName === 'Workload Id' && isClusterOnly) {
       const { clusterName, namespace, workloadName } = row.original
       goToWorkloadDetails &&
@@ -99,6 +100,8 @@ const PerspectiveGrid: React.FC<PerspectiveGridProps> = props => {
       goToNodeDetails && clusterName && nodeId && goToNodeDetails(clusterName, nodeId)
     }
   }
+
+  const isRowClickable = fieldName === 'Workload Id' || fieldName === 'Node'
 
   return (
     <Container background="white">
@@ -124,6 +127,7 @@ const PerspectiveGrid: React.FC<PerspectiveGridProps> = props => {
         gridPageIndex={gridPageIndex}
         pageSize={pageSize}
         fetchData={fetchData}
+        isRowClickable={isRowClickable}
       />
     </Container>
   )

@@ -66,3 +66,6 @@ jest.mock('@delegates/modals/DelegateModal/useCreateDelegateModal', () => () => 
 
 jest.mock('@common/components/MonacoEditor/MonacoEditor')
 jest.mock('@common/components/YAMLBuilder/YamlBuilder')
+
+const { getComputedStyle } = window
+window.getComputedStyle = elt => getComputedStyle(elt)

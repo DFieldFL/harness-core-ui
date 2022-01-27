@@ -161,13 +161,9 @@ exports[`<LogsContent /> tests Logs test GroupedLogs 1`] = `
         </button>
       </div>
     </div>
-    <pre
-      class="container"
-    >
-      <div>
-        Grouped logs
-      </div>
-    </pre>
+    <div>
+      Grouped logs
+    </div>
   </div>
 </div>
 `;
@@ -244,13 +240,9 @@ exports[`<LogsContent /> tests Logs test SingleSectionLogs 1`] = `
         </button>
       </div>
     </div>
-    <pre
-      class="container"
-    >
-      <div>
-        Single section logs
-      </div>
-    </pre>
+    <div>
+      Single section logs
+    </div>
   </div>
 </div>
 `;

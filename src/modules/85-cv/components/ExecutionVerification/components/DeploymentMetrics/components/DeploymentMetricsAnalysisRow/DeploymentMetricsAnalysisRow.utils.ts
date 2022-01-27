@@ -5,9 +5,11 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
+import type Highcharts from 'highcharts'
 import type { IconName } from '@wings-software/uicore'
 import { getRiskColorValue } from '@cv/utils/CommonUtils'
 import type { HostTestData } from './DeploymentMetricsAnalysisRow.constants'
+import type { DeploymentMetricsAnalysisRowChartSeries } from './DeploymentMetricsAnalysisRow.types'
 
 export function healthSourceTypeToLogo(healthSourceType: any): IconName {
   switch (healthSourceType) {
@@ -31,16 +33,17 @@ export function healthSourceTypeToLogo(healthSourceType: any): IconName {
 }
 
 export function transformControlAndTestDataToHighChartsSeries(
-  controlData: Highcharts.SeriesLineOptions['data'][],
+  controlData: Highcharts.SeriesAreasplineOptions['data'][],
   testData: HostTestData[]
-): Highcharts.SeriesLineOptions[][] {
-  const highchartsOptions: Highcharts.SeriesLineOptions[][] = []
+): DeploymentMetricsAnalysisRowChartSeries[][] {
+  const highchartsOptions: DeploymentMetricsAnalysisRowChartSeries[][] = []
 
   for (let index = 0; index < controlData.length; index++) {
     const testDataLineColor = getRiskColorValue(testData[index].risk)
+
     highchartsOptions.push([
       {
-        type: 'line',
+        type: 'areaspline',
         data: controlData[index] || [],
         color: 'var(--grey-200)',
         name: testData[index].name,
@@ -51,10 +54,14 @@ export function transformControlAndTestDataToHighChartsSeries(
           symbol: 'circle',
           fillColor: 'var(--white)',
           lineColor: 'var(--grey-200)'
-        }
+        },
+        lineColor: 'var(--grey-200)',
+        lineWidth: 2,
+        baseData: controlData[index] || [],
+        actualTestData: testData[index] || []
       },
       {
-        type: 'line',
+        type: 'areaspline',
         data: testData[index].points || [],
         color: testDataLineColor,
         name: testData[index].name,
@@ -65,10 +72,25 @@ export function transformControlAndTestDataToHighChartsSeries(
           symbol: 'circle',
           fillColor: 'var(--white)',
           lineColor: testDataLineColor
-        }
+        },
+        lineColor: testDataLineColor,
+        lineWidth: 2,
+        baseData: controlData[index] || [],
+        actualTestData: testData[index] || []
       }
     ])
   }
 
   return highchartsOptions
+}
+
+export function filterRenderCharts(
+  charts: DeploymentMetricsAnalysisRowChartSeries[][],
+  offset: number
+): DeploymentMetricsAnalysisRowChartSeries[][] {
+  if (charts.length <= 6) {
+    return charts
+  }
+
+  return charts.slice(0, 6 * offset)
 }

@@ -381,6 +381,7 @@ exports[`DeployStageSetupShell tests opens services tab by default 1`] = `
                       </div>
                       <button
                         class="bp3-button Button--button StyledProps--font StyledProps--main Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
+                        id="add-new-service"
                         type="button"
                       >
                         <span

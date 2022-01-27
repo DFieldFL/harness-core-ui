@@ -9,6 +9,7 @@
 declare const styles: {
   readonly details: string
   readonly failureMessage: string
+  readonly fullWidth: string
   readonly loading: string
   readonly main: string
 }

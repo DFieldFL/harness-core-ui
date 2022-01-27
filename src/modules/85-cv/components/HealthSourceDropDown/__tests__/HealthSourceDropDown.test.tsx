@@ -44,10 +44,6 @@ describe('Unit tests for HealthSourceDropDown', () => {
     const newDropdownData = { ...dropdownData, data: mockedMultipleHealthSourcesData as RestResponseSetHealthSourceDTO }
     expect(getDropdownOptions(newDropdownData, getString)).toEqual([
       {
-        label: 'all',
-        value: 'all'
-      },
-      {
         icon: {
           name: 'service-appdynamics'
         },

@@ -25,6 +25,7 @@ import type { DelegateTokenDetails } from 'services/portal'
 
 import { useStrings } from 'framework/strings'
 
+import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import { AddDescriptionAndKVTagsWithIdentifier } from '@common/components/AddDescriptionAndTags/AddDescriptionAndTags'
 import { useCreateTokenModal } from '@delegates/components/DelegateTokens/modals/useCreateTokenModal'
@@ -50,6 +51,7 @@ const formatTokenOptions = (data: any): Array<SelectOption> => {
 }
 
 const Step1Setup: React.FC<StepProps<DockerDelegateWizardData> & DelegateSetupStepProps> = props => {
+  const { NG_SHOW_DEL_TOKENS } = useFeatureFlags()
   const { prevStepData } = props
   let initialValues
   if (prevStepData) {
@@ -64,8 +66,10 @@ const Step1Setup: React.FC<StepProps<DockerDelegateWizardData> & DelegateSetupSt
       name: '',
       identifier: '',
       description: '',
-      tags: {},
-      tokenName: ''
+      tags: {}
+    }
+    if (NG_SHOW_DEL_TOKENS) {
+      set(initialValues, 'tokenName', '')
     }
   }
 
@@ -84,7 +88,7 @@ const Step1Setup: React.FC<StepProps<DockerDelegateWizardData> & DelegateSetupSt
         projectIdentifier,
         orgIdentifier,
         delegateName: values.name,
-        tokenName: values.tokenName
+        tokenName: NG_SHOW_DEL_TOKENS ? values.tokenName : undefined
       }
     })) as any
     const isNameUnique = !response?.responseMessages[0]
@@ -94,7 +98,7 @@ const Step1Setup: React.FC<StepProps<DockerDelegateWizardData> & DelegateSetupSt
         name: values.name,
         identifier: values.identifier,
         description: values.description,
-        tokenName: values.tokenName
+        tokenName: NG_SHOW_DEL_TOKENS ? values.tokenName : undefined
       }
       const tagsArray = Object.keys(values.tags || {})
       set(stepPrevData, 'tags', tagsArray)
@@ -117,7 +121,7 @@ const Step1Setup: React.FC<StepProps<DockerDelegateWizardData> & DelegateSetupSt
   const { openCreateTokenModal } = useCreateTokenModal({ onSuccess: getTokens })
 
   React.useEffect(() => {
-    if (defaultToken) {
+    if (NG_SHOW_DEL_TOKENS && defaultToken) {
       formData.tokenName = defaultToken?.name
       setInitValues({ ...formData })
     }
@@ -142,7 +146,9 @@ const Step1Setup: React.FC<StepProps<DockerDelegateWizardData> & DelegateSetupSt
               .trim()
               .required(getString('delegate.delegateNameRequired'))
               .matches(delegateNameRegex, getString('delegates.delegateNameRegexIssue')),
-            tokenName: Yup.string().required(getString('delegates.tokens.tokenRequired'))
+            tokenName: NG_SHOW_DEL_TOKENS
+              ? Yup.string().required(getString('delegates.tokens.tokenRequired'))
+              : Yup.string()
           })}
         >
           {() => {
@@ -159,22 +165,24 @@ const Step1Setup: React.FC<StepProps<DockerDelegateWizardData> & DelegateSetupSt
                           }}
                         />
                       </div>
-                      <Layout.Horizontal className={css.tokensSelectContainer} spacing="small">
-                        <FormInput.Select
-                          items={delegateTokenOptions}
-                          label={getString('delegates.tokens.delegateTokens')}
-                          name="tokenName"
-                        />
-                        <Button
-                          minimal
-                          icon="plus"
-                          onClick={e => {
-                            e.preventDefault()
-                            openCreateTokenModal()
-                          }}
-                          text={getString('add')}
-                        />
-                      </Layout.Horizontal>
+                      {NG_SHOW_DEL_TOKENS && (
+                        <Layout.Horizontal className={css.tokensSelectContainer} spacing="small">
+                          <FormInput.Select
+                            items={delegateTokenOptions}
+                            label={getString('delegates.tokens.delegateTokens')}
+                            name="tokenName"
+                          />
+                          <Button
+                            minimal
+                            icon="plus"
+                            onClick={e => {
+                              e.preventDefault()
+                              openCreateTokenModal()
+                            }}
+                            text={getString('add')}
+                          />
+                        </Layout.Horizontal>
+                      )}
                     </Layout.Vertical>
                     <Layout.Vertical className={css.rightPanel} />
                   </Layout.Horizontal>

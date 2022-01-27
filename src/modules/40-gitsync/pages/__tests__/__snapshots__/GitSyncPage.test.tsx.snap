@@ -19,31 +19,48 @@ exports[`GitSync Page render GitSync page for new user with no pipeline created 
           >
             <a
               class="Breadcrumbs--breadcrumb"
-              href="/account/dummyAccount/settings"
+              href="/account/dummyAccount/ci"
             >
               <span
-                class="bp3-icon bp3-icon-cog StyledProps--main StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-primary7"
-                icon="cog"
+                class="bp3-icon StyledProps--main StyledProps--padding-right-xsmall"
+                data-icon="ci-main"
               >
                 <svg
-                  data-icon="cog"
                   height="16"
-                  viewBox="0 0 16 16"
+                  viewBox="0 0 32 32"
                   width="16"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <desc>
-                    cog
-                  </desc>
                   <path
-                    d="M15.19 6.39h-1.85c-.11-.37-.27-.71-.45-1.04l1.36-1.36c.31-.31.31-.82 0-1.13l-1.13-1.13a.803.803 0 00-1.13 0l-1.36 1.36c-.33-.17-.67-.33-1.04-.44V.79c0-.44-.36-.8-.8-.8h-1.6c-.44 0-.8.36-.8.8v1.86c-.39.12-.75.28-1.1.47l-1.3-1.3c-.3-.3-.79-.3-1.09 0L1.82 2.91c-.3.3-.3.79 0 1.09l1.3 1.3c-.2.34-.36.7-.48 1.09H.79c-.44 0-.8.36-.8.8v1.6c0 .44.36.8.8.8h1.85c.11.37.27.71.45 1.04l-1.36 1.36c-.31.31-.31.82 0 1.13l1.13 1.13c.31.31.82.31 1.13 0l1.36-1.36c.33.18.67.33 1.04.44v1.86c0 .44.36.8.8.8h1.6c.44 0 .8-.36.8-.8v-1.86c.39-.12.75-.28 1.1-.47l1.3 1.3c.3.3.79.3 1.09 0l1.09-1.09c.3-.3.3-.79 0-1.09l-1.3-1.3c.19-.35.36-.71.48-1.1h1.85c.44 0 .8-.36.8-.8v-1.6a.816.816 0 00-.81-.79zm-7.2 4.6c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
+                    clip-rule="evenodd"
+                    d="M29 16a13.02 13.02 0 01-.854 4.6.387.387 0 01-.637.13l-3.99-3.94a.534.534 0 01-.085-.628c.432-.827.649-1.773.649-2.762.056-3.222-2.6-5.878-5.879-5.878-1.04 0-1.994.26-2.823.706a.53.53 0 01-.623-.08l-3.551-3.504a.48.48 0 01.154-.794A12.79 12.79 0 0116 3c7.178 0 13 5.822 13 13zM8.476 5.42a.582.582 0 01.746.072l4.035 4.035c.179.178.194.46.054.67a5.829 5.829 0 00-.985 3.26 5.934 5.934 0 005.935 5.934 5.829 5.829 0 003.26-.985.531.531 0 01.67.054l4.367 4.368a.582.582 0 01.065.756C24.225 26.86 20.4 29 16 29 8.822 29 3 23.178 3 16c0-4.403 2.144-8.231 5.476-10.58zm9.785 11.71a3.932 3.932 0 003.956-3.956 3.932 3.932 0 00-3.956-3.957 3.932 3.932 0 00-3.957 3.957 3.932 3.932 0 003.957 3.956z"
+                    fill="url(#ci-main_svg__a)"
                     fill-rule="evenodd"
                   />
+                  <defs>
+                    <lineargradient
+                      gradientUnits="userSpaceOnUse"
+                      id="ci-main_svg__a"
+                      x1="-5.398"
+                      x2="11.398"
+                      y1="11.398"
+                      y2="37.398"
+                    >
+                      <stop
+                        stop-color="#73DFE7"
+                      />
+                      <stop
+                        offset="1"
+                        stop-color="#0095F7"
+                      />
+                    </lineargradient>
+                  </defs>
                 </svg>
               </span>
               <p
                 class="StyledProps--font StyledProps--main StyledProps--intent-primary StyledProps--font-size-small"
               >
-                common.accountSettings
+                dummyProject
               </p>
             </a>
             <span
@@ -146,31 +163,48 @@ exports[`GitSync Page render GitSync page for new user with pipeline created 1`]
           >
             <a
               class="Breadcrumbs--breadcrumb"
-              href="/account/dummyAccount/settings"
+              href="/account/dummyAccount/ci"
             >
               <span
-                class="bp3-icon bp3-icon-cog StyledProps--main StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-primary7"
-                icon="cog"
+                class="bp3-icon StyledProps--main StyledProps--padding-right-xsmall"
+                data-icon="ci-main"
               >
                 <svg
-                  data-icon="cog"
                   height="16"
-                  viewBox="0 0 16 16"
+                  viewBox="0 0 32 32"
                   width="16"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <desc>
-                    cog
-                  </desc>
                   <path
-                    d="M15.19 6.39h-1.85c-.11-.37-.27-.71-.45-1.04l1.36-1.36c.31-.31.31-.82 0-1.13l-1.13-1.13a.803.803 0 00-1.13 0l-1.36 1.36c-.33-.17-.67-.33-1.04-.44V.79c0-.44-.36-.8-.8-.8h-1.6c-.44 0-.8.36-.8.8v1.86c-.39.12-.75.28-1.1.47l-1.3-1.3c-.3-.3-.79-.3-1.09 0L1.82 2.91c-.3.3-.3.79 0 1.09l1.3 1.3c-.2.34-.36.7-.48 1.09H.79c-.44 0-.8.36-.8.8v1.6c0 .44.36.8.8.8h1.85c.11.37.27.71.45 1.04l-1.36 1.36c-.31.31-.31.82 0 1.13l1.13 1.13c.31.31.82.31 1.13 0l1.36-1.36c.33.18.67.33 1.04.44v1.86c0 .44.36.8.8.8h1.6c.44 0 .8-.36.8-.8v-1.86c.39-.12.75-.28 1.1-.47l1.3 1.3c.3.3.79.3 1.09 0l1.09-1.09c.3-.3.3-.79 0-1.09l-1.3-1.3c.19-.35.36-.71.48-1.1h1.85c.44 0 .8-.36.8-.8v-1.6a.816.816 0 00-.81-.79zm-7.2 4.6c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
+                    clip-rule="evenodd"
+                    d="M29 16a13.02 13.02 0 01-.854 4.6.387.387 0 01-.637.13l-3.99-3.94a.534.534 0 01-.085-.628c.432-.827.649-1.773.649-2.762.056-3.222-2.6-5.878-5.879-5.878-1.04 0-1.994.26-2.823.706a.53.53 0 01-.623-.08l-3.551-3.504a.48.48 0 01.154-.794A12.79 12.79 0 0116 3c7.178 0 13 5.822 13 13zM8.476 5.42a.582.582 0 01.746.072l4.035 4.035c.179.178.194.46.054.67a5.829 5.829 0 00-.985 3.26 5.934 5.934 0 005.935 5.934 5.829 5.829 0 003.26-.985.531.531 0 01.67.054l4.367 4.368a.582.582 0 01.065.756C24.225 26.86 20.4 29 16 29 8.822 29 3 23.178 3 16c0-4.403 2.144-8.231 5.476-10.58zm9.785 11.71a3.932 3.932 0 003.956-3.956 3.932 3.932 0 00-3.956-3.957 3.932 3.932 0 00-3.957 3.957 3.932 3.932 0 003.957 3.956z"
+                    fill="url(#ci-main_svg__a)"
                     fill-rule="evenodd"
                   />
+                  <defs>
+                    <lineargradient
+                      gradientUnits="userSpaceOnUse"
+                      id="ci-main_svg__a"
+                      x1="-5.398"
+                      x2="11.398"
+                      y1="11.398"
+                      y2="37.398"
+                    >
+                      <stop
+                        stop-color="#73DFE7"
+                      />
+                      <stop
+                        offset="1"
+                        stop-color="#0095F7"
+                      />
+                    </lineargradient>
+                  </defs>
                 </svg>
               </span>
               <p
                 class="StyledProps--font StyledProps--main StyledProps--intent-primary StyledProps--font-size-small"
               >
-                common.accountSettings
+                dummyProject
               </p>
             </a>
             <span

@@ -24,7 +24,6 @@ import type { ExecutionPathProps, PipelineType } from '@common/interfaces/RouteI
 import { ResourceType } from '@rbac/interfaces/ResourceType'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import RbacButton from '@rbac/components/Button/Button'
-import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import { useRunPipelineModal } from '@pipeline/components/RunPipelineModal/useRunPipelineModal'
 import css from './ExecutionStageDetailsHeader.module.scss'
 
@@ -37,7 +36,6 @@ export function ExecutionStageDetailsHeader(): React.ReactElement {
   const shouldShowError = isExecutionFailed(stage?.status)
   const errorMessage = defaultTo(stage?.failureInfo?.message, '')
   const { getString } = useStrings()
-  const { RUN_INDIVIDUAL_STAGE } = useFeatureFlags()
   const [canEdit, canExecute] = usePermission(
     {
       resourceScope: {
@@ -92,21 +90,19 @@ export function ExecutionStageDetailsHeader(): React.ReactElement {
           <div className={css.stageTop}>
             <div className={css.stageName}>
               {stage?.name}
-              {RUN_INDIVIDUAL_STAGE && (
-                <RbacButton
-                  icon="repeat"
-                  tooltip={getString('pipeline.execution.actions.rerunStage')}
-                  onClick={runPipeline}
-                  variation={ButtonVariation.ICON}
-                  disabled={!canExecute}
-                  minimal
-                  withoutBoxShadow
-                  small
-                  tooltipProps={{
-                    isDark: true
-                  }}
-                />
-              )}
+              <RbacButton
+                icon="repeat"
+                tooltip={getString('pipeline.execution.actions.rerunStage')}
+                onClick={runPipeline}
+                variation={ButtonVariation.ICON}
+                disabled={!canExecute}
+                minimal
+                withoutBoxShadow
+                small
+                tooltipProps={{
+                  isDark: true
+                }}
+              />
             </div>
             <ExecutionActions
               executionStatus={stageNode?.status as ExecutionStatus}

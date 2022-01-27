@@ -16,6 +16,7 @@ import type { NGBreadcrumbsProps } from '@common/components/NGBreadcrumbs/NGBrea
 import { ResourceType } from '@rbac/interfaces/ResourceType'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import type { ButtonProps } from '@rbac/components/Button/Button'
+import type { RbacMenuItemProps } from '@rbac/components/MenuItem/MenuItem'
 import type { Title, UseDocumentTitleReturn } from '@common/hooks/useDocumentTitle'
 import type { ExtendedMonacoEditorProps } from '@common/components/MonacoEditor/MonacoEditor'
 import type { ExtendedMonacoDiffEditorProps } from '@common/components/MonacoDiffEditor/MonacoDiffEditor'
@@ -30,6 +31,7 @@ export interface Scope {
 export interface CommonComponents {
   NGBreadcrumbs: React.ComponentType<Partial<NGBreadcrumbsProps>>
   RbacButton: React.ComponentType<ButtonProps>
+  RbacMenuItem: React.ComponentType<RbacMenuItemProps>
   MonacoEditor: React.ForwardRefExoticComponent<ExtendedMonacoEditorProps & React.RefAttributes<ReactMonacoEditor>>
   YAMLBuilder: React.FC<YamlBuilderProps>
   MonacoDiffEditor: React.ForwardRefExoticComponent<
@@ -57,6 +59,7 @@ export interface ChildAppProps {
   scope: Scope
   components: CommonComponents
   hooks: Hooks
+  token: string
 }
 
 /**

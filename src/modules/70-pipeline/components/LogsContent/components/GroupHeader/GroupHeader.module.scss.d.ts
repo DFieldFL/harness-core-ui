@@ -10,6 +10,7 @@ declare const styles: {
   readonly chevron: string
   readonly duration: string
   readonly groupedHeader: string
+  readonly scrollBtn: string
   readonly sectionSummary: string
   readonly status: string
   readonly text: string

@@ -3,6 +3,7 @@ rules:
     - error
     - patterns:
         - lodash.*
+        - microfrontends/*
       paths:
         - lodash
         - name: yaml
@@ -12,3 +13,5 @@ rules:
             of this
         - name: react-router
           message: import from "react-router-dom" instead
+        - name: microfrontends
+          message: Import from 'microfrontends' is only allowed in child apps

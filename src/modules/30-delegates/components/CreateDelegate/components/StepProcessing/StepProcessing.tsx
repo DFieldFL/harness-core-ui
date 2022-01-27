@@ -94,7 +94,11 @@ const StepProcessing: FC<StepDelegateData> = props => {
       <Layout.Vertical padding="large">
         <Layout.Horizontal spacing="medium" className={css.checkItemsWrapper}>
           <Icon size={10} color={iconColor} name="command-artifact-check" className={css.checkIcon} />
-          <Text font={{ weight: 'bold' }}>{getString('delegate.successVerification.heartbeatReceived')}</Text>
+          <Text font={{ weight: 'bold' }}>
+            {connectedDelegates === 0
+              ? getString('delegates.successVerification.checkingForHeartbeat')
+              : getString('delegate.successVerification.heartbeatReceived')}
+          </Text>
         </Layout.Horizontal>
       </Layout.Vertical>
     </Layout.Vertical>

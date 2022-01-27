@@ -307,10 +307,14 @@ const VerifyOutOfClusterDelegate: React.FC<StepProps<VerifyOutOfClusterStepProps
       )
     }
 
-    const getStepOne = () => {
+    const getStepOne = (): JSX.Element => {
       return (
         <Layout.Vertical width={'100%'}>
-          <Text color={Color.GREY_600}>{GetTestConnectionValidationTextByType(props.type)}</Text>
+          <Text color={Color.GREY_600}>
+            {prevStepData?.spec?.auth?.type === 'Anonymous'
+              ? getString('connectors.testConnectionStep.validationText.testingURLReachability')
+              : GetTestConnectionValidationTextByType(props.type)}
+          </Text>
           {!loading && testConnectionResponse?.data?.delegateId ? (
             <Text padding={{ top: 'xsmall' }} color={Color.GREY_900} font={{ size: 'small' }}>
               {getString('connectors.testConnectionStep.executingOn')}

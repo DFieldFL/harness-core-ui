@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react'
 import YAML from 'yaml'
-import { Card, Accordion, Container, Text } from '@wings-software/uicore'
+import { Card, Accordion, Container, Text, RUNTIME_INPUT_VALUE } from '@wings-software/uicore'
 import { get, isEmpty, isNil, omit, debounce, set } from 'lodash-es'
 import produce from 'immer'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
@@ -33,6 +33,8 @@ import { StageErrorContext } from '@pipeline/context/StageErrorContext'
 import { useValidationErrors } from '@pipeline/components/PipelineStudio/PiplineHooks/useValidationErrors'
 import type { DeploymentStageElementConfig, StageElementWrapper } from '@pipeline/utils/pipelineTypes'
 import SelectDeploymentType from '@cd/components/PipelineStudio/DeployInfraSpecifications/SelectInfrastructureType/SelectInfrastructureType'
+import { Scope } from '@common/interfaces/SecretsInterface'
+import { StageType } from '@pipeline/utils/stageHelpers'
 import stageCss from '../DeployStageSetupShell/DeployStage.module.scss'
 
 const DEFAULT_RELEASE_NAME = 'release-<+INFRA_KEY>'
@@ -58,6 +60,7 @@ export default function DeployInfraSpecifications(props: React.PropsWithChildren
     },
     allowableTypes,
     isReadonly,
+    scope,
     getStageFromPipeline,
     updateStage
   } = usePipelineContext()
@@ -69,6 +72,24 @@ export default function DeployInfraSpecifications(props: React.PropsWithChildren
   )
 
   const { stage } = getStageFromPipeline<DeploymentStageElementConfig>(selectedStageId || '')
+
+  useEffect(() => {
+    if (!stage?.stage?.spec?.infrastructure?.infrastructureDefinition && stage?.stage?.type === StageType.DEPLOY) {
+      const stageData = produce(stage, draft => {
+        if (draft) {
+          set(draft, 'stage.spec', {
+            ...stage?.stage?.spec,
+            infrastructure: {
+              environmentRef: getScopeBasedDefaultEnvironmentRef(),
+              infrastructureDefinition: {},
+              allowSimultaneousDeployments: false
+            }
+          })
+        }
+      })
+      debounceUpdateStage(stageData?.stage)
+    }
+  }, [stage?.stage])
 
   const stageRef = React.useRef(stage)
   stageRef.current = stage
@@ -93,15 +114,9 @@ export default function DeployInfraSpecifications(props: React.PropsWithChildren
     setProvisionerEnabled(false)
   }
 
-  const infraSpec = get(stage, 'stage.spec.infrastructure', null)
-  if (isNil(infraSpec)) {
-    const spec = get(stage, 'stage.spec', {})
-    spec['infrastructure'] = {
-      environmentRef: '',
-      infrastructureDefinition: {},
-      allowSimultaneousDeployments: false
-    }
-  }
+  const getScopeBasedDefaultEnvironmentRef = React.useCallback(() => {
+    return scope === Scope.PROJECT ? '' : RUNTIME_INPUT_VALUE
+  }, [scope])
 
   React.useEffect(() => {
     const type = stage?.stage?.spec?.infrastructure?.infrastructureDefinition?.type
@@ -349,10 +364,14 @@ export default function DeployInfraSpecifications(props: React.PropsWithChildren
         <Card className={stageCss.sectionCard}>
           <StepWidget
             type={StepType.DeployEnvironment}
-            readonly={isReadonly}
+            readonly={isReadonly || scope === Scope.ORG || scope === Scope.ACCOUNT}
             initialValues={{
               environment: get(stage, 'stage.spec.infrastructure.environment', {}),
-              environmentRef: get(stage, 'stage.spec.infrastructure.environmentRef', '')
+              environmentRef: get(
+                stage,
+                'stage.spec.infrastructure.environmentRef',
+                getScopeBasedDefaultEnvironmentRef()
+              )
             }}
             allowableTypes={allowableTypes}
             onUpdate={val => updateEnvStep(val)}

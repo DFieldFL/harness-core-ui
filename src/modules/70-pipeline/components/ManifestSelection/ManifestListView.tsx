@@ -759,6 +759,7 @@ const ManifestListView = ({
         {!overrideSetIdentifier?.length && !isReadonly && (
           <Button
             className={css.addManifest}
+            id="add-manifest"
             size={ButtonSize.SMALL}
             variation={ButtonVariation.LINK}
             data-test-id="addManifest"

@@ -105,7 +105,13 @@ function TerraformRollbackWidget(
             <>
               {stepViewType !== StepViewType.Template && (
                 <div className={cx(stepCss.formGroup, stepCss.lg)}>
-                  <FormInput.InputWithIdentifier inputLabel={getString('name')} isIdentifierEditable={isNewStep} />
+                  <FormInput.InputWithIdentifier
+                    inputLabel={getString('name')}
+                    isIdentifierEditable={isNewStep}
+                    inputGroupProps={{
+                      disabled: readonly
+                    }}
+                  />
                 </div>
               )}
 
@@ -114,6 +120,7 @@ function TerraformRollbackWidget(
                   name="timeout"
                   label={getString('pipelineSteps.timeoutLabel')}
                   multiTypeDurationProps={{ enableConfigureOptions: false, expressions, allowableTypes }}
+                  disabled={readonly}
                 />
                 {getMultiTypeFromValue(values.timeout) === MultiTypeInputType.RUNTIME && (
                   <ConfigureOptions
@@ -137,6 +144,7 @@ function TerraformRollbackWidget(
                   name="spec.provisionerIdentifier"
                   label={getString('pipelineSteps.provisionerIdentifier')}
                   multiTextInputProps={{ expressions, allowableTypes }}
+                  disabled={readonly}
                 />
                 {getMultiTypeFromValue(values.spec.provisionerIdentifier) === MultiTypeInputType.RUNTIME && (
                   <ConfigureOptions

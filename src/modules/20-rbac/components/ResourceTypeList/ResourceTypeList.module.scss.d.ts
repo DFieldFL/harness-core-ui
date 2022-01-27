@@ -8,7 +8,9 @@
 // this is an auto-generated file, do not update this manually
 declare const styles: {
   readonly checkBox: string
+  readonly resourcePicker: string
   readonly resourceSubList: string
   readonly resourceTypeCard: string
+  readonly resourceTypeList: string
 }
 export default styles

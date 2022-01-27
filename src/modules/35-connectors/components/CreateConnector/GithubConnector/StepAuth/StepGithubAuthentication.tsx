@@ -175,13 +175,17 @@ const StepGithubAuthentication: React.FC<StepProps<StepGithubAuthenticationProps
     ]
 
     useEffect(() => {
-      if (props.isEditMode && props.connectorInfo && accountId) {
-        setupGithubFormData(props.connectorInfo, accountId).then(data => {
-          setInitialValues(data as GithubFormInterface)
+      if (loadingConnectorSecrets && props.isEditMode) {
+        if (props.connectorInfo) {
+          setupGithubFormData(props.connectorInfo, accountId).then(data => {
+            setInitialValues(data as GithubFormInterface)
+            setLoadingConnectorSecrets(false)
+          })
+        } else {
           setLoadingConnectorSecrets(false)
-        })
+        }
       }
-    }, [props.isEditMode, props.connectorInfo, accountId])
+    }, [loadingConnectorSecrets])
 
     const handleSubmit = (formData: ConnectorConfigDTO) => {
       nextStep?.({ ...props.connectorInfo, ...prevStepData, ...formData } as StepGithubAuthenticationProps)

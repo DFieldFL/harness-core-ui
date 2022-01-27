@@ -6,13 +6,12 @@
  */
 
 .main {
-  min-width: 200px;
   min-height: 0;
   display: flex;
 
   height: fit-content;
   max-height: 100%;
-  width: 431px;
+  min-width: 300px;
   flex-direction: column;
   .headerTitle {
     display: flex;

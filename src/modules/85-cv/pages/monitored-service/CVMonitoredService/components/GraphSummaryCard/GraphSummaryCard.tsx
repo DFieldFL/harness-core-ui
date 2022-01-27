@@ -17,7 +17,8 @@ import {
   useConfirmationDialog,
   Views
 } from '@wings-software/uicore'
-import { PermissionIdentifier, ResourceType } from 'microfrontends'
+import { ResourceType } from '@rbac/interfaces/ResourceType'
+import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import { useStrings } from 'framework/strings'
 import { useQueryParams } from '@common/hooks'
 import routes from '@common/RouteDefinitions'

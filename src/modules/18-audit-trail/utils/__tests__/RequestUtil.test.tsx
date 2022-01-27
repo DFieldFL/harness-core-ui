@@ -12,7 +12,12 @@ import type { AuditFilterProperties } from 'services/audit'
 import { useStrings } from 'framework/strings'
 import { TestWrapper } from '@common/utils/testUtils'
 
-import { getFilterPropertiesFromForm, getFormValuesFromFilterProperties } from '../RequestUtil'
+import {
+  getFilterPropertiesFromForm,
+  getFormValuesFromFilterProperties,
+  getOrgDropdownList,
+  getProjectDropdownList
+} from '../RequestUtil'
 
 const wrapper = ({ children }: React.PropsWithChildren<unknown>): React.ReactElement => (
   <TestWrapper>{children}</TestWrapper>
@@ -57,5 +62,43 @@ describe('Request util', () => {
 
   test('get form values from filter properties', () => {
     expect(getFormValuesFromFilterProperties(filterProperties, result.current.getString)).toEqual(formData)
+  })
+
+  test('test project dropdown list', () => {
+    const projectDropdonwList = getProjectDropdownList([
+      {
+        project: {
+          identifier: 'projectIdentifier',
+          name: 'projectName',
+          orgIdentifier: 'orgIdentifier'
+        }
+      }
+    ])
+    expect(projectDropdonwList).toEqual([
+      {
+        label: 'projectName',
+        value: 'projectIdentifier',
+        orgIdentifier: 'orgIdentifier'
+      }
+    ])
+  })
+
+  test('test org dropdown list', () => {
+    const projectDropdonwList = getOrgDropdownList([
+      {
+        organizationResponse: {
+          organization: {
+            name: 'orgName',
+            identifier: 'orgIdentifier'
+          }
+        }
+      }
+    ])
+    expect(projectDropdonwList).toEqual([
+      {
+        label: 'orgName',
+        value: 'orgIdentifier'
+      }
+    ])
   })
 })

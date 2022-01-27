@@ -13,6 +13,7 @@ declare const styles: {
   readonly content: string
   readonly disabled: string
   readonly formFullheight: string
+  readonly fullPath: string
   readonly horizontalCenterAlign: string
   readonly iconButton: string
   readonly main: string

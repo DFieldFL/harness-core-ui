@@ -10,6 +10,7 @@ import cx from 'classnames'
 import { useModalHook } from '@wings-software/uicore'
 import { Dialog, Classes } from '@blueprintjs/core'
 import { useParams } from 'react-router-dom'
+import { useUpdateLSDefaultExperience } from '@common/hooks/useUpdateLSDefaultExperience'
 import { useToaster } from '@common/components'
 import { useStrings } from 'framework/strings'
 import { Experiences } from '@common/constants/Utils'
@@ -36,12 +37,14 @@ export const useDefaultExperienceModal = ({ defaultExperience, refetchAcct }: Pr
   })
   const { getString } = useStrings()
   const { showError } = useToaster()
+  const { updateLSDefaultExperience } = useUpdateLSDefaultExperience()
 
   const handleSubmit = async (): Promise<void> => {
     try {
       await updateDefaultExperience({
         defaultExperience: currentExperience
       })
+      updateLSDefaultExperience(currentExperience)
       refetchAcct()
     } catch (error) {
       showError(error.data?.message || getString('somethingWentWrong'))

@@ -7,9 +7,14 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
+  readonly btn: string
   readonly children: string
   readonly featuresBanner: string
+  readonly info: string
+  readonly infoIcon: string
+  readonly levelUp: string
   readonly main: string
+  readonly overUse: string
   readonly rhs: string
 }
 export default styles

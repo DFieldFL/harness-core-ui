@@ -11,7 +11,7 @@ import { InputTypes, setFieldValue } from '@common/utils/JestFormHelper'
 import { TestWrapper } from '@common/utils/testUtils'
 import { ManualInputQueryModal, FieldNames } from '../ManualInputQueryModal'
 
-describe('Unit tests for ManualInputQueryModal', () => {
+describe('Unit tests for ManualInputQueryModal ', () => {
   test('Ensure that duplicate metric name is validated', async () => {
     const { getByText } = render(
       <TestWrapper>

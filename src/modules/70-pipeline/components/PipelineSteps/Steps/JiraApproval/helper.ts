@@ -277,12 +277,11 @@ export const handleOperatorChange = (
   i: number
 ) => {
   if (selectedOperator?.value === 'in' || selectedOperator?.value === 'not in') {
-    // When we swiatch from sigle select to mmultiselect, populate the seelcted value in multiselect
-    const conditions = values.spec.conditions
-    if (typeof conditions?.[i].value === 'object' && conditions?.[i].value) {
-      const tobeUpdatedConditions = [...conditions]
+    // When we swiatch from sigle select to mmultiselect, flush the already selected value
+    if (values.spec.conditions) {
+      const tobeUpdatedConditions = [...values.spec.conditions]
       tobeUpdatedConditions[i].operator = selectedOperator.value
-      tobeUpdatedConditions[i].value = [conditions?.[i].value as MultiSelectOption]
+      tobeUpdatedConditions[i].value = []
       onChange({ ...values, spec: { ...values.spec, conditions: tobeUpdatedConditions } })
     }
   }

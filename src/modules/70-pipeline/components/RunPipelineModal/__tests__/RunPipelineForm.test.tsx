@@ -17,6 +17,7 @@ import { RunPipelineForm } from '../RunPipelineForm'
 import {
   mockCreateInputSetResponse,
   mockGetPipeline,
+  mockGetResolvedPipeline,
   mockInputSetsList,
   mockMergeInputSetResponse,
   mockPipelineTemplateYaml,
@@ -97,8 +98,12 @@ describe('STUDIO MODE', () => {
     // eslint-disable-next-line
     // @ts-ignore
 
-    useMutateAsGet.mockImplementation(() => {
-      return mockPipelineTemplateYaml
+    useMutateAsGet.mockImplementation(props => {
+      if (props?.name === 'useGetYamlWithTemplateRefsResolved') {
+        return mockGetResolvedPipeline
+      } else {
+        return mockPipelineTemplateYaml
+      }
     })
   })
 
@@ -144,6 +149,28 @@ describe('STUDIO MODE', () => {
     const runButton = container.querySelector('button[type="submit"]')
     act(() => {
       fireEvent.click(runButton!)
+    })
+
+    // Verify the ErrorStrip is present and submit is disabled
+    await waitFor(() => expect(queryByText('common.errorCount')).toBeTruthy())
+    await waitFor(() => expect(queryByText('common.seeDetails')).toBeTruthy())
+    const buttonShouldBeDisabled = container.querySelector('.bp3-disabled')
+    expect(buttonShouldBeDisabled).toBeTruthy()
+  })
+
+  test('should not allow submit if form is incomplete and enter key pressed', async () => {
+    const { container, getByText, queryByText, getByTestId } = render(
+      <TestWrapper>
+        <RunPipelineForm {...commonProps} />
+      </TestWrapper>
+    )
+    // Navigate to 'Provide Values'
+    fireEvent.click(getByText('pipeline.triggers.pipelineInputPanel.provide'))
+    await waitFor(() => expect(queryByText('customVariables.pipelineVariablesTitle')).toBeTruthy())
+
+    // Submit the incomplete form by pressing enter
+    act(() => {
+      fireEvent.keyDown(getByTestId('runPipelineVisualView'), { key: 'Enter', code: 'Enter', charCode: 13 })
     })
 
     // Verify the ErrorStrip is present and submit is disabled
@@ -360,8 +387,12 @@ describe('STUDIO MODE - template API error', () => {
     // eslint-disable-next-line
     // @ts-ignore
 
-    useMutateAsGet.mockImplementation(() => {
-      return mockPipelineTemplateYamlErrorResponse
+    useMutateAsGet.mockImplementation(props => {
+      if (props?.name === 'useGetYamlWithTemplateRefsResolved') {
+        return mockGetResolvedPipeline
+      } else {
+        return mockPipelineTemplateYamlErrorResponse
+      }
     })
   })
 
@@ -389,8 +420,12 @@ describe('RERUN MODE', () => {
     startPreflightCheckPromise.mockResolvedValue({})
     // eslint-disable-next-line
     // @ts-ignore
-    useMutateAsGet.mockImplementation(() => {
-      return mockPipelineTemplateYamlForRerun
+    useMutateAsGet.mockImplementation(props => {
+      if (props?.name === 'useGetYamlWithTemplateRefsResolved') {
+        return mockGetResolvedPipeline
+      } else {
+        return mockPipelineTemplateYamlForRerun
+      }
     })
   })
 
@@ -425,8 +460,12 @@ describe('EXECUTION VIEW', () => {
     useQueryParams.mockImplementation(() => ({ executionId: '/testExecutionId' }))
     // eslint-disable-next-line
     // @ts-ignore
-    useMutateAsGet.mockImplementation(() => {
-      return mockPipelineTemplateYamlForRerun
+    useMutateAsGet.mockImplementation(props => {
+      if (props?.name === 'useGetYamlWithTemplateRefsResolved') {
+        return mockGetResolvedPipeline
+      } else {
+        return mockPipelineTemplateYamlForRerun
+      }
     })
   })
   test('should should have the values prefilled and fields as disabled', async () => {

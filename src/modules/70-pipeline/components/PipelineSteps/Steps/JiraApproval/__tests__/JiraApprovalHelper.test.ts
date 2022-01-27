@@ -105,7 +105,7 @@ describe('Operator onchange tests', () => {
           {
             key: 'Status',
             operator: 'in',
-            value: [{ label: 'Done', value: 'Done' }]
+            value: []
           }
         ],
         matchAnyCondition: true
@@ -140,7 +140,7 @@ describe('Operator onchange tests', () => {
           {
             key: 'Status',
             operator: 'not in',
-            value: [{ label: 'Done', value: 'Done' }]
+            value: []
           }
         ],
         matchAnyCondition: true
@@ -168,7 +168,7 @@ describe('Operator onchange tests', () => {
 
     handleOperatorChange(selectedOperator, onChange, values, index)
 
-    expect(onChange).not.toBeCalled()
+    expect(onChange).toBeCalledTimes(1)
   })
 
   test('if on change is not called if operator is not for multiselect', () => {

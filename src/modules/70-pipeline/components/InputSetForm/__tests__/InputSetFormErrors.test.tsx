@@ -22,7 +22,8 @@ import {
   GetInputSetsResponse,
   GetInputSetEdit,
   MergeInputSetResponse,
-  GetOverlayInputSetEdit
+  GetOverlayInputSetEdit,
+  MergedPipelineResponse
 } from './InputSetMocks'
 
 const errorResponse = (): Promise<{ status: string }> =>
@@ -85,8 +86,12 @@ jest.mock('services/cd-ng', () => ({
 jest.mock('@common/hooks', () => ({
   ...(jest.requireActual('@common/hooks') as any),
 
-  useMutateAsGet: jest.fn().mockImplementation(() => {
-    return TemplateResponse
+  useMutateAsGet: jest.fn().mockImplementation(props => {
+    if (props?.name === 'useGetYamlWithTemplateRefsResolved') {
+      return MergedPipelineResponse
+    } else {
+      return TemplateResponse
+    }
   })
 }))
 

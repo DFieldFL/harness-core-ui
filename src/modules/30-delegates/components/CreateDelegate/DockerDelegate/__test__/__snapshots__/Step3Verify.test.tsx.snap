@@ -107,7 +107,7 @@ exports[`Create Docker Step3Verify render data and go back 1`] = `
             <p
               class="StyledProps--font StyledProps--main StyledProps--font-weight-bold"
             >
-              delegate.successVerification.heartbeatReceived
+              delegates.successVerification.checkingForHeartbeat
             </p>
           </div>
         </div>

@@ -1,0 +1,6 @@
+.rows {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--spacing-small);
+  align-items: center;
+}

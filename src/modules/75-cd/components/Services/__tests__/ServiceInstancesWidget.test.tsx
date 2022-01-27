@@ -15,7 +15,16 @@ import { serviceInstances } from '@cd/mock'
 jest.mock('highcharts-react-official', () => () => <></>)
 
 jest.spyOn(cdngServices, 'useGetServicesGrowthTrend').mockImplementation(() => {
-  return { loading: false, error: false, data: [], refetch: jest.fn() } as any
+  return {
+    loading: false,
+    error: false,
+    data: {
+      data: {
+        timeValuePairList: [5, 1]
+      }
+    },
+    refetch: jest.fn()
+  } as any
 })
 
 describe('ServiceInstancesWidget', () => {

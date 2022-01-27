@@ -107,9 +107,9 @@ landingDashboard:
   last60Days: Last 60 Days
   last90Days: Last 90 Days
   last1Year: Last 1 Year
-  dashboardTitle: 'Welcome, {{name}}'
+  dashboardTitle: 'Welcome, {{{name}}}'
   title: Top Projects
-  welcomeMessage: "Welcome {{name}}, let's get you started!"
+  welcomeMessage: "Welcome {{{name}}}, let's get you started!"
   welcomeMessageWithoutName: "Welcome, let's get you started!"
 whyCreateProject: Why create a project?
 createProjectMessage: 'Organize your pipelines, services, infrastructure and shared resources like Connectors, Secrets and Delegates all in one place. Invite teams, collaborate on software delivery processes using the Harness modules.'

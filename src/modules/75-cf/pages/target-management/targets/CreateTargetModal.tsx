@@ -23,6 +23,8 @@ import { useStrings } from 'framework/strings'
 import RbacButton from '@rbac/components/Button/Button'
 import { ResourceType } from '@rbac/interfaces/ResourceType'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
+import usePlanEnforcement from '@cf/hooks/usePlanEnforcement'
+import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
 import type { Target } from 'services/cf'
 import useActiveEnvironment from '@cf/hooks/useActiveEnvironment'
 import uploadImageUrl from './upload.svg'
@@ -215,7 +217,7 @@ const FileUpload: React.FC<{ onChange: (targets: TargetData[]) => void }> = ({ o
 const filterTargets = (targets: TargetData[]): TargetData[] =>
   targets.filter(t => t.name?.length && t.identifier?.length)
 
-interface CreateTargetModalProps {
+export interface CreateTargetModalProps {
   loading: boolean
   onSubmitTargets: (targets: TargetData[], hideModal: () => void) => void
   onSubmitUpload: (file: File, hideModal: () => void) => void
@@ -231,6 +233,18 @@ const CreateTargetModal: React.FC<CreateTargetModalProps> = ({ loading, onSubmit
   const getPageString = (key: string): string =>
     getString(`cf.targets.${key}` as StringKeys /* TODO: fix this by using a map */)
   const { activeEnvironment } = useActiveEnvironment()
+
+  const { isPlanEnforcementEnabled } = usePlanEnforcement()
+
+  const planEnforcementProps = isPlanEnforcementEnabled
+    ? {
+        featuresProps: {
+          featuresRequest: {
+            featureNames: [FeatureIdentifier.MAUS]
+          }
+        }
+      }
+    : undefined
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
     setIsList((e.target as HTMLInputElement).value === LIST)
@@ -325,6 +339,7 @@ const CreateTargetModal: React.FC<CreateTargetModalProps> = ({ loading, onSubmit
         resource: { resourceType: ResourceType.ENVIRONMENT, resourceIdentifier: activeEnvironment },
         permission: PermissionIdentifier.EDIT_FF_TARGETGROUP
       }}
+      {...planEnforcementProps}
     />
   )
 }

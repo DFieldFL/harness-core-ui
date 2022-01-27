@@ -478,7 +478,10 @@ export const createAppDFormData = (
   const { basePath = {}, metricPath = {} } = mappedMetricsData || {}
   const lastItemBasePath = Object.keys(basePath)[Object.keys(basePath).length - 1]
   const lastItemMetricPath = Object.keys(metricPath)[Object.keys(metricPath).length - 1]
-  const fullPath = `${basePath[lastItemBasePath]?.path}|${appDynamicsData.tierName}|${metricPath[lastItemMetricPath]?.path}`
+  const fullPath =
+    basePath[lastItemBasePath]?.path && metricPath[lastItemMetricPath]?.path
+      ? `${basePath[lastItemBasePath]?.path}|${appDynamicsData.tierName}|${metricPath[lastItemMetricPath]?.path}`
+      : ''
   return {
     name: appDynamicsData.name,
     identifier: appDynamicsData.identifier,

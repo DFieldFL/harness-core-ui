@@ -16,56 +16,15 @@
     color: var(--grey-600);
   }
 
-  .servicesContainer {
-    position: relative;
-    padding-left: var(--spacing-7);
-
-    .servicesIcon {
-      position: absolute;
-      left: 0;
-      top: 2px;
-      transform: scale(1.5) translateX(-3px);
-      transform-origin: left center;
-    }
-
-    .servicesList {
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .serviceWrapper {
-      display: inline-flex;
-      align-items: center;
-
-      &:not(:last-child)::after {
-        content: ',';
-        color: var(--primary-7);
-        margin-right: 0.33em;
-      }
-
-      :global(.bp3-popover-target) {
-        display: inline-block;
-      }
-    }
-
-    .serviceName {
-      color: var(--primary-7);
-      font-size: var(--font-size-small);
+  .service {
+    :global(.bp3-icon) {
+      margin-left: 0 !important;
     }
   }
 
-  .toggle {
-    color: var(--primary-7);
-    font-size: var(--font-size-small);
-    text-decoration: underline;
-    cursor: pointer;
-    display: inline-block;
-    line-height: 18px;
-
-    &::before {
-      content: ',';
-      color: var(--primary-7);
-      margin-right: 0.33em;
+  .environment {
+    > div {
+      margin-left: 0 !important;
     }
   }
 }

@@ -59,6 +59,7 @@ if (isCypress && isCypressCoverage) {
  */
 const ChildAppError = path.resolve(CONTEXT, './src/microfrontends/ChildAppError.tsx')
 const enableGitOpsUI = process.env.ENABLE_GITOPSUI === 'true'
+const enableSTO = process.env.ENABLE_STO === 'true'
 const moduleFederationEnabled = true
 
 const certificateExists = fs.existsSync('./certificates/localhost.pem')
@@ -255,12 +256,17 @@ const commonPlugins = [
 
 if (moduleFederationEnabled) {
   commonPlugins.unshift(new ExternalRemotesPlugin())
-  commonPlugins.unshift(new ModuleFederationPlugin(moduleFederationConfig({ enableGitOpsUI })))
+  commonPlugins.unshift(new ModuleFederationPlugin(moduleFederationConfig({ enableGitOpsUI, enableSTO })))
 }
 
 if (!enableGitOpsUI) {
   // render a mock app when MF is disabled
   config.resolve.alias['gitopsui/MicroFrontendApp'] = ChildAppError
+}
+
+if (!enableSTO) {
+  config.resolve.alias['sto/App'] = ChildAppError
+  config.resolve.alias['sto/PipelineSecurityView'] = ChildAppError
 }
 
 const devOnlyPlugins = [

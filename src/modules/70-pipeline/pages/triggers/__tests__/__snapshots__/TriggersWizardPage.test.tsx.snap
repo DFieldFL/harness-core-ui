@@ -573,12 +573,17 @@ exports[`TriggersWizardPage Triggers tests Payload/Values Comparison Existing Tr
                           <div
                             class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--padding-top-medium StyledProps--padding-left-large"
                           >
-                            <p
-                              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
-                              data-name="ci-codebase-title"
+                            <div
+                              class="Text--withDocsTooltip"
+                              data-tooltip-id="ciCodebase"
                             >
-                              ciCodebase
-                            </p>
+                              <p
+                                class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
+                                data-name="ci-codebase-title"
+                              >
+                                ciCodebase
+                              </p>
+                            </div>
                           </div>
                           <div
                             class="topAccordion"
@@ -793,7 +798,7 @@ exports[`TriggersWizardPage Triggers tests Payload/Values Comparison Existing Tr
                                             data-tooltip-id="namespace"
                                           >
                                             <p
-                                              class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--font-small StyledProps--margin-bottom-xsmall"
+                                              class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label"
                                             >
                                               pipelineSteps.build.infraSpecifications.namespace
                                             </p>
@@ -973,17 +978,6 @@ exports[`TriggersWizardPage Triggers tests Payload/Values Comparison Existing Tr
                                                 </div>
                                               </div>
                                             </div>
-                                            <div>
-                                              <div
-                                                style="min-height: 8px;"
-                                              />
-                                              <div
-                                                class="separator"
-                                              />
-                                              <div
-                                                style="min-height: 24px;"
-                                              />
-                                            </div>
                                             <div
                                               class="fieldsGroup withoutSpacing topPadding3 bottomPadding3 lg"
                                             >
@@ -1092,17 +1086,6 @@ exports[`TriggersWizardPage Triggers tests Payload/Values Comparison Existing Tr
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                            <div>
-                                              <div
-                                                style="min-height: 24px;"
-                                              />
-                                              <div
-                                                class="separator"
-                                              />
-                                              <div
-                                                style="min-height: 24px;"
-                                              />
                                             </div>
                                           </div>
                                         </form>

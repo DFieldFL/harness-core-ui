@@ -6,8 +6,8 @@
  */
 
 import React from 'react'
-import { openDB, IDBPDatabase, deleteDB } from 'idb'
-import { isEqual, cloneDeep, pick, isNil, isEmpty, omit, defaultTo, set } from 'lodash-es'
+import { deleteDB, IDBPDatabase, openDB } from 'idb'
+import { cloneDeep, defaultTo, isEmpty, isEqual, isNil, omit, pick, set } from 'lodash-es'
 import { parse } from 'yaml'
 import { IconName, MultiTypeInputType, VisualYamlSelectedView as SelectedView } from '@wings-software/uicore'
 import merge from 'lodash-es/merge'
@@ -19,17 +19,17 @@ import SessionToken from 'framework/utils/SessionToken'
 import type { YamlBuilderHandlerBinding } from '@common/interfaces/YAMLBuilderProps'
 import {
   createPipelinePromise,
+  CreatePipelineQueryParams,
   createPipelineV2Promise,
+  EntityGitDetails,
+  EntityValidityDetails,
+  Failure,
   getPipelinePromise,
   GetPipelineQueryParams,
   putPipelinePromise,
-  putPipelineV2Promise,
-  Failure,
-  EntityGitDetails,
-  ResponsePMSPipelineResponseDTO,
-  CreatePipelineQueryParams,
   PutPipelineQueryParams,
-  EntityValidityDetails
+  putPipelineV2Promise,
+  ResponsePMSPipelineResponseDTO
 } from 'services/pipeline-ng'
 import { useGlobalEventListener, useLocalStorage, useQueryParams } from '@common/hooks'
 import type { GitQueryParams } from '@common/interfaces/RouteInterfaces'
@@ -43,18 +43,22 @@ import {
   GetTemplateListQueryParams,
   ResponsePageTemplateSummaryResponse
 } from 'services/template-ng'
-import { getIdentifierFromValue, getScopeFromValue } from '@common/components/EntityReference/EntityReference'
+import {
+  getIdentifierFromValue,
+  getScopeFromDTO,
+  getScopeFromValue
+} from '@common/components/EntityReference/EntityReference'
 import { Scope } from '@common/interfaces/SecretsInterface'
 import {
-  PipelineReducerState,
   ActionReturnType,
-  PipelineContextActions,
   DefaultNewPipelineId,
   DefaultPipeline,
-  initialState,
-  PipelineReducer,
-  PipelineViewData,
   DrawerTypes,
+  initialState,
+  PipelineContextActions,
+  PipelineReducer,
+  PipelineReducerState,
+  PipelineViewData,
   SelectionState,
   TemplateViewData
 } from './PipelineActions'
@@ -62,8 +66,8 @@ import type { AbstractStepFactory } from '../../AbstractSteps/AbstractStepFactor
 import type { PipelineStagesProps } from '../../PipelineStages/PipelineStages'
 import { PipelineSelectionState, usePipelineQuestParamState } from '../PipelineQueryParamState/usePipelineQueryParam'
 import {
-  getStagePathFromPipeline as _getStagePathFromPipeline,
-  getStageFromPipeline as _getStageFromPipeline
+  getStageFromPipeline as _getStageFromPipeline,
+  getStagePathFromPipeline as _getStagePathFromPipeline
 } from './helpers'
 
 interface PipelineInfoConfigWithGitDetails extends PipelineInfoConfig {
@@ -230,6 +234,7 @@ export interface PipelineContextInterface {
   contextType: string
   allowableTypes: MultiTypeInputType[]
   isReadonly: boolean
+  scope: Scope
   setSchemaErrorView: (flag: boolean) => void
   setView: (view: SelectedView) => void
   renderPipelineStage: (args: Omit<PipelineStagesProps, 'children'>) => React.ReactElement<PipelineStagesProps>
@@ -706,6 +711,7 @@ export const PipelineContext = React.createContext<PipelineContextInterface>({
   stagesMap: {},
   setSchemaErrorView: () => undefined,
   isReadonly: false,
+  scope: Scope.PROJECT,
   view: SelectedView.VISUAL,
   contextType: PipelineContextType.Pipeline,
   allowableTypes: [],
@@ -820,6 +826,7 @@ export const PipelineProvider: React.FC<{
     },
     [queryParams.accountIdentifier, queryParams.orgIdentifier, queryParams.projectIdentifier, pipelineIdentifier]
   )
+  const scope = getScopeFromDTO(queryParams)
   const isReadonly = !isEdit
   const deletePipelineCache = _deletePipelineCache.bind(null, queryParams, pipelineIdentifier)
   const pipelineSaved = React.useCallback(
@@ -986,6 +993,7 @@ export const PipelineProvider: React.FC<{
         pipelineSaved,
         deletePipelineCache,
         isReadonly,
+        scope,
         setYamlHandler,
         setSelectedStageId,
         setSelectedStepId,

@@ -11,7 +11,7 @@ import React from 'react'
 import { Get, GetProps, useGet, UseGetProps, Mutate, MutateProps, useMutate, UseMutateProps } from 'restful-react'
 
 import { getConfig, getUsingFetch, mutateUsingFetch, GetUsingFetchProps, MutateUsingFetchProps } from '../config'
-export const SPEC_VERSION = '2.0'
+export const SPEC_VERSION = '1.0'
 export interface ACLAggregateFilter {
   resourceGroupIdentifiers?: string[]
   roleIdentifiers?: string[]
@@ -1927,6 +1927,7 @@ export interface EntityDetail {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -3155,6 +3156,7 @@ export interface GitEntityBranchFilterSummaryProperties {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -3195,6 +3197,7 @@ export interface GitEntityFilterProperties {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -3268,6 +3271,7 @@ export interface GitFullSyncEntityInfoDTO {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -3399,6 +3403,7 @@ export interface GitSyncEntityDTO {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -3441,6 +3446,7 @@ export interface GitSyncEntityListDTO {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -3500,6 +3506,7 @@ export interface GitSyncErrorDTO {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -3729,6 +3736,12 @@ export interface HealthDeploymentInfo {
   total?: TotalDeploymentInfo
 }
 
+export interface HelmChartInfo {
+  name?: string
+  repoUrl?: string
+  version?: string
+}
+
 export type HelmChartManifest = ManifestAttributes & {
   chartName?: string
   chartVersion?: string
@@ -3946,9 +3959,14 @@ export interface InstanceDetailsDTO {
   deployedById?: string
   deployedByName?: string
   infrastructureDetails?: InfrastructureDetails
+  instanceInfoDTO?: InstanceInfoDTO
   pipelineExecutionName?: string
   podName?: string
   terraformInstance?: string
+}
+
+export interface InstanceInfoDTO {
+  podName?: string
 }
 
 export interface InstanceSelectionBase {
@@ -4148,6 +4166,12 @@ export type K8sCanaryStepInfo = StepSpecType & {
   skipDryRun?: boolean
 }
 
+export interface K8sContainer {
+  containerId?: string
+  image?: string
+  name?: string
+}
+
 export type K8sDeleteStepInfo = StepSpecType & {
   delegateSelectors?: string[]
   deleteResources: DeleteResourcesWrapper
@@ -4165,6 +4189,15 @@ export type K8sGcpInfrastructure = Infrastructure & {
 export type K8sInfrastructureDetails = InfrastructureDetails & {
   namespace?: string
   releaseName?: string
+}
+
+export type K8sInstanceInfoDTO = InstanceInfoDTO & {
+  blueGreenColor?: string
+  containerList: K8sContainer[]
+  namespace: string
+  podIP?: string
+  podName: string
+  releaseName: string
 }
 
 export type K8sManifest = ManifestAttributes & {
@@ -4518,6 +4551,15 @@ export interface NamedNodeMap {
   length?: number
 }
 
+export type NativeHelmInstanceInfoDTO = InstanceInfoDTO & {
+  helmChartInfo?: HelmChartInfo
+  helmVersion?: 'V2' | 'V3'
+  ip?: string
+  namespace?: string
+  podName: string
+  releaseName?: string
+}
+
 export type NativeHelmServiceSpec = ServiceSpec & {
   metadata?: string
 }
@@ -4617,10 +4659,9 @@ export type NumberNGVariable = NGVariable & {
   value: number
 }
 
-export interface OAuthSettings {
+export type OAuthSettings = NGAuthSettings & {
   allowedProviders?: ('AZURE' | 'BITBUCKET' | 'GITHUB' | 'GITLAB' | 'GOOGLE' | 'LINKEDIN')[]
   filter?: string
-  settingsType?: 'USER_PASSWORD' | 'SAML' | 'LDAP' | 'OAUTH'
 }
 
 export interface OAuthSignupDTO {
@@ -5103,6 +5144,7 @@ export interface PartialSchemaDTO {
   nodeName?: string
   nodeType?: string
   schema?: JsonNode
+  skipStageSchema?: boolean
 }
 
 export interface PasswordChangeDTO {
@@ -5339,6 +5381,11 @@ export type RateLimitRestrictionMetadataDTO = RestrictionMetadataDTO & {
   allowedIfEqual?: boolean
   limit?: number
   timeUnit?: TimeUnit
+}
+
+export type ReferenceInstanceInfoDTO = InstanceInfoDTO & {
+  namespace?: string
+  releaseName?: string
 }
 
 export type RemoteTerraformVarFileSpec = TerraformVarFileSpec & {
@@ -8952,6 +8999,7 @@ export interface ListActivitiesQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -8986,6 +9034,7 @@ export interface ListActivitiesQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -9124,6 +9173,7 @@ export interface GetActivitiesSummaryQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -9158,6 +9208,7 @@ export interface GetActivitiesSummaryQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -15219,6 +15270,7 @@ export interface ListReferredByEntitiesQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -17018,6 +17070,7 @@ export interface ListFullSyncFilesQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -17103,6 +17156,7 @@ export interface CountFullSyncFilesWithFilterQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -17675,6 +17729,7 @@ export interface ListGitSyncEntitiesByTypePathParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -17777,6 +17832,7 @@ export const listGitSyncEntitiesByTypePromise = (
       | 'Environment'
       | 'InputSets'
       | 'CvConfig'
+      | 'Verify'
       | 'Delegates'
       | 'DelegateConfigurations'
       | 'CvVerificationJob'
@@ -20989,6 +21045,7 @@ export interface GetStepYamlSchemaQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'
@@ -29797,6 +29854,7 @@ export interface GetYamlSchemaQueryParams {
     | 'Environment'
     | 'InputSets'
     | 'CvConfig'
+    | 'Verify'
     | 'Delegates'
     | 'DelegateConfigurations'
     | 'CvVerificationJob'

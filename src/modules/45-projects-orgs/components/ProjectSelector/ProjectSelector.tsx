@@ -108,6 +108,7 @@ const ProjectSelect: React.FC<ProjectSelectorProps> = ({ onSelect }) => {
         </Layout.Horizontal>
         <Layout.Vertical>
           <ExpandingSearchInput
+            defaultValue={searchTerm}
             placeholder={getString('projectsOrgs.searchProjectPlaceHolder')}
             alwaysExpanded
             onChange={text => {

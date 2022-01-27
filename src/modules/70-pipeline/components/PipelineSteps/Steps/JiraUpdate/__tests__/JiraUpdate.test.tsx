@@ -242,6 +242,7 @@ describe('Jira Update tests', () => {
       spec: {
         connectorRef: 'cid1',
         issueKey: '<+issueKey>',
+        delegateSelectors: undefined,
         transitionTo: { transitionName: '', status: 'Done' },
         fields: [
           { name: 'f1', value: '' },

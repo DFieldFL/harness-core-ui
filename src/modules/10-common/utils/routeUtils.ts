@@ -192,7 +192,7 @@ export const getScopeBasedRoute = ({
   return `/settings/${path}`
 }
 
-export const returnUrlParams = (url: string): string => `?returnUrl=${url}`
+export const returnUrlParams = (url: string): string => `?returnUrl=${encodeURIComponent(url)}`
 
 export const validateReturnUrl = (url: string): boolean => {
   const decodedUrl = decodeURIComponent(url)

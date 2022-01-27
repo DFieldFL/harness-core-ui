@@ -771,8 +771,6 @@ pre-flight-check:
   verifyingPipelineInputs: Verifying Pipeline inputs
   verifyingConnectors: Verifying Connectors
 titleOptional: '(Optional)'
-executionList:
-  servicesDeployedText: 'Services deployed ({{size}})'
 moduleRenderer:
   start: No modules-specific data
   newPipeLine: Create new Pipeline
@@ -974,7 +972,7 @@ validation:
   keyRequired: Key is required
   valueRequired: Value is required
   branchName: 'Branch Name is required'
-  commitId: 'Commit Id is required'
+  commitId: 'Commit Id / Git Tag is required'
   validIdRegex: Identifier must start with an letter or _ and can then be followed by alphanumerics, _, or $
   # Replace if validIdRegex will apply the same rules
   validStepIdRegex: Identifier can only contain alphanumerics and _
@@ -986,7 +984,6 @@ validation:
   uniqueStepAndServiceDependenciesId: Identifier should be unique across the steps and service dependencies
   uniqueKeys: Keys should be unique
   uniqueValues: Values should be unique
-  matchPattern: Invalid value. See info above to learn more
   duplicateIdError: 'Failed to create Connector: {{ connectorName }}. There is already a Connector with identifier {{ connectorIdentifier }} present or soft deleted. Please provide a new unique identifier and save again.'
   username: 'Username is required'
   password: 'Password is required'

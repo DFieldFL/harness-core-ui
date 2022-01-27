@@ -96,7 +96,7 @@ exports[`Resource Groups Page render data 1`] = `
           class="TableV2--cell"
           colspan="1"
           role="columnheader"
-          style="width: 32%;"
+          style="width: 30%;"
         >
           <p
             class="StyledProps--font StyledProps--main StyledProps--font-variation-table-headers"
@@ -108,7 +108,7 @@ exports[`Resource Groups Page render data 1`] = `
           class="TableV2--cell"
           colspan="1"
           role="columnheader"
-          style="width: 32%;"
+          style="width: 50%;"
         >
           <p
             class="StyledProps--font StyledProps--main StyledProps--font-variation-table-headers"
@@ -120,7 +120,7 @@ exports[`Resource Groups Page render data 1`] = `
           class="TableV2--cell"
           colspan="1"
           role="columnheader"
-          style="width: 32%;"
+          style="width: 16%;"
         >
           <p
             class="StyledProps--font StyledProps--main StyledProps--font-variation-table-headers"
@@ -151,7 +151,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -181,19 +181,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, SECRET_MANAGER
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -249,7 +278,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -279,19 +308,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, SECRET_MANAGER, PROJECT
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -347,7 +405,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -377,19 +435,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, PROJECT
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -445,7 +532,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -475,19 +562,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, PROJECT
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -543,7 +659,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -573,19 +689,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, PROJECT
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -641,7 +786,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -671,19 +816,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, PROJECT, SECRET_MANAGER
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -739,7 +913,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -769,19 +943,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  SECRET_MANAGER, PROJECT
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -837,7 +1040,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -867,19 +1070,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, PROJECT, SECRET_MANAGER
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -935,7 +1167,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -965,19 +1197,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, PROJECT, SECRET_MANAGER
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
@@ -1033,7 +1294,7 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 30%;"
           >
             <div
               class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
@@ -1063,19 +1324,48 @@ exports[`Resource Groups Page render data 1`] = `
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 50%;"
           >
-            <p
-              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"
-              style="--text-line-clamp: 1;"
+            <div
+              class="Layout--vertical StyledProps--main StyledProps--padding-right-medium"
             >
-              DynamicResourceSelector, DynamicResourceSelector
-            </p>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--font-variation-body2"
+                >
+                  resources
+                  :
+                </p>
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main"
+                  style="--text-line-clamp: 1;"
+                >
+                  ORGANIZATION, PROJECT
+                </p>
+              </div>
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center StyledProps--flex-justifyContent-flex-start"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-black"
+                >
+                  common.scope
+                  :
+                </p>
+                <p
+                  class="StyledProps--font StyledProps--main"
+                >
+                  rbac.scopeItems.accountOnly
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="TableV2--cell"
             role="cell"
-            style="width: 32%;"
+            style="width: 16%;"
           >
             <p
               class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-black"

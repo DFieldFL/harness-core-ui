@@ -297,7 +297,16 @@ const DeployServiceWidget: React.FC<DeployServiceProps> = ({
       if (getMultiTypeFromValue(initialValues.serviceRef) === MultiTypeInputType.FIXED) {
         const doesExist = selectOptions.filter(service => service.value === initialValues.serviceRef).length > 0
         if (!doesExist) {
-          formikRef.current?.setFieldValue('serviceRef', '')
+          if (!readonly) {
+            formikRef.current?.setFieldValue('serviceRef', '')
+          } else {
+            const options = [...selectOptions]
+            options.push({
+              label: initialValues.serviceRef,
+              value: initialValues.serviceRef
+            })
+            setSelectOptions(options)
+          }
         }
       }
     }
@@ -471,6 +480,7 @@ const DeployServiceWidget: React.FC<DeployServiceProps> = ({
                       ? getString('editService')
                       : getString('cd.pipelineSteps.serviceTab.plusNewService')
                   }
+                  id={isEditService(initialValues) ? 'edit-service' : 'add-new-service'}
                 />
               ) : null}
             </Layout.Horizontal>

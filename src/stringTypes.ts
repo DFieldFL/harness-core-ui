@@ -137,6 +137,7 @@ export interface StringsMap {
   'common.connectThroughPlatformInfo': string
   'common.connectivityErrors': string
   'common.contactSupport': string
+  'common.copy': string
   'common.createPipeline': string
   'common.creating': string
   'common.current': string
@@ -325,6 +326,7 @@ export interface StringsMap {
   'common.latest': string
   'common.launchFirstGen': string
   'common.letsGetYouStarted': string
+  'common.levelUp': string
   'common.link': string
   'common.loading': string
   'common.local': string
@@ -377,6 +379,7 @@ export interface StringsMap {
   'common.orgViewer': string
   'common.other': string
   'common.overSubscribed': string
+  'common.overuse': string
   'common.pagerDuty': string
   'common.paste': string
   'common.path': string
@@ -500,6 +503,7 @@ export interface StringsMap {
   'common.saveAndClose': string
   'common.saveAsTemplate': string
   'common.savedSuccessfully': string
+  'common.scope': string
   'common.searchPlaceholder': string
   'common.seconds': string
   'common.secretKey': string
@@ -756,6 +760,9 @@ export interface StringsMap {
   'rbac.categoryLabels.sharedResources': string
   'rbac.communityErrorMessages.resourceGroup': string
   'rbac.communityErrorMessages.role': string
+  'rbac.copyGroup.copyToProjects': string
+  'rbac.copyGroup.success': string
+  'rbac.copyGroup.title': string
   'rbac.customResourceGroups': string
   'rbac.customRoles': string
   'rbac.forUser': string
@@ -771,12 +778,15 @@ export interface StringsMap {
   'rbac.permissionLabels.create': string
   'rbac.permissionLabels.createEdit': string
   'rbac.permissionLabels.delete': string
+  'rbac.permissionLabels.edit': string
   'rbac.permissionLabels.evaluate': string
   'rbac.permissionLabels.execute': string
   'rbac.permissionLabels.invite': string
   'rbac.permissionLabels.manage': string
   'rbac.permissionLabels.pipelineExecution': string
   'rbac.permissionLabels.view': string
+  'rbac.planEnforcement.ff.teamEnterprisePlan.approachingLimit': string
+  'rbac.planEnforcement.ff.teamEnterprisePlan.upgradeRequired': string
   'rbac.project': string
   'rbac.resourceGroup.add': string
   'rbac.resourceGroup.all': string
@@ -793,6 +803,7 @@ export interface StringsMap {
   'rbac.resourceGroup.noResourceGroupFound': string
   'rbac.resourceGroup.noResourceGroupTypes': string
   'rbac.resourceGroup.selectResourceGroup': string
+  'rbac.resourceGroup.selectionHeading': string
   'rbac.resourceGroup.summary': string
   'rbac.resourceGroup.updateResourceGroupDialogTitle': string
   'rbac.resourceGroup.updateSuccess': string
@@ -810,6 +821,11 @@ export interface StringsMap {
   'rbac.roleDetails.updateRolePermissions': string
   'rbac.roleForm.createSuccess': string
   'rbac.roleForm.updateSuccess': string
+  'rbac.scopeItems.accountAll': string
+  'rbac.scopeItems.accountOnly': string
+  'rbac.scopeItems.orgAll': string
+  'rbac.scopeItems.orgOnly': string
+  'rbac.scopeItems.projectOnly': string
   'rbac.serviceAccounts.confirmDelete': string
   'rbac.serviceAccounts.confirmDeleteTitle': string
   'rbac.serviceAccounts.email': string
@@ -1015,6 +1031,7 @@ export interface StringsMap {
   'delegates.reviewScript.docLinkBefore': string
   'delegates.reviewYAML': string
   'delegates.selectors': string
+  'delegates.successVerification.checkingForHeartbeat': string
   'delegates.successfullyUpdatedConfig': string
   'delegates.tokens.createdBySystem': string
   'delegates.tokens.delegateTokens': string
@@ -1848,6 +1865,7 @@ export interface StringsMap {
   'connectors.testConnectionStep.validationText.serviceNow': string
   'connectors.testConnectionStep.validationText.splunk': string
   'connectors.testConnectionStep.validationText.sumologic': string
+  'connectors.testConnectionStep.validationText.testingURLReachability': string
   'connectors.testConnectionStep.validationText.vault': string
   'connectors.testConnectionStep.verificationSuccessful': string
   'connectors.testConnectionStep.viewPermissions': string
@@ -2198,6 +2216,7 @@ export interface StringsMap {
   'pipeline.barriers.tooltips.barrierWaiting': string
   'pipeline.barriers.tooltips.timeout': string
   'pipeline.barriers.validation.barrierNamerequired': string
+  'pipeline.buildInfra.poolId': string
   'pipeline.buildRepo': string
   'pipeline.changeTemplate': string
   'pipeline.changeTemplateLabel': string
@@ -2303,6 +2322,8 @@ export interface StringsMap {
   'pipeline.executionFilters.labels.Running': string
   'pipeline.executionFilters.labels.Success': string
   'pipeline.executionFilters.labels.Waiting': string
+  'pipeline.executionList.EnvironmentsText': string
+  'pipeline.executionList.servicesDeployedText': string
   'pipeline.executionStatus.Aborted': string
   'pipeline.executionStatus.Aborting': string
   'pipeline.executionStatus.ApprovalRejected': string
@@ -2429,6 +2450,7 @@ export interface StringsMap {
   'pipeline.inputSets.applyInputSets': string
   'pipeline.inputSets.applyingInputSet': string
   'pipeline.inputSets.applyingInputSets': string
+  'pipeline.inputSets.inputSetNameLabel': string
   'pipeline.inputSets.inputSetPlaceholder': string
   'pipeline.inputSets.noRuntimeInputsCurrently': string
   'pipeline.inputSets.noRuntimeInputsWhileExecution': string
@@ -2565,6 +2587,8 @@ export interface StringsMap {
   'pipeline.noBuildsText': string
   'pipeline.noDeploymentText': string
   'pipeline.noPipelineText': string
+  'pipeline.nodes': string
+  'pipeline.nodesLabel': string
   'pipeline.onlyPositiveInteger': string
   'pipeline.operatorPlaceholder': string
   'pipeline.outOf': string
@@ -2614,12 +2638,14 @@ export interface StringsMap {
   'pipeline.runAllParallelstages': string
   'pipeline.runFailedStages': string
   'pipeline.runModalNoPipelineText': string
+  'pipeline.runPipeline.ciCodebaseConfig': string
   'pipeline.runPipelineForm.disallowStageExecution': string
   'pipeline.runPipelineForm.notifyOnlyMe': string
   'pipeline.runstageError': string
   'pipeline.savingInProgress': string
   'pipeline.scriptInputVariables': string
   'pipeline.scriptOutputVariables': string
+  'pipeline.security.title': string
   'pipeline.selectOrCreateForm.description': string
   'pipeline.selectOrCreatePipeline.pipelineNameRequired': string
   'pipeline.selectOrCreatePipeline.selectAPipeline': string
@@ -2662,6 +2688,8 @@ export interface StringsMap {
   'pipeline.startedOn': string
   'pipeline.stepCommonFields.ifNotPresent': string
   'pipeline.stepCommonFields.runAsUser': string
+  'pipeline.stepCommonFields.validation.invalidLimitCPU': string
+  'pipeline.stepCommonFields.validation.invalidLimitMemory': string
   'pipeline.stepCommonFields.validation.mustBeANumber': string
   'pipeline.stepConfigHasChanges': string
   'pipeline.stepDescription.Barrier': string
@@ -2923,9 +2951,15 @@ export interface StringsMap {
   'pipeline.verification.analysisTab.metrics': string
   'pipeline.verification.anomalousLogClusters': string
   'pipeline.verification.anomalousMetrics': string
+  'pipeline.verification.anomalousMetricsFilterLabel': string
   'pipeline.verification.baselineTest': string
+  'pipeline.verification.collapseAll': string
+  'pipeline.verification.controlHostName': string
   'pipeline.verification.currentTest': string
+  'pipeline.verification.expandAll': string
+  'pipeline.verification.healthSourceLabel': string
   'pipeline.verification.healthSourcePlaceholder': string
+  'pipeline.verification.loadMore': string
   'pipeline.verification.logClustersInViolation': string
   'pipeline.verification.logs.actions': string
   'pipeline.verification.logs.allEvents': string
@@ -2947,8 +2981,13 @@ export interface StringsMap {
   'pipeline.verification.logs.urlCopied': string
   'pipeline.verification.metricViewPlaceholder': string
   'pipeline.verification.metricsInViolation': string
-  'pipeline.verification.noMetrics': string
+  'pipeline.verification.nodeCountDisplay': string
+  'pipeline.verification.predicted': string
   'pipeline.verification.refreshViewForNewData': string
+  'pipeline.verification.tableHeaders.group': string
+  'pipeline.verification.tableHeaders.metricName': string
+  'pipeline.verification.tableHeaders.nodes': string
+  'pipeline.verification.testHostName': string
   'pipeline.verification.testsRan': string
   'pipeline.verification.toGetLatest': string
   'pipeline.verification.waitForAnalysis': string
@@ -3095,6 +3134,9 @@ export interface StringsMap {
   'cd.serviceDashboard.envName': string
   'cd.serviceDashboard.executionId': string
   'cd.serviceDashboard.frequency': string
+  'cd.serviceDashboard.helmChartDetails': string
+  'cd.serviceDashboard.helmChartName': string
+  'cd.serviceDashboard.helmRopoUrl': string
   'cd.serviceDashboard.in': string
   'cd.serviceDashboard.instanceCountHistory': string
   'cd.serviceDashboard.instanceDetails': string
@@ -4092,6 +4134,7 @@ export interface StringsMap {
   'cf.planEnforcement.freePlan.upgradeRequired': string
   'cf.planEnforcement.teamEnterprisePlan.approachingLimit': string
   'cf.planEnforcement.teamEnterprisePlan.upgradeRequired': string
+  'cf.planEnforcement.upgradeRequired': string
   'cf.rbac.category': string
   'cf.rbac.featureflag.delete': string
   'cf.rbac.featureflag.edit': string
@@ -4100,8 +4143,10 @@ export interface StringsMap {
   'cf.rbac.targetgroup.delete': string
   'cf.rbac.targetgroup.edit': string
   'cf.rbac.targetgroup.label': string
+  'cf.segmentDetail.addRule': string
   'cf.segmentDetail.addSegmentToFlag': string
   'cf.segmentDetail.addToFlag': string
+  'cf.segmentDetail.attribute': string
   'cf.segmentDetail.autoAdded': string
   'cf.segmentDetail.criteria': string
   'cf.segmentDetail.directlyAdded': string
@@ -4110,9 +4155,16 @@ export interface StringsMap {
   'cf.segmentDetail.noConditionDefined': string
   'cf.segmentDetail.noFlagsUseThisSegment': string
   'cf.segmentDetail.noTargetDefined': string
+  'cf.segmentDetail.operator': string
   'cf.segmentDetail.removeFomFlag': string
+  'cf.segmentDetail.removeRule': string
+  'cf.segmentDetail.searchTarget': string
   'cf.segmentDetail.specificTargets': string
+  'cf.segmentDetail.specifyIndividualTargets': string
   'cf.segmentDetail.targetBasedOnCondition': string
+  'cf.segmentDetail.targetGroupCriteria': string
+  'cf.segmentDetail.updated': string
+  'cf.segmentDetail.values': string
   'cf.segments.create': string
   'cf.segments.delete.message': string
   'cf.segments.delete.title': string
@@ -4230,7 +4282,6 @@ export interface StringsMap {
   'ci.buildInfa.awsVM.architecture': string
   'ci.buildInfa.awsVM.isRequiredWhen': string
   'ci.buildInfa.awsVM.os': string
-  'ci.buildInfa.awsVM.poolId': string
   'ci.buildInfa.awsVMs': string
   'ci.buildInfa.infrastructureTypesLabel': string
   'ci.buildInfa.k8sLabel': string
@@ -4328,6 +4379,7 @@ export interface StringsMap {
   'cv.activitySources.harnessCD.validation.environmentValidation': string
   'cv.activitySources.harnessCD.validation.serviceValidation': string
   'cv.activitySources.name': string
+  'cv.addGroupName': string
   'cv.addNew': string
   'cv.admin.activitySources.dialogDeleteTitle': string
   'cv.allMetrics': string
@@ -4393,6 +4445,8 @@ export interface StringsMap {
   'cv.customHealthSource.Querymapping.validation.endTime.placeholder': string
   'cv.customHealthSource.Querymapping.validation.endTime.timestamp': string
   'cv.customHealthSource.Querymapping.validation.path': string
+  'cv.customHealthSource.Querymapping.validation.pathWithoutPlaceholder': string
+  'cv.customHealthSource.Querymapping.validation.startAndEndTime': string
   'cv.customHealthSource.Querymapping.validation.startTime.placeholder': string
   'cv.customHealthSource.Querymapping.validation.startTime.timestamp': string
   'cv.customHealthSource.ServiceInstance.pathLabel': string
@@ -6109,10 +6163,6 @@ export interface StringsMap {
    * @deprecated migrate this string to module level file
    */
   executionHeaderText: string
-  /**
-   * @deprecated migrate this string to module level file
-   */
-  'executionList.servicesDeployedText': string
   /**
    * @deprecated migrate this string to module level file
    */
@@ -8729,10 +8779,6 @@ export interface StringsMap {
    * @deprecated migrate this string to module level file
    */
   'validation.masterUrl': string
-  /**
-   * @deprecated migrate this string to module level file
-   */
-  'validation.matchPattern': string
   /**
    * @deprecated migrate this string to module level file
    */

@@ -63,7 +63,7 @@ export default function TerraformEditView(
   formikRef: StepFormikFowardRef<TFFormData>
 ): React.ReactElement {
   const { stepType, isNewStep = true } = props
-  const { initialValues, onUpdate, onChange, allowableTypes, stepViewType } = props
+  const { initialValues, onUpdate, onChange, allowableTypes, stepViewType, readonly = false } = props
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
 
@@ -142,7 +142,13 @@ export default function TerraformEditView(
           return (
             <>
               <div className={cx(stepCss.formGroup, stepCss.md)}>
-                <FormInput.InputWithIdentifier inputLabel={getString('name')} isIdentifierEditable={isNewStep} />
+                <FormInput.InputWithIdentifier
+                  inputLabel={getString('name')}
+                  isIdentifierEditable={isNewStep}
+                  inputGroupProps={{
+                    disabled: readonly
+                  }}
+                />
               </div>
 
               <div className={cx(stepCss.formGroup, stepCss.sm)}>
@@ -150,6 +156,7 @@ export default function TerraformEditView(
                   name="timeout"
                   label={getString('pipelineSteps.timeoutLabel')}
                   multiTypeDurationProps={{ enableConfigureOptions: false, expressions, allowableTypes }}
+                  disabled={readonly}
                 />
                 {getMultiTypeFromValue(values.timeout) === MultiTypeInputType.RUNTIME && (
                   <ConfigureOptions
@@ -163,7 +170,7 @@ export default function TerraformEditView(
                       /* istanbul ignore next */
                       setFieldValue('timeout', value)
                     }}
-                    isReadonly={props.readonly}
+                    isReadonly={readonly}
                   />
                 )}
               </div>
@@ -176,6 +183,7 @@ export default function TerraformEditView(
                   name="spec.configuration.type"
                   label={getString('pipelineSteps.configurationType')}
                   placeholder={getString('pipelineSteps.configurationType')}
+                  disabled={readonly}
                 />
               </div>
 
@@ -184,6 +192,7 @@ export default function TerraformEditView(
                   name="spec.provisionerIdentifier"
                   label={getString('pipelineSteps.provisionerIdentifier')}
                   multiTextInputProps={{ expressions, allowableTypes }}
+                  disabled={readonly}
                 />
                 {getMultiTypeFromValue(values.spec?.provisionerIdentifier) === MultiTypeInputType.RUNTIME && (
                   <ConfigureOptions
@@ -196,7 +205,7 @@ export default function TerraformEditView(
                     onChange={value => {
                       setFieldValue('spec.provisionerIdentifier', value)
                     }}
-                    isReadonly={props.readonly}
+                    isReadonly={readonly}
                   />
                 )}
               </div>
@@ -257,6 +266,7 @@ export default function TerraformEditView(
                                 label={getString('pipelineSteps.workspace')}
                                 multiTextInputProps={{ expressions, allowableTypes }}
                                 isOptional={true}
+                                disabled={readonly}
                               />
                               {getMultiTypeFromValue(formik.values.spec?.configuration?.spec?.workspace) ===
                                 MultiTypeInputType.RUNTIME && (
@@ -270,13 +280,13 @@ export default function TerraformEditView(
                                   onChange={value => {
                                     formik.setFieldValue('values.spec.configuration.spec.workspace', value)
                                   }}
-                                  isReadonly={props.readonly}
+                                  isReadonly={readonly}
                                 />
                               )}
                             </div>
                           )}
                           <div className={css.divider} />
-                          <TfVarFileList formik={formik} isReadonly={props.readonly} allowableTypes={allowableTypes} />
+                          <TfVarFileList formik={formik} isReadonly={readonly} allowableTypes={allowableTypes} />
                           <div className={css.divider} />
                           <div
                             className={cx(stepCss.formGroup, stepCss.alignStart, css.addMarginTop, css.addMarginBottom)}
@@ -291,6 +301,7 @@ export default function TerraformEditView(
                               defaultValueToReset=""
                               allowedTypes={allowableTypes}
                               skipRenderValueInExpressionLabel
+                              disabled={readonly}
                               expressionRender={() => {
                                 return (
                                   <TFMonaco
@@ -322,7 +333,7 @@ export default function TerraformEditView(
                                 onChange={value =>
                                   setFieldValue('spec.configuration.spec.backendConfig.spec.content', value)
                                 }
-                                isReadonly={props.readonly}
+                                isReadonly={readonly}
                               />
                             )}
                           </div>
@@ -333,6 +344,7 @@ export default function TerraformEditView(
                                 allowableTypes: allowableTypes.filter(item => item !== MultiTypeInputType.RUNTIME)
                               }}
                               name="spec.configuration.spec.targets"
+                              disabled={readonly}
                               multiTypeFieldSelectorProps={{
                                 label: (
                                   <Text style={{ display: 'flex', alignItems: 'center', color: 'rgb(11, 11, 13)' }}>
@@ -359,6 +371,7 @@ export default function TerraformEditView(
                                   </Text>
                                 )
                               }}
+                              disabled={readonly}
                             />
                           </div>
                         </div>
@@ -396,7 +409,7 @@ export default function TerraformEditView(
                         }}
                         data={formik.values}
                         onHide={() => setShowModal(false)}
-                        isReadonly={props.readonly}
+                        isReadonly={readonly}
                         allowableTypes={allowableTypes}
                       />
                     </Dialog>

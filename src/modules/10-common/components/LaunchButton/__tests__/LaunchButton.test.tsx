@@ -7,6 +7,7 @@
 
 import React from 'react'
 import { render } from '@testing-library/react'
+import { TestWrapper } from '@common/utils/testUtils'
 import * as LicenseStoreContext from 'framework/LicenseStore/LicenseStoreContext'
 import { LICENSE_STATE_VALUES } from 'framework/LicenseStore/licenseStoreUtil'
 import { LaunchButton } from '../LaunchButton'
@@ -14,7 +15,9 @@ import { LaunchButton } from '../LaunchButton'
 describe('Launch Button test', () => {
   test('Launch button render ', async () => {
     const { container } = render(
-      <LaunchButton launchButtonText="Launch Next Generation" redirectUrl="#/account/abc123/dashboard" />
+      <TestWrapper path="/account/:accountId" pathParams={{ accountId: '123' }}>
+        <LaunchButton launchButtonText="Launch Next Generation" redirectUrl="#/account/abc123/dashboard" />
+      </TestWrapper>
     )
     expect(container).toMatchSnapshot()
   })
@@ -36,7 +39,9 @@ describe('Launch Button test', () => {
       versionMap: {}
     })
     const { container } = render(
-      <LaunchButton launchButtonText="Launch Next Generation" redirectUrl="#/account/abc123/dashboard" />
+      <TestWrapper path="/account/:accountId" pathParams={{ accountId: '123' }}>
+        <LaunchButton launchButtonText="Launch Next Generation" redirectUrl="#/account/abc123/dashboard" />
+      </TestWrapper>
     )
     expect(container).toMatchSnapshot()
   })

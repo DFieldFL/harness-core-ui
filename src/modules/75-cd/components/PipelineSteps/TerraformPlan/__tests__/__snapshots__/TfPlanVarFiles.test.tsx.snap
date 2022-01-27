@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TfVarFile /> tests snapshot test for tf var files 1`] = `
+<div>
+  <label
+    class="Label--main"
+  >
+    cd.terraformVarFiles
+  </label>
+  <div
+    class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--padding-bottom-small"
+    style="width: 150px;"
+  >
+    <p
+      class="StyledProps--font StyledProps--main StyledProps--font-weight-bold"
+    >
+      cd.varFile
+      :
+    </p>
+    file_id_1
+  </div>
+  <div
+    class="StyledProps--font StyledProps--main StyledProps--flex StyledProps--padding-bottom-small"
+    style="width: 120px;"
+  >
+    <p
+      class="StyledProps--font StyledProps--main StyledProps--font-weight-bold"
+    >
+      cd.varFile
+      :
+    </p>
+    file_id_2
+  </div>
+</div>
+`;

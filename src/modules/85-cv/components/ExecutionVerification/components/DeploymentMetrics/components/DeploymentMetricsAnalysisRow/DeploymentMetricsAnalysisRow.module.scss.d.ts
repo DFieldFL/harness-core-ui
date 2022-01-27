@@ -9,8 +9,9 @@
 declare const styles: {
   readonly graphs: string
   readonly main: string
+  readonly metricRisk: string
+  readonly nodeDetails: string
   readonly scrollArrow: string
   readonly scrollArrowPlaceholder: string
-  readonly transactionMetric: string
 }
 export default styles

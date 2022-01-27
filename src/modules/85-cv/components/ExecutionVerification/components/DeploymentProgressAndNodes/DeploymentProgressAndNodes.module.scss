@@ -19,8 +19,6 @@
 
   .durationAndStatus {
     margin-bottom: var(--spacing-small) !important;
-    display: flex;
-    justify-content: space-between;
 
     > div:last-child {
       align-self: center;
@@ -28,6 +26,11 @@
   }
 
   .progressBar {
-    margin-bottom: var(--spacing-large) !important;
+    margin: var(--spacing-medium) 0 !important;
   }
+}
+
+.flexLayout {
+  display: flex;
+  justify-content: space-between;
 }

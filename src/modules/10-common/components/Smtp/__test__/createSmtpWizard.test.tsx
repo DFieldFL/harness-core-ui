@@ -106,6 +106,21 @@ describe('smtp details', () => {
     expect(container).toMatchSnapshot()
   })
 
+  test('smtp name test', async () => {
+    const { container, getByText } = setup()
+
+    waitFor(() => {
+      return expect(getByText('continue')).toBeTruthy()
+    })
+    fireEvent.change(container.querySelector('input[name="name"]')!, { target: { value: '$##test' } })
+    fireEvent.change(container.querySelector('input[name="host"]')!, { target: { value: 'host' } })
+    fireEvent.change(container.querySelector('input[name="port"]')!, { target: { value: 123 } })
+    fireEvent.click(getByText('continue'))
+    await waitFor(() => {
+      return expect(getByText('common.validation.namePatternIsNotValid')).toBeTruthy()
+    })
+  })
+
   test('create smtp details and test', async () => {
     const { container, getByText } = setup()
 

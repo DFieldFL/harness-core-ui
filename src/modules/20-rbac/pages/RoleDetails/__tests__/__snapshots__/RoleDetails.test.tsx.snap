@@ -356,12 +356,11 @@ exports[`Role Details Page Click on Resource Type 1`] = `
                       class="permissionList"
                     >
                       <label
-                        class="bp3-control bp3-checkbox bp3-disabled StyledProps--font Checkbox--checkbox checkbox StyledProps--main"
+                        class="bp3-control bp3-checkbox StyledProps--font Checkbox--checkbox checkbox StyledProps--main"
                       >
                         <input
                           checked=""
                           data-testid="checkBox-ORGANIZATION-view"
-                          disabled=""
                           type="checkbox"
                         />
                         <span
@@ -437,6 +436,15 @@ exports[`Role Details Page Click on Resource Type 1`] = `
                       class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--padding-left-large"
                     >
                       common.secrets
+                    </p>
+                  </div>
+                  <div
+                    class="permissionRow groupRow"
+                  >
+                    <p
+                      class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--padding-left-large"
+                    >
+                      connectorsLabel
                     </p>
                   </div>
                   <div
@@ -815,11 +823,10 @@ exports[`Role Details Page render data 1`] = `
                       class="permissionList"
                     >
                       <label
-                        class="bp3-control bp3-checkbox bp3-disabled StyledProps--font Checkbox--checkbox checkbox StyledProps--main"
+                        class="bp3-control bp3-checkbox StyledProps--font Checkbox--checkbox checkbox StyledProps--main"
                       >
                         <input
                           data-testid="checkBox-ORGANIZATION-view"
-                          disabled=""
                           type="checkbox"
                         />
                         <span
@@ -895,6 +902,15 @@ exports[`Role Details Page render data 1`] = `
                       class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--padding-left-large"
                     >
                       common.secrets
+                    </p>
+                  </div>
+                  <div
+                    class="permissionRow groupRow"
+                  >
+                    <p
+                      class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black StyledProps--padding-left-large"
+                    >
+                      connectorsLabel
                     </p>
                   </div>
                   <div

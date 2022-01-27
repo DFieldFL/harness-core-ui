@@ -51,7 +51,7 @@ useSaveFeedbackMock.mockImplementation(() => {
   }
 })
 
-jest.mock('@auth-settings/hooks/useGetUsageAndLimit', () => ({
+jest.mock('@common/hooks/useGetUsageAndLimit', () => ({
   useGetUsageAndLimit: () => {
     return {
       limitData: {

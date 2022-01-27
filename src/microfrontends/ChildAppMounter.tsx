@@ -15,11 +15,13 @@ import { LicenseStoreContext } from 'framework/LicenseStore/LicenseStoreContext'
 import { AppStoreContext } from 'framework/AppStore/AppStoreContext'
 import { PageSpinner } from '@common/components'
 import RbacButton from '@rbac/components/Button/Button'
+import RbacMenuItem from '@rbac/components/MenuItem/MenuItem'
 import { useDocumentTitle } from '@common/hooks/useDocumentTitle'
 import { NGBreadcrumbs } from '@common/components/NGBreadcrumbs/NGBreadcrumbs'
 import MonacoEditor from '@common/components/MonacoEditor/MonacoEditor'
 import MonacoDiffEditor from '@common/components/MonacoDiffEditor/MonacoDiffEditor'
 import YAMLBuilder from '@common/components/YAMLBuilder/YamlBuilder'
+import AppStorage from 'framework/utils/AppStorage'
 
 import ChildAppError from './ChildAppError'
 import type { ChildAppProps, Scope } from './index'
@@ -59,9 +61,11 @@ export class ChildAppMounter extends React.Component<ChildAppMounterProps, Child
     return (
       <React.Suspense fallback={<PageSpinner />}>
         <ChildApp
+          {...this.props}
           renderUrl={url}
           matchPath={path}
           scope={params}
+          token={AppStorage.get('token')}
           parentContextObj={{
             appStoreContext: AppStoreContext,
             permissionsContext: PermissionsContext,
@@ -69,6 +73,7 @@ export class ChildAppMounter extends React.Component<ChildAppMounterProps, Child
           }}
           components={{
             RbacButton,
+            RbacMenuItem,
             NGBreadcrumbs,
             MonacoEditor,
             YAMLBuilder,

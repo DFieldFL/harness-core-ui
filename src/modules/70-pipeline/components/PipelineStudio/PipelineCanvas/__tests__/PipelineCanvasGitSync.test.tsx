@@ -140,8 +140,13 @@ describe('PipelineCanvas tests', () => {
         act(() => {
           fireEvent.mouseEnter(gitPopoverIcon)
         })
-        await waitFor(() => expect(getElementByText('/rootFolderTest/.harness/test_pipeline.yaml')).toBeInTheDocument())
-
+        await waitFor(() =>
+          expect(
+            getElementByText(
+              'https://www.github.com/testRepo.git/blob/feature//rootFolderTest/.harness/test_pipeline.yaml'
+            )
+          ).toBeInTheDocument()
+        )
         const branchSelector = document.querySelector('input[name="branch"]') as HTMLInputElement
         expect(branchSelector.value).toBe('feature')
 

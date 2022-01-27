@@ -7,9 +7,9 @@
 
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Color, ExpandingSearchInput, Layout, Text, PageError, TableV2 } from '@wings-software/uicore'
+import type { TableProps } from '@harness/uicore'
 import { noop } from 'lodash-es'
 import { useStrings } from 'framework/strings'
-import type { TableProps } from '@common/components/Table/Table'
 // import FilterSelector from '@common/components/Filter/FilterSelector/FilterSelector'
 import { PageSpinner } from '@common/components'
 import ServiceDetailsEmptyState from '@cd/icons/ServiceDetailsEmptyState.svg'

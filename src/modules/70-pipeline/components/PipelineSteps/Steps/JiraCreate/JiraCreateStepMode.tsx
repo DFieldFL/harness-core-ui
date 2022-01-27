@@ -588,7 +588,6 @@ function JiraCreateStepMode(props: JiraCreateStepModeProps, formikRef: StepFormi
       }}
       formName="jiraCreate"
       initialValues={props.initialValues}
-      enableReinitialize={true}
       validate={data => {
         onChange?.(processFormData(data))
       }}

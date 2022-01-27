@@ -22,7 +22,8 @@ import {
 import { Page } from '@common/exports'
 import routes from '@common/RouteDefinitions'
 import { useStrings } from 'framework/strings'
-import { PermissionIdentifier, ResourceType } from 'microfrontends'
+import { ResourceType } from '@rbac/interfaces/ResourceType'
+import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import { NGBreadcrumbs } from '@common/components/NGBreadcrumbs/NGBreadcrumbs'
 import {

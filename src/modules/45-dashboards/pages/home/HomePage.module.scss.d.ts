@@ -14,11 +14,11 @@ declare const styles: {
   readonly customSelect: string
   readonly customTag: string
   readonly dashboardCard: string
-  readonly dialog: string
+  readonly dashboardDialog: string
+  readonly dashboardFolderDialog: string
   readonly filter: string
   readonly filterPanel: string
   readonly filteredTags: string
-  readonly folderDialog: string
   readonly folderMasonry: string
   readonly formContainer: string
   readonly mainNavTag: string
@@ -26,7 +26,6 @@ declare const styles: {
   readonly pageContainer: string
   readonly predefinedTags: string
   readonly search: string
-  readonly stepClass: string
   readonly stepWizard: string
   readonly table: string
   readonly tags: string

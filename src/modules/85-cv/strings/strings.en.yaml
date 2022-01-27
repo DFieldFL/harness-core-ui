@@ -58,6 +58,7 @@ addNew: + Add New
 turnService: Turn service
 showYAMLChange: Show YAML Change
 seeYAML: See full event YAML
+addGroupName: Please Select Group Name
 serviceDashboardPage:
   fiveMinutes: 5 Minutes
   fifteenMinutes: 15 Minutes
@@ -763,7 +764,9 @@ customHealthSource:
     endTimeLabel: End time placeholder
     validation:
       body: Body is required.
-      path: Please select path
+      path: Please select path.
+      pathWithoutPlaceholder: Start and end time placeholders must be included in either Path or Body.
+      startAndEndTime: Start and end time placeholders must differ.
       startTime:
         placeholder: Please select start time placeholder
         timestamp: Please select start time timestamp Format

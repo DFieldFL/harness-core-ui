@@ -7,7 +7,7 @@
 
 import type * as React from 'react'
 import type { IconName } from '@wings-software/uicore'
-import { has, isEmpty } from 'lodash-es'
+import { defaultTo, has, isEmpty } from 'lodash-es'
 
 import {
   ExecutionStatus,
@@ -15,7 +15,8 @@ import {
   isExecutionSuccess,
   isExecutionCompletedWithBadState,
   isExecutionRunning,
-  isExecutionWaiting
+  isExecutionWaiting,
+  isExecutionSkipped
 } from '@pipeline/utils/statusHelpers'
 import type {
   GraphLayoutNode,
@@ -140,6 +141,7 @@ export interface ExecutionQueryParams {
   stage?: string
   step?: string
   view?: 'log' | 'graph'
+  filterAnomalous?: string
 }
 
 export function getPipelineStagesMap(
@@ -216,6 +218,24 @@ export const processLayoutNodeMap = (executionSummary?: PipelineExecutionSummary
   return response
 }
 
+function parseStages(stages: ProcessLayoutNodeMapResponse[] | GraphLayoutNode[]): string {
+  const n = stages.length
+  for (let i = n - 1; i >= 0; i--) {
+    const stage = (stages[i] as ProcessLayoutNodeMapResponse)?.stage ?? (stages[i] as GraphLayoutNode)
+
+    if ((stage as ProcessLayoutNodeMapResponse).parallel) {
+      return parseStages((stage as ProcessLayoutNodeMapResponse)?.parallel as GraphLayoutNode[])
+    } else {
+      if (isExecutionSkipped(stage.status)) {
+        continue
+      } else {
+        return defaultTo(stage.nodeUuid, '')
+      }
+    }
+  }
+  return ''
+}
+
 export function getActiveStageForPipeline(
   executionSummary?: PipelineExecutionSummary,
   pipelineExecutionStatus?: ExecutionStatus
@@ -227,13 +247,7 @@ export function getActiveStageForPipeline(
   const n = stages.length
   // for completed pipeline, select the last completed stage
   if (isExecutionSuccess(pipelineExecutionStatus)) {
-    const stage = stages[stages.length - 1]
-
-    if (stage.stage) {
-      return stage.stage.nodeUuid || ''
-    } else if (stage.parallel && Array.isArray(stage.parallel) && stage.parallel[0]) {
-      return stage.parallel[0].nodeUuid || ''
-    }
+    return parseStages(stages)
   }
 
   // for errored pipeline, select the errored stage

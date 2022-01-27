@@ -35,6 +35,7 @@ import DrawerFooter from '@cv/pages/health-source/common/DrawerFooter/DrawerFoot
 import ValidationStatus from '@cv/pages/components/ValidationStatus/ValidationStatus'
 import MetricsVerificationModal from '@cv/components/MetricsVerificationModal/MetricsVerificationModal'
 import { StatusOfValidation } from '@cv/pages/components/ValidationStatus/ValidationStatus.constants'
+import { getErrorMessage } from '@cv/utils/CommonUtils'
 import {
   getOptions,
   getInputGroupProps,
@@ -159,8 +160,8 @@ export default function AppDMonitoredSource({
 
   if (applicationError || tierError) {
     clear()
-    tierError && showError(tierError?.message)
-    applicationError && showError(applicationError?.message)
+    tierError && showError(getErrorMessage(tierError))
+    applicationError && showError(getErrorMessage(applicationError))
   }
 
   const applicationOptions: SelectOption[] = useMemo(

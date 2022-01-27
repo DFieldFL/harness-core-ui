@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import { render, fireEvent, act, findByText } from '@testing-library/react'
+import { act, findByText, fireEvent, render } from '@testing-library/react'
 
 import { MultiTypeInputType } from '@wings-software/uicore'
 import { TestWrapper } from '@common/utils/testUtils'
@@ -18,6 +18,7 @@ import {
 import { DrawerTypes, TemplateDrawerTypes } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineActions'
 import { factory } from '@pipeline/components/PipelineSteps/Steps/__tests__/StepTestUtil'
 import { CustomVariables } from '@pipeline/components/PipelineSteps/Steps/CustomVariables/CustomVariables'
+import { Scope } from '@common/interfaces/SecretsInterface'
 import DeployStageSpecifications from '../DeployStageSpecifications'
 
 jest.mock('@common/components/YAMLBuilder/YamlBuilder')
@@ -80,6 +81,7 @@ const getPipelineContext = (): PipelineContextInterface => ({
   runPipeline: jest.fn(),
   pipelineSaved: jest.fn(),
   view: 'ui',
+  scope: Scope.PROJECT,
   setView: jest.fn(),
   stepsFactory: factory,
   setSelectedStageId: jest.fn(),

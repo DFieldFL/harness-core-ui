@@ -52,6 +52,7 @@ export const numberFormatter: (value?: number, options?: NumberFormatterOptions)
   value?: number,
   options = { truncate: true }
 ) => {
+  // istanbul ignore if
   if (value === undefined) {
     return ''
   }
@@ -63,6 +64,7 @@ export const numberFormatter: (value?: number, options?: NumberFormatterOptions)
     for (const truncateOption of truncateOptions) {
       if (value >= truncateOption.value) {
         const truncatedValue = value / truncateOption.value
+        // istanbul ignore if
         if (truncatedValue % 1 !== 0) {
           return `${truncatedValue.toFixed(1)}${truncateOption.suffix}`
         }

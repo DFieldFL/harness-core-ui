@@ -106,6 +106,9 @@ serviceDashboard:
   envName: Env Name
   noActiveServiceInstances: No Active Service Instances
   noActiveServices: No Active Services in {{timeRange}}
+  helmChartDetails: Helm Chart Details
+  helmChartName: Helm Chart Name
+  helmRopoUrl: Repo URL
 gitOps: GitOps
 enterpriseGitOps: Enterprise GitOps
 newAdapter: New Adapter

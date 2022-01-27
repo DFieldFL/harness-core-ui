@@ -157,53 +157,71 @@ const validateCustomMetricFields = (
     return metricName === values.metricName
   })
 
-  if (!values?.groupName || !values?.groupName?.value) {
+  const formValues = values || {}
+
+  if (!formValues.groupName || !formValues.groupName?.value) {
     completErrors['groupName'] = getString('cv.monitoringSources.prometheus.validation.groupName')
   }
 
-  if (!values?.metricName) {
+  if (!formValues.metricName) {
     completErrors['metricName'] = getString('cv.monitoringSources.metricNameValidation')
   }
 
-  if (!values?.pathURL) {
+  if (!formValues.pathURL) {
     completErrors['pathURL'] = getString('cv.customHealthSource.Querymapping.validation.path')
   }
 
-  if (!values?.startTime?.timestampFormat) {
+  if (!formValues.startTime?.timestampFormat) {
     completErrors['startTime.timestampFormat'] = getString(
       'cv.customHealthSource.Querymapping.validation.startTime.timestamp'
     )
   }
 
-  if (!values?.startTime?.placeholder) {
+  if (!formValues.startTime?.placeholder) {
     completErrors['startTime.placeholder'] = getString(
       'cv.customHealthSource.Querymapping.validation.startTime.placeholder'
     )
   }
 
-  if (!values?.endTime?.timestampFormat) {
+  if (!formValues.endTime?.timestampFormat) {
     completErrors['endTime.timestampFormat'] = getString(
       'cv.customHealthSource.Querymapping.validation.endTime.timestamp'
     )
   }
 
-  if (!values?.endTime?.placeholder) {
+  if (!formValues.endTime?.placeholder) {
     completErrors['endTime.placeholder'] = getString('cv.customHealthSource.Querymapping.validation.endTime.timestamp')
   }
 
-  if (values?.requestMethod === 'POST' && !values?.query) {
+  if (formValues.endTime?.placeholder && formValues.startTime?.placeholder) {
+    if (formValues.startTime.placeholder === formValues.endTime.placeholder) {
+      completErrors['startTime.placeholder'] = getString(
+        'cv.customHealthSource.Querymapping.validation.startAndEndTime'
+      )
+    }
+    if (
+      (!formValues.pathURL?.includes(formValues.startTime.placeholder) ||
+        !formValues.pathURL?.includes(formValues.endTime.placeholder)) &&
+      (!formValues.query?.includes(formValues.startTime.placeholder) ||
+        !formValues.query.includes(formValues.endTime.placeholder))
+    ) {
+      completErrors['pathURL'] = getString('cv.customHealthSource.Querymapping.validation.pathWithoutPlaceholder')
+    }
+  }
+
+  if (formValues.requestMethod === 'POST' && !formValues.query) {
     completErrors['query'] = getString('cv.customHealthSource.Querymapping.validation.body')
   }
 
-  if (!values?.metricValue) {
+  if (!formValues.metricValue) {
     completErrors['metricValue'] = getString('cv.healthSource.connectors.NewRelic.validations.metricValue')
   }
 
-  if (!values?.timestamp) {
+  if (!formValues.timestamp) {
     completErrors['timestamp'] = getString('cv.healthSource.connectors.NewRelic.validations.timestamp')
   }
 
-  if (values?.metricName && duplicateNames.length) {
+  if (formValues.metricName && duplicateNames.length) {
     completErrors['metricName'] = getString('cv.monitoringSources.prometheus.validation.metricNameUnique')
   }
 

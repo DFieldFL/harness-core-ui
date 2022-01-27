@@ -46,37 +46,6 @@
     }
   }
 
-  .folderDialog {
-    border-radius: 11px;
-    position: relative;
-    padding-bottom: 0;
-    &.create {
-      width: 900px;
-      border-radius: 0 !important;
-      border-left: none !important;
-    }
-
-    .stepWizard {
-      padding: 0px;
-    }
-    .formContainer {
-      margin-top: var(--spacing-medium);
-      width: 350px;
-    }
-
-    div[class*='OverlaySpinner--'] {
-      margin-left: 0 !important;
-    }
-    // div[class*='StepWizard--navBarList'] {
-    //   border-top-left-radius: 10px;
-    //   border-bottom-left-radius: 10px;
-    //   padding: 30px !important;
-    // }
-    span[class*='StepWizard--number'] {
-      padding: 1px 6px !important;
-    }
-  }
-
   .table {
     padding: 0 var(--spacing-9);
   }
@@ -135,44 +104,6 @@
     background: var(--grey-50);
     border: 1px solid var(--grey-200);
   }
-  .videoContainer {
-    position: absolute;
-    top: -32px;
-    background: var(--grey-100) !important;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    right: 0;
-    width: 45%;
-  }
-  .dialog {
-    position: relative;
-    padding-bottom: 0;
-
-    &.create {
-      width: 900px;
-      border-radius: 0 !important;
-    }
-
-    .stepWizard {
-      padding: 0px;
-    }
-    .formContainer {
-      height: 350px;
-      width: 700px;
-    }
-  }
-
-  .crossIcon {
-    position: absolute;
-    right: var(--spacing-large);
-    top: var(--spacing-large);
-  }
-
-  .stepClass {
-    padding: 0px !important;
-  }
 
   .button {
     color: var(--white) !important;
@@ -221,5 +152,59 @@
       text-decoration: none;
       color: var(--white);
     }
+  }
+}
+
+.dashboardDialog {
+  position: relative;
+  padding-bottom: 0;
+  background: var(--form-bg) !important;
+
+  &.create {
+    width: 900px;
+    border-radius: 0 !important;
+  }
+
+  .crossIcon {
+    position: absolute;
+    right: var(--spacing-large);
+    top: var(--spacing-large);
+  }
+
+  .videoContainer {
+    background: var(--white) !important;
+  }
+}
+
+.dashboardFolderDialog {
+  border-radius: 11px;
+  position: relative;
+  padding-bottom: 0;
+  &.create {
+    width: 600px;
+    border-radius: 0 !important;
+    border-left: none !important;
+  }
+
+  .stepWizard {
+    padding: 0px;
+  }
+  .formContainer {
+    margin-top: var(--spacing-medium);
+    width: 500px;
+  }
+
+  div[class*='OverlaySpinner--'] {
+    margin-left: 0 !important;
+  }
+
+  span[class*='StepWizard--number'] {
+    padding: 1px 6px !important;
+  }
+
+  .crossIcon {
+    position: absolute;
+    right: var(--spacing-large);
+    top: var(--spacing-large);
   }
 }

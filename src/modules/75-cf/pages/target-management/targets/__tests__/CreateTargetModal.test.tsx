@@ -6,22 +6,37 @@
  */
 
 import React from 'react'
-import { act, render, waitFor, getByText, fireEvent, getAllByPlaceholderText } from '@testing-library/react'
+import {
+  act,
+  render,
+  waitFor,
+  getByText,
+  fireEvent,
+  getAllByPlaceholderText,
+  RenderResult,
+  screen
+} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { TestWrapper } from '@common/utils/testUtils'
-import CreateTargetModal from '../CreateTargetModal'
+import * as useFeaturesMock from '@common/hooks/useFeatures'
+import * as usePlanEnforcementMock from '@cf/hooks/usePlanEnforcement'
+import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
+import CreateTargetModal, { CreateTargetModalProps } from '../CreateTargetModal'
 
 describe('CreateTargetModal', () => {
-  test('CreateTargetModal should render initial state correctly', async () => {
-    const params = { accountId: 'dummy', orgIdentifier: 'dummy', projectIdentifier: 'dummy' }
-
-    const { container } = render(
+  const renderComponent = (props: Partial<CreateTargetModalProps> = {}): RenderResult => {
+    return render(
       <TestWrapper
-        path="/account/:accountId/cf/orgs/:orgIdentifier/projects/:projectIdentifier/onboarding/detail"
-        pathParams={params}
+        path="/account/:accountId/cf/orgs/:orgIdentifier/projects/:projectIdentifier/feature-flags"
+        pathParams={{ accountId: 'dummy', orgIdentifier: 'dummy', projectIdentifier: 'dummy' }}
       >
-        <CreateTargetModal loading={true} onSubmitTargets={jest.fn()} onSubmitUpload={jest.fn()} />
+        <CreateTargetModal loading={false} onSubmitTargets={jest.fn()} onSubmitUpload={jest.fn()} {...props} />
       </TestWrapper>
     )
+  }
+
+  test('CreateTargetModal should render initial state correctly', async () => {
+    const { container } = renderComponent({ loading: true })
 
     expect(getByText(container, 'cf.targets.create')).toBeDefined()
 
@@ -35,18 +50,14 @@ describe('CreateTargetModal', () => {
   })
 
   test('CreateTargetModal should call callbacks properly', async () => {
-    const params = { accountId: 'dummy', orgIdentifier: 'dummy', projectIdentifier: 'dummy' }
     const onSubmitTargets = jest.fn()
     const onSubmitUpload = jest.fn()
 
-    const { container } = render(
-      <TestWrapper
-        path="/account/:accountId/cf/orgs/:orgIdentifier/projects/:projectIdentifier/onboarding/detail"
-        pathParams={params}
-      >
-        <CreateTargetModal loading={false} onSubmitTargets={onSubmitTargets} onSubmitUpload={onSubmitUpload} />
-      </TestWrapper>
-    )
+    const { container } = renderComponent({
+      loading: false,
+      onSubmitTargets: onSubmitTargets,
+      onSubmitUpload: onSubmitUpload
+    })
 
     fireEvent.click(getByText(container, 'cf.targets.create'))
 
@@ -77,16 +88,7 @@ describe('CreateTargetModal', () => {
   })
 
   test('CreateTargetModal can add and remove rows', async () => {
-    const params = { accountId: 'dummy', orgIdentifier: 'dummy', projectIdentifier: 'dummy' }
-
-    const { container } = render(
-      <TestWrapper
-        path="/account/:accountId/cf/orgs/:orgIdentifier/projects/:projectIdentifier/onboarding/detail"
-        pathParams={params}
-      >
-        <CreateTargetModal loading={true} onSubmitTargets={jest.fn()} onSubmitUpload={jest.fn()} />
-      </TestWrapper>
-    )
+    const { container } = renderComponent()
 
     expect(getByText(container, 'cf.targets.create')).toBeDefined()
 
@@ -113,16 +115,7 @@ describe('CreateTargetModal', () => {
   })
 
   test('CreateTargetModal can toggle upload options', async () => {
-    const params = { accountId: 'dummy', orgIdentifier: 'dummy', projectIdentifier: 'dummy' }
-
-    const { container } = render(
-      <TestWrapper
-        path="/account/:accountId/cf/orgs/:orgIdentifier/projects/:projectIdentifier/onboarding/detail"
-        pathParams={params}
-      >
-        <CreateTargetModal loading={true} onSubmitTargets={jest.fn()} onSubmitUpload={jest.fn()} />
-      </TestWrapper>
-    )
+    const { container } = renderComponent()
 
     expect(getByText(container, 'cf.targets.create')).toBeDefined()
 
@@ -146,5 +139,36 @@ describe('CreateTargetModal', () => {
     })
 
     expect(getAllByPlaceholderText(modal, 'cf.targets.enterName').length).toBeDefined
+  })
+
+  test('+ Target(s) button should show CreateTargetModal when user is within MAU limit', async () => {
+    jest.spyOn(useFeaturesMock, 'useGetFirstDisabledFeature').mockReturnValue({ featureEnabled: true })
+    jest.spyOn(usePlanEnforcementMock, 'default').mockReturnValue({ isPlanEnforcementEnabled: true, isFreePlan: true })
+
+    renderComponent()
+    const createTargetButton = screen.getByRole('button', { name: 'cf.targets.create' })
+    userEvent.click(createTargetButton)
+
+    await waitFor(() => {
+      const createTargetModal = screen.getByText('cf.targets.addTargetsLabel')
+      expect(createTargetModal).toBeInTheDocument()
+      expect(screen.queryByText('cf.planEnforcement.upgradeRequired')).not.toBeInTheDocument()
+    })
+  })
+
+  test('+ Target(s) button should show plan enforcement tooltip when user exceeds MAU limit', async () => {
+    jest.spyOn(usePlanEnforcementMock, 'default').mockReturnValue({ isPlanEnforcementEnabled: true, isFreePlan: true })
+    jest
+      .spyOn(useFeaturesMock, 'useGetFirstDisabledFeature')
+      .mockReturnValue({ featureEnabled: false, disabledFeatureName: FeatureIdentifier.MAUS })
+
+    renderComponent()
+
+    const createTargetButton = screen.getByRole('button', { name: 'cf.targets.create' })
+    fireEvent.mouseOver(createTargetButton)
+    await waitFor(() => {
+      expect(screen.getByText('cf.planEnforcement.upgradeRequired')).toBeInTheDocument()
+      expect(createTargetButton).toHaveClass('bp3-disabled')
+    })
   })
 })

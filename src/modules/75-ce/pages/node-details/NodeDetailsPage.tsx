@@ -194,7 +194,7 @@ const NodeDetailsPage: () => JSX.Element = () => {
   return (
     <>
       <Page.Header
-        title={nodeId}
+        title={infoData.name || nodeId}
         breadcrumbs={
           <Breadcrumbs
             links={[

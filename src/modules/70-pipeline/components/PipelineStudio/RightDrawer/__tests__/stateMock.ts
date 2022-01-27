@@ -7,6 +7,7 @@
 
 import { MultiTypeInputType } from '@wings-software/uicore'
 import { TemplateDrawerTypes } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineActions'
+import { Scope } from '@common/interfaces/SecretsInterface'
 import type { PipelineContextInterface } from '../../PipelineContext/PipelineContext'
 
 const stateMock = {
@@ -226,6 +227,7 @@ const pipelineContextMock: PipelineContextInterface = {
   setSchemaErrorView: () => undefined,
   isReadonly: false,
   view: 'VISUAL',
+  scope: Scope.PROJECT,
   updateGitDetails: () => new Promise<void>(() => undefined),
   updateEntityValidityDetails: () => new Promise<void>(() => undefined),
   setView: () => void 0,

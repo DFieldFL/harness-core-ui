@@ -9,14 +9,39 @@ import type { UseGetMockDataWithMutateAndRefetch } from '@common/utils/testUtils
 import type { ResponsePageInputSetSummaryResponse } from 'services/pipeline-ng'
 import type { InputSetValue } from '../utils'
 
-export const mockInputSetsValue: InputSetValue[] = [
+export const multipleSelectedInputSets: InputSetValue[] = [
   {
     type: 'INPUT_SET',
-    value: 'input1',
-    label: 'input1',
+    value: 'inputset1',
+    label: 'is1'
+  },
+  {
+    type: 'INPUT_SET',
+    value: 'inputset2',
+    label: 'is2'
+  }
+]
+
+export const multipleSelectedInputSetsWithGitDetails: InputSetValue[] = [
+  {
+    type: 'INPUT_SET',
+    value: 'inputsetwithgit1',
+    label: 'inputsetwithgit1',
     gitDetails: {
-      repoIdentifier: 'satyamgitsync',
-      branch: 'main'
+      repoIdentifier: 'gitSyncRepoTest',
+      branch: 'master'
+    }
+  },
+  {
+    type: 'INPUT_SET',
+    value: 'inputsetwithgit2',
+    label: 'inputsetwithgit2',
+    gitDetails: {
+      repoIdentifier: 'gitSyncRepo',
+      branch: 'feature'
+    },
+    entityValidityDetails: {
+      valid: false
     }
   }
 ]
@@ -90,13 +115,36 @@ export const mockInputSetsListWithGitDetails: UseGetMockDataWithMutateAndRefetch
       data: {
         content: [
           {
-            identifier: 'inputsetwithgit',
+            identifier: 'inputsetwithgit1',
             inputSetType: 'INPUT_SET',
-            name: 'inputsetwithgit',
+            name: 'inputsetwithgit1',
             pipelineIdentifier: 'PipelineId',
             gitDetails: {
-              repoIdentifier: 'repo',
-              branch: 'branch'
+              repoIdentifier: 'gitSyncRepoTest',
+              branch: 'master'
+            }
+          },
+          {
+            identifier: 'inputsetwithgit2',
+            inputSetType: 'INPUT_SET',
+            name: 'inputsetwithgit2',
+            pipelineIdentifier: 'PipelineId',
+            gitDetails: {
+              repoIdentifier: 'gitSyncRepo',
+              branch: 'feature'
+            },
+            entityValidityDetails: {
+              valid: false
+            }
+          },
+          {
+            identifier: 'overlay1',
+            inputSetType: 'OVERLAY_INPUT_SET',
+            name: 'ol1',
+            pipelineIdentifier: 'PipelineId',
+            gitDetails: {
+              repoIdentifier: 'gitSyncRepo',
+              branch: 'feature'
             }
           }
         ]

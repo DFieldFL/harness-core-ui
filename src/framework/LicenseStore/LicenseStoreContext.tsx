@@ -12,6 +12,7 @@ import { isEqual } from 'lodash-es'
 
 import isEmpty from 'lodash/isEmpty'
 import { PageSpinner } from '@harness/uicore'
+import { useDeepCompareEffect } from '@common/hooks'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import type { Module } from '@common/interfaces/RouteInterfaces'
 
@@ -220,7 +221,7 @@ export function LicenseStoreProvider(props: React.PropsWithChildren<unknown>): R
     [shouldLicensesBeDisabled]
   )
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     const allLicenses = accountLicensesData?.data?.allModuleLicenses || {}
     const licenses: { [key: string]: ModuleLicenseDTO } = {}
     Object.keys(allLicenses).forEach((key: string) => {

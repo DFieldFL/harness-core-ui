@@ -11,6 +11,7 @@ import { Card, Color, Layout, Text } from '@wings-software/uicore'
 import {
   GetActiveInstancesByServiceIdEnvIdAndBuildIdsQueryParams,
   InstanceDetailsDTO,
+  NativeHelmInstanceInfoDTO,
   useGetActiveInstancesByServiceIdEnvIdAndBuildIds
 } from 'services/cd-ng'
 import type { ProjectPathProps, ServicePathProps } from '@common/interfaces/RouteInterfaces'
@@ -142,6 +143,24 @@ export const ActiveServiceInstancePopover: React.FC<ActiveServiceInstancePopover
       ]
     }
   ]
-
+  if ((instanceData.instanceInfoDTO as NativeHelmInstanceInfoDTO)?.helmChartInfo) {
+    sectionData.push({
+      header: getString('cd.serviceDashboard.helmChartDetails'),
+      values: [
+        {
+          label: getString('cd.serviceDashboard.helmChartName'),
+          value: (instanceData.instanceInfoDTO as NativeHelmInstanceInfoDTO).helmChartInfo?.name as string
+        },
+        {
+          label: getString('cd.serviceDashboard.helmRopoUrl'),
+          value: (instanceData.instanceInfoDTO as NativeHelmInstanceInfoDTO).helmChartInfo?.repoUrl as string
+        },
+        {
+          label: getString('helmVersion'),
+          value: (instanceData.instanceInfoDTO as NativeHelmInstanceInfoDTO).helmChartInfo?.version as string
+        }
+      ]
+    })
+  }
   return <Section data={sectionData}></Section>
 }

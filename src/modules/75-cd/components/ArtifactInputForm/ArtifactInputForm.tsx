@@ -187,6 +187,8 @@ const ArtifactInputSetForm: React.FC<KubernetesServiceInputFormProps> = ({
       )
     )
   )
+  //Not using lodash defaultTo on purpose, as it is leading to lint error because defaultPipelineId is treated to have nullable value
+  const defaultPipelineId = pipelineIdentifier ?? formik?.values?.identifier
 
   const {
     data: dockerdata,
@@ -203,7 +205,7 @@ const ArtifactInputSetForm: React.FC<KubernetesServiceInputFormProps> = ({
     queryParams: {
       imagePath: lastQueryData.imagePath,
       connectorRef: lastQueryData.connectorRef,
-      pipelineIdentifier,
+      pipelineIdentifier: defaultPipelineId,
       fqnPath: getFqnPath(),
       accountIdentifier: accountId,
       orgIdentifier,
@@ -229,7 +231,7 @@ const ArtifactInputSetForm: React.FC<KubernetesServiceInputFormProps> = ({
     queryParams: {
       imagePath: lastQueryData.imagePath || '',
       connectorRef: lastQueryData.connectorRef || '',
-      pipelineIdentifier,
+      pipelineIdentifier: defaultPipelineId,
       fqnPath: getFqnPath(),
       registryHostname: lastQueryData.registryHostname || '',
       accountIdentifier: accountId,
@@ -256,7 +258,7 @@ const ArtifactInputSetForm: React.FC<KubernetesServiceInputFormProps> = ({
     queryParams: {
       imagePath: lastQueryData.imagePath || '',
       connectorRef: lastQueryData.connectorRef || '',
-      pipelineIdentifier,
+      pipelineIdentifier: defaultPipelineId,
       fqnPath: getFqnPath(),
       region: lastQueryData.region || '',
       accountIdentifier: accountId,

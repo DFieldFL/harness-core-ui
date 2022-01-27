@@ -26,6 +26,7 @@ import { errorCheck } from '@common/utils/formikHelpers'
 import { useToaster } from '@common/components'
 import { getScopeBasedManagedResourceGroup, isAssignmentFieldDisabled } from '@rbac/utils/utils'
 import { getScopeFromDTO } from '@common/components/EntityReference/EntityReference'
+import NewUserRoleDropdown from '@rbac/components/NewUserRoleDropdown/NewUserRoleDropdown'
 import type { Assignment, RoleOption, UserRoleAssignmentValues } from './UserRoleAssigment'
 import type { RoleAssignmentValues } from './RoleAssignment'
 import css from './RoleAssignmentForm.module.scss'
@@ -128,16 +129,7 @@ const RoleAssignmentForm: React.FC<RoleAssignmentFormProps> = ({ noRoleAssignmen
             // eslint-disable-next-line react/display-name
             renderer: (value, _index, handleChange, error) => (
               <Layout.Vertical flex={{ alignItems: 'end' }} spacing="xsmall">
-                <Select
-                  items={roles}
-                  value={value}
-                  popoverClassName={css.selectPopover}
-                  inputProps={{
-                    placeholder: getString('rbac.usersPage.selectRole')
-                  }}
-                  disabled={isAssignmentFieldDisabled(value)}
-                  onChange={handleChange}
-                />
+                <NewUserRoleDropdown value={value} handleChange={handleChange} roles={roles} />
                 {errorCheck('assignments', formik) && error ? (
                   <Text intent="danger" font="xsmall">
                     {getString('rbac.usersPage.validation.role')}

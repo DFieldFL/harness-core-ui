@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
-import { cloneDeep, get } from 'lodash-es'
+import { cloneDeep, defaultTo, get } from 'lodash-es'
 import { parse } from 'yaml'
 import { Menu } from '@blueprintjs/core'
 
@@ -22,11 +22,11 @@ import {
 import { ArtifactSourceBase, ArtifactSourceRenderProps } from '@cd/factory/ArtifactSourceFactory/ArtifactSourceBase'
 import { yamlStringify } from '@common/utils/YamlHelperMethods'
 import { useMutateAsGet } from '@common/hooks'
-import { ErrorHandler } from '@common/components/ErrorHandler/ErrorHandler'
+import { ErrorHandler, ErrorHandlerProps } from '@common/components/ErrorHandler/ErrorHandler'
 import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
 import { EXPRESSION_STRING } from '@pipeline/utils/constants'
-import { useGetBuildDetailsForEcrWithYaml } from 'services/cd-ng'
-import { useListAwsRegions } from 'services/portal'
+import { PipelineInfoConfig, useGetBuildDetailsForEcrWithYaml } from 'services/cd-ng'
+import { NameValuePair, useListAwsRegions } from 'services/portal'
 import ExperimentalInput from './K8sServiceSpecForms/ExperimentalInput'
 import { clearRuntimeInputValue, isFieldRuntime } from './K8sServiceSpecHelper'
 import css from './K8sServiceSpec.module.scss'
@@ -35,7 +35,7 @@ interface ECRRenderContent extends ArtifactSourceRenderProps {
   isTagsSelectionDisabled: (data: ArtifactSourceRenderProps) => boolean
 }
 
-const Content = (props: ECRRenderContent) => {
+const Content = (props: ECRRenderContent): JSX.Element => {
   const {
     getString,
     isPrimaryArtifactsRuntime,
@@ -56,7 +56,7 @@ const Content = (props: ECRRenderContent) => {
     isTagsSelectionDisabled
   } = props
 
-  const getYamlData = () =>
+  const getYamlData = (): PipelineInfoConfig =>
     clearRuntimeInputValue(
       cloneDeep(
         parse(
@@ -110,8 +110,8 @@ const Content = (props: ECRRenderContent) => {
   useEffect(() => {
     if (Array.isArray(ecrTagsData?.data?.buildDetailsList)) {
       const toBeSetTagsList = ecrTagsData?.data?.buildDetailsList?.map(({ tag }) => ({
-        label: tag || '',
-        value: tag || ''
+        label: defaultTo(tag, ''),
+        value: defaultTo(tag, '')
       }))
       if (toBeSetTagsList) {
         setTagsList(toBeSetTagsList)
@@ -124,10 +124,18 @@ const Content = (props: ECRRenderContent) => {
       accountId
     }
   })
-  const regions = (regionData?.resource || []).map((region: any) => ({
+  const regions = defaultTo(regionData?.resource, []).map((region: NameValuePair) => ({
     value: region.value,
     label: region.name
   }))
+
+  const onChange = (): void => {
+    const tagPath = `${path}.artifacts.primary.spec.tag`
+    const tagValue = get(formik?.values, tagPath, '')
+    if (getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED && tagValue?.length) {
+      formik?.setFieldValue(tagPath, '')
+    }
+  }
 
   return (
     <div className={cx(css.nopadLeft, css.accordionSummary)} id={`Stage.${props.stageIdentifier}.Service.Artifacts`}>
@@ -155,16 +163,14 @@ const Content = (props: ECRRenderContent) => {
                   allowableTypes: [MultiTypeInputType.EXPRESSION, MultiTypeInputType.FIXED],
                   expressions
                 }}
-                onChange={() => {
-                  const tagPath = `${path}.artifacts.primary.spec.tag`
-                  const tagValue = get(formik?.values, tagPath, '')
-                  getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED &&
-                    tagValue?.length &&
-                    formik?.setFieldValue(tagPath, '')
-                }}
+                onChange={onChange}
                 className={css.connectorMargin}
                 type="Aws"
-                gitScope={{ repo: repoIdentifier || '', branch: branch || '', getDefaultFromOtherRepo: true }}
+                gitScope={{
+                  repo: defaultTo(repoIdentifier, ''),
+                  branch: defaultTo(branch, ''),
+                  getDefaultFromOtherRepo: true
+                }}
               />
             )}
 
@@ -172,13 +178,7 @@ const Content = (props: ECRRenderContent) => {
               <ExperimentalInput
                 formik={formik}
                 multiTypeInputProps={{
-                  onChange: () => {
-                    const tagPath = `${path}.artifacts.primary.spec.tag`
-                    const tagValue = get(formik?.values, tagPath, '')
-                    getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED &&
-                      tagValue?.length &&
-                      formik?.setFieldValue(tagPath, '')
-                  },
+                  onChange: onChange,
                   selectProps: {
                     usePortal: true,
                     addClearBtn: true && !readonly,
@@ -204,13 +204,7 @@ const Content = (props: ECRRenderContent) => {
                   allowableTypes: [MultiTypeInputType.FIXED, MultiTypeInputType.EXPRESSION]
                 }}
                 name={`${path}.artifacts.primary.spec.imagePath`}
-                onChange={() => {
-                  const tagPath = `${path}.artifacts.primary.spec.tag`
-                  const tagValue = get(formik?.values, tagPath, '')
-                  getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED &&
-                    tagValue?.length &&
-                    formik?.setFieldValue(tagPath, '')
-                }}
+                onChange={onChange}
               />
             )}
 
@@ -222,7 +216,7 @@ const Content = (props: ECRRenderContent) => {
                   selectItems={tagsList}
                   useValue
                   multiTypeInputProps={{
-                    onFocus: (e: any) => {
+                    onFocus: (e: React.ChangeEvent<HTMLInputElement>) => {
                       if (
                         e?.target?.type !== 'text' ||
                         (e?.target?.type === 'text' && e?.target?.placeholder === EXPRESSION_STRING)
@@ -262,7 +256,7 @@ const Content = (props: ECRRenderContent) => {
                   name={`${path}.artifacts.primary.spec.tag`}
                 />
                 {fetchTagsError ? (
-                  <ErrorHandler responseMessages={(fetchTagsError.data as any)?.responseMessages} />
+                  <ErrorHandler responseMessages={(fetchTagsError.data as ErrorHandlerProps)?.responseMessages} />
                 ) : null}
               </Layout.Vertical>
             )}
@@ -288,7 +282,7 @@ export class ECRArtifactSource extends ArtifactSourceBase<ArtifactSourceRenderPr
   protected artifactType = 'Ecr'
   protected isSidecar = false
 
-  isTagsSelectionDisabled(props: ArtifactSourceRenderProps) {
+  isTagsSelectionDisabled(props: ArtifactSourceRenderProps): boolean {
     const { artifacts, initialValues } = props
     const isImagePathPresent =
       getMultiTypeFromValue(artifacts?.primary?.spec?.imagePath) !== MultiTypeInputType.RUNTIME
@@ -305,7 +299,7 @@ export class ECRArtifactSource extends ArtifactSourceBase<ArtifactSourceRenderPr
     return !(isImagePathPresent && isConnectorPresent && isRegionPresent)
   }
 
-  renderContent(props: ArtifactSourceRenderProps) {
+  renderContent(props: ArtifactSourceRenderProps): JSX.Element | null {
     if (!props.isArtifactsRuntime) {
       return null
     }

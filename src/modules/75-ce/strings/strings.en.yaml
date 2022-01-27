@@ -278,7 +278,7 @@ co:
   sshSetup: 'AutoStopping has first class support for accessing the resources managed by this Rule via SSH or RDP. Doing so will require downloading the Harness CLI. Choose your operating system and download the respective Harness CLI. '
   gatewayAccess:
     subtitle: 'Now that you have configured the Rule, choose how you would like to access the resources managed by this rule.'
-    accessDescription: 'Choose how you would like to access the underlying application running on the resources managed by this Rule.'
+    accessDescription: 'Choose how you would like to access the underlying application running on the resources managed by this Rule. {{optionalText}}'
     dnsLink: 'DNS Link'
     dnsLinkHeader: 'Setup access via DNS Link (HTTP or HTTPS URL) to the underlying application running on the resources managed by this AutoStopping Rule.'
     sshRdp: 'SSH / RDP'

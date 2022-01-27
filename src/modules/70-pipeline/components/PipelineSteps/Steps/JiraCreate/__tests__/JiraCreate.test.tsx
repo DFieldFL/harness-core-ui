@@ -257,6 +257,7 @@ describe('Jira Create tests', () => {
         connectorRef: 'cid1',
         projectKey: 'pid1',
         issueType: 'itd1',
+        delegateSelectors: undefined,
         fields: [
           { name: 'Summary', value: 'summary' },
           { name: 'Description', value: 'descriptionval' },

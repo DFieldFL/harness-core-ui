@@ -28,7 +28,6 @@ import {
   FormMultiTypeDurationField,
   getDurationValidationSchema
 } from '@common/components/MultiTypeDuration/MultiTypeDuration'
-import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import { useVariablesExpression } from '../PiplineHooks/useVariablesExpression'
 import css from './AdvancedOptions.module.scss'
 
@@ -52,7 +51,6 @@ const stageExecutionOptions = [
 export const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({ onApplyChanges, onDiscard, pipeline }) => {
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
-  const { RUN_INDIVIDUAL_STAGE } = useFeatureFlags()
 
   return (
     <Formik<PipelineInfoConfig>
@@ -108,34 +106,33 @@ export const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({ onApplyChanges
                 </Layout.Vertical>
               </Card>
             </Layout.Vertical>
-            {RUN_INDIVIDUAL_STAGE && (
-              <Layout.Vertical spacing="small">
-                <Text font={{ variation: FontVariation.H5 }} data-tooltip-id="stageExecution_settings">
-                  {getString('pipeline.stageExecutionSettings')}
-                  <HarnessDocTooltip useStandAlone={true} tooltipId="stageExecution_settings" />
-                </Text>
-                <Card>
-                  <Layout.Vertical spacing="small">
-                    <Text
-                      color={Color.GREY_600}
-                      style={{ marginBottom: 4 }}
-                      font={{ variation: FontVariation.SMALL_SEMI }}
-                    >
-                      {getString('pipeline.stageExecutionsHelperText')}
-                    </Text>
-                    <FormInput.RadioGroup
-                      name="allowStageExecutions"
-                      radioGroup={{ inline: true }}
-                      items={stageExecutionOptions as any}
-                      onChange={e => {
-                        const currentValue = e.currentTarget?.value === 'true'
-                        formikProps?.setFieldValue('allowStageExecutions', currentValue)
-                      }}
-                    />
-                  </Layout.Vertical>
-                </Card>
-              </Layout.Vertical>
-            )}
+
+            <Layout.Vertical spacing="small">
+              <Text font={{ variation: FontVariation.H5 }} data-tooltip-id="stageExecution_settings">
+                {getString('pipeline.stageExecutionSettings')}
+                <HarnessDocTooltip useStandAlone={true} tooltipId="stageExecution_settings" />
+              </Text>
+              <Card>
+                <Layout.Vertical spacing="small">
+                  <Text
+                    color={Color.GREY_600}
+                    style={{ marginBottom: 4 }}
+                    font={{ variation: FontVariation.SMALL_SEMI }}
+                  >
+                    {getString('pipeline.stageExecutionsHelperText')}
+                  </Text>
+                  <FormInput.RadioGroup
+                    name="allowStageExecutions"
+                    radioGroup={{ inline: true }}
+                    items={stageExecutionOptions as any}
+                    onChange={e => {
+                      const currentValue = e.currentTarget?.value === 'true'
+                      formikProps?.setFieldValue('allowStageExecutions', currentValue)
+                    }}
+                  />
+                </Layout.Vertical>
+              </Card>
+            </Layout.Vertical>
           </Page.Body>
         </>
       )}

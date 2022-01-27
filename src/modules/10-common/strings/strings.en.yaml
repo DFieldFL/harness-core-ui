@@ -266,13 +266,13 @@ gitSync:
     message: Sync is happening in the background. You can check on the status in the branch dropdown. This might take a few minutes to complete.
   unSynced:
     header: Sync the branch
-    message1: 'Branch {{branch}} is currently not Synced.'
+    message1: 'Branch {{{branch}}} is currently not Synced.'
     message2: 'Syncing the branch may take a while. Do you want to continue?'
   savingInProgress: Saving in progress
-  pushingChangestoBranch: 'Pushing changes to branch {{branch}}'
-  creatingPR: 'Creating a Pull Request from {{fromBranch}} to branch {{toBranch}}'
+  pushingChangestoBranch: 'Pushing changes to branch {{{branch}}}'
+  creatingPR: 'Creating a Pull Request from {{{fromBranch}}} to branch {{{toBranch}}}'
   unableToCreatePR: Unable to create PR
-  settingUpNewBranch: 'Setting up new branch {{branch}}'
+  settingUpNewBranch: 'Setting up new branch {{{branch}}}'
   branchSyncNotAllowed: Syncing a branch is not allowed from here. Please go to {{entityType}} list page.
   outOfSync: '{{entityType}} {{name}} is out of sync with Git.'
   fixAllErrors: Fix all the errors indicated in the YAML Editor to resolve the issue.
@@ -731,3 +731,7 @@ roleAssignmentLabel: Role Assignment
 triggerLabel: Trigger
 delegateTokenLabel: Delegate Token
 clientSecret: Client Secret
+copy: Copy
+levelUp: LEVEL UP
+overuse: OVERUSE
+scope: '{{ $.delegate.Scope }}'

@@ -11,6 +11,10 @@ import { TestWrapper } from '@common/utils/testUtils'
 import CreateK8sDelegate from '../CreateK8sDelegate'
 import DelegateSizesmock from './DelegateSizesmock.json'
 
+const featureFlags = {
+  NG_SHOW_DEL_TOKENS: true
+}
+
 jest.mock('@common/components/YAMLBuilder/YamlBuilder')
 const mockGetCallFunction = jest.fn()
 jest.mock('services/portal', () => ({
@@ -53,7 +57,7 @@ const onBack = jest.fn()
 describe('Create K8s Delegate', () => {
   test('render data', () => {
     const { container } = render(
-      <TestWrapper>
+      <TestWrapper defaultAppStoreValues={{ featureFlags }}>
         <CreateK8sDelegate onBack={onBack} />
       </TestWrapper>
     )
@@ -61,7 +65,7 @@ describe('Create K8s Delegate', () => {
   })
   test('test back btn', () => {
     const { container } = render(
-      <TestWrapper>
+      <TestWrapper defaultAppStoreValues={{ featureFlags }}>
         <CreateK8sDelegate onBack={onBack} />
       </TestWrapper>
     )

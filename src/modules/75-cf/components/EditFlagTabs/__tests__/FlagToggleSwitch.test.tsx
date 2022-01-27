@@ -98,7 +98,7 @@ describe('FlagToggleSwitch', () => {
     fireEvent.mouseOver(screen.getByTestId('flag-status-switch') as HTMLButtonElement)
 
     await waitFor(() => {
-      expect(screen.getByText('common.feature.upgradeRequired.pleaseUpgrade')).toBeInTheDocument()
+      expect(screen.getByText('cf.planEnforcement.upgradeRequired')).toBeInTheDocument()
       expect(screen.getByTestId('flag-status-switch')).toBeDisabled()
     })
   })
@@ -115,7 +115,7 @@ describe('FlagToggleSwitch', () => {
     fireEvent.mouseOver(screen.getByTestId('flag-status-switch') as HTMLButtonElement)
 
     await waitFor(() => {
-      expect(screen.queryByText('common.feature.upgradeRequired.pleaseUpgrade')).not.toBeInTheDocument()
+      expect(screen.queryByText('cf.planEnforcement.upgradeRequired')).not.toBeInTheDocument()
       expect(screen.getByTestId('flag-status-switch')).not.toBeDisabled()
     })
   })
@@ -134,7 +134,7 @@ describe('FlagToggleSwitch', () => {
     fireEvent.mouseOver(screen.getByTestId('flag-status-switch') as HTMLButtonElement)
 
     await waitFor(() => {
-      expect(screen.queryByText('common.feature.upgradeRequired.pleaseUpgrade')).not.toBeInTheDocument()
+      expect(screen.queryByText('cf.planEnforcement.upgradeRequired')).not.toBeInTheDocument()
       expect(screen.getByTestId('flag-status-switch')).not.toBeDisabled()
     })
   })

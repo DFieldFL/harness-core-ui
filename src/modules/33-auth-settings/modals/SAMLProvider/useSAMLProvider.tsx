@@ -8,19 +8,19 @@
 import React from 'react'
 import { useModalHook, Dialog } from '@wings-software/uicore'
 import { useStrings } from 'framework/strings'
-import type { SamlSettings } from 'services/cd-ng'
+import type { SAMLSettings } from 'services/cd-ng'
 import SAMLProviderForm from './views/SAMLProviderForm'
 interface Props {
   onSuccess: () => void
 }
 
 interface UseSAMLProviderReturn {
-  openSAMlProvider: (_samlProvider?: SamlSettings) => void
+  openSAMlProvider: (_samlProvider?: SAMLSettings) => void
   closeSAMLProvider: () => void
 }
 
 export const useSAMLProviderModal = ({ onSuccess }: Props): UseSAMLProviderReturn => {
-  const [samlProvider, setSamlProvider] = React.useState<SamlSettings>()
+  const [samlProvider, setSamlProvider] = React.useState<SAMLSettings>()
   const { getString } = useStrings()
   const [showModal, hideModal] = useModalHook(
     () => (
@@ -44,7 +44,7 @@ export const useSAMLProviderModal = ({ onSuccess }: Props): UseSAMLProviderRetur
     [samlProvider]
   )
 
-  const open = (_samlProvider?: SamlSettings): void => {
+  const open = (_samlProvider?: SAMLSettings): void => {
     setSamlProvider(_samlProvider)
     showModal()
   }

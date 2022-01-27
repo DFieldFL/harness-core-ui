@@ -8,12 +8,8 @@
 // this is an auto-generated file, do not update this manually
 declare const styles: {
   readonly cardSummary: string
+  readonly environment: string
   readonly heading: string
-  readonly serviceName: string
-  readonly serviceWrapper: string
-  readonly servicesContainer: string
-  readonly servicesIcon: string
-  readonly servicesList: string
-  readonly toggle: string
+  readonly service: string
 }
 export default styles

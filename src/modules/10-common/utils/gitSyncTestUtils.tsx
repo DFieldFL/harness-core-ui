@@ -15,11 +15,11 @@ import { GitSyncStoreContext, GitSyncStoreProps } from '../../../framework/GitRe
 import gitSyncListResponse from './__tests__/mocks/gitSyncRepoListMock.json'
 
 export interface GitSyncTestWrapperProps extends TestWrapperProps {
-  gitSyncSoreValues?: Partial<GitSyncStoreProps>
+  gitSyncStoreValues?: Partial<GitSyncStoreProps>
 }
 
 export const GitSyncTestWrapper: React.FC<GitSyncTestWrapperProps> = props => {
-  const { defaultAppStoreValues, gitSyncSoreValues } = props
+  const { defaultAppStoreValues, gitSyncStoreValues } = props
   return (
     <TestWrapper
       {...pick(props, ['path', 'pathParams', 'queryParams'])}
@@ -43,7 +43,7 @@ export const GitSyncTestWrapper: React.FC<GitSyncTestWrapperProps> = props => {
             codeManagers: [{ authentication: { spec: { spec: { username: 'dev' } } } }],
             updateStore: noop,
             refreshStore: noop,
-            ...gitSyncSoreValues
+            ...gitSyncStoreValues
           } as GitSyncStoreProps
         }
       >

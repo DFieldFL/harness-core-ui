@@ -291,6 +291,7 @@ export interface AccessControlCheckError {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -595,6 +596,7 @@ export interface Error {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -902,6 +904,7 @@ export interface Failure {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -1298,6 +1301,7 @@ export interface ResponseMessage {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -1483,6 +1487,19 @@ export interface StackTraceElement {
   lineNumber?: number
   methodName?: string
   nativeMethod?: boolean
+}
+
+export interface TemplateInputsErrorDTO {
+  fieldName?: string
+  identifierOfErrorSource?: string
+  message?: string
+}
+
+export type TemplateInputsErrorMetadataDTO = ErrorMetadataDTO & {
+  errorMap?: {
+    [key: string]: TemplateInputsErrorDTO
+  }
+  errorYaml?: string
 }
 
 export interface Throwable {

@@ -136,9 +136,15 @@ export const SegmentsPage: React.FC = () => {
         {getString('cf.segments.pageDescription')}
       </Text>
       <FlexExpander />
-      <ExpandingSearchInput name="findFlag" placeholder={getString('search')} onChange={onSearchInputChanged} />
+      <ExpandingSearchInput
+        alwaysExpanded
+        name="findFlag"
+        placeholder={getString('search')}
+        onChange={onSearchInputChanged}
+      />
     </Layout.Horizontal>
   )
+
   const { showError, clear } = useToaster()
   const deleteSegmentParams = useMemo(
     () => ({
@@ -308,6 +314,8 @@ export const SegmentsPage: React.FC = () => {
     </>
   )
 
+  const displayToolbar = !noEnvironmentExists && (!noSegmentExists || searchTerm)
+
   return (
     <ListingPageTemplate
       pageTitle={title}
@@ -315,7 +323,7 @@ export const SegmentsPage: React.FC = () => {
         <TargetManagementHeader environmentSelect={<EnvironmentSelect />} hasEnvironments={!!environments?.length} />
       }
       headerStyle={{ display: 'flex' }}
-      toolbar={!noEnvironmentExists && toolbar}
+      toolbar={displayToolbar && toolbar}
       content={((!error || noEnvironmentExists) && content) || null}
       pagination={
         !noEnvironmentExists &&

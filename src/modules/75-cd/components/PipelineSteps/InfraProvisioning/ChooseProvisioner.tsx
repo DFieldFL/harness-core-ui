@@ -55,7 +55,10 @@ const useChooseProvisioner = (props: ChooseProvisionerProps) => {
   }
   const ProvDialog = (): JSX.Element => (
     <Dialog
-      onClose={hideModal}
+      onClose={() => {
+        props.onClose()
+        hideModal()
+      }}
       enforceFocus={false}
       className={cx(Classes.DIALOG, css.chooseProvisionerDialog)}
       {...modalProps}

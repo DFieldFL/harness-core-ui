@@ -1,0 +1,9 @@
+{
+  "status": "SUCCESS",
+  "data": {
+    "mergedPipelineYaml": "name: NN\nidentifier: NN\nprojectIdentifier: Chirag\norgIdentifier: harness\ntags: {}\nstages:\n  - stage:\n      name: S2\n      identifier: S2\n      description: \"\"\n      type: Deployment\n      spec:\n        serviceConfig:\n          serviceRef: S\n          serviceDefinition:\n            type: Kubernetes\n            spec:\n              variables: []\n              artifacts:\n                primary:\n                  type: Ecr\n                  spec:\n                    connectorRef: <+input>\n                    imagePath: <+input>\n                    region: <+input>\n                    tag: <+input>\n        infrastructure:\n          environmentRef: newEnv\n          infrastructureDefinition:\n            type: KubernetesDirect\n            spec:\n              connectorRef: <+input>\n              namespace: <+input>\n              releaseName: release-<+INFRA_KEY>\n          allowSimultaneousDeployments: false\n        execution:\n          steps:\n            - step:\n                name: Rollout Deployment\n                identifier: rolloutDeployment\n                type: K8sRollingDeploy\n                timeout: 10m\n                spec:\n                  skipDryRun: false\n          rollbackSteps:\n            - step:\n                name: Rollback Rollout Deployment\n                identifier: rollbackRolloutDeployment\n                type: K8sRollingRollback\n                timeout: 10m\n                spec: {}\n      tags: {}\n      failureStrategies:\n        - onFailure:\n            errors:\n              - AllErrors\n            action:\n              type: StageRollback\n",
+    "templateReferenceSummaries": []
+  },
+  "metaData": null,
+  "correlationId": "fa9edc77-c155-42f5-b0af-93c1f0546911"
+}

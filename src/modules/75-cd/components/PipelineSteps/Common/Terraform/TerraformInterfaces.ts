@@ -5,6 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
+import { unset } from 'lodash-es'
 import { getMultiTypeFromValue, MultiTypeInputType } from '@wings-software/uicore'
 import type { Scope } from '@common/interfaces/SecretsInterface'
 import type { GitFilterScope } from '@common/components/GitFilters/GitFilters'
@@ -17,6 +18,7 @@ import type {
   StringNGVariable,
   TerraformApplyStepInfo,
   TerraformBackendConfig,
+  TerraformConfigFilesWrapper,
   TerraformDestroyStepInfo,
   TerraformExecutionData,
   TerraformPlanExecutionData,
@@ -44,7 +46,7 @@ export interface TerraformProps<T = TerraformData> {
     path?: string
   }
   readonly?: boolean
-  path?: any
+  path?: string
   stepType?: string
   gitScope?: GitFilterScope
 }
@@ -299,7 +301,7 @@ export const onSubmitTerraformData = (values: any): TFFormData => {
         }
       }
     } else {
-      delete values?.spec?.configuration?.spec?.backendConfig
+      unset(values?.spec?.configuration?.spec, 'backendConfig')
     }
 
     if (envMap.length) {
@@ -315,7 +317,7 @@ export const onSubmitTerraformData = (values: any): TFFormData => {
     if (values?.spec?.configuration?.spec?.varFiles?.length) {
       configObject['varFiles'] = values?.spec?.configuration?.spec?.varFiles
     } else {
-      delete values?.spec?.configuration?.spec?.varFiles
+      unset(values?.spec?.configuration?.spec, 'varFiles')
     }
 
     if (
@@ -390,12 +392,12 @@ export const onSubmitTFPlanData = (values: any): TFPlanFormData => {
     })
   }
 
-  const connectorValue = values?.spec?.configuration?.configFiles?.store?.spec?.connectorRef as any
+  const connectorValue = values?.spec?.configuration?.configFiles?.store?.spec?.connectorRef
 
   const configObject: TerraformPlanExecutionData = {
     command: values?.spec?.configuration?.command,
     workspace: values?.spec?.configuration?.workspace,
-    configFiles: {} as any,
+    configFiles: {} as TerraformConfigFilesWrapper,
     secretManagerRef: ''
   }
   if (values?.spec?.configuration?.backendConfig?.spec?.content) {
@@ -451,7 +453,7 @@ export const onSubmitTFPlanData = (values: any): TFPlanFormData => {
       : ''
   }
 
-  const payload = {
+  return {
     ...values,
     spec: {
       ...values.spec,
@@ -461,8 +463,6 @@ export const onSubmitTFPlanData = (values: any): TFPlanFormData => {
       }
     }
   }
-
-  return payload
 }
 export interface InlineVar {
   varFile: {

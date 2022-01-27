@@ -62,8 +62,9 @@ import { usePermission } from '@rbac/hooks/usePermission'
 import { yamlStringify } from '@common/utils/YamlHelperMethods'
 import { useToaster } from '@common/exports'
 import routes from '@common/RouteDefinitions'
-import { useQueryParams } from '@common/hooks'
+import { useMutateAsGet, useQueryParams } from '@common/hooks'
 import { mergeTemplateWithInputSetData } from '@pipeline/utils/runPipelineUtils'
+import { useGetYamlWithTemplateRefsResolved } from 'services/template-ng'
 import { ErrorsStrip } from '../ErrorsStrip/ErrorsStrip'
 import GitPopover from '../GitPopover/GitPopover'
 import SelectStagetoRetry from './SelectStagetoRetry'
@@ -151,6 +152,7 @@ const RetryPipeline = ({
   const [notifyOnlyMe, setNotifyOnlyMe] = useState(false)
   const [triggerValidation, setTriggerValidation] = useState(false)
   const [listOfSelectedStages, setListOfSelectedStages] = useState<Array<string>>([])
+  const [resolvedPipeline, setResolvedPipeline] = React.useState<PipelineInfoConfig>()
 
   const yamlTemplate = React.useMemo(() => {
     return parse(inputSetTemplateYaml || '')?.pipeline
@@ -168,6 +170,21 @@ const RetryPipeline = ({
       branch
     }
   })
+
+  const { data: templateRefsResolvedPipeline, loading: loadingResolvedPipeline } = useMutateAsGet(
+    useGetYamlWithTemplateRefsResolved,
+    {
+      queryParams: {
+        accountIdentifier: accountId,
+        orgIdentifier,
+        pipelineIdentifier,
+        projectIdentifier
+      },
+      body: {
+        originalEntityYaml: yamlStringify(parse(pipelineResponse?.data?.yamlPipeline || '')?.pipeline)
+      }
+    }
+  )
 
   const { data: inputSetData, loading: loadingTemplate } = useGetInputsetYamlV2({
     planExecutionId: planExecutionIdentifier,
@@ -298,6 +315,13 @@ const RetryPipeline = ({
     [accountId, orgIdentifier, projectIdentifier, pipelineId]
   )
   const inputSets = inputSetResponse?.data?.content
+
+  React.useEffect(() => {
+    const mergedPipelineYaml = templateRefsResolvedPipeline?.data?.mergedPipelineYaml
+    if (mergedPipelineYaml) {
+      setResolvedPipeline(parse(mergedPipelineYaml))
+    }
+  }, [templateRefsResolvedPipeline?.data?.mergedPipelineYaml])
 
   useEffect(() => {
     // Won't actually render out RunPipelineForm
@@ -556,12 +580,12 @@ const RetryPipeline = ({
       )
     }
     const templateSource = inputSetTemplateYaml
-    if (currentPipeline?.pipeline && pipeline && templateSource) {
+    if (currentPipeline?.pipeline && resolvedPipeline && templateSource) {
       return (
         <>
           {existingProvide === 'existing' ? <div className={css.divider} /> : null}
           <PipelineInputSetForm
-            originalPipeline={{ ...pipeline }}
+            originalPipeline={resolvedPipeline}
             template={parse(templateSource)?.pipeline}
             readonly={false}
             path=""
@@ -576,7 +600,7 @@ const RetryPipeline = ({
     }
   }
 
-  if (loadingPipeline || loadingTemplate || inputSetLoading || loadingRetry) {
+  if (loadingPipeline || loadingResolvedPipeline || loadingTemplate || inputSetLoading || loadingRetry) {
     return <PageSpinner />
   }
 

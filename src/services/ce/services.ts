@@ -124,6 +124,7 @@ export const FetchBudgetSummaryDocument = gql`
       forecastCostAlerts
       forecastCost
       perspectiveId
+      perspectiveName
       growthRate
       startTime
       type
@@ -1219,6 +1220,7 @@ export type FetchBudgetSummaryQuery = {
     forecastCostAlerts: Array<Maybe<number>>
     forecastCost: number
     perspectiveId: string
+    perspectiveName: string
     growthRate: number
     startTime: any
     type: BudgetType
@@ -2277,6 +2279,7 @@ export type BudgetSummary = {
   name: Scalars['String']
   period: BudgetPeriod
   perspectiveId: Scalars['String']
+  perspectiveName: Scalars['String']
   startTime: Scalars['Long']
   timeLeft: Scalars['Int']
   timeScope: Scalars['String']

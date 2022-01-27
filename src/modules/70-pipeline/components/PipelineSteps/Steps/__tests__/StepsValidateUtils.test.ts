@@ -30,7 +30,6 @@ const strings = {
     uniqueStepAndServiceDependenciesId: 'Identifier should be unique across the steps and service dependencies',
     uniqueKeys: 'Keys should be unique',
     uniqueValues: 'Values should be unique',
-    matchPattern: 'Invalid value, please look for info above to read more',
     identifierRequired: 'validation.identifierRequired',
     validIdRegex: 'validation.validIdRegex'
   },
@@ -39,6 +38,14 @@ const strings = {
       nameIsRequired: 'common.validation.nameIsRequired',
       namePatternIsNotValid: 'common.validation.namePatternIsNotValid',
       fieldIsRequired: 'common.validation.fieldIsRequired'
+    }
+  },
+  pipeline: {
+    stepCommonFields: {
+      validation: {
+        invalidLimitCPU: 'pipeline.stepCommonFields.validation.invalidLimitCPU',
+        invalidLimitMemory: 'pipeline.stepCommonFields.validation.invalidLimitMemory'
+      }
     }
   }
 }

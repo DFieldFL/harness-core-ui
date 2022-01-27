@@ -129,7 +129,7 @@ const TargetGroupDetailPage: FC = () => {
         {isPlanEnforcementEnabled && <UsageLimitBanner />}
 
         <Container className={css.layout}>
-          <TargetGroupCriteria targetGroup={targetGroup as Segment} />
+          <TargetGroupCriteria targetGroup={targetGroup as Segment} reloadTargetGroup={refetchTargetGroup} />
 
           <Tabs id="TargetGroupDetailPageTabs">
             <Tab

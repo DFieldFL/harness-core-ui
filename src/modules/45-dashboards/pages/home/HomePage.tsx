@@ -19,8 +19,10 @@ import {
   Heading,
   Icon,
   useModalHook,
+  FontVariation,
   FormInput,
   Formik,
+  FormikForm as Form,
   ExpandingSearchInput,
   Pagination,
   SelectOption,
@@ -30,7 +32,6 @@ import {
 import { Select } from '@blueprintjs/select'
 
 import { Classes, Menu, MenuItem, Dialog } from '@blueprintjs/core'
-import { Form } from 'formik'
 import * as Yup from 'yup'
 import { NavLink, useParams, useHistory } from 'react-router-dom'
 import { useGet, useMutate } from 'restful-react'
@@ -100,7 +101,7 @@ type CustomColumn<T extends Record<string, any>> = Column<T>
 
 const CustomSelect = Select.ofType<SelectOption>()
 
-const FirstStep = (props: any): JSX.Element => {
+const NewDashboardForm = (props: any): JSX.Element => {
   const { getString } = useStrings()
   const { accountId, folderId } = useParams<{ accountId: string; folderId: string }>()
 
@@ -144,80 +145,82 @@ const FirstStep = (props: any): JSX.Element => {
   }
 
   return (
-    <Layout.Vertical spacing="xxlarge" padding="medium" style={{ height: '100%' }}>
-      <Text font="medium" color={Color.BLACK_100} style={{ marginTop: 'var(--spacing-large)' }}>
-        {getString('dashboards.createModal.stepOne')}
-      </Text>
-      <Formik
-        formName={'createDashboardForm'}
-        initialValues={{ name: '', description: '', folderId: folderId }}
-        validationSchema={Yup.object().shape({
-          name: Yup.string().trim().required(getString('dashboards.createModal.nameValidation'))
-        })}
-        onSubmit={(formData: { name: string; description: string; folderId: string }) => {
-          setErrorMessage('')
-          const response = submitForm(formData)
-          response
-            .then(data => {
-              if (data?.resource) {
-                history.push({
-                  pathname: routes.toViewCustomDashboard({
-                    viewId: data?.resource,
-                    accountId: accountId,
-                    folderId
+    <Layout.Horizontal>
+      <Layout.Vertical padding="xxlarge" width="50%">
+        <Heading level={3} font={{ variation: FontVariation.H3 }} padding={{ bottom: 'large' }}>
+          {getString('dashboards.createModal.stepOne')}
+        </Heading>
+        <Formik
+          formName={'createDashboardForm'}
+          initialValues={{ name: '', description: '', folderId: folderId }}
+          validationSchema={Yup.object().shape({
+            name: Yup.string().trim().required(getString('dashboards.createModal.nameValidation'))
+          })}
+          onSubmit={(formData: { name: string; description: string; folderId: string }) => {
+            setErrorMessage('')
+            const response = submitForm(formData)
+            response
+              .then(data => {
+                if (data?.resource) {
+                  history.push({
+                    pathname: routes.toViewCustomDashboard({
+                      viewId: data?.resource,
+                      accountId: accountId,
+                      folderId
+                    })
                   })
-                })
-                props?.hideModal?.()
-              }
-            })
-            .catch(() => {
-              setErrorMessage(getString('dashboards.createModal.submitFail'))
-            })
-        }}
-      >
-        {() => (
-          <Form className={css.formContainer}>
-            <Layout.Horizontal style={{ justifyContent: 'space-between' }}>
-              <Layout.Vertical spacing="xsmall" style={{ width: '70%', paddingRight: 'var(--spacing-xxlarge)' }}>
-                <FormInput.Select
-                  name="folderId"
-                  placeholder={'Choose the folder'}
-                  label={'Folder'}
-                  items={folderListItems}
-                />
-                <FormInput.Text
-                  name="name"
-                  label={getString('name')}
-                  placeholder={getString('dashboards.createModal.namePlaceholder')}
-                />
-                {/* <FormInput.Text
+                  props?.hideModal?.()
+                }
+              })
+              .catch(() => {
+                setErrorMessage(getString('dashboards.createModal.submitFail'))
+              })
+          }}
+        >
+          {() => (
+            <Form>
+              <Layout.Horizontal style={{ justifyContent: 'space-between' }}>
+                <Layout.Vertical style={{ width: '100%' }}>
+                  <FormInput.Select
+                    name="folderId"
+                    placeholder={'Choose the folder'}
+                    label={'Folder'}
+                    items={folderListItems}
+                  />
+                  <FormInput.Text
+                    name="name"
+                    label={getString('name')}
+                    placeholder={getString('dashboards.createModal.namePlaceholder')}
+                  />
+                  {/* <FormInput.Text
                   name="description"
                   label={getString('description')}
                   placeholder={getString('dashboards.createModal.descriptionPlaceholder')}
                 />
                  */}
-                <FormInput.KVTagInput name="description" label={getString('tagsLabel')} />
-                <Layout.Vertical style={{ marginTop: '180px' }}>
-                  <Button
-                    type="submit"
-                    intent="primary"
-                    style={{ width: '150px', marginTop: '60px' }}
-                    text={getString('continue')}
-                    disabled={loading}
-                    className={css.button}
-                  />
-                  {errorMessage && (
-                    <section style={{ color: 'var(--red-700)', marginTop: 'var(--spacing-small) !important' }}>
-                      {errorMessage}
-                    </section>
-                  )}
+                  <FormInput.KVTagInput name="description" label={getString('tagsLabel')} />
+                  <Layout.Vertical padding={{ top: 'medium' }}>
+                    <Button
+                      type="submit"
+                      intent="primary"
+                      style={{ width: '150px' }}
+                      text={getString('continue')}
+                      disabled={loading}
+                      className={css.button}
+                    />
+                    {errorMessage && (
+                      <section style={{ color: 'var(--red-700)', marginTop: 'var(--spacing-small) !important' }}>
+                        {errorMessage}
+                      </section>
+                    )}
+                  </Layout.Vertical>
                 </Layout.Vertical>
-              </Layout.Vertical>
-            </Layout.Horizontal>
-          </Form>
-        )}
-      </Formik>
-      <Container className={css.videoContainer}>
+              </Layout.Horizontal>
+            </Form>
+          )}
+        </Formik>
+      </Layout.Vertical>
+      <Container width="50%" flex={{ align: 'center-center' }} className={css.videoContainer}>
         <iframe
           src="//fast.wistia.net/embed/iframe/38m8yricif"
           scrolling="no"
@@ -229,7 +232,7 @@ const FirstStep = (props: any): JSX.Element => {
           height="200"
         ></iframe>
       </Container>
-    </Layout.Vertical>
+    </Layout.Horizontal>
   )
 }
 
@@ -517,16 +520,16 @@ const HomePage: React.FC = () => {
           setView(Views.CREATE)
           hideModal()
         }}
-        className={cx(css.dialog, Classes.DIALOG, {
+        className={cx(css.dashboardDialog, Classes.DIALOG, {
           [css.create]: view === Views.CREATE
         })}
       >
         {view === Views.CREATE ? (
-          <FirstStep
-            name={getString('dashboards.createModal.stepOne')}
+          <NewDashboardForm
             formData={{}}
-            hideModal={hideModal}
             handleViewChange={{}}
+            hideModal={hideModal}
+            name={getString('dashboards.createModal.stepOne')}
           />
         ) : null}
 

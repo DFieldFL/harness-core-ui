@@ -15,7 +15,8 @@ import {
   FormikForm,
   Layout,
   NestedAccordionProvider,
-  Heading,
+  FontVariation,
+  Text,
   Color,
   ButtonVariation,
   PageHeader,
@@ -61,6 +62,7 @@ import { IdentifierSchema, NameSchema } from '@common/utils/Validation'
 import { changeEmptyValuesToRunTimeInput } from '@pipeline/utils/stageHelpers'
 import { yamlStringify } from '@common/utils/YamlHelperMethods'
 import { NGBreadcrumbs } from '@common/components/NGBreadcrumbs/NGBreadcrumbs'
+import { useGetYamlWithTemplateRefsResolved } from 'services/template-ng'
 import { PipelineInputSetForm } from '../PipelineInputSetForm/PipelineInputSetForm'
 import { clearRuntimeInput, validatePipeline } from '../PipelineStudio/StepUtil'
 import { factory } from '../PipelineSteps/Steps/__tests__/StepTestUtil'
@@ -244,6 +246,21 @@ export const InputSetForm: React.FC<InputSetFormProps> = (props): JSX.Element =>
       branch
     }
   })
+
+  const { data: templateRefsResolvedPipeline, loading: loadingResolvedPipeline } = useMutateAsGet(
+    useGetYamlWithTemplateRefsResolved,
+    {
+      queryParams: {
+        accountIdentifier: accountId,
+        orgIdentifier,
+        pipelineIdentifier,
+        projectIdentifier
+      },
+      body: {
+        originalEntityYaml: yamlStringify(parse(pipeline?.data?.yamlPipeline || '')?.pipeline)
+      }
+    }
+  )
 
   const inputSet = React.useMemo(() => {
     if (inputSetResponse?.data) {
@@ -551,13 +568,13 @@ export const InputSetForm: React.FC<InputSetFormProps> = (props): JSX.Element =>
                                 />
                               </GitSyncStoreProvider>
                             )}
-                            {pipeline?.data?.yamlPipeline &&
+                            {templateRefsResolvedPipeline?.data?.mergedPipelineYaml &&
                               template?.data?.inputSetTemplateYaml &&
                               parse(template.data.inputSetTemplateYaml) && (
                                 <PipelineInputSetForm
                                   path="pipeline"
                                   readonly={!isEditable}
-                                  originalPipeline={parse(pipeline.data?.yamlPipeline || '').pipeline}
+                                  originalPipeline={parse(templateRefsResolvedPipeline?.data?.mergedPipelineYaml)}
                                   template={parse(template.data?.inputSetTemplateYaml || '').pipeline}
                                   viewType={StepViewType.InputSet}
                                 />
@@ -656,6 +673,7 @@ export const InputSetForm: React.FC<InputSetFormProps> = (props): JSX.Element =>
       loading={
         loadingInputSet ||
         loadingPipeline ||
+        loadingResolvedPipeline ||
         loadingTemplate ||
         (!isGitSyncEnabled && (createInputSetLoading || updateInputSetLoading)) ||
         loadingMerge
@@ -706,13 +724,14 @@ export function InputSetFormWrapper(props: InputSetFormWrapperProps): React.Reac
     <React.Fragment>
       <GitSyncStoreProvider>
         <PageHeader
+          className={css.pageHeaderStyles}
           title={
-            <Layout.Horizontal>
-              <Heading level={2} color={Color.GREY_800} font={{ weight: 'bold' }}>
+            <Layout.Horizontal width="42%">
+              <Text lineClamp={1} color={Color.GREY_800} font={{ weight: 'bold', variation: FontVariation.H4 }}>
                 {isEdit
                   ? getString('inputSets.editTitle', { name: inputSet.name })
                   : getString('inputSets.newInputSetLabel')}
-              </Heading>
+              </Text>
               {isGitSyncEnabled && isEdit && (
                 <GitPopover data={inputSet.gitDetails || {}} iconProps={{ margin: { left: 'small', top: 'xsmall' } }} />
               )}

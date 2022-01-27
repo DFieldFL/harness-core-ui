@@ -39,6 +39,8 @@ repositoryUrlPlaceholder: Enter Repository URL
 lastSevenDays: In Last 7 days
 neverRan: This pipeline never ran
 startedOn: Started On
+nodes: nodes
+nodesLabel: Nodes
 poweredByHarness: powered by Harness
 outOf: Out Of
 clickToExpandErrorDetails: Click to expand error details
@@ -228,9 +230,9 @@ manifestType:
   chartPathPlaceholder: Enter Chart Path
   bucketName: Bucket Name
   gitFetchTypeLabel: Git Fetch Type
-  commitId: Commit Id
+  commitId: Commit Id / Git Tag
   branchPlaceholder: Enter Branch Name
-  commitPlaceholder: Enter Commit Id
+  commitPlaceholder: Enter Commit Id / Git Tag
   filePathPlaceholder: Enter File or Folder Path
   kustomizeFolderPath: Kustomize Folder Path
   kustomizeFolderPathPlaceholder: Enter Kustomize Folder Path
@@ -667,6 +669,7 @@ testsReports:
     requiresEnterprisePlan: Requires Enterprise Plan to access Test Intelligence
 uniqueIdentifier: Identifier must be unique
 inputSets:
+  inputSetNameLabel: Input Set Name
   applyInputSet: Apply Input Set
   applyInputSets: Apply Input Sets
   applyingInputSets: Applying Input Sets
@@ -745,13 +748,26 @@ verification:
   anomalousMetrics: Anomalous Metrics
   anomalousLogClusters: Anomalous Log Clusters
   healthSourcePlaceholder: Filter by Health Source
+  healthSourceLabel: Health Source
   refreshViewForNewData: Latest incoming data available.
   toGetLatest: to get latest
-  noMetrics: No Metrics or Transactions
   waitForAnalysis: Please wait a few moments for analysis to begin...
+  nodeCountDisplay: nodes with anomalous metric
+  loadMore: Load more
+  tableHeaders:
+    metricName: METRIC NAME
+    group: GROUP
+    nodes: NODES
   analysisTab:
     metrics: 'Metrics'
     logs: 'Logs'
+  controlHostName: Control Hostname
+  anomalousMetricsFilterLabel: Display only anomalous metrics and affected nodes
+  testHostName: Test Hostname
+  expandAll: Expand All
+  collapseAll: Collapse All
+  predicted: Predicted
+
   logs:
     logCluster: Log cluster
     filterByClusterType: Filter by cluster type
@@ -776,6 +792,8 @@ stepCommonFields:
   ifNotPresent: 'If Not Present'
   validation:
     mustBeANumber: '{{label}} must be a number'
+    invalidLimitMemory: Invalid Limit Memory. To learn more, hover over the Set Container Resources tooltip.
+    invalidLimitCPU: Invalid Limit CPU. To learn more, hover over the Set Container Resources tooltip.
 ciCodebase:
   prCloneStrategy: Pull Request Clone Strategy
   buildType: CI Codebase Build Type
@@ -924,6 +942,9 @@ runstageError: '{{count}} Error(s): Unable to run stages.'
 stageDependencyError: 'Stage {{stageId}} has a ‘useFromStage’ dependency on Stage {{dependentStage}}. Please select Stage {{dependentStage}} to run Stage {{stageId}}.'
 noApprovalInstanceCreated: Approval instance not created, no details to display
 approvalTypeRequired: Approval type is required
+executionList:
+  servicesDeployedText: 'Services deployed ({{size}})'
+  EnvironmentsText: 'Environments ({{size}})'
 commentModal:
   heading: 'Save {{ name }} ({{ version }})'
   info: 'By saving, all pipelines referencing the stable version will receive your changes.'
@@ -943,3 +964,9 @@ dashboardDeploymentsWidget:
   runningPipeline:
     singular: Currently running pipeline
     plural: Currently running pipelines
+security:
+  title: Security
+runPipeline:
+  ciCodebaseConfig: CI Codebase Configuration is missing. Codebase is required when the pipeline contains a CI stage that is set to clone codebase.
+buildInfra:
+  poolId: Pool Id

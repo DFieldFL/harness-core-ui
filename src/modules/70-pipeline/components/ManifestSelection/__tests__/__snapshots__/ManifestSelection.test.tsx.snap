@@ -246,6 +246,7 @@ exports[`ManifestSelection tests delete manifest list works correctly 1`] = `
       <button
         class="bp3-button Button--button StyledProps--font StyledProps--main addManifest Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
         data-test-id="addManifest"
+        id="add-manifest"
         type="button"
       >
         <span
@@ -537,6 +538,7 @@ exports[`ManifestSelection tests edit manifest list works correctly 1`] = `
       <button
         class="bp3-button Button--button StyledProps--font StyledProps--main addManifest Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
         data-test-id="addManifest"
+        id="add-manifest"
         type="button"
       >
         <span
@@ -571,6 +573,7 @@ exports[`ManifestSelection tests renders Manifest Listview with connectors Data 
       <button
         class="bp3-button Button--button StyledProps--font StyledProps--main addManifest Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
         data-test-id="addManifest"
+        id="add-manifest"
         type="button"
       >
         <span
@@ -627,6 +630,7 @@ exports[`ManifestSelection tests renders Manifest Listview without crashing 1`] 
       <button
         class="bp3-button Button--button StyledProps--font StyledProps--main addManifest Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
         data-test-id="addManifest"
+        id="add-manifest"
         type="button"
       >
         <span
@@ -1298,6 +1302,7 @@ exports[`ManifestSelection tests renders add Manifest option without crashing 1`
         <button
           class="bp3-button Button--button StyledProps--font StyledProps--main addManifest Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
           data-test-id="addManifest"
+          id="add-manifest"
           type="button"
         >
           <span
@@ -1362,6 +1367,7 @@ exports[`ManifestSelection tests renders without crashing 1`] = `
         <button
           class="bp3-button Button--button StyledProps--font StyledProps--main addManifest Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
           data-test-id="addManifest"
+          id="add-manifest"
           type="button"
         >
           <span

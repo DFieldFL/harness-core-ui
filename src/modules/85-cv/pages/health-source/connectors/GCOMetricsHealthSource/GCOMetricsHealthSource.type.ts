@@ -25,7 +25,7 @@ export interface GCOMetricInfo {
   sli?: boolean
   continuousVerification?: boolean
   healthScore?: boolean
-  serviceInstance?: string
+  serviceInstanceField?: string
   identifier?: string
 }
 

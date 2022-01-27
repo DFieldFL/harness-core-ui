@@ -10,6 +10,7 @@ declare const styles: {
   readonly active: string
   readonly hiddenText: string
   readonly hoverNavLink: string
+  readonly hoverText: string
   readonly main: string
   readonly navItem: string
   readonly navLink: string

@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
-import { cloneDeep, get } from 'lodash-es'
+import { cloneDeep, defaultTo, get } from 'lodash-es'
 import { parse } from 'yaml'
 import { Menu } from '@blueprintjs/core'
 
@@ -22,10 +22,10 @@ import {
 import { ArtifactSourceBase, ArtifactSourceRenderProps } from '@cd/factory/ArtifactSourceFactory/ArtifactSourceBase'
 import { yamlStringify } from '@common/utils/YamlHelperMethods'
 import { useMutateAsGet } from '@common/hooks'
-import { ErrorHandler } from '@common/components/ErrorHandler/ErrorHandler'
+import { ErrorHandler, ErrorHandlerProps } from '@common/components/ErrorHandler/ErrorHandler'
 import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
 import { EXPRESSION_STRING } from '@pipeline/utils/constants'
-import { useGetBuildDetailsForGcrWithYaml } from 'services/cd-ng'
+import { PipelineInfoConfig, useGetBuildDetailsForGcrWithYaml } from 'services/cd-ng'
 
 import ExperimentalInput from './K8sServiceSpecForms/ExperimentalInput'
 import { clearRuntimeInputValue, isFieldRuntime } from './K8sServiceSpecHelper'
@@ -47,7 +47,7 @@ export enum RegistryHostNames {
 
 export const gcrUrlList: SelectOption[] = Object.values(RegistryHostNames).map(item => ({ label: item, value: item }))
 
-const Content = (props: GCRRenderContent) => {
+const Content = (props: GCRRenderContent): JSX.Element => {
   const {
     getString,
     isPrimaryArtifactsRuntime,
@@ -68,7 +68,7 @@ const Content = (props: GCRRenderContent) => {
     isTagsSelectionDisabled
   } = props
 
-  const getYamlData = () =>
+  const getYamlData = (): PipelineInfoConfig =>
     clearRuntimeInputValue(
       cloneDeep(
         parse(
@@ -122,8 +122,8 @@ const Content = (props: GCRRenderContent) => {
   useEffect(() => {
     if (Array.isArray(gcrTagsData?.data?.buildDetailsList)) {
       const toBeSetTagsList = gcrTagsData?.data?.buildDetailsList?.map(({ tag }) => ({
-        label: tag || '',
-        value: tag || ''
+        label: defaultTo(tag, ''),
+        value: defaultTo(tag, '')
       }))
       if (toBeSetTagsList) {
         setTagsList(toBeSetTagsList)
@@ -160,9 +160,9 @@ const Content = (props: GCRRenderContent) => {
                 onChange={() => {
                   const tagPath = `${path}.artifacts.primary.spec.tag`
                   const tagValue = get(formik?.values, tagPath, '')
-                  getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED &&
-                    tagValue?.length &&
+                  if (getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED && tagValue?.length) {
                     formik?.setFieldValue(tagPath, '')
+                  }
                 }}
                 className={css.connectorMargin}
                 type="Gcp"
@@ -182,9 +182,9 @@ const Content = (props: GCRRenderContent) => {
                 onChange={() => {
                   const tagPath = `${path}.artifacts.primary.spec.tag`
                   const tagValue = get(formik?.values, tagPath, '')
-                  getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED &&
-                    tagValue?.length &&
+                  if (getMultiTypeFromValue(tagValue) === MultiTypeInputType.FIXED && tagValue?.length) {
                     formik?.setFieldValue(tagPath, '')
+                  }
                 }}
               />
             )}
@@ -220,7 +220,7 @@ const Content = (props: GCRRenderContent) => {
                   selectItems={tagsList}
                   useValue
                   multiTypeInputProps={{
-                    onFocus: (e: any) => {
+                    onFocus: (e: React.ChangeEvent<HTMLInputElement>) => {
                       if (
                         e?.target?.type !== 'text' ||
                         (e?.target?.type === 'text' && e?.target?.placeholder === EXPRESSION_STRING)
@@ -260,7 +260,7 @@ const Content = (props: GCRRenderContent) => {
                   name={`${path}.artifacts.primary.spec.tag`}
                 />
                 {fetchTagsError ? (
-                  <ErrorHandler responseMessages={(fetchTagsError.data as any)?.responseMessages} />
+                  <ErrorHandler responseMessages={(fetchTagsError.data as ErrorHandlerProps)?.responseMessages} />
                 ) : null}
               </Layout.Vertical>
             )}
@@ -286,7 +286,7 @@ export class GCRArtifactSource extends ArtifactSourceBase<ArtifactSourceRenderPr
   protected artifactType = 'Gcr'
   protected isSidecar = false
 
-  isTagsSelectionDisabled(props: ArtifactSourceRenderProps) {
+  isTagsSelectionDisabled(props: ArtifactSourceRenderProps): boolean {
     const { artifacts, initialValues } = props
     const isImagePathPresent =
       getMultiTypeFromValue(artifacts?.primary?.spec?.imagePath) !== MultiTypeInputType.RUNTIME
@@ -303,7 +303,7 @@ export class GCRArtifactSource extends ArtifactSourceBase<ArtifactSourceRenderPr
     return !(isImagePathPresent && isConnectorPresent && isRegistryHostnamePresent)
   }
 
-  renderContent(props: ArtifactSourceRenderProps) {
+  renderContent(props: ArtifactSourceRenderProps): JSX.Element | null {
     if (!props.isArtifactsRuntime) {
       return null
     }

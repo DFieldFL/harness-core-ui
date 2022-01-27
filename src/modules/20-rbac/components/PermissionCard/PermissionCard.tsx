@@ -35,47 +35,38 @@ const PermissionCard: React.FC<PermissionCardProps> = ({
   isPermissionEnabled
 }) => {
   const { getString } = useStrings()
-  const isView = (value: string): boolean => {
-    if (value === 'view') return true
-    return false
-  }
-  const isDashboardResource = (value: string): boolean => {
-    if (value === 'DASHBOARDS') return true
-    return false
-  }
+
   const getPermissionList = (resource: ResourceType): JSX.Element | undefined => {
     const handler = RbacFactory.getResourceTypeHandler(resource)
     if (handler && handler.permissionLabels) {
       const permissions = Object.keys(handler.permissionLabels)
       const permissionArray = permissionMap.get(resource)
-      const sortedList = permissions
-        .map(permission => {
-          const item = permissionArray?.find(_permission => _permission['identifier'] === permission)
-          if (item) return item
-        })
-        .filter(item => item)
+      const sortedList: Permission[] = permissions.reduce((acc: Permission[], value) => {
+        const item = permissionArray?.find(_permission => _permission['identifier'] === value)
+        if (item) {
+          acc.push(item)
+        }
+        return acc
+      }, [])
 
       return (
         <div className={css.permissionList}>
           {sortedList.map(permission => {
-            if (permission)
-              return (
-                <Checkbox
-                  labelElement={
-                    handler.permissionLabels?.[permission.identifier as PermissionIdentifier] || permission.action
-                  }
-                  data-testid={`checkBox-${resource}-${permission.action}`}
-                  key={permission.name}
-                  disabled={
-                    disableEdit || (isView(permission.action) && !isDashboardResource(permission?.resourceType))
-                  }
-                  defaultChecked={isPermissionEnabled(permission.identifier)}
-                  onChange={(event: React.FormEvent<HTMLInputElement>) => {
-                    onChangePermission(permission.identifier, event.currentTarget.checked)
-                  }}
-                  className={css.checkbox}
-                />
-              )
+            return (
+              <Checkbox
+                labelElement={
+                  handler.permissionLabels?.[permission.identifier as PermissionIdentifier] || permission.action
+                }
+                data-testid={`checkBox-${resource}-${permission.action}`}
+                key={permission.name}
+                disabled={disableEdit}
+                defaultChecked={isPermissionEnabled(permission.identifier)}
+                onChange={(event: React.FormEvent<HTMLInputElement>) => {
+                  onChangePermission(permission.identifier, event.currentTarget.checked)
+                }}
+                className={css.checkbox}
+              />
+            )
           })}
         </div>
       )

@@ -45,7 +45,7 @@ describe('Save to git form', () => {
       <GitSyncTestWrapper
         path="/account/:accountId/ci/orgs/:orgIdentifier/projects/:projectIdentifier/admin/git-sync/repos"
         pathParams={pathParams}
-        gitSyncSoreValues={{ codeManagers: [] }}
+        gitSyncStoreValues={{ codeManagers: [] }}
       >
         <SaveToGitForm
           {...pathParams}

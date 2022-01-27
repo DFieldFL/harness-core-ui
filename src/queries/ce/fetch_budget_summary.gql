@@ -17,6 +17,7 @@ query FetchBudgetSummary($id: String!) {
     forecastCostAlerts
     forecastCost
     perspectiveId
+    perspectiveName
     growthRate
     startTime
     type

@@ -3,7 +3,7 @@
 exports[`Render Forms - Snapshot Testing render Edit Input Set Form view 1`] = `
 <div>
   <div
-    class="Layout--horizontal StyledProps--main PageHeader--container PageHeader--standard StyledProps--flex StyledProps--padding-left-xlarge StyledProps--padding-right-xlarge StyledProps--background-white"
+    class="Layout--horizontal StyledProps--main PageHeader--container PageHeader--standard pageHeaderStyles StyledProps--flex StyledProps--padding-left-xlarge StyledProps--padding-right-xlarge StyledProps--background-white"
   >
     <div
       class="Layout--vertical StyledProps--main"
@@ -144,13 +144,14 @@ exports[`Render Forms - Snapshot Testing render Edit Input Set Form view 1`] = `
       </div>
       <div
         class="Layout--horizontal StyledProps--main"
+        style="width: 42%;"
       >
-        <h2
-          class="StyledProps--font StyledProps--font-h2 StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold"
-          level="2"
+        <p
+          class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold StyledProps--font-variation-h4"
+          style="--text-line-clamp: 1;"
         >
           inputSets.editTitle
-        </h2>
+        </p>
         <div
           class="optionBtns"
         >
@@ -267,7 +268,7 @@ exports[`Render Forms - Snapshot Testing render Edit Input Set Form view 1`] = `
 exports[`Render Forms - Snapshot Testing render Edit Input Set Form view: expanded 1`] = `
 <div>
   <div
-    class="Layout--horizontal StyledProps--main PageHeader--container PageHeader--standard StyledProps--flex StyledProps--padding-left-xlarge StyledProps--padding-right-xlarge StyledProps--background-white"
+    class="Layout--horizontal StyledProps--main PageHeader--container PageHeader--standard pageHeaderStyles StyledProps--flex StyledProps--padding-left-xlarge StyledProps--padding-right-xlarge StyledProps--background-white"
   >
     <div
       class="Layout--vertical StyledProps--main"
@@ -408,13 +409,14 @@ exports[`Render Forms - Snapshot Testing render Edit Input Set Form view: expand
       </div>
       <div
         class="Layout--horizontal StyledProps--main"
+        style="width: 42%;"
       >
-        <h2
-          class="StyledProps--font StyledProps--font-h2 StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold"
-          level="2"
+        <p
+          class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold StyledProps--font-variation-h4"
+          style="--text-line-clamp: 1;"
         >
           inputSets.editTitle
-        </h2>
+        </p>
         <div
           class="optionBtns"
         >
@@ -1685,7 +1687,7 @@ exports[`Render Forms - Snapshot Testing render Edit Overlay Input Set Form view
 exports[`Render Forms - Snapshot Testing render Input Set Form view 1`] = `
 <div>
   <div
-    class="Layout--horizontal StyledProps--main PageHeader--container PageHeader--standard StyledProps--flex StyledProps--padding-left-xlarge StyledProps--padding-right-xlarge StyledProps--background-white"
+    class="Layout--horizontal StyledProps--main PageHeader--container PageHeader--standard pageHeaderStyles StyledProps--flex StyledProps--padding-left-xlarge StyledProps--padding-right-xlarge StyledProps--background-white"
   >
     <div
       class="Layout--vertical StyledProps--main"
@@ -1826,13 +1828,14 @@ exports[`Render Forms - Snapshot Testing render Input Set Form view 1`] = `
       </div>
       <div
         class="Layout--horizontal StyledProps--main"
+        style="width: 42%;"
       >
-        <h2
-          class="StyledProps--font StyledProps--font-h2 StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold"
-          level="2"
+        <p
+          class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold StyledProps--font-variation-h4"
+          style="--text-line-clamp: 1;"
         >
           inputSets.newInputSetLabel
-        </h2>
+        </p>
         <div
           class="optionBtns"
         >
@@ -3006,6 +3009,7 @@ exports[`Render Forms - Snapshot Testing render Overlay Input Set Form view 1`] 
                               >
                                 <li
                                   class="item"
+                                  data-testid="0-asd"
                                   draggable="true"
                                 >
                                   <div

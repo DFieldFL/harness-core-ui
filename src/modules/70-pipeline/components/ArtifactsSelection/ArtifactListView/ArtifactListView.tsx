@@ -211,6 +211,7 @@ const ArtifactListView: React.FC<ArtifactListViewProps> = ({
         {!primaryArtifact && overrideSetIdentifier?.length === 0 && !isReadonly && (
           <Button
             className={css.addArtifact}
+            id="add-artifact"
             size={ButtonSize.SMALL}
             variation={ButtonVariation.LINK}
             onClick={() => addNewArtifact(ModalViewFor.PRIMARY)}
@@ -220,6 +221,7 @@ const ArtifactListView: React.FC<ArtifactListViewProps> = ({
         {!overrideSetIdentifier?.length && !isReadonly && (
           <Button
             className={css.addArtifact}
+            id="add-artifact"
             size={ButtonSize.SMALL}
             variation={ButtonVariation.LINK}
             onClick={() => addNewArtifact(ModalViewFor.SIDECAR)}

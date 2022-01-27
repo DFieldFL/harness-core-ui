@@ -161,7 +161,7 @@ export class JiraApproval extends PipelineStep<JiraApprovalData> {
           onUpdate?.(forUpdate)
         }}
         allowableTypes={allowableTypes}
-        onChange={values => onChange?.(this.processFormData(values))}
+        onChange={values => onChange?.(values)}
         isNewStep={isNewStep}
         readonly={readonly}
       />

@@ -10,6 +10,10 @@ import { render } from '@testing-library/react'
 import { TestWrapper } from '@common/utils/testUtils'
 import Step1Setup from '../Step1Setup/Step1Setup'
 
+const featureFlags = {
+  NG_SHOW_DEL_TOKENS: true
+}
+
 jest.mock('services/portal', () => ({
   useCreateDelegateToken: jest.fn().mockImplementation(() => ({
     mutate: jest.fn().mockImplementation(() => undefined)
@@ -50,7 +54,7 @@ jest.mock('services/portal', () => ({
 describe('Create Docker Step1Setup', () => {
   test('render data', () => {
     const { container } = render(
-      <TestWrapper>
+      <TestWrapper defaultAppStoreValues={{ featureFlags }}>
         <Step1Setup />
       </TestWrapper>
     )

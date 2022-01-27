@@ -12,6 +12,10 @@ import DelegateSetupStep from '../DelegateSetupStep/DelegateSetupStep'
 import DelegateSizesmock from './DelegateSizesmock.json'
 import DelegateProfilesMock from './DelegateProfilesMock.json'
 
+const featureFlags = {
+  NG_SHOW_DEL_TOKENS: true
+}
+
 const mockGetCallFunction = jest.fn()
 jest.mock('services/portal', () => ({
   useCreateDelegateToken: jest.fn().mockImplementation(() => ({
@@ -40,7 +44,7 @@ jest.mock('services/cd-ng', () => ({
 describe('Create DelegateSetup Step', () => {
   test('render data', () => {
     const { container } = render(
-      <TestWrapper>
+      <TestWrapper defaultAppStoreValues={{ featureFlags }}>
         <DelegateSetupStep />
       </TestWrapper>
     )
@@ -49,7 +53,7 @@ describe('Create DelegateSetup Step', () => {
 
   test('submit click required name', async () => {
     const { container, getByText } = render(
-      <TestWrapper>
+      <TestWrapper defaultAppStoreValues={{ featureFlags }}>
         <DelegateSetupStep />
       </TestWrapper>
     )
@@ -62,7 +66,7 @@ describe('Create DelegateSetup Step', () => {
 
   test('submit click', async () => {
     const { container, getByText } = render(
-      <TestWrapper>
+      <TestWrapper defaultAppStoreValues={{ featureFlags }}>
         <DelegateSetupStep />
       </TestWrapper>
     )

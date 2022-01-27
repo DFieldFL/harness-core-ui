@@ -43,6 +43,7 @@ serviceAccounts:
 permissionLabels:
   createEdit: Create / Edit
   create: '{{ $.create }}'
+  edit: '{{ $.edit }}'
   view: '{{ $.common.viewText }}'
   pipelineExecution: Use in Pipeline Execution
   delete: '{{ $.delete}}'
@@ -187,6 +188,7 @@ resourceGroup:
   builtInResourceGroup: 'Built in resource-group'
   noResourceGroup: 'No Resource Group available'
   noResourceGroupFound: 'No Resource Group Found'
+  selectionHeading: 'Select Resource and define its scope of access.'
 updateNotificationSuccess: Notification preferences updated successfully
 userRequired: User is required
 userUpperLimit: Addition of more than 15 users is not allowed
@@ -197,6 +199,12 @@ accessControlTitle:
   serviceAccounts: 'Access Control: Service Acccounts'
   resourceGroups: 'Access Control: Resource Groups'
   roles: 'Access Control: Roles'
+planEnforcement:
+  ff:
+    teamEnterprisePlan:
+      approachingLimit: 'You have used {{ clientMauUsagePercentage }}% of your developer subscription limit'
+      upgradeRequired: 'You have exceeded your developer subscription limit'
+
 customRoles: new Roles
 customResourceGroups: new Resource Groups
 communityErrorMessages:
@@ -205,3 +213,13 @@ communityErrorMessages:
 group: Group
 manageSCIMText: 'Unable to {{action}} this {{target}} because it is managed using SCIM by your identity provider.'
 unableToEditSCIMMembership: Unable to edit membership to this group because it is managed using SCIM by your identity provider.
+copyGroup:
+  title: 'Copy group: {{name}}'
+  success: User group copied successfully
+  copyToProjects: Copy to project(s)
+scopeItems:
+  accountOnly: Account only
+  orgOnly: Organization only
+  projectOnly: Project only
+  accountAll: All (including all Organizations and Projects)
+  orgAll: All (including all Projects)

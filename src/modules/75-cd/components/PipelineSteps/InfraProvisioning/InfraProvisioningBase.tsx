@@ -5,14 +5,16 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Spinner } from '@blueprintjs/core'
-import { Field, FormikProps } from 'formik'
+import { Field, FormikContext, FormikProps } from 'formik'
 import { Container, Formik, FormikForm, FormInput } from '@wings-software/uicore'
+import { cloneDeep, defaultTo, get, isEmpty, set } from 'lodash-es'
+import { useParams } from 'react-router-dom'
 import type { StepFormikFowardRef } from '@pipeline/components/AbstractSteps/Step'
 import { usePipelineContext } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineContext'
 import { useStrings } from 'framework/strings'
-import { DrawerTypes } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineActions'
+import { DrawerTypes, TemplateDrawerTypes } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineActions'
 import { AdvancedPanels } from '@pipeline/components/PipelineStudio/StepCommands/StepCommandTypes'
 import ExecutionGraph, {
   ExecutionGraphAddStepEvent,
@@ -23,10 +25,16 @@ import {
   getInitialValuesInCorrectFormat,
   getFormValuesInCorrectFormat
 } from '@pipeline/components/PipelineSteps/Steps/StepsTransformValuesUtils'
-import { transformValuesFieldsConfig } from './InfraProvisioningFunctionConfigs'
-import type { InfraProvisioningData, InfraProvisioningDataUI, InfraProvisioningProps } from './InfraProvisioning'
+import type { TemplateSummaryResponse } from 'services/template-ng'
+import { addStepOrGroup } from '@pipeline/components/PipelineStudio/ExecutionGraph/ExecutionGraphUtil'
+import { StepCategory, useGetStepsV2 } from 'services/pipeline-ng'
+import { createStepNodeFromTemplate } from '@pipeline/utils/templateUtils'
+import { useMutateAsGet } from '@common/hooks'
+import { getStepPaletteModuleInfosFromStage } from '@pipeline/utils/stepUtils'
+import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import useChooseProvisioner from './ChooseProvisioner'
-
+import type { InfraProvisioningData, InfraProvisioningDataUI, InfraProvisioningProps } from './InfraProvisioning'
+import { transformValuesFieldsConfig } from './InfraProvisioningFunctionConfigs'
 import css from './InfraProvisioning.module.scss'
 
 export const InfraProvisioningBase = (
@@ -40,24 +48,144 @@ export const InfraProvisioningBase = (
       selectionState: { selectedStageId = '' },
       templateTypes
     },
+    setTemplateTypes,
+    updateStage,
     updatePipelineView,
+    updateTemplateView,
     isReadonly,
+    getStageFromPipeline,
     getStagePathFromPipeline
   } = usePipelineContext()
 
   const { getString } = useStrings()
+  const { stage: selectedStage } = getStageFromPipeline(defaultTo(selectedStageId, ''))
   const stagePath = getStagePathFromPipeline(selectedStageId || '', 'pipeline.stages')
-
+  const [allChildTypes, setAllChildTypes] = React.useState<string[]>([])
   const executionRef = React.useRef<ExecutionGraphRefObj | null>(null)
-  const { showModal, hideModal } = useChooseProvisioner({
+  const { accountId } = useParams<ProjectPathProps>()
+  const formikRef = useRef<FormikContext<InfraProvisioningDataUI>>()
+  const { showModal } = useChooseProvisioner({
     onSubmit: (data: any) => {
       onUpdate?.(data)
       //  setTypeEnabled(true)
     },
     onClose: () => {
-      hideModal()
+      formikRef.current?.resetForm()
     }
   })
+
+  const {
+    data: stepsData,
+    loading: stepsDataLoading,
+    refetch: getStepTypes
+  } = useMutateAsGet(useGetStepsV2, {
+    queryParams: { accountId },
+    body: {
+      stepPalleteModuleInfos: getStepPaletteModuleInfosFromStage(selectedStage?.stage?.type, undefined, 'Provisioner')
+    },
+    lazy: true
+  })
+
+  useEffect(() => {
+    if (isEmpty(allChildTypes) && initialValues.provisionerEnabled) {
+      getStepTypes()
+    }
+  }, [initialValues.provisionerEnabled])
+
+  const getStepTypesFromCategories = (stepCategories: StepCategory[]): string[] => {
+    const validStepTypes: string[] = []
+    stepCategories.forEach(category => {
+      if (category.stepCategories?.length) {
+        validStepTypes.push(...getStepTypesFromCategories(category.stepCategories))
+      } else if (category.stepsData?.length) {
+        category.stepsData.forEach(stepData => {
+          if (stepData.type) {
+            validStepTypes.push(stepData.type)
+          }
+        })
+      }
+    })
+    return validStepTypes
+  }
+
+  React.useEffect(() => {
+    if (stepsData?.data?.stepCategories) {
+      setAllChildTypes(getStepTypesFromCategories(stepsData.data.stepCategories))
+    }
+  }, [stepsData?.data?.stepCategories])
+
+  const addTemplate = (event: ExecutionGraphAddStepEvent) => {
+    updateTemplateView({
+      isTemplateDrawerOpened: true,
+      templateDrawerData: {
+        type: TemplateDrawerTypes.UseTemplate,
+        data: {
+          selectorData: {
+            templateType: 'Step',
+            allChildTypes,
+            onUseTemplate: async (template: TemplateSummaryResponse, isCopied = false) => {
+              const newStepData = { step: createStepNodeFromTemplate(template, isCopied) }
+              const { stage: pipelineStage } = cloneDeep(getStageFromPipeline(selectedStageId || ''))
+              executionRef.current?.stepGroupUpdated?.(newStepData.step)
+              if (
+                pipelineStage &&
+                !get(pipelineStage?.stage, 'spec.infrastructure.infrastructureDefinition.provisioner')
+              ) {
+                set(pipelineStage, 'stage.spec.infrastructure.infrastructureDefinition.provisioner', {
+                  steps: [],
+                  rollbackSteps: []
+                })
+              }
+              const provisioner = get(pipelineStage?.stage, 'spec.infrastructure.infrastructureDefinition.provisioner')
+              // set empty arrays
+              if (!event.isRollback && !provisioner.steps) {
+                provisioner.steps = []
+              }
+              if (event.isRollback && !provisioner.rollbackSteps) {
+                provisioner.rollbackSteps = []
+              }
+
+              addStepOrGroup(event.entity, provisioner, newStepData, event.isParallel, event.isRollback)
+              if (pipelineStage?.stage) {
+                await updateStage(pipelineStage?.stage)
+              }
+              if (!isCopied && template?.identifier && template?.childType) {
+                templateTypes[template.identifier] = template.childType
+                setTemplateTypes(templateTypes)
+              }
+              updateTemplateView({
+                isTemplateDrawerOpened: false,
+                templateDrawerData: {
+                  type: TemplateDrawerTypes.UseTemplate
+                }
+              })
+              updatePipelineView({
+                ...pipelineView,
+                isDrawerOpened: true,
+                drawerData: {
+                  type: DrawerTypes.ProvisionerStepConfig,
+                  data: {
+                    stepConfig: {
+                      node: newStepData.step,
+                      stepsMap: event.stepsMap,
+                      onUpdate: executionRef.current?.stepGroupUpdated,
+                      isStepGroup: false,
+                      addOrEdit: 'edit',
+                      hiddenAdvancedPanels: [AdvancedPanels.PreRequisites]
+                    }
+                  }
+                }
+              })
+            }
+          }
+        }
+      }
+    })
+  }
+
+  const isProvisionerDisabled = (provisionerSnippetLoading: boolean): boolean => {
+    return isReadonly || provisionerSnippetLoading || stepsDataLoading
+  }
 
   return (
     <Formik
@@ -83,11 +211,12 @@ export const InfraProvisioningBase = (
       }}
     >
       {(formik: FormikProps<InfraProvisioningDataUI>) => {
+        formikRef.current = formik
         return (
           <FormikForm className={css.provisionerForm}>
             <FormInput.CheckBox
               name={`provisionerEnabled`}
-              disabled={formik.values.provisionerSnippetLoading}
+              disabled={isProvisionerDisabled(formik.values.provisionerSnippetLoading as boolean)}
               label={getString('pipelineSteps.deploy.provisioner.enableProvisionerLabel')}
               onChange={(event: React.FormEvent<HTMLInputElement>) => {
                 if (!event.currentTarget.checked) {
@@ -105,13 +234,11 @@ export const InfraProvisioningBase = (
                 }
               }}
             />
-            {formik.values.provisionerSnippetLoading ? (
+            {formik.values.provisionerSnippetLoading || stepsDataLoading ? (
               <Container>
                 <Spinner />
               </Container>
-            ) : null}
-
-            {formik.values.provisionerEnabled && !formik.values.provisionerSnippetLoading ? (
+            ) : formik.values.provisionerEnabled ? (
               <div className={css.graphContainer}>
                 <Field name="provisioner">
                   {(_props: any) => {
@@ -141,23 +268,27 @@ export const InfraProvisioningBase = (
                         // Check and update the correct stage path here
                         pathToStage={`${stagePath}.stage.spec.execution`}
                         onAddStep={(event: ExecutionGraphAddStepEvent) => {
-                          updatePipelineView({
-                            ...pipelineView,
-                            isDrawerOpened: true,
-                            drawerData: {
-                              type: DrawerTypes.AddProvisionerStep,
-                              data: {
-                                paletteData: {
-                                  entity: event.entity,
-                                  stepsMap: event.stepsMap,
-                                  onUpdate: executionRef.current?.stepGroupUpdated,
-                                  isRollback: event.isRollback,
-                                  isParallelNodeClicked: event.isParallel,
-                                  hiddenAdvancedPanels: [AdvancedPanels.PreRequisites]
+                          if (event.isTemplate) {
+                            addTemplate(event)
+                          } else {
+                            updatePipelineView({
+                              ...pipelineView,
+                              isDrawerOpened: true,
+                              drawerData: {
+                                type: DrawerTypes.AddProvisionerStep,
+                                data: {
+                                  paletteData: {
+                                    entity: event.entity,
+                                    stepsMap: event.stepsMap,
+                                    onUpdate: executionRef.current?.stepGroupUpdated,
+                                    isRollback: event.isRollback,
+                                    isParallelNodeClicked: event.isParallel,
+                                    hiddenAdvancedPanels: [AdvancedPanels.PreRequisites]
+                                  }
                                 }
                               }
-                            }
-                          })
+                            })
+                          }
                           formik.submitForm()
                         }}
                         onEditStep={(event: ExecutionGraphEditStepEvent) => {

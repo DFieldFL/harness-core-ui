@@ -6,10 +6,11 @@
  */
 
 import React from 'react'
-import { fireEvent, render, act, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { MultiTypeInputType } from '@wings-software/uicore'
 import { TestWrapper } from '@common/utils/testUtils'
 import { factory } from '@pipeline/components/PipelineSteps/Steps/__tests__/StepTestUtil'
+import { Scope } from '@common/interfaces/SecretsInterface'
 import { RightBar } from '../RightBar'
 import { PipelineContext, PipelineContextInterface } from '../../PipelineContext/PipelineContext'
 
@@ -130,6 +131,7 @@ const pipelineContext: PipelineContextInterface = {
   isReadonly: false,
   setSchemaErrorView: jest.fn(),
   view: 'ui',
+  scope: Scope.PROJECT,
   renderPipelineStage: jest.fn(),
   setView: jest.fn(),
   updateGitDetails: jest.fn(),

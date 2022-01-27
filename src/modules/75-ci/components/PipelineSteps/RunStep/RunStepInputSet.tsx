@@ -10,7 +10,6 @@ import { Text, getMultiTypeFromValue, MultiTypeInputType, FormikForm, Color, Con
 import { isEmpty } from 'lodash-es'
 import cx from 'classnames'
 import { useStrings } from 'framework/strings'
-import { Separator } from '@common/components'
 import { ShellScriptMonacoField } from '@common/components/ShellScriptMonaco/ShellScriptMonaco'
 import { MultiTypeMapInputSet } from '@common/components/MultiTypeMapInputSet/MultiTypeMapInputSet'
 import MultiTypeFieldSelector from '@common/components/MultiTypeFieldSelector/MultiTypeFieldSelector'
@@ -158,7 +157,6 @@ export const RunStepInputSet: React.FC<RunStepProps> = ({ template, path, readon
           />
         </Container>
       )}
-      <Separator topSeparation={24} />
       {getMultiTypeFromValue(template?.spec?.envVariables as string) === MultiTypeInputType.RUNTIME && (
         <Container className={cx(css.formGroup, stepCss)}>
           <MultiTypeMapInputSet

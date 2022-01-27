@@ -7,5 +7,6 @@
 
 export enum RbacResourceGroupTypes {
   DYNAMIC_RESOURCE_SELECTOR = 'DynamicResourceSelector',
-  STATIC_RESOURCE_SELECTOR = 'StaticResourceSelector'
+  STATIC_RESOURCE_SELECTOR = 'StaticResourceSelector',
+  SCOPE_RESOURCE_SELECTOR = 'ResourceSelectorByScope'
 }

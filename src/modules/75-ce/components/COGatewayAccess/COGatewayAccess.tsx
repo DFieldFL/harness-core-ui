@@ -56,6 +56,7 @@ const COGatewayAccess: React.FC<COGatewayAccessProps> = props => {
   const { getString } = useStrings()
   const { accountId } = useParams<AccountPathProps>()
   const { trackEvent } = useTelemetry()
+  const { isEditFlow } = useGatewayContext()
   const isAwsProvider = Utils.isProviderAws(props.gatewayDetails.provider)
   const [accessDetails, setAccessDetails] = useState<ConnectionMetadata>(
     Utils.getConditionalResult(
@@ -68,7 +69,6 @@ const COGatewayAccess: React.FC<COGatewayAccessProps> = props => {
   const [selectedHelpText, setSelectedHelpText] = useState<string>('')
   const [selectedHelpTextSections, setSelectedHelpTextSections] = useState<string[]>([])
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
-
   const { data: serviceDescribeData, loading: serviceDataLoading } = useDescribeServiceInContainerServiceCluster({
     account_id: accountId,
     cluster_name: _defaultTo(props.gatewayDetails.routing.container_svc?.cluster, ''),
@@ -88,7 +88,11 @@ const COGatewayAccess: React.FC<COGatewayAccessProps> = props => {
 
   useEffect(() => {
     let validStatus = false
-    if (serviceDescribeData?.response?.loadbalanced === false || !_isEmpty(props.gatewayDetails.routing.database)) {
+    if (
+      serviceDescribeData?.response?.loadbalanced === false ||
+      !_isEmpty(props.gatewayDetails.routing.database) ||
+      !_isEmpty(props.gatewayDetails.routing.container_svc)
+    ) {
       validStatus = true
     } else if (accessDetails.dnsLink.selected) {
       validStatus = getValidStatusForDnsLink(props.gatewayDetails)
@@ -245,7 +249,13 @@ const COGatewayAccess: React.FC<COGatewayAccessProps> = props => {
           <Layout.Vertical spacing="small" padding="medium">
             <Layout.Horizontal spacing="small">
               <Heading level={3} font={{ weight: 'light' }} className={css.setupAccessSubHeading}>
-                {getString('ce.co.gatewayAccess.accessDescription')}
+                {getString('ce.co.gatewayAccess.accessDescription', {
+                  optionalText: Utils.getConditionalResult(
+                    !_isEmpty(props.gatewayDetails.routing.container_svc),
+                    '(optional)',
+                    ''
+                  )
+                })}
               </Heading>
               <Icon name="info" style={{ cursor: 'pointer' }} onClick={() => setDrawerOpen(true)}></Icon>
             </Layout.Horizontal>
@@ -259,6 +269,7 @@ const COGatewayAccess: React.FC<COGatewayAccessProps> = props => {
                   }}
                   className={css.checkbox}
                   defaultChecked={accessDetails.dnsLink.selected}
+                  disabled={isEditFlow}
                 />
                 {shouldShowSshOption && (
                   <Checkbox

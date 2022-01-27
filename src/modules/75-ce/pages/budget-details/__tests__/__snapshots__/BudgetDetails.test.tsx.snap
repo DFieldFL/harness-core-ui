@@ -45,6 +45,29 @@ exports[`test cases for Budgets List Page should be able to render the budget li
           </div>
         </div>
       </div>
+      <div
+        class="Layout--horizontal Layout--layout-spacing-xsmall StyledProps--main StyledProps--flex StyledProps--flex-alignItems-baseline"
+      >
+        <h2
+          class="StyledProps--font StyledProps--font-h2 StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-weight-bold"
+          level="2"
+        />
+        <p
+          class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey500 StyledProps--font-variation-h6"
+        >
+          common.on
+        </p>
+        <a
+          href="/account/undefined/ce/perspectives/sdsaw32e2w/name/Name"
+          style="text-decoration: none;"
+        >
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-primary7 StyledProps--font-variation-h6"
+          >
+            Name
+          </p>
+        </a>
+      </div>
     </div>
     <div
       class="Layout--horizontal Layout--layout-spacing-medium StyledProps--main"
@@ -113,6 +136,398 @@ exports[`test cases for Budgets List Page should be able to render the budget li
     class="StyledProps--font StyledProps--main PageBody--pageBody"
     data-name="page-body"
   >
+    <div
+      class="Layout--horizontal Layout--layout-spacing-large StyledProps--main StyledProps--margin-large"
+    >
+      <div
+        class="bp3-card bp3-elevation-1 Card--card budgetStatus"
+      >
+        <div
+          class="Layout--horizontal StyledProps--main"
+        >
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey500 StyledProps--font-variation-small-semi"
+          >
+            ce.budgets.detailsPage.budgetStatus
+          </p>
+          <span
+            style="flex-grow: 1;"
+          />
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+          >
+            ce.budgets.detailsPage.timeLeft
+          </p>
+        </div>
+        <div
+          class="Layout--vertical StyledProps--main StyledProps--margin-top-small"
+        >
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main budgetBarsText StyledProps--font-variation-small-semi"
+              style="width: 120px;"
+            >
+              ce.budgets.detailsPage.monthToDateCost
+            </p>
+            <div
+              class="Layout--horizontal StyledProps--main"
+            >
+              <div
+                class="StyledProps--font StyledProps--main costBars actualCostBar"
+                style="width: 135px;"
+              >
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main budgetBarsText StyledProps--font-variation-small-semi StyledProps--padding-left-xsmall"
+                  style="--text-line-clamp: 1;"
+                >
+                  $634.98
+                </p>
+              </div>
+              <p
+                class="StyledProps--font StyledProps--main budgetBarsText StyledProps--font-variation-small-semi StyledProps--padding-left-xsmall"
+              >
+                42%
+              </p>
+            </div>
+          </div>
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main budgetBarsText StyledProps--font-variation-small-semi"
+              style="width: 120px;"
+            >
+              ce.budgets.detailsPage.budgetAmount
+            </p>
+            <div
+              class="Layout--horizontal StyledProps--main"
+            >
+              <div
+                class="StyledProps--font StyledProps--main costBars budgetBar"
+                style="width: 320px;"
+              >
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main budgetBarsText StyledProps--font-variation-small-semi StyledProps--padding-left-xsmall"
+                  style="--text-line-clamp: 1;"
+                >
+                  $1,506.66
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="Layout--horizontal StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main budgetBarsText StyledProps--font-variation-small-semi"
+              style="width: 120px;"
+            >
+              ce.perspectives.budgets.forecastedCost
+            </p>
+            <div
+              class="Layout--horizontal StyledProps--main"
+            >
+              <div
+                class="StyledProps--font StyledProps--main costBars forecastCostBar danger"
+                style="width: 344px;"
+              >
+                <p
+                  class="StyledProps--font Text--lineclamp StyledProps--main budgetBarsText StyledProps--font-variation-small-semi StyledProps--padding-left-xsmall"
+                  style="--text-line-clamp: 1;"
+                >
+                  $1,614.79
+                </p>
+              </div>
+              <p
+                class="StyledProps--font StyledProps--main budgetBarsText StyledProps--font-variation-small-semi StyledProps--padding-left-xsmall"
+              >
+                107%
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="bp3-card bp3-elevation-0 Card--card alertCard"
+      >
+        <div
+          class="Layout--horizontal StyledProps--main"
+        >
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey500 StyledProps--font-variation-small-semi"
+          >
+            ce.budgets.detailsPage.alertsAt
+          </p>
+        </div>
+        <div
+          class="Layout--horizontal StyledProps--main StyledProps--margin-top-large StyledProps--margin-bottom-medium"
+        >
+          <p
+            class="StyledProps--font StyledProps--main alertText StyledProps--font-variation-small-semi"
+          >
+            ce.budgets.detailsPage.monthToDateCost
+          </p>
+          <div
+            class="Layout--horizontal Layout--layout-spacing-small StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              90%
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              80%
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              70%
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              75%
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              96%
+            </p>
+            <span
+              class="bp3-popover-wrapper"
+            >
+              <span
+                class="bp3-popover-target Text--targetClass"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+                  tabindex="0"
+                >
+                  +(1)
+                </p>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          class="Layout--horizontal StyledProps--main StyledProps--margin-top-large StyledProps--margin-bottom-medium"
+        >
+          <p
+            class="StyledProps--font StyledProps--main alertText StyledProps--font-variation-small-semi"
+          >
+            ce.perspectives.budgets.forecastedCost
+          </p>
+          <div
+            class="Layout--horizontal Layout--layout-spacing-small StyledProps--main"
+          >
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              70%
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              90%
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              75%
+            </p>
+            <p
+              class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-grey800 StyledProps--font-variation-small-semi"
+              style="display: flex; align-items: center;"
+            >
+              <span
+                class="bp3-icon bp3-icon-notifications StyledProps--main Text--icon StyledProps--padding-right-xsmall StyledProps--color StyledProps--color-grey300"
+                icon="notifications"
+              >
+                <svg
+                  data-icon="notifications"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  width="10"
+                >
+                  <desc>
+                    notifications
+                  </desc>
+                  <path
+                    d="M8 16c1.1 0 2-.9 2-2H6c0 1.1.9 2 2 2zm6-5c-.55 0-1-.45-1-1V6c0-2.43-1.73-4.45-4.02-4.9 0-.04.02-.06.02-.1 0-.55-.45-1-1-1S7 .45 7 1c0 .04.02.06.02.1A4.992 4.992 0 003 6v4c0 .55-.45 1-1 1s-1 .45-1 1 .45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </span>
+              55%
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div
       class="bp3-card bp3-elevation-1 Card--card chartGridContainer"
     >

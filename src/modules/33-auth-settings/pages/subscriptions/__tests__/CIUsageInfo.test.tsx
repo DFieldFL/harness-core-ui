@@ -11,7 +11,7 @@ import { TestWrapper } from '@common/utils/testUtils'
 
 import CIUsageInfo from '../overview/CIUsageInfo'
 
-jest.mock('@auth-settings/hooks/useGetUsageAndLimit', () => {
+jest.mock('@common/hooks/useGetUsageAndLimit', () => {
   return {
     useGetUsageAndLimit: () => {
       return useGetUsageAndLimitReturnMock

@@ -76,7 +76,7 @@ Cypress.Commands.add('fillName', (value: string) => {
 
 // Change Intelligence commands
 Cypress.Commands.add('visitChangeIntelligence', () => {
-  cy.contains('p', 'Change Intelligence').click()
+  cy.contains('span', 'Change Intelligence').click()
   cy.contains('p', 'Select a Project').click()
   cy.contains('p', 'Project 1').click()
 })

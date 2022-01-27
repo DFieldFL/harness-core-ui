@@ -11,7 +11,6 @@ import cx from 'classnames'
 import { isEmpty } from 'lodash-es'
 import { connect } from 'formik'
 import { useStrings } from 'framework/strings'
-import { Separator } from '@common/components'
 import { MultiTypeSelectField } from '@common/components/MultiTypeSelect/MultiTypeSelect'
 import { MultiTypeTextField } from '@common/components/MultiTypeText/MultiTypeText'
 import { FormMultiTypeDurationField } from '@common/components/MultiTypeDuration/MultiTypeDuration'
@@ -56,7 +55,12 @@ function StepCommonFieldsInputSet<T>(props: StepCommonFieldsInputSetProps<T>): J
           <MultiTypeSelectField
             name={`${isEmpty(path) ? '' : `${path}.`}spec.imagePullPolicy`}
             label={
-              <Text className={css.inpLabel} color={Color.GREY_600} font={{ size: 'small', weight: 'semi-bold' }}>
+              <Text
+                tooltipProps={{ dataTooltipId: 'imagePullPolicy' }}
+                className={css.inpLabel}
+                color={Color.GREY_600}
+                font={{ size: 'small', weight: 'semi-bold' }}
+              >
                 {getString('pipelineSteps.pullLabel')}
               </Text>
             }
@@ -81,7 +85,12 @@ function StepCommonFieldsInputSet<T>(props: StepCommonFieldsInputSetProps<T>): J
           <MultiTypeSelectField
             name={`${isEmpty(path) ? '' : `${path}.`}spec.shell`}
             label={
-              <Text className={css.inpLabel} color={Color.GREY_600} font={{ size: 'small', weight: 'semi-bold' }}>
+              <Text
+                tooltipProps={{ dataTooltipId: 'shell' }}
+                className={css.inpLabel}
+                color={Color.GREY_600}
+                font={{ size: 'small', weight: 'semi-bold' }}
+              >
                 {getString('common.shell')}
               </Text>
             }
@@ -101,10 +110,15 @@ function StepCommonFieldsInputSet<T>(props: StepCommonFieldsInputSetProps<T>): J
         </Container>
       )}
       {isRunAsUserRuntime && (
-        <Container className={cx(css.formGroup, stepCss, css.topSpacingLarge)}>
+        <Container className={cx(css.formGroup, stepCss, css.topSpacingLarge, css.bottomMargin5)}>
           <MultiTypeTextField
             label={
-              <Text className={css.inpLabel} color={Color.GREY_600} font={{ size: 'small', weight: 'semi-bold' }}>
+              <Text
+                tooltipProps={{ dataTooltipId: 'runAsUser' }}
+                className={css.inpLabel}
+                color={Color.GREY_600}
+                font={{ size: 'small', weight: 'semi-bold' }}
+              >
                 {getString('pipeline.stepCommonFields.runAsUser')}
               </Text>
             }
@@ -120,7 +134,6 @@ function StepCommonFieldsInputSet<T>(props: StepCommonFieldsInputSetProps<T>): J
           />
         </Container>
       )}
-      <Separator />
       {isLimitCPURuntime && (
         <>
           <Container className={css.bottomMargin5}>
@@ -140,7 +153,12 @@ function StepCommonFieldsInputSet<T>(props: StepCommonFieldsInputSetProps<T>): J
                 <MultiTypeTextField
                   name={`${isEmpty(path) ? '' : `${path}.`}spec.resources.limits.cpu`}
                   label={
-                    <Text className={css.inpLabel} color={Color.GREY_600} font={{ size: 'small', weight: 'semi-bold' }}>
+                    <Text
+                      tooltipProps={{ dataTooltipId: 'limitCPULabel' }}
+                      className={css.inpLabel}
+                      color={Color.GREY_600}
+                      font={{ size: 'small', weight: 'semi-bold' }}
+                    >
                       {getString('pipelineSteps.limitCPULabel')}
                     </Text>
                   }
@@ -158,11 +176,16 @@ function StepCommonFieldsInputSet<T>(props: StepCommonFieldsInputSetProps<T>): J
         </>
       )}
       {!withoutTimeout && isTimeoutRuntime && (
-        <Container className={cx(css.formGroup, css.sm, css.bottomMargin5, css.topMargin5)}>
+        <Container className={cx(css.formGroup, css.sm, css.bottomMargin5)}>
           <FormMultiTypeDurationField
             className={css.removeBpLabelMargin}
             label={
-              <Text className={css.inpLabel} color={Color.GREY_600} font={{ size: 'small', weight: 'semi-bold' }}>
+              <Text
+                tooltipProps={{ dataTooltipId: 'timeout' }}
+                className={css.inpLabel}
+                color={Color.GREY_600}
+                font={{ size: 'small', weight: 'semi-bold' }}
+              >
                 {getString('pipelineSteps.timeoutLabel')}
               </Text>
             }

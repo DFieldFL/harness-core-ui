@@ -165,6 +165,7 @@ const ManageResources: React.FC<ManageResourcesProps> = props => {
     if (!_isEmpty(props.gatewayDetails.routing.container_svc)) {
       const updatedGatewayDetails: GatewayDetails = {
         ...props.gatewayDetails,
+        resourceMeta: undefined,
         routing: { ...props.gatewayDetails.routing, container_svc: undefined }
       }
       props.setGatewayDetails(updatedGatewayDetails)

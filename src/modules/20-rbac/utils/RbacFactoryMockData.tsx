@@ -47,6 +47,14 @@ export const getResourceTypeHandlerMock = (resource: ResourceType): ResourceHand
         // eslint-disable-next-line react/display-name
         addResourceModalBody: () => <></>
       }
+    case ResourceType.CONNECTOR:
+      return {
+        icon: 'lock',
+        label: 'connectorsLabel',
+        category: ResourceCategory.SHARED_RESOURCES,
+        // eslint-disable-next-line react/display-name
+        addResourceModalBody: () => <></>
+      }
     case ResourceType.DELEGATE:
       return {
         icon: 'main-delegates',

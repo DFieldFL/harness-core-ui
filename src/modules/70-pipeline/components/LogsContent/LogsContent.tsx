@@ -46,6 +46,8 @@ export function LogsContent(props: LogsContentProps): React.ReactElement {
   const searchRef = React.useRef<ExpandingSearchInputHandle>()
   const rootRef = React.useRef<HTMLDivElement | null>(null)
   const [isFullScreen, setIsFullScreen] = React.useState(false)
+  const hasLogs = state.units.length > 0
+  const isSingleSectionLogs = state.units.length === 1
 
   const virtuosoRef = React.useRef<null | GroupedVirtuosoHandle | VirtuosoHandle>(null)
 
@@ -188,17 +190,17 @@ export function LogsContent(props: LogsContentProps): React.ReactElement {
           ) : null}
         </div>
       </div>
-      <pre className={css.container}>
-        {state.units.length > 0 ? (
-          state.units.length === 1 ? (
-            <SingleSectionLogs ref={virtuosoRef} state={state} actions={actions} />
-          ) : (
-            <GroupedLogs ref={virtuosoRef} state={state} actions={actions} />
-          )
+      {hasLogs ? (
+        isSingleSectionLogs ? (
+          <SingleSectionLogs ref={virtuosoRef} state={state} actions={actions} />
         ) : (
+          <GroupedLogs ref={virtuosoRef} state={state} actions={actions} />
+        )
+      ) : (
+        <pre className={css.container}>
           <StrTemplate tagName="div" className={css.noLogs} stringID="common.logs.noLogsText" />
-        )}
-      </pre>
+        </pre>
+      )}
       {mode === 'console-view' && errorMessage ? (
         <div className={cx(css.errorMessage, { [css.isWarning]: isWarning })}>
           <StrTemplate className={css.summary} tagName="div" stringID="summary" />

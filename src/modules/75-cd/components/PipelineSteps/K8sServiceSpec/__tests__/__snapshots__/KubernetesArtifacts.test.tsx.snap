@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<KubernetesArtifacts /> tests snapshot test for kubernetes artifacts 1`] = `<div />`;

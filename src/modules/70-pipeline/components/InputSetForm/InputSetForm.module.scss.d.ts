@@ -23,6 +23,7 @@ declare const styles: {
   readonly inputsetGrid: string
   readonly nameiddescription: string
   readonly optionBtns: string
+  readonly pageHeaderStyles: string
   readonly treeSidebar: string
 }
 export default styles

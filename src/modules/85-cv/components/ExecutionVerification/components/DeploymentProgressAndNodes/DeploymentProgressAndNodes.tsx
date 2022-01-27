@@ -22,10 +22,11 @@ export interface DeploymentProgressAndNodesProps {
   deploymentSummary?: DeploymentVerificationJobInstanceSummary
   onSelectNode?: (node?: DeploymentNodeAnalysisResult) => void
   className?: string
+  isConsoleView?: boolean
 }
 
 export function DeploymentProgressAndNodes(props: DeploymentProgressAndNodesProps): JSX.Element {
-  const { deploymentSummary, onSelectNode, className } = props
+  const { deploymentSummary, onSelectNode, className, isConsoleView } = props
   const { getString } = useStrings()
   const deploymentNodesData = useMemo(() => {
     if (deploymentSummary?.additionalInfo?.type === 'CANARY') {
@@ -72,6 +73,7 @@ export function DeploymentProgressAndNodes(props: DeploymentProgressAndNodesProp
           primaryNodeLabel={deploymentNodesData.labelBefore}
           canaryNodeLabel={deploymentNodesData.labelAfter}
           onSelectNode={onSelectNode}
+          isConsoleView={isConsoleView}
         />
       )
     }
@@ -84,7 +86,11 @@ export function DeploymentProgressAndNodes(props: DeploymentProgressAndNodesProp
   return (
     <Container className={cx(css.main, className)}>
       {deploymentSummary && (
-        <Container className={css.durationAndStatus}>
+        <Container
+          className={cx(css.durationAndStatus, {
+            [css.flexLayout]: !isConsoleView
+          })}
+        >
           <Container>
             <Text
               font={{ size: 'small' }}
@@ -97,7 +103,7 @@ export function DeploymentProgressAndNodes(props: DeploymentProgressAndNodesProp
               {getString('duration')} {moment.duration(deploymentSummary.durationMs, 'ms').humanize()}
             </Text>
           </Container>
-          <VerificationStatusCard status={deploymentSummary.status} />
+          {deploymentSummary && !isConsoleView && <VerificationStatusCard status={deploymentSummary.status} />}
         </Container>
       )}
       <CVProgressBar
@@ -105,6 +111,7 @@ export function DeploymentProgressAndNodes(props: DeploymentProgressAndNodesProp
         status={deploymentSummary?.status}
         className={css.progressBar}
       />
+      {deploymentSummary && isConsoleView && <VerificationStatusCard status={deploymentSummary.status} />}
       {renderContent()}
     </Container>
   )

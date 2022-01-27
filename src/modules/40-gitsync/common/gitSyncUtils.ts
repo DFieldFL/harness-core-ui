@@ -9,7 +9,7 @@ import type { IconName } from '@wings-software/uicore'
 import { pick } from 'lodash-es'
 import { useEffect, useState } from 'react'
 import { Connectors } from '@connectors/constants'
-import type { GitSyncConfig, ConnectorInfoDTO, GitSyncEntityDTO } from 'services/cd-ng'
+import type { GitSyncConfig, ConnectorInfoDTO, GitSyncEntityDTO, EntityGitDetails } from 'services/cd-ng'
 import type { ModulePathParams, ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import { getPipelineListPromise } from 'services/pipeline-ng'
 import { GitSuffixRegex } from '@common/utils/StringUtils'
@@ -146,6 +146,18 @@ export const getEntityUrl = (entity: GitSyncEntityDTO): string => {
     return `${repoUrl}/blob/${branch}/${folderPath}${entityGitPath}`
   } else {
     return ''
+  }
+}
+
+export const getRepoEntityObject = (
+  repo: GitSyncConfig | undefined,
+  gitDetails: EntityGitDetails
+): GitSyncEntityDTO => {
+  return {
+    repoUrl: repo?.repo,
+    folderPath: gitDetails?.rootFolder,
+    branch: repo?.branch,
+    entityGitPath: gitDetails?.filePath
   }
 }
 

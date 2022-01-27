@@ -470,7 +470,6 @@ function JiraUpdateStepMode(
       onSubmit={values => onUpdate?.(processFormData(values))}
       formName="jiraUpdate"
       initialValues={props.initialValues}
-      enableReinitialize={true}
       validate={data => {
         onChange?.(processFormData(data))
       }}

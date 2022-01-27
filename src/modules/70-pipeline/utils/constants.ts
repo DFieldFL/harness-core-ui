@@ -12,3 +12,9 @@ export enum CardVariant {
   Minimal = 'Minimal',
   MinimalWithActions = 'MinimalWithActions'
 }
+
+export const ConnectorRefWidth = {
+  DeploymentFormView: 320,
+  InputSetView: 310,
+  DefaultView: 385
+}

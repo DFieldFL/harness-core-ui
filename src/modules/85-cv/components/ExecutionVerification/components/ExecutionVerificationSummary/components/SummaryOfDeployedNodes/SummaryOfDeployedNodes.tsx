@@ -47,7 +47,7 @@ function SummaryText(props: SummaryTextProps): JSX.Element {
       </Text>
       <Text
         intent="primary"
-        onClick={() => updateQueryParams({ view: 'log', type: tabId })}
+        onClick={() => updateQueryParams({ view: 'log', type: tabId, filterAnomalous: 'true' })}
         rightIcon="arrow-right"
         className={css.viewDetails}
       >

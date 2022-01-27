@@ -6,16 +6,7 @@
  */
 
 import React from 'react'
-import {
-  Layout,
-  getMultiTypeFromValue,
-  MultiTypeInputType,
-  Text,
-  Icon,
-  Color,
-  IconName,
-  HarnessDocTooltip
-} from '@wings-software/uicore'
+import { Layout, getMultiTypeFromValue, MultiTypeInputType, Text, Icon, Color, IconName } from '@wings-software/uicore'
 import { isEmpty, get, defaultTo } from 'lodash-es'
 import cx from 'classnames'
 import { useParams } from 'react-router-dom'
@@ -150,10 +141,10 @@ export function StageForm({
   stageClassName?: string
   allowableTypes: MultiTypeInputType[]
 }): JSX.Element {
-  const isTemplateStage = !!allValues?.stage?.template
+  const isTemplateStage = !!template?.stage?.template
   const type = isTemplateStage
-    ? (allValues?.stage?.template?.templateInputs as StageElementConfig)?.type
-    : allValues?.stage?.type
+    ? (template?.stage?.template?.templateInputs as StageElementConfig)?.type
+    : template?.stage?.type
   return (
     <div id={`Stage.${allValues?.stage?.identifier}`}>
       {!hideTitle && (
@@ -169,7 +160,9 @@ export function StageForm({
           isTemplateStage ? { stage: template?.stage?.template?.templateInputs as StageElementConfig } : template
         }
         allValues={
-          isTemplateStage ? { stage: allValues?.stage?.template?.templateInputs as StageElementConfig } : allValues
+          allValues?.stage?.template
+            ? { stage: allValues?.stage?.template?.templateInputs as StageElementConfig }
+            : allValues
         }
         path={isTemplateStage ? `${path}.${TEMPLATE_INPUT_PATH}` : path}
         readonly={readonly}
@@ -251,9 +244,13 @@ const PipelineInputSetFormInternal: React.FC<PipelineInputSetFormProps> = props 
             MultiTypeInputType.RUNTIME && (
             <>
               <Layout.Horizontal spacing="small" padding={{ top: 'medium', left: 'large', right: 0, bottom: 0 }}>
-                <Text data-name="ci-codebase-title" color={Color.BLACK_100} font={{ weight: 'semi-bold' }}>
+                <Text
+                  data-name="ci-codebase-title"
+                  color={Color.BLACK_100}
+                  font={{ weight: 'semi-bold' }}
+                  tooltipProps={{ dataTooltipId: 'ciCodebase' }}
+                >
                   {getString('ciCodebase')}
-                  <HarnessDocTooltip tooltipId="ciCodebaseTitle" useStandAlone={true} />
                 </Text>
               </Layout.Horizontal>
               <div className={css.topAccordion}>

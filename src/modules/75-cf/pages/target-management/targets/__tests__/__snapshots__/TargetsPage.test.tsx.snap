@@ -99,7 +99,7 @@ exports[`TargetsPage TargetsPage should render data correctly 1`] = `
           style="flex-grow: 1;"
         />
         <div
-          class="bp3-input-group ui-search-box ExpandingSearchInput--main    ExpandingSearchInput--light"
+          class="bp3-input-group ui-search-box ExpandingSearchInput--main   ExpandingSearchInput--alwaysExpanded ExpandingSearchInput--light"
           data-name="findFlag"
         >
           <span
@@ -125,7 +125,7 @@ exports[`TargetsPage TargetsPage should render data correctly 1`] = `
             class="bp3-input  ExpandingSearchInput--filter"
             dir="auto"
             placeholder="search"
-            style="padding-right: 0px;"
+            style="padding-right: 38px;"
             type="search"
             value=""
           />

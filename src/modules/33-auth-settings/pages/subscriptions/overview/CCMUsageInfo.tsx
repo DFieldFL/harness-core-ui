@@ -9,7 +9,7 @@ import React from 'react'
 import { Layout, PageError } from '@wings-software/uicore'
 import { useStrings } from 'framework/strings'
 import { ModuleName } from 'framework/types/ModuleName'
-import { useGetUsageAndLimit } from '@auth-settings/hooks/useGetUsageAndLimit'
+import { useGetUsageAndLimit } from '@common/hooks/useGetUsageAndLimit'
 import UsageInfoCard from './UsageInfoCard'
 
 const ActiveCloudSpend: React.FC<{

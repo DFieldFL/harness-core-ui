@@ -5,18 +5,19 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-export function chartsConfig(series: Highcharts.SeriesLineOptions[], width: number): Highcharts.Options {
-  let xAxisTicks = series[0]?.data?.map((v: any) => v.x as number)
-  if (!xAxisTicks?.length) {
-    xAxisTicks = series?.[1]?.data?.map((v: any) => v.x as number)
-  }
+import type { HostTestData } from './DeploymentMetricsAnalysisRow.constants'
+import type { DeploymentMetricsAnalysisRowChartSeries } from './DeploymentMetricsAnalysisRow.types'
+
+export function chartsConfig(
+  series: DeploymentMetricsAnalysisRowChartSeries[],
+  width: number,
+  testData: HostTestData | undefined
+): Highcharts.Options {
   return {
     chart: {
       height: 120,
       width,
-      type: 'line',
-      zoomType: 'xy',
-      spacing: [2, 1, 1, 2]
+      type: 'areaspline'
     },
     credits: undefined,
     title: {
@@ -27,19 +28,17 @@ export function chartsConfig(series: Highcharts.SeriesLineOptions[], width: numb
     },
     xAxis: {
       tickLength: 0,
-      lineWidth: 1,
+
       labels: {
         enabled: false
       },
-      tickPositions: xAxisTicks,
-      gridLineWidth: 1,
-      gridLineDashStyle: 'LongDash',
+
       title: {
-        text: ''
+        text: testData?.name,
+        align: 'low'
       }
     },
     yAxis: {
-      lineWidth: 0,
       gridLineWidth: 0,
       labels: {
         enabled: false
@@ -51,14 +50,27 @@ export function chartsConfig(series: Highcharts.SeriesLineOptions[], width: numb
     plotOptions: {
       series: {
         stickyTracking: false,
-        lineWidth: 1,
+        lineWidth: 3,
         turboThreshold: 50000
+      },
+      areaspline: {
+        fillOpacity: 0.5
       }
     },
     tooltip: {
       formatter: function tooltipFormatter(this: any): string {
-        const title = this.series?.name ? `<p>${this.series?.name}</p><br/>` : ''
-        return `<section class="serviceGuardTimeSeriesTooltip">${title}<p>Value: ${this.y.toFixed(2)}</p></section>`
+        const { baseData, actualTestData } = series[0]
+
+        // eslint-disable-next-line
+        // @ts-ignore
+        const baseDataValue = baseData?.[this.point.index]?.y
+        // eslint-disable-next-line
+        // @ts-ignore
+        const testDataValue = actualTestData?.points?.[this.point.index]?.y
+
+        return `<section class="serviceGuardTimeSeriesTooltip"><p>Baseline: ${baseDataValue.toFixed(
+          2
+        )}</p><br/><p>Value: ${testDataValue.toFixed(2)}</p></section>`
       },
       outside: true
     },

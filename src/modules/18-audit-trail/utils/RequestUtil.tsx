@@ -10,6 +10,7 @@ import uniqBy from 'lodash/uniqBy'
 import type { AuditTrailFormType, ProjectSelectOption } from '@audit-trail/components/FilterDrawer/FilterDrawer'
 import type { AuditEventDTO, AuditFilterProperties, ResourceDTO, ResourceScopeDTO } from 'services/audit'
 import type { StringKeys } from 'framework/strings'
+import type { OrganizationAggregateDTO, ProjectResponse } from 'services/cd-ng'
 
 export const actionToLabelMap: Record<AuditEventDTO['action'], StringKeys> = {
   CREATE: 'created',
@@ -182,4 +183,19 @@ export const formToLabelMap = (obj: Record<string, any>) => {
     labelMap[key] = Array.isArray(obj[key]) ? obj[key].map((value: MultiSelectOption) => value.value) : obj[key]
   })
   return labelMap
+}
+
+export const getProjectDropdownList = (list: ProjectResponse[]): ProjectSelectOption[] => {
+  return list.map(project => ({
+    label: project.project.name,
+    value: project.project.identifier,
+    orgIdentifier: project.project.orgIdentifier as string
+  }))
+}
+
+export const getOrgDropdownList = (list: OrganizationAggregateDTO[]): MultiSelectOption[] => {
+  return list.map(org => ({
+    label: org.organizationResponse.organization.name,
+    value: org.organizationResponse.organization.identifier
+  }))
 }

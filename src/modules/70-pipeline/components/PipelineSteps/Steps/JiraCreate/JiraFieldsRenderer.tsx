@@ -5,8 +5,9 @@
  * https://polyformproject.org/wp-content/uploads/2020/05/PolyForm-Free-Trial-1.0.0.txt.
  */
 
-import React from 'react'
+import React, { useCallback } from 'react'
 import cx from 'classnames'
+import { isEmpty } from 'lodash-es'
 import { Button, FormInput, Layout } from '@wings-software/uicore'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
 import type { JiraFieldNG } from 'services/cd-ng'
@@ -21,18 +22,38 @@ export interface JiraFieldsRendererProps {
   onDelete: (index: number, selectedField: JiraFieldNG) => void
 }
 
-const getMappedComponent = (
-  selectedField: JiraFieldNG,
-  props: JiraFieldsRendererProps,
-  expressions: string[],
+interface MappedComponentInterface {
+  selectedField: JiraFieldNG
+  props: JiraFieldsRendererProps
+  expressions: string[]
   index: number
-) => {
-  if (
-    selectedField.schema.type === 'string' ||
-    selectedField.schema.type === 'date' ||
-    selectedField.schema.type === 'datetime' ||
-    selectedField.schema.type === 'number'
-  ) {
+}
+
+const GetMappedFieldComponent = ({ selectedField, props, expressions, index }: MappedComponentInterface) => {
+  const showTextField = useCallback(() => {
+    if (
+      selectedField.schema.type === 'string' ||
+      selectedField.schema.type === 'date' ||
+      selectedField.schema.type === 'datetime' ||
+      selectedField.schema.type === 'number'
+    ) {
+      return true
+    }
+    if (isEmpty(selectedField.allowedValues) && selectedField.schema.type === 'option' && selectedField.schema.array) {
+      return true
+    }
+    return false
+  }, [selectedField])
+
+  const showMultiSelectField = useCallback(() => {
+    return selectedField.allowedValues && selectedField.schema.type === 'option' && selectedField.schema.array
+  }, [selectedField])
+
+  const showMultiTypeField = useCallback(() => {
+    return selectedField.allowedValues && selectedField.schema.type === 'option'
+  }, [selectedField])
+
+  if (showTextField()) {
     return (
       <FormInput.MultiTextInput
         label={selectedField.name}
@@ -45,7 +66,7 @@ const getMappedComponent = (
         }}
       />
     )
-  } else if (selectedField.allowedValues && selectedField.schema.type === 'option' && selectedField.schema.array) {
+  } else if (showMultiSelectField()) {
     return (
       <FormInput.MultiSelectTypeInput
         selectItems={setAllowedValuesOptions(selectedField.allowedValues)}
@@ -59,7 +80,7 @@ const getMappedComponent = (
         }}
       />
     )
-  } else if (selectedField.allowedValues && selectedField.schema.type === 'option') {
+  } else if (showMultiTypeField()) {
     return (
       <FormInput.MultiTypeInput
         selectItems={setAllowedValuesOptions(selectedField.allowedValues)}
@@ -82,7 +103,12 @@ export const JiraFieldsRenderer = (props: JiraFieldsRendererProps) => {
     <>
       {selectedFields?.map((selectedField: JiraFieldNG, index: number) => (
         <Layout.Horizontal className={css.alignCenter} key={selectedField.name}>
-          {getMappedComponent(selectedField, props, expressions, index)}
+          <GetMappedFieldComponent
+            selectedField={selectedField}
+            props={props}
+            expressions={expressions}
+            index={index}
+          />
           <Button
             minimal
             icon="trash"

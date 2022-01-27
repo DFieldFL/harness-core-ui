@@ -23,7 +23,7 @@ const ExactSharedPackages = [
   'restful-react'
 ]
 
-module.exports = ({ enableGitOpsUI }) => {
+module.exports = ({ enableGitOpsUI, enableSTO }) => {
   const remotes = {}
 
   if (enableGitOpsUI) {
@@ -31,7 +31,12 @@ module.exports = ({ enableGitOpsUI }) => {
     remotes.gitopsui = "gitopsui@[window.getApiBaseUrl('gitops/remoteEntry.js')]"
   }
 
+  // TODO (tnhu): Use build an environment variable to enable Governance
   remotes.governance = "governance@[window.getApiBaseUrl('pm/remoteEntry.js')]"
+
+  if (enableSTO) {
+    remotes.sto = "sto@[window.getApiBaseUrl('sto/remoteEntry.js')]"
+  }
 
   return {
     name: 'nextgenui',

@@ -87,12 +87,17 @@ exports[`CI enabled CI READONLY mode: CI stage readonly mode 1`] = `
       <div
         class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--padding-top-medium StyledProps--padding-left-large"
       >
-        <p
-          class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
-          data-name="ci-codebase-title"
+        <div
+          class="Text--withDocsTooltip"
+          data-tooltip-id="ciCodebase"
         >
-          ciCodebase
-        </p>
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
+            data-name="ci-codebase-title"
+          >
+            ciCodebase
+          </p>
+        </div>
       </div>
       <div
         class="topAccordion"
@@ -167,12 +172,17 @@ exports[`CI enabled CI present in one of the stages: CI codebase input set form 
       <div
         class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--padding-top-medium StyledProps--padding-left-large"
       >
-        <p
-          class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
-          data-name="ci-codebase-title"
+        <div
+          class="Text--withDocsTooltip"
+          data-tooltip-id="ciCodebase"
         >
-          ciCodebase
-        </p>
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
+            data-name="ci-codebase-title"
+          >
+            ciCodebase
+          </p>
+        </div>
       </div>
       <div
         class="topAccordion"
@@ -244,12 +254,17 @@ exports[`CI enabled PR Number build radio option should not be visible for CodeC
       <div
         class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--padding-top-medium StyledProps--padding-left-large"
       >
-        <p
-          class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
-          data-name="ci-codebase-title"
+        <div
+          class="Text--withDocsTooltip"
+          data-tooltip-id="ciCodebase"
         >
-          ciCodebase
-        </p>
+          <p
+            class="StyledProps--font StyledProps--main StyledProps--color StyledProps--color-black100 StyledProps--font-weight-semi-bold"
+            data-name="ci-codebase-title"
+          >
+            ciCodebase
+          </p>
+        </div>
       </div>
       <div
         class="topAccordion"

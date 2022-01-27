@@ -80,6 +80,7 @@ import CreateConnectorFromYamlPage from '@connectors/pages/createConnectorFromYa
 import CreateSecretFromYamlPage from '@secrets/pages/createSecretFromYaml/CreateSecretFromYamlPage'
 import ServiceDetailPage from '@cd/pages/ServiceDetailPage/ServiceDetailPage'
 import ServiceDetails from '@cd/components/ServiceDetails/ServiceDetails'
+// eslint-disable-next-line no-restricted-imports
 import ChildAppMounter from 'microfrontends/ChildAppMounter'
 
 import './components/PipelineSteps'
@@ -106,6 +107,7 @@ import RbacFactory from '@rbac/factories/RbacFactory'
 import { TriggerFormType } from '@pipeline/factories/ArtifactTriggerInputFactory/types'
 import TriggerFactory from '@pipeline/factories/ArtifactTriggerInputFactory/index'
 import ExecutionPolicyEvaluationsView from '@pipeline/pages/execution/ExecutionPolicyEvaluationsView/ExecutionPolicyEvaluationsView'
+import ExecutionSecurityView from '@pipeline/pages/execution/ExecutionSecurityView/ExecutionSecurityView'
 import { ResourceCategory, ResourceType } from '@rbac/interfaces/ResourceType'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import {
@@ -729,6 +731,21 @@ export default (
     >
       <ExecutionLandingPage>
         <ExecutionPolicyEvaluationsView />
+      </ExecutionLandingPage>
+    </RouteWithLayout>
+    <RouteWithLayout
+      exact
+      licenseRedirectData={licenseRedirectData}
+      sidebarProps={CDSideNavProps}
+      layout={MinimalLayout}
+      path={routes.toExecutionSecurityView({
+        ...accountPathProps,
+        ...executionPathProps,
+        ...pipelineModuleParams
+      })}
+    >
+      <ExecutionLandingPage>
+        <ExecutionSecurityView />
       </ExecutionLandingPage>
     </RouteWithLayout>
     <RouteWithLayout

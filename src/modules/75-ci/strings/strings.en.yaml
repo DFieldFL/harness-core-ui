@@ -91,7 +91,6 @@ buildInfa:
   k8sLabel: Kubernetes (K8s)
   vmLabel: Virtual Machines (VMs)
   awsVM:
-    poolId: Pool Id
     os: Operating System
     architecture: Achitecture
     isRequiredWhen: '{{field1}} is required in case {{field2}} is provided'

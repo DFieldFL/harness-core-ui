@@ -96,19 +96,8 @@ exports[`<StepCommonFields /> tests Should render properly with no data 1`] = `
             </div>
           </div>
         </div>
-        <div>
-          <div
-            style="min-height: 24px;"
-          />
-          <div
-            class="separator"
-          />
-          <div
-            style="min-height: 24px;"
-          />
-        </div>
         <div
-          class="Layout--vertical Layout--layout-spacing-medium StyledProps--main bottomMargin5"
+          class="Layout--vertical Layout--layout-spacing-medium StyledProps--main bottomMargin5 topMargin5"
         >
           <div
             class="Text--withDocsTooltip"
@@ -492,19 +481,8 @@ exports[`<StepCommonFields /> tests Should render properly with passed initial v
             </div>
           </div>
         </div>
-        <div>
-          <div
-            style="min-height: 24px;"
-          />
-          <div
-            class="separator"
-          />
-          <div
-            style="min-height: 24px;"
-          />
-        </div>
         <div
-          class="Layout--vertical Layout--layout-spacing-medium StyledProps--main bottomMargin5"
+          class="Layout--vertical Layout--layout-spacing-medium StyledProps--main bottomMargin5 topMargin5"
         >
           <div
             class="Text--withDocsTooltip"

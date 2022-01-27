@@ -10,6 +10,7 @@ declare const styles: {
   readonly addFieldsButton: string
   readonly buttons: string
   readonly contentWrapper: string
+  readonly fetchingPageSpinner: string
   readonly fieldsSelectorPlaceholder: string
   readonly headerRow: string
   readonly label: string

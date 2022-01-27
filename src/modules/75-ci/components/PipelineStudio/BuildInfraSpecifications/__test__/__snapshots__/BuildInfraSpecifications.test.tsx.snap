@@ -178,7 +178,7 @@ exports[`BuildInfraSpecifications snapshot tests for AWS Build Infra Render AWS 
                           <p
                             class="StyledProps--font StyledProps--main StyledProps--font-variation-form-label StyledProps--margin-bottom-xsmall"
                           >
-                            ci.buildInfa.awsVM.poolId
+                            pipeline.buildInfra.poolId
                           </p>
                         </div>
                         <div

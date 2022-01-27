@@ -15,6 +15,7 @@ import { PipelineVariablesContext } from '@pipeline/components/PipelineVariables
 import { factory } from '@pipeline/components/PipelineSteps/Steps/__tests__/StepTestUtil'
 import { CustomVariables } from '@pipeline/components/PipelineSteps/Steps/CustomVariables/CustomVariables'
 import { branchStatusMock, gitConfigs, sourceCodeManagers } from '@connectors/mocks/mock'
+import { Scope } from '@common/interfaces/SecretsInterface'
 import PipelineVariables from '../PipelineVariables'
 import { PipelineContext, PipelineContextInterface } from '../../PipelineContext/PipelineContext'
 import variablesPipeline from './variables.json'
@@ -31,6 +32,7 @@ const pipelineContext: PipelineContextInterface = {
   isReadonly: false,
   setSchemaErrorView: jest.fn(),
   view: SelectedView.VISUAL,
+  scope: Scope.PROJECT,
   renderPipelineStage: jest.fn(),
   setView: jest.fn(),
   updateGitDetails: jest.fn(),

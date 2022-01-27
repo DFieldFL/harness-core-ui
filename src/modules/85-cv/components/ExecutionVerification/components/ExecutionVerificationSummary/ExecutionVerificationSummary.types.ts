@@ -15,4 +15,5 @@ export interface VerifyExecutionProps {
   displayAnalysisCount?: boolean
   onSelectNode?: (selectedNode?: DeploymentNodeAnalysisResult) => void
   className?: string
+  isConsoleView?: boolean
 }

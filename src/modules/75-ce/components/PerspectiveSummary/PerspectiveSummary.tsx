@@ -71,6 +71,7 @@ interface CostCardProps {
   statsTrend: any
   statsDescription: string | undefined
   isEmpty: boolean
+  showTrend?: boolean
 }
 
 const CostCard: (val: CostCardProps) => JSX.Element = ({
@@ -79,7 +80,8 @@ const CostCard: (val: CostCardProps) => JSX.Element = ({
   statsValue,
   statsTrend,
   statsDescription,
-  isEmpty
+  isEmpty,
+  showTrend = true
 }) => {
   if (fetching) {
     return (
@@ -110,7 +112,7 @@ const CostCard: (val: CostCardProps) => JSX.Element = ({
             >
               <Text font={{ variation: FontVariation.H3 }}>{statsValue}</Text>
               <FlexExpander />
-              <StatsTrendRenderer val={statsTrend} />
+              {showTrend && <StatsTrendRenderer val={statsTrend} />}
             </Layout.Horizontal>
 
             <Text color="grey400" font="xsmall">
@@ -395,6 +397,7 @@ const PerspectiveSummary: React.FC<PerspectiveSummaryProps> = ({
           statsTrend={forecastedCostData?.cost?.statsTrend}
           statsValue={forecastedCostData?.cost?.statsValue}
           isEmpty={!forecastedCostData?.cost}
+          showTrend={false}
         />
       )}
       {hasClusterAsSource && <RecommendationSummaryCard />}

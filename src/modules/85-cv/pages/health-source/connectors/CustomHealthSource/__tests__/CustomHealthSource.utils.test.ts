@@ -61,4 +61,86 @@ describe('Validate utils', () => {
     expect(createdMetrics).toEqual(['CustomHealth Metric 101'])
     expect(selectedMetricIndex).toEqual(0)
   })
+
+  test('Validate end and start time placeholder', async () => {
+    // path url should include placeholders
+    expect(
+      validateMappings(val => val, ['CustomHealth Metric 101'], 0, {
+        ...noErrorValidatation,
+        pathURL: 'solo-dolo?endTime=2234&startTime=243',
+        endTime: {
+          placeholder: 'end_time',
+          timestampFormat: 'MILLISECONDS'
+        },
+        startTime: {
+          placeholder: 'start_time',
+          timestampFormat: 'MILLISECONDS'
+        }
+      } as any)
+    ).toEqual({ pathURL: 'cv.customHealthSource.Querymapping.validation.pathWithoutPlaceholder' })
+
+    // path url should include placeholders
+    expect(
+      validateMappings(val => val, ['CustomHealth Metric 101'], 0, {
+        ...noErrorValidatation,
+        pathURL: 'solo-dolo?endTime=end_time&startTime=243',
+        endTime: {
+          placeholder: 'end_time',
+          timestampFormat: 'MILLISECONDS'
+        },
+        startTime: {
+          placeholder: 'start_time',
+          timestampFormat: 'MILLISECONDS'
+        }
+      } as any)
+    ).toEqual({ pathURL: 'cv.customHealthSource.Querymapping.validation.pathWithoutPlaceholder' })
+
+    // placeholders in body not in url
+    expect(
+      validateMappings(val => val, ['CustomHealth Metric 101'], 0, {
+        ...noErrorValidatation,
+        pathURL: 'solo-dolo?endTime=end_time&startTime=243',
+        query: 'sdffsfdf?end_time=sdf&start_time=23weewr',
+        endTime: {
+          placeholder: 'end_time',
+          timestampFormat: 'MILLISECONDS'
+        },
+        startTime: {
+          placeholder: 'start_time',
+          timestampFormat: 'MILLISECONDS'
+        }
+      } as any)
+    ).toEqual({})
+
+    // placeholders are the same
+    expect(
+      validateMappings(val => val, ['CustomHealth Metric 101'], 0, {
+        ...noErrorValidatation,
+        pathURL: 'solo-dolo?endTime=now&startTime=now',
+        endTime: {
+          placeholder: 'now',
+          timestampFormat: 'MILLISECONDS'
+        },
+        startTime: {
+          placeholder: 'now',
+          timestampFormat: 'MILLISECONDS'
+        }
+      } as any)
+    ).toEqual({ 'startTime.placeholder': 'cv.customHealthSource.Querymapping.validation.startAndEndTime' })
+
+    // placeholders must be included
+    expect(
+      validateMappings(val => val, ['CustomHealth Metric 101'], 0, {
+        ...noErrorValidatation,
+        pathURL: 'solo-dolo?endTime=now&startTime=now',
+        endTime: null,
+        startTime: null
+      } as any)
+    ).toEqual({
+      'endTime.placeholder': 'cv.customHealthSource.Querymapping.validation.endTime.timestamp',
+      'endTime.timestampFormat': 'cv.customHealthSource.Querymapping.validation.endTime.timestamp',
+      'startTime.placeholder': 'cv.customHealthSource.Querymapping.validation.startTime.placeholder',
+      'startTime.timestampFormat': 'cv.customHealthSource.Querymapping.validation.startTime.timestamp'
+    })
+  })
 })

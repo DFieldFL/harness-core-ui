@@ -6,7 +6,7 @@
  */
 
 import React, { useMemo, useState } from 'react'
-import { Container, Tabs, Tab, NoDataCard } from '@wings-software/uicore'
+import { Container, Tabs, Tab, NoDataCard, Layout } from '@wings-software/uicore'
 import { useStrings } from 'framework/strings'
 import { useQueryParams } from '@common/hooks'
 import type { ExecutionNode } from 'services/pipeline-ng'
@@ -34,8 +34,18 @@ export function ExecutionVerificationView(props: ExecutionVerificationViewProps)
       <Tab
         id={getString('pipeline.verification.analysisTab.metrics')}
         title={getString('pipeline.verification.analysisTab.metrics')}
+        panelClassName={css.mainTabPanel}
         panel={
-          <DeploymentMetrics step={step} selectedNode={selectedNode} activityId={activityId as unknown as string} />
+          <Layout.Horizontal style={{ height: '100%' }}>
+            <ExecutionVerificationSummary
+              displayAnalysisCount={false}
+              step={step}
+              className={css.executionSummary}
+              onSelectNode={setSelectedNode}
+              isConsoleView
+            />
+            <DeploymentMetrics step={step} selectedNode={selectedNode} activityId={activityId} />
+          </Layout.Horizontal>
         }
       />
       <Tab
@@ -49,15 +59,5 @@ export function ExecutionVerificationView(props: ExecutionVerificationViewProps)
       <NoDataCard message={getString('pipeline.verification.logs.noAnalysis')} icon="warning-sign" />
     </Container>
   )
-  return (
-    <Container className={css.main}>
-      <ExecutionVerificationSummary
-        displayAnalysisCount={false}
-        step={step}
-        className={css.executionSummary}
-        onSelectNode={setSelectedNode}
-      />
-      {content}
-    </Container>
-  )
+  return <Container className={css.main}>{content}</Container>
 }

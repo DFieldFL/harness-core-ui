@@ -45,6 +45,7 @@ export const ServiceInstancesWidget: React.FC<ServiceInstanceWidgetProps> = prop
 
   const trendData: number[] = useMemo(() => {
     const timeValuePairList = data?.data?.timeValuePairList || []
+    // istanbul ignore else
     if (!timeValuePairList.length) {
       return []
     }

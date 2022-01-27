@@ -24,7 +24,6 @@ describe('CVSLOsListingPage', () => {
     cy.intercept('GET', getServiceLevelObjectivesRiskCount, { fixture: 'cv/slo/getSLORiskCount' })
     cy.intercept('GET', listSLOsCall, updatedListSLOsCallResponse)
     cy.intercept('GET', getMonitoredService, { fixture: 'cv/slo/getMonitoredService' })
-    cy.intercept('POST', deleteSLOData, { fixture: 'pipeline/api/pipelines.post' })
 
     cy.contains('p', 'SLOs').click()
 
@@ -57,10 +56,13 @@ describe('CVSLOsListingPage', () => {
 
     cy.contains('p', 'Delete SLO-1?').should('be.visible')
     cy.contains('p', 'Are you sure you want to delete SLO: SLO-1?').should('be.visible')
-    cy.contains('span', 'Delete').click({ force: true })
 
+    cy.intercept('DELETE', deleteSLOData, { statusCode: 200 }).as('deleteSLOData')
     cy.intercept('GET', listSLOsCall, listSLOsCallResponse)
     cy.intercept('GET', getServiceLevelObjectivesRiskCount, { fixture: 'cv/slo/getSLORiskCountAfterDelete' })
+
+    cy.contains('span', 'Delete').click({ force: true })
+    cy.wait('@deleteSLOData')
 
     cy.contains('span', 'SLO-1 successfully deleted').should('be.visible')
   })

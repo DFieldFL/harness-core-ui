@@ -147,6 +147,7 @@ type BudgetSummary {
   name: String!
   period: BudgetPeriod!
   perspectiveId: String!
+  perspectiveName: String!
   startTime: Long!
   timeLeft: Int!
   timeScope: String!

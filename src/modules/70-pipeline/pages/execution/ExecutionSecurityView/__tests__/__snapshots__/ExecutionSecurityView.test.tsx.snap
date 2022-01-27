@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ExecutionSecurityView /> tests Should render empty when governanceMetadata is not null 1`] = `
+<div>
+  <div
+    class="StyledProps--font StyledProps--main"
+    style="width: 100%; height: 100%;"
+  >
+    <div />
+  </div>
+</div>
+`;
+
+exports[`<ExecutionSecurityView /> tests Should render empty when governanceMetadata is null 1`] = `<div />`;

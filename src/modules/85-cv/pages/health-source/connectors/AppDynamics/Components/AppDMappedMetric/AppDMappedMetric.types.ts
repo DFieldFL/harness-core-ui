@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import type { SelectOption } from '@wings-software/uicore'
+import type { GroupedMetric } from '@cv/components/MultiItemsSideNav/components/SelectedAppsSideNav/components/GroupedSideNav.types'
 import type {
   CreatedMetricsWithSelectedIndex,
   MapAppDynamicsMetric,
@@ -22,11 +22,6 @@ export interface AppDMappedMetricInterface {
   createdMetrics: string[]
   isValidInput: boolean
   setCreatedMetrics: React.Dispatch<React.SetStateAction<CreatedMetricsWithSelectedIndex>>
-}
-
-export interface GroupedMetric {
-  groupName: SelectOption | undefined
-  metricName: string | undefined
 }
 
 export interface GroupedCreatedMetrics {

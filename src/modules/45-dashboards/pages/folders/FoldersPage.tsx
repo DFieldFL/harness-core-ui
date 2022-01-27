@@ -17,10 +17,11 @@ import {
   Heading,
   Icon,
   useModalHook,
-  StepWizard,
   CardBody,
+  FontVariation,
   FormInput,
   Formik,
+  FormikForm as Form,
   Pagination,
   SelectOption,
   ExpandingSearchInput,
@@ -30,7 +31,6 @@ import {
 import { Select } from '@blueprintjs/select'
 
 import { Classes, Dialog, Menu, MenuItem } from '@blueprintjs/core'
-import { Form } from 'formik'
 import * as Yup from 'yup'
 import { NavLink, useParams, useHistory } from 'react-router-dom'
 import { useGet, useMutate } from 'restful-react'
@@ -80,7 +80,7 @@ const defaultSortBy: SelectOption = {
   value: ''
 }
 
-const FirstStep = (props: any): JSX.Element => {
+const NewFolderForm = (props: any): JSX.Element => {
   const { getString } = useStrings()
   const { accountId } = useParams<AccountPathProps>()
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -98,15 +98,10 @@ const FirstStep = (props: any): JSX.Element => {
 
   return (
     <Layout.Horizontal style={{ height: '100%', justifyContent: 'space-between' }}>
-      <Layout.Horizontal
-        flex
-        padding="medium"
-        style={{ flexDirection: 'column', alignItems: 'baseline', width: '50%' }}
-        spacing="medium"
-      >
-        <Text font="medium" color={Color.BLACK_100}>
+      <Layout.Horizontal padding="xxlarge" style={{ flexDirection: 'column', alignItems: 'baseline' }}>
+        <Heading level={3} font={{ variation: FontVariation.H3 }} padding={{ bottom: 'large' }}>
           {getString('dashboards.createFolder.stepOne')}
-        </Text>
+        </Heading>
         <Formik
           initialValues={{ name: '' }}
           formName={'createFolderForm'}
@@ -142,11 +137,11 @@ const FirstStep = (props: any): JSX.Element => {
                   placeholder={getString('dashboards.createFolder.folderPlaceholder')}
                 />
 
-                <Layout.Vertical style={{ marginTop: '180px' }}>
+                <Layout.Vertical style={{ marginTop: '180px' }} padding={{ top: 'small' }}>
                   <Button
                     type="submit"
                     intent="primary"
-                    style={{ width: '150px', marginTop: '200px' }}
+                    style={{ width: '150px' }}
                     text={getString('continue')}
                     disabled={loading}
                     className={css.button}
@@ -292,33 +287,30 @@ const FoldersPage: React.FC = () => {
           setView(Views.CREATE)
           hideModal()
         }}
-        className={cx(css.folderDialog, Classes.DIALOG, {
+        className={cx(css.dashboardFolderDialog, Classes.DIALOG, {
           [css.create]: view === Views.CREATE
         })}
       >
         {view === Views.CREATE ? (
-          <StepWizard stepClassName={css.stepClass}>
-            <FirstStep
-              name={getString('dashboards.createFolder.stepOne')}
-              formData={{}}
-              hideModal={hideModal}
-              handleViewChange={{}}
-            />
-            {null}
-          </StepWizard>
+          <NewFolderForm
+            name={getString('dashboards.createFolder.stepOne')}
+            formData={{}}
+            hideModal={hideModal}
+            handleViewChange={{}}
+          />
         ) : null}
 
         {view === Views.EDIT ? <section>se</section> : null}
 
         <Button
-          minimal
+          className={css.crossIcon}
           icon="cross"
           iconProps={{ size: 18 }}
+          minimal
           onClick={() => {
             setView(Views.CREATE)
             hideModal()
           }}
-          className={css.crossIcon}
         />
       </Dialog>
     ),

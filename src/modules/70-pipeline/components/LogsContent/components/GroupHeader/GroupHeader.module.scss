@@ -34,9 +34,17 @@
     justify-content: space-between;
   }
 
+  .scrollBtn {
+    &:hover {
+      --text-color: var(--white) !important;
+    }
+  }
+
   .duration {
     font-size: var(--font-size-small) !important;
     color: var(--grey-500) !important;
+    display: inline-block;
+    min-width: 50px;
   }
 
   &[data-open='true'] {

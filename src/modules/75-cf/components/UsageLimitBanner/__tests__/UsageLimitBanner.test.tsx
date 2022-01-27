@@ -8,8 +8,9 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { TestWrapper } from '@common/utils/testUtils'
-import * as useGetUsageAndLimitMock from '@auth-settings/hooks/useGetUsageAndLimit'
+import * as useGetUsageAndLimitMock from '@common/hooks/useGetUsageAndLimit'
 import * as licenseStoreContextMock from 'framework/LicenseStore/LicenseStoreContext'
+import * as usePlanEnforcementMock from '@cf/hooks/usePlanEnforcement'
 import UsageLimitBanner from '../UsageLimitBanner'
 
 const renderComponent = (): void => {
@@ -27,6 +28,10 @@ describe('UsageLimitBanner', () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
+
+  beforeEach(() =>
+    jest.spyOn(usePlanEnforcementMock, 'default').mockReturnValue({ isPlanEnforcementEnabled: true, isFreePlan: true })
+  )
 
   describe('Team/Enterprise Plan', () => {
     beforeAll(() => {

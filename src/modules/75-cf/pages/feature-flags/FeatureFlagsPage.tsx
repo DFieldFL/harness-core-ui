@@ -555,30 +555,39 @@ const FeatureFlagsPage: React.FC = () => {
     </Layout.Horizontal>
   )
 
+  const displayToolbar = hasFeatureFlags || searchTerm
+
   return (
     <ListingPageTemplate
       pageTitle={title}
       header={header}
       headerStyle={{ display: 'flex' }}
       toolbar={
-        <Layout.Horizontal flex={{ alignItems: 'center' }}>
-          <Container margin={{ right: 'small' }}>
-            <FlagDialog environment={activeEnvironment} />
-          </Container>
-          {gitSync?.isGitSyncActionsEnabled && (
-            <GitSyncActions
-              isLoading={gitSync.gitSyncLoading || gitSyncing}
-              branch={gitSync.gitRepoDetails?.branch || ''}
-              repository={gitSync.gitRepoDetails?.repoIdentifier || ''}
-              isAutoCommitEnabled={gitSync.isAutoCommitEnabled}
-              isGitSyncPaused={gitSync.isGitSyncPaused}
-              handleToggleAutoCommit={gitSync.handleAutoCommit}
-              handleGitPause={gitSync.handleGitPause}
+        displayToolbar && (
+          <Layout.Horizontal flex={{ alignItems: 'center' }}>
+            <Container margin={{ right: 'small' }}>
+              <FlagDialog environment={activeEnvironment} />
+            </Container>
+            {gitSync?.isGitSyncActionsEnabled && (
+              <GitSyncActions
+                isLoading={gitSync.gitSyncLoading || gitSyncing}
+                branch={gitSync.gitRepoDetails?.branch || ''}
+                repository={gitSync.gitRepoDetails?.repoIdentifier || ''}
+                isAutoCommitEnabled={gitSync.isAutoCommitEnabled}
+                isGitSyncPaused={gitSync.isGitSyncPaused}
+                handleToggleAutoCommit={gitSync.handleAutoCommit}
+                handleGitPause={gitSync.handleGitPause}
+              />
+            )}
+            <FlexExpander />
+            <ExpandingSearchInput
+              alwaysExpanded
+              name="findFlag"
+              placeholder={getString('search')}
+              onChange={onSearchInputChanged}
             />
-          )}
-          <FlexExpander />
-          <ExpandingSearchInput name="findFlag" placeholder={getString('search')} onChange={onSearchInputChanged} />
-        </Layout.Horizontal>
+          </Layout.Horizontal>
+        )
       }
       content={
         <>

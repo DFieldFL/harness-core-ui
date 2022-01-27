@@ -8,6 +8,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import type { IconName } from '@wings-software/uicore'
+import { useUpdateLSDefaultExperience } from '@common/hooks/useUpdateLSDefaultExperience'
 import { useTelemetry } from '@common/hooks/useTelemetry'
 import { ModuleName } from 'framework/types/ModuleName'
 import routes from '@common/RouteDefinitions'
@@ -59,6 +60,7 @@ const SelectModuleList: React.FC<SelectModuleListProps> = ({ onModuleClick, modu
     trackEvent(PurposeActions.CDModuleContinue, { category: Category.SIGNUP, module: ModuleName.CD })
   }
   const history = useHistory()
+  const { updateLSDefaultExperience } = useUpdateLSDefaultExperience()
 
   const getButtonProps = (buttonType: string): { clickHandle?: () => void; disabled?: boolean } => {
     switch (buttonType) {
@@ -74,7 +76,10 @@ const SelectModuleList: React.FC<SelectModuleListProps> = ({ onModuleClick, modu
             try {
               updateDefaultExperience({
                 defaultExperience: Experiences.NG
-              }).then(() => history.push(routes.toModuleHome({ accountId, module: buttonType, source: 'purpose' })))
+              }).then(() => {
+                updateLSDefaultExperience(Experiences.NG)
+                history.push(routes.toModuleHome({ accountId, module: buttonType, source: 'purpose' }))
+              })
             } catch (error) {
               showError(error.data?.message || getString('somethingWentWrong'))
             }

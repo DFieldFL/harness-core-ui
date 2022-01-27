@@ -9,7 +9,12 @@ import React, { ReactNode } from 'react'
 import { IconName, ModalErrorHandlerBinding, getErrorInfoFromErrorObject, SelectOption } from '@wings-software/uicore'
 import { defaultTo } from 'lodash-es'
 import type { StringsMap } from 'stringTypes'
-import type { AccessControlCheckError, RoleAssignmentMetadataDTO, UserMetadataDTO } from 'services/cd-ng'
+import type {
+  AccessControlCheckError,
+  RoleAssignmentMetadataDTO,
+  UserMetadataDTO,
+  Scope as CDScope
+} from 'services/cd-ng'
 import { Scope } from '@common/interfaces/SecretsInterface'
 import type {
   Assignment,
@@ -24,12 +29,18 @@ import type { FeatureRequest } from 'framework/featureStore/featureStoreUtil'
 import type { PermissionsRequest } from '@rbac/hooks/usePermission'
 import { FeatureWarningTooltip } from '@common/components/FeatureWarning/FeatureWarningWithTooltip'
 import type { UseStringsReturn } from 'framework/strings'
+import type { ProjectSelectOption } from '@audit-trail/components/FilterDrawer/FilterDrawer'
 import css from './utils.module.scss'
 
 export enum PrincipalType {
   USER = 'USER',
   USER_GROUP = 'USER_GROUP',
   SERVICE = 'SERVICE_ACCOUNT'
+}
+
+export enum SelectionType {
+  ALL = 'ALL',
+  SPECIFIED = 'SPECIFIED'
 }
 
 export const getRoleIcon = (roleIdentifier: string): IconName => {
@@ -182,10 +193,11 @@ export const isAssignmentFieldDisabled = (value: RoleOption | ResourceGroupOptio
   return false
 }
 export const isDynamicResourceSelector = (value: string | string[]): boolean => {
-  if (value === RbacResourceGroupTypes.DYNAMIC_RESOURCE_SELECTOR) {
-    return true
-  }
-  return false
+  return value === RbacResourceGroupTypes.DYNAMIC_RESOURCE_SELECTOR
+}
+
+export const isScopeResourceSelector = (value: string): boolean => {
+  return value === RbacResourceGroupTypes.SCOPE_RESOURCE_SELECTOR
 }
 
 interface ErrorHandlerProps {
@@ -296,4 +308,20 @@ export function getTooltip({
 
 export const getUserName = (user: UserMetadataDTO): string => {
   return defaultTo(user.name, user.email)
+}
+
+export const generateScopeList = (org: string, projects: ProjectSelectOption[], accountId: string): CDScope[] => {
+  if (projects.length > 0) {
+    return projects.map(project => ({
+      accountIdentifier: accountId,
+      orgIdentifier: project.orgIdentifier,
+      projectIdentifier: project.value as string
+    }))
+  }
+  return [
+    {
+      accountIdentifier: accountId,
+      orgIdentifier: org as string
+    }
+  ]
 }

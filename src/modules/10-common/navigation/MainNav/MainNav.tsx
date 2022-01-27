@@ -145,7 +145,7 @@ export default function L1Nav(): React.ReactElement {
             >
               <Layout.Vertical flex spacing="xsmall">
                 <Icon name="dashboard" size={20} />
-                <Text font={{ size: 'xsmall', align: 'center' }} color={Color.WHITE} className={css.hiddenText}>
+                <Text font={{ size: 'xsmall', align: 'center' }} color={Color.WHITE} className={css.hoverText}>
                   <String stringID="common.dashboards" />
                 </Text>
               </Layout.Vertical>
@@ -161,7 +161,7 @@ export default function L1Nav(): React.ReactElement {
           >
             <Layout.Vertical flex spacing="xsmall">
               <Icon name="nav-settings" size={20} />
-              <Text font={{ size: 'xsmall', align: 'center' }} color={Color.WHITE} className={css.hiddenText}>
+              <Text font={{ size: 'xsmall', align: 'center' }} color={Color.WHITE} className={css.hoverText}>
                 <String stringID="common.accountSettings" />
               </Text>
             </Layout.Vertical>
@@ -173,8 +173,8 @@ export default function L1Nav(): React.ReactElement {
             activeClassName={css.active}
             to={paths.toUser(params)}
           >
-            <Layout.Vertical flex spacing="small">
-              <Avatar name={user.name || user.email} email={user.email} size="xsmall" hoverCard={false} />
+            <Layout.Vertical flex spacing="xsmall">
+              <Avatar name={user.name || user.email} email={user.email} size="small" hoverCard={false} />
               <Text font={{ size: 'xsmall', align: 'center' }} color={Color.WHITE} className={css.hiddenText}>
                 <String stringID="common.myProfile" />
               </Text>

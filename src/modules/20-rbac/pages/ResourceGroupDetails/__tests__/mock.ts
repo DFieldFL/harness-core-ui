@@ -9,11 +9,15 @@ export const resourceTypes = {
   status: 'SUCCESS',
   data: {
     resourceTypes: [
-      { name: 'ACCOUNT', validatorTypes: ['STATIC'] },
-      { name: 'SECRET', validatorTypes: ['STATIC', 'DYNAMIC'] },
-      { name: 'CONNECTOR', validatorTypes: ['STATIC', 'DYNAMIC'] },
-      { name: 'ORGANIZATION', validatorTypes: ['STATIC', 'DYNAMIC'] },
-      { name: 'PROJECT', validatorTypes: ['STATIC', 'DYNAMIC'] }
+      {
+        name: 'SECRET',
+        validatorTypes: ['BY_RESOURCE_IDENTIFIER', 'BY_RESOURCE_TYPE', 'BY_RESOURCE_TYPE_INCLUDING_CHILD_SCOPES']
+      },
+      {
+        name: 'CONNECTOR',
+        validatorTypes: ['BY_RESOURCE_IDENTIFIER', 'BY_RESOURCE_TYPE', 'BY_RESOURCE_TYPE_INCLUDING_CHILD_SCOPES']
+      },
+      { name: 'PIPELINE', validatorTypes: ['BY_RESOURCE_TYPE_INCLUDING_CHILD_SCOPES'] }
     ]
   },
   metaData: null,
@@ -28,7 +32,7 @@ export const resourceGroupDetails = {
       projectIdentifier: null,
       identifier: 'ewrewew',
       name: 'nameewrewew',
-      resourceSelectors: [{ type: 'DynamicResourceSelector', resourceType: 'ORGANIZATION' }],
+      resourceSelectors: [{ type: 'DynamicResourceSelector', resourceType: 'SECRET', includeChildScopes: false }],
       tags: {},
       description: '',
       color: '#0063f7'
@@ -49,7 +53,7 @@ export const resourceGroupDetailsWithHarnessManaged = {
       projectIdentifier: null,
       identifier: 'ewrewew',
       name: 'nameewrewew',
-      resourceSelectors: [{ type: 'DynamicResourceSelector', resourceType: 'ORGANIZATION' }],
+      resourceSelectors: [{ type: 'DynamicResourceSelector', resourceType: 'SECRET', includeChildScopes: false }],
       tags: {},
       description: '',
       color: '#0063f7'
