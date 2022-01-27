@@ -317,6 +317,7 @@ export const MultiTypeConnectorField = (props: MultiTypeConnectorFieldProps): Re
             openConnectorModal,
             setPagedConnectorData
           }),
+          disableCollapse: !(type === 'Github'),
           pagination: {
             itemCount: pagedConnectorData?.data?.totalItems || 0,
             pageSize: pagedConnectorData?.data?.pageSize || 10,
