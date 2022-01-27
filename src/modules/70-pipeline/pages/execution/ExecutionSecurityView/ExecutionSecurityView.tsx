@@ -16,16 +16,16 @@ export default function ExecutionSecurityView(): React.ReactElement | null {
   const { accountId, orgIdentifier, projectIdentifier, pipelineIdentifier, executionIdentifier, module } =
     useParams<PipelineType<ExecutionPathProps>>()
   const context = useExecutionContext()
-  const pipelineExecutionSummary = context?.pipelineExecutionDetail?.pipelineExecutionSummary
+  const pipelineExecutionDetail = context?.pipelineExecutionDetail
 
-  if (!pipelineExecutionSummary) {
+  if (!pipelineExecutionDetail || !pipelineExecutionDetail.pipelineExecutionSummary) {
     return null
   }
 
   return (
     <Container width="100%" height="100%">
       <PipelineSecurityView
-        pipelineExecutionSummary={pipelineExecutionSummary}
+        pipelineExecutionDetail={pipelineExecutionDetail}
         accountId={accountId}
         module={module}
         orgIdentifier={orgIdentifier}
