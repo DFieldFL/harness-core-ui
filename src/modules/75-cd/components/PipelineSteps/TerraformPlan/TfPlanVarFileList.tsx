@@ -42,6 +42,8 @@ interface TfVarFileProps {
   formik: FormikProps<TFPlanFormData>
   isReadonly?: boolean
   allowableTypes: MultiTypeInputType[]
+  getNewConnectorSteps?: any
+  setSelectedConnector?: any
 }
 
 export default function TfVarFileList(props: TfVarFileProps): React.ReactElement {
@@ -67,6 +69,7 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
   const [selectedVarIndex, setSelectedVarIndex] = React.useState<number>(-1)
 
   const [showRemoteWizard, setShowRemoteWizard] = React.useState(false)
+  const [connectorView, setConnectorView] = React.useState(false)
   const { getString } = useStrings()
 
   const remoteRender = (varFile: TerraformVarFileWrapper, index: number) => {
@@ -283,7 +286,12 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
                           initialValues={isEditMode ? selectedVar : remoteInitialValues}
                           isEditMode={isEditMode}
                           allowableTypes={allowableTypes}
+                          handleConnectorViewChange={connector => {
+                            props.setSelectedConnector(connector)
+                            setConnectorView(true)
+                          }}
                         />
+                        {connectorView ? props.getNewConnectorSteps() : null}
                         <TFRemoteWizard
                           name={getString('cd.varFileDetails')}
                           onSubmitCallBack={(values: RemoteVar) => {

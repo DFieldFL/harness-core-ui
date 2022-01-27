@@ -22,6 +22,7 @@ import {
   getMultiTypeFromValue,
   MultiTypeInputType
 } from '@wings-software/uicore'
+import cx from 'classnames'
 import * as Yup from 'yup'
 import { useParams } from 'react-router-dom'
 import { Form } from 'formik'
@@ -29,24 +30,26 @@ import { useVariablesExpression } from '@pipeline/components/PipelineStudio/Pipl
 import { useStrings } from 'framework/strings'
 import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
 import { ConfigureOptions } from '@common/components/ConfigureOptions/ConfigureOptions'
+import { AllowedTypes, tfVarIcons, ConnectorMap, ConnectorLabelMap, ConnectorTypes } from './TerraformConfigFormHelper'
+
 import type { Connector } from '../Common/Terraform/TerraformInterfaces'
 
-import css from '../Common/Terraform/Editview/TerraformVarfile.module.scss'
+import css from './TerraformConfigForm.module.scss'
+import stepCss from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
-const allowedTypes = ['Git', 'Github', 'GitLab', 'Bitbucket']
-const tfVarIcons: any = {
-  Git: 'service-github',
-  Github: 'github',
-  GitLab: 'service-gotlab',
-  Bitbucket: 'bitbucket'
-}
-export type TFVarStores = 'Git' | 'Github' | 'GitLab' | 'Bitbucket'
 
-export const TerraformConfigStepOne: React.FC<any> = props => {
-  const { setConnectorView, setSelectedConnector, data, isReadonly, allowableTypes, nextStep, isEditMode } = props
-  window.console.log('data: ', data)
+export const TerraformConfigStepOne: React.FC<any> = ({
+  data,
+  isReadonly,
+  allowableTypes,
+  nextStep,
+  isEditMode,
+  setConnectorView,
+  setSelectedConnector
+}) => {
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
+  const [selectedType, setSelectedType] = useState('')
 
   const { accountId, projectIdentifier, orgIdentifier } = useParams<{
     projectIdentifier: string
@@ -54,23 +57,25 @@ export const TerraformConfigStepOne: React.FC<any> = props => {
     accountId: string
   }>()
 
-  const [selectedType, setSelectedType] = useState('')
-
   useEffect(() => {
     setSelectedType(data?.spec?.configuration?.configFiles?.store?.type)
   }, [isEditMode])
 
+  const newConnectorLabel = `${getString('newLabel')} ${
+    !!selectedType && getString(ConnectorLabelMap[selectedType as ConnectorTypes])
+  } ${getString('connector')}`
+
   return (
-    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfVarStore}>
+    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfConfigForm}>
       <Heading level={2} style={{ color: Color.GREY_800, fontSize: 24 }} margin={{ bottom: 'large' }}>
         {getString('pipelineSteps.configFiles')}
       </Heading>
 
       <Layout.Horizontal flex={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-        {allowedTypes.map(item => (
+        {AllowedTypes.map(item => (
           <div key={item} className={css.squareCardContainer}>
             <Card
-              className={css.manifestIcon}
+              className={css.connectorIcon}
               selected={item === selectedType}
               data-testid={`varStore-${item}`}
               onClick={() => {
@@ -118,7 +123,7 @@ export const TerraformConfigStepOne: React.FC<any> = props => {
                   >
                     <FormMultiTypeConnectorField
                       label={getString('connector')}
-                      type={['Git', 'Github', 'Gitlab', 'Bitbucket']}
+                      type={ConnectorMap[selectedType]}
                       width={260}
                       name="spec.configuration.configFiles.store.spec.connectorRef"
                       placeholder={getString('select')}
@@ -129,12 +134,12 @@ export const TerraformConfigStepOne: React.FC<any> = props => {
                       multiTypeProps={{ expressions, allowableTypes }}
                     />
                     <Button
+                      className={stepCss.connectorButtonTopMargin}
                       variation={ButtonVariation.LINK}
                       size={ButtonSize.SMALL}
                       disabled={isReadonly}
                       id="new-config-connector"
-                      text="New Connector"
-                      // className={css.addNewManifest}
+                      text={newConnectorLabel}
                       icon="plus"
                       iconProps={{ size: 12 }}
                       onClick={() => {
@@ -153,7 +158,7 @@ export const TerraformConfigStepOne: React.FC<any> = props => {
                   text={getString('continue')}
                   rightIcon="chevron-right"
                   onClick={() => nextStep?.({ ...formik.values, selectedType })}
-                  // disabled={}
+                  disabled={!formik?.values?.spec?.configuration?.configFiles?.store?.spec?.connectorRef}
                 />
               </Layout.Horizontal>
             </Form>
@@ -164,8 +169,13 @@ export const TerraformConfigStepOne: React.FC<any> = props => {
   )
 }
 
-export const TerraformConfigStepTwo: React.FC<any> = props => {
-  const { previousStep, prevStepData, onSubmitCallBack, isReadonly = false, allowableTypes } = props
+export const TerraformConfigStepTwo: React.FC<any> = ({
+  previousStep,
+  prevStepData,
+  onSubmitCallBack,
+  isReadonly = false,
+  allowableTypes
+}) => {
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
 
@@ -175,7 +185,7 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
   ]
 
   return (
-    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfVarStore}>
+    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfConfigForm}>
       <Text font="large" color={Color.GREY_800}>
         {getString('cd.varFileDetails')}
       </Text>
@@ -213,7 +223,7 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
               <div className={css.tfRemoteForm}>
                 {(connectorValue?.connector?.spec?.connectionType === 'Account' ||
                   connectorValue?.connector?.spec?.type === 'Account') && (
-                  <div>
+                  <div className={cx(stepCss.formGroup, stepCss.md)}>
                     <FormInput.MultiTextInput
                       label={getString('pipelineSteps.repoName')}
                       name="spec.configuration.configFiles.store.spec.repoName"
@@ -231,12 +241,12 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
                         showDefaultField={false}
                         showAdvanced={true}
                         onChange={value => formik.setFieldValue('configuration.configFiles.store.spec.repoName', value)}
-                        isReadonly={props.isReadonly}
+                        isReadonly={isReadonly}
                       />
                     )}
                   </div>
                 )}
-                <div>
+                <div className={cx(stepCss.formGroup, stepCss.md)}>
                   <FormInput.Select
                     items={gitFetchTypes}
                     name="spec.configuration.configFiles.store.spec.gitFetchType"
@@ -246,12 +256,12 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
                 </div>
                 {formik.values?.spec?.configuration?.configFiles?.store?.spec?.gitFetchType ===
                   gitFetchTypes[0].value && (
-                  <div>
+                  <div className={cx(stepCss.formGroup, stepCss.md)}>
                     <FormInput.MultiTextInput
                       label={getString('pipelineSteps.deploy.inputSet.branch')}
                       placeholder={getString('pipeline.manifestType.branchPlaceholder')}
                       name="spec.configuration.configFiles.store.spec.branch"
-                      multiTextInputProps={{ expressions, allowableTypes: props.allowableTypes }}
+                      multiTextInputProps={{ expressions, allowableTypes }}
                     />
                     {getMultiTypeFromValue(formik.values?.spec?.configuration?.configFiles?.store?.spec?.branch) ===
                       MultiTypeInputType.RUNTIME && (
@@ -264,7 +274,7 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
                         showDefaultField={false}
                         showAdvanced={true}
                         onChange={value => formik.setFieldValue('configuration.configFiles.store.spec.branch', value)}
-                        isReadonly={props.isReadonly}
+                        isReadonly={isReadonly}
                       />
                     )}
                   </div>
@@ -272,12 +282,12 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
 
                 {formik.values?.spec?.configuration?.configFiles?.store?.spec?.gitFetchType ===
                   gitFetchTypes[1].value && (
-                  <div>
+                  <div className={cx(stepCss.formGroup, stepCss.md)}>
                     <FormInput.MultiTextInput
                       label={getString('pipeline.manifestType.commitId')}
                       placeholder={getString('pipeline.manifestType.commitPlaceholder')}
                       name="spec.configuration.configFiles.store.spec.commitId"
-                      multiTextInputProps={{ expressions, allowableTypes: props.allowableTypes }}
+                      multiTextInputProps={{ expressions, allowableTypes }}
                     />
                     {getMultiTypeFromValue(formik.values?.spec?.configuration?.configFiles?.store?.spec?.commitId) ===
                       MultiTypeInputType.RUNTIME && (
@@ -298,12 +308,12 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
                   </div>
                 )}
 
-                <div>
+                <div className={cx(stepCss.formGroup, stepCss.md)}>
                   <FormInput.MultiTextInput
                     label={getString('cd.folderPath')}
                     placeholder={getString('pipeline.manifestType.pathPlaceholder')}
                     name="spec.configuration.configFiles.store.spec.folderPath"
-                    multiTextInputProps={{ expressions, allowableTypes: props.allowableTypes }}
+                    multiTextInputProps={{ expressions, allowableTypes }}
                   />
                   {getMultiTypeFromValue(formik.values?.spec?.configuration?.configFiles?.store?.spec?.folderPath) ===
                     MultiTypeInputType.RUNTIME && (
@@ -321,7 +331,7 @@ export const TerraformConfigStepTwo: React.FC<any> = props => {
                           value
                         )
                       }
-                      isReadonly={props.isReadonly}
+                      isReadonly={isReadonly}
                     />
                   )}
                 </div>

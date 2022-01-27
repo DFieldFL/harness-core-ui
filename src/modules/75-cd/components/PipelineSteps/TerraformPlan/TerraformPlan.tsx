@@ -9,16 +9,19 @@ import React, { useState } from 'react'
 import {
   Accordion,
   Button,
+  ButtonVariation,
   Color,
   Formik,
   FormInput,
   getMultiTypeFromValue,
   HarnessDocTooltip,
+  Icon,
   IconName,
   Label,
   Layout,
   MultiTypeInputType,
-  Text
+  Text,
+  StepWizard
 } from '@wings-software/uicore'
 import { Classes, Dialog, IOptionProps, IDialogProps } from '@blueprintjs/core'
 import * as Yup from 'yup'
@@ -58,25 +61,40 @@ import MultiTypeFieldSelector from '@common/components/MultiTypeFieldSelector/Mu
 
 import { useQueryParams } from '@common/hooks'
 import type { GitQueryParams } from '@common/interfaces/RouteInterfaces'
-import type { StringNGVariable, TerraformVarFileWrapper } from 'services/cd-ng'
+import type { StringNGVariable, ConnectorInfoDTO } from 'services/cd-ng'
 
 import type { StringsMap } from 'stringTypes'
 import { getNameAndIdentifierSchema } from '@pipeline/components/PipelineSteps/Steps/StepsValidateUtils'
-import TerraformPlanWizard from './TerraformPlanWizard'
+
+import GitDetailsStep from '@connectors/components/CreateConnector/commonSteps/GitDetailsStep'
+import ConnectorDetailsStep from '@connectors/components/CreateConnector/commonSteps/ConnectorDetailsStep'
+import VerifyOutOfClusterDelegate from '@connectors/common/VerifyOutOfClusterDelegate/VerifyOutOfClusterDelegate'
+import StepGitAuthentication from '@connectors/components/CreateConnector/GitConnector/StepAuth/StepGitAuthentication'
+import StepGitlabAuthentication from '@connectors/components/CreateConnector/GitlabConnector/StepAuth/StepGitlabAuthentication'
+import StepGithubAuthentication from '@connectors/components/CreateConnector/GithubConnector/StepAuth/StepGithubAuthentication'
+import StepBitbucketAuthentication from '@connectors/components/CreateConnector/BitbucketConnector/StepAuth/StepBitbucketAuthentication'
+import DelegateSelectorStep from '@connectors/components/CreateConnector/commonSteps/DelegateSelectorStep/DelegateSelectorStep'
+import { Connectors, CONNECTOR_CREDENTIALS_STEP_IDENTIFIER } from '@connectors/constants'
+import {
+  buildBitbucketPayload,
+  buildGithubPayload,
+  buildGitlabPayload,
+  buildGitPayload
+} from '@connectors/pages/connectors/utils/ConnectorUtils'
 
 import {
   CommandTypes,
   onSubmitTFPlanData,
   TerraformPlanProps,
   TerraformPlanVariableStepProps,
-  TFPlanFormData,
-  TerraformStoreTypes
+  TFPlanFormData
 } from '../Common/Terraform/TerraformInterfaces'
 import TfVarFileList from './TfPlanVarFileList'
-import ConfigForm from './TfPlanConfigForm'
 
 import TerraformInputStep from './TfPlanInputStep'
 import { TerraformVariableStep } from './TfPlanVariableView'
+import { TerraformConfigStepOne, TerraformConfigStepTwo } from './TerraformConfigForm'
+import { ConnectorMap, ConnectorTypes } from './TerraformConfigFormHelper'
 
 import { TFMonaco } from '../Common/Terraform/Editview/TFMonacoEditor'
 import stepCss from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
@@ -84,6 +102,11 @@ import css from '../Common/Terraform/Editview/TerraformVarfile.module.scss'
 
 const setInitialValues = (data: TFPlanFormData): TFPlanFormData => {
   return data
+}
+interface StepChangeData<SharedObject> {
+  prevStep?: number
+  nextStep?: number
+  prevStepData: SharedObject
 }
 
 function TerraformPlanWidget(
@@ -93,6 +116,8 @@ function TerraformPlanWidget(
   const { initialValues, onUpdate, onChange, allowableTypes, isNewStep, readonly = false, stepViewType } = props
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
+  const [connectorView, setConnectorView] = useState(false)
+  const [selectedConnector, setSelectedConnector] = useState<ConnectorTypes| ''>('')
 
   const commandTypeOptions: IOptionProps[] = [
     { label: getString('filters.apply'), value: CommandTypes.Apply },
@@ -105,28 +130,12 @@ function TerraformPlanWidget(
     accountId: string
   }>()
   const { repoIdentifier, branch } = useQueryParams<GitQueryParams>()
-  const modalProps = {
-    isOpen: true,
-    canEscapeKeyClose: true,
-    canOutsideClickClose: true,
-    style: { width: 1000 }
-  }
 
   const query = useQueryParams()
   const sectionId = (query as any).sectionId || ''
 
-  const [showModal, setShowModal] = useState(false)
   const [showRemoteWizard, setShowRemoteWizard] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
-
-  const inlineInitValues: TerraformVarFileWrapper = {
-    varFile: {
-      identifier: '',
-      spec: {},
-      type: TerraformStoreTypes.Inline
-    }
-  }
-  const [selectedVar, setSelectedVar] = useState(inlineInitValues as any)
 
   const DIALOG_PROPS: IDialogProps = {
     isOpen: true,
@@ -138,18 +147,129 @@ function TerraformPlanWidget(
     style: { width: 1175, minHeight: 640, borderLeft: 0, paddingBottom: 0, position: 'relative', overflow: 'hidden' }
   }
 
-  const remoteInitialValues: TerraformVarFileWrapper = {
-    varFile: {
-      identifier: '',
-      spec: {},
-      type: TerraformStoreTypes.Remote
-    }
-  }
-
   const onCloseOfRemoteWizard = () => {
     setShowRemoteWizard(false)
     setIsEditMode(false)
-    setSelectedVar(remoteInitialValues)
+  }
+
+  const getTitle = () => (
+    <Layout.Vertical flex style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Icon name="remotefile" className={css.remoteIcon} size={50} />
+      <Text color={Color.WHITE}>{getString('pipelineSteps.remoteFile')}</Text>
+    </Layout.Vertical>
+  )
+
+  const getBuildPayload = (type: ConnectorInfoDTO['type']) => {
+    if (type === Connectors.GIT) {
+      return buildGitPayload
+    }
+    if (type === Connectors.GITHUB) {
+      return buildGithubPayload
+    }
+    if (type === Connectors.BITBUCKET) {
+      return buildBitbucketPayload
+    }
+    if (type === Connectors.GITLAB) {
+      return buildGitlabPayload
+    }
+    return () => ({})
+  }
+
+  const getNewConnectorSteps = () => {
+    const buildPayload = getBuildPayload(ConnectorMap[selectedConnector])
+    return (
+      <StepWizard title={getString('connectors.createNewConnector')}>
+        <ConnectorDetailsStep
+          type={ConnectorMap[selectedConnector]}
+          name={getString('overview')}
+          isEditMode={isEditMode}
+          gitDetails={{ repoIdentifier, branch, getDefaultFromOtherRepo: true }}
+        />
+        <GitDetailsStep
+          type={ConnectorMap[selectedConnector]}
+          name={getString('details')}
+          isEditMode={isEditMode}
+          connectorInfo={undefined}
+        />
+        {ConnectorMap[selectedConnector] === Connectors.GIT ? (
+          <StepGitAuthentication
+            name={getString('credentials')}
+            onConnectorCreated={() => {
+              // Handle on success
+            }}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            connectorInfo={undefined}
+            accountId={accountId}
+            orgIdentifier={orgIdentifier}
+            projectIdentifier={projectIdentifier}
+          />
+        ) : null}
+        {ConnectorMap[selectedConnector] === Connectors.GITHUB ? (
+          <StepGithubAuthentication
+            name={getString('credentials')}
+            onConnectorCreated={() => {
+              // Handle on success
+            }}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            connectorInfo={undefined}
+            accountId={accountId}
+            orgIdentifier={orgIdentifier}
+            projectIdentifier={projectIdentifier}
+          />
+        ) : null}
+        {ConnectorMap[selectedConnector] === Connectors.BITBUCKET ? (
+          <StepBitbucketAuthentication
+            name={getString('credentials')}
+            onConnectorCreated={() => {
+              // Handle on success
+            }}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            connectorInfo={undefined}
+            accountId={accountId}
+            orgIdentifier={orgIdentifier}
+            projectIdentifier={projectIdentifier}
+          />
+        ) : null}
+        {ConnectorMap[selectedConnector] === Connectors.GITLAB ? (
+          <StepGitlabAuthentication
+            name={getString('credentials')}
+            identifier={CONNECTOR_CREDENTIALS_STEP_IDENTIFIER}
+            onConnectorCreated={() => {
+              // Handle on success
+            }}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            connectorInfo={undefined}
+            accountId={accountId}
+            orgIdentifier={orgIdentifier}
+            projectIdentifier={projectIdentifier}
+          />
+        ) : null}
+        <DelegateSelectorStep
+          name={getString('delegate.DelegateselectionLabel')}
+          isEditMode={isEditMode}
+          setIsEditMode={setIsEditMode}
+          buildPayload={buildPayload}
+          connectorInfo={undefined}
+        />
+        <VerifyOutOfClusterDelegate
+          name={getString('connectors.stepThreeName')}
+          connectorInfo={undefined}
+          isStep={true}
+          isLastStep={false}
+          type={ConnectorMap[selectedConnector]}
+        />
+      </StepWizard>
+    )
+  }
+
+  const onStepChange = (arg: StepChangeData<any>): void => {
+    if (arg?.prevStep && arg?.nextStep && arg.prevStep > arg.nextStep && arg.nextStep <= 2) {
+      setConnectorView(false)
+    }
   }
 
   return (
@@ -340,7 +460,13 @@ function TerraformPlanWidget(
                         )}
                       </div>
                       <div className={css.divider} />
-                      <TfVarFileList formik={formik} isReadonly={readonly} allowableTypes={allowableTypes} />
+                      <TfVarFileList
+                        formik={formik}
+                        isReadonly={readonly}
+                        allowableTypes={allowableTypes}
+                        setSelectedConnector={setSelectedConnector}
+                        getNewConnectorSteps={getNewConnectorSteps}
+                      />
                       <div className={css.divider} />
                       <div className={cx(stepCss.formGroup, css.addMarginTop, css.addMarginBottom)}>
                         <MultiTypeFieldSelector
@@ -440,72 +566,49 @@ function TerraformPlanWidget(
                 }}
                 className={cx(css.modal, Classes.DIALOG)}
               >
-                <TerraformPlanWizard
-                  formik={formik}
-                  isEditMode={isEditMode}
-                  selectedVar={selectedVar}
-                  remoteInitialValues={remoteInitialValues}
-                  allowableTypes={allowableTypes}
-                  setIsEditMode={setIsEditMode}
-                  onSubmitCallBack={(data: any) => {
-                    window.console.log('data: ', data)
-                    const configObject = {
-                      ...data.spec?.configuration?.configFiles
-                    }
+                <div className={css.createTfWizard}>
+                  <StepWizard title={getTitle()} className={css.manifestWizard} onStepChange={onStepChange}>
+                    <TerraformConfigStepOne
+                      data={formik.values}
+                      isReadonly={readonly}
+                      isEditMode={isEditMode}
+                      allowableTypes={allowableTypes}
+                      setConnectorView={setConnectorView}
+                      setSelectedConnector={setSelectedConnector}
+                    />
+                    {connectorView ? getNewConnectorSteps() : null}
+                    <TerraformConfigStepTwo
+                      isReadonly={readonly}
+                      allowableTypes={allowableTypes}
+                      onSubmitCallBack={(data: any) => {
+                        window.console.log('data: ', data)
+                        const configObject = {
+                          ...data.spec?.configuration?.configFiles
+                        }
 
-                    if (configObject?.store.spec.gitFetchType === 'Branch') {
-                      delete configObject.store.spec.commitId
-                    } else if (configObject?.store.spec.gitFetchType === 'Commit') {
-                      delete configObject.store.spec.branch
-                    }
+                        if (configObject?.store.spec.gitFetchType === 'Branch') {
+                          delete configObject.store.spec.commitId
+                        } else if (configObject?.store.spec.gitFetchType === 'Commit') {
+                          delete configObject.store.spec.branch
+                        }
 
-                    const valObj = cloneDeep(formik.values)
-                    configObject.store.type = configObject?.store?.spec?.connectorRef?.connector?.type || 'Git'
-                    set(valObj, 'spec.configuration.configFiles', { ...configObject })
+                        const valObj = cloneDeep(formik.values)
+                        configObject.store.type = configObject?.store?.spec?.connectorRef?.connector?.type || 'Git'
+                        set(valObj, 'spec.configuration.configFiles', { ...configObject })
 
-                    formik.setValues(valObj)
+                        formik.setValues(valObj)
 
-                    setShowRemoteWizard(false)
-                  }}
-                  onCloseOfRemoteWizard={onCloseOfRemoteWizard}
-                />
-              </Dialog>
-            )}
-
-            {showModal && (
-              <Dialog
-                onClose={() => setShowModal(false)}
-                enforceFocus={false}
-                className={cx(Classes.DIALOG, 'padded-dialog')}
-                {...modalProps}
-                title={getString('pipelineSteps.configFiles')}
-                isCloseButtonShown
-                style={{ padding: '24px' }}
-              >
-                <ConfigForm
-                  onClick={data => {
-                    const configObject = {
-                      ...data.spec?.configuration?.configFiles
-                    }
-
-                    if (configObject?.store.spec.gitFetchType === 'Branch') {
-                      delete configObject.store.spec.commitId
-                    } else if (configObject?.store.spec.gitFetchType === 'Commit') {
-                      delete configObject.store.spec.branch
-                    }
-
-                    const valObj = cloneDeep(formik.values)
-                    configObject.store.type = configObject?.store?.spec?.connectorRef?.connector?.type || 'Git'
-                    set(valObj, 'spec.configuration.configFiles', { ...configObject })
-
-                    formik.setValues(valObj)
-
-                    setShowModal(false)
-                  }}
-                  data={formik.values}
-                  onHide={() => setShowModal(false)}
-                  isReadonly={readonly}
-                  allowableTypes={allowableTypes}
+                        setShowRemoteWizard(false)
+                      }}
+                    />
+                  </StepWizard>
+                </div>
+                <Button
+                  variation={ButtonVariation.ICON}
+                  icon="cross"
+                  iconProps={{ size: 18 }}
+                  onClick={onCloseOfRemoteWizard}
+                  className={css.crossIcon}
                 />
               </Dialog>
             )}
