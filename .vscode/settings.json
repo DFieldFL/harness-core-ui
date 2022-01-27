@@ -5,8 +5,5 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.options": {
     "rulePaths": ["./scripts/eslint-rules"]
-  },
-  "cSpell.words": [
-    "Formik"
-  ]
+  }
 }

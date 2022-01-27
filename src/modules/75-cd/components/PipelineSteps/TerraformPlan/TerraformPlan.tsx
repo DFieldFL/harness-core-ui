@@ -117,7 +117,7 @@ function TerraformPlanWidget(
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
   const [connectorView, setConnectorView] = useState(false)
-  const [selectedConnector, setSelectedConnector] = useState<ConnectorTypes| ''>('')
+  const [selectedConnector, setSelectedConnector] = useState<ConnectorTypes | ''>('')
 
   const commandTypeOptions: IOptionProps[] = [
     { label: getString('filters.apply'), value: CommandTypes.Apply },
@@ -581,7 +581,6 @@ function TerraformPlanWidget(
                       isReadonly={readonly}
                       allowableTypes={allowableTypes}
                       onSubmitCallBack={(data: any) => {
-                        window.console.log('data: ', data)
                         const configObject = {
                           ...data.spec?.configuration?.configFiles
                         }

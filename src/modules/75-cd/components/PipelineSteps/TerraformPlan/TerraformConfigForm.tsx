@@ -37,7 +37,6 @@ import type { Connector } from '../Common/Terraform/TerraformInterfaces'
 import css from './TerraformConfigForm.module.scss'
 import stepCss from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
-
 export const TerraformConfigStepOne: React.FC<any> = ({
   data,
   isReadonly,
@@ -134,7 +133,7 @@ export const TerraformConfigStepOne: React.FC<any> = ({
                       multiTypeProps={{ expressions, allowableTypes }}
                     />
                     <Button
-                      className={stepCss.connectorButtonTopMargin}
+                      className={css.newConnectorButton}
                       variation={ButtonVariation.LINK}
                       size={ButtonSize.SMALL}
                       disabled={isReadonly}

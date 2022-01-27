@@ -36,6 +36,7 @@ declare const styles: {
   readonly manifestIcon: string
   readonly manifestWizard: string
   readonly modal: string
+  readonly newConnectorButton: string
   readonly optionalConfigDetails: string
   readonly optionsViewContainer: string
   readonly path: string

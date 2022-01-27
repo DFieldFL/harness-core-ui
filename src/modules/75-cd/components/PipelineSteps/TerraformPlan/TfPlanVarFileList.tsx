@@ -282,6 +282,7 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
                     <div className={css.createTfWizard}>
                       <StepWizard title={getTitle()} initialStep={1} className={css.manifestWizard}>
                         <TFVarStore
+                          isReadonly={isReadonly}
                           name={getString('cd.tfVarStore')}
                           initialValues={isEditMode ? selectedVar : remoteInitialValues}
                           isEditMode={isEditMode}
