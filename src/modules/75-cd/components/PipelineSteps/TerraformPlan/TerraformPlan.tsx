@@ -408,7 +408,12 @@ function TerraformPlanWidget(
                       </a>
                     )}
                     {formik.values?.spec?.configuration?.configFiles?.store?.spec?.folderPath && (
-                      <Text font="normal" lineClamp={1} width={200}>
+                      <Text
+                        font="normal"
+                        lineClamp={1}
+                        width={200}
+                        data-testid={formik.values?.spec?.configuration?.configFiles?.store?.spec?.folderPath}
+                      >
                         /{formik.values?.spec?.configuration?.configFiles?.store?.spec?.folderPath}
                       </Text>
                     )}

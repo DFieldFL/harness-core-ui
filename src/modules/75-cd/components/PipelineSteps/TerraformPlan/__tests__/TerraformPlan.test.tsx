@@ -6,7 +6,7 @@
  */
 
 import React from 'react'
-import { act, fireEvent, render } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { RUNTIME_INPUT_VALUE } from '@wings-software/uicore'
 import { StepFormikRef, StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import { StepType } from '@pipeline/components/PipelineSteps/PipelineStepInterface'
@@ -819,5 +819,83 @@ describe('Test TerraformPlan', () => {
       />
     )
     expect(container).toMatchSnapshot()
+  })
+
+  test('renders config file info', async () => {
+    render(
+      <TestStepWidget
+        initialValues={{
+          type: 'TerraformPlan',
+          name: 'Test A',
+          identifier: 'Test_A',
+          timeout: '10m',
+          delegateSelectors: ['test-1', 'test-2'],
+          spec: {
+            provisionerIdentifier: 'test',
+            configuration: {
+              command: 'Apply',
+              configFiles: {
+                store: {
+                  spec: {}
+                }
+              },
+              varFiles: [
+                {
+                  varFile: {
+                    type: 'Inline',
+                    content: 'test'
+                  }
+                }
+              ]
+            }
+          }
+        }}
+        // values?.spec?.configuration?.configFiles?.store?.spec?.folderPath
+        type={StepType.TerraformPlan}
+        stepViewType={StepViewType.Edit}
+      />
+    )
+    const configPlaceholder = await screen.getByText('cd.configFilePlaceHolder')
+    expect(configPlaceholder).toBeInTheDocument()
+  })
+
+  test('renders config file info with defined file path', async () => {
+    render(
+      <TestStepWidget
+        initialValues={{
+          type: 'TerraformPlan',
+          name: 'Test A',
+          identifier: 'Test_A',
+          timeout: '10m',
+          delegateSelectors: ['test-1', 'test-2'],
+          spec: {
+            provisionerIdentifier: 'test',
+            configuration: {
+              command: 'Apply',
+              configFiles: {
+                store: {
+                  spec: {
+                    folderPath: 'some/path'
+                  }
+                }
+              },
+              varFiles: [
+                {
+                  varFile: {
+                    type: 'Inline',
+                    content: 'test'
+                  }
+                }
+              ]
+            }
+          }
+        }}
+        // values?.spec?.configuration?.configFiles?.store?.spec?.folderPath
+        type={StepType.TerraformPlan}
+        stepViewType={StepViewType.Edit}
+      />
+    )
+    const configFileName = await screen.findByTestId('some/path')
+    expect(configFileName).toBeInTheDocument()
   })
 })
