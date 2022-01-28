@@ -80,10 +80,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
         {getString('cd.configFileStore')}
       </Heading>
 
-      <Layout.Horizontal
-        flex={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}
-        margin={{ top: 'xlarge', bottom: 'xlarge' }}
-      >
+      <Layout.Horizontal className={css.horizontalFlex} margin={{ top: 'xlarge', bottom: 'xlarge' }}>
         {AllowedTypes.map(item => (
           <div key={item} className={css.squareCardContainer}>
             <Card
@@ -129,10 +126,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
             <Form className={css.formComponent}>
               <div className={css.formContainerStepOne}>
                 {selectedType && (
-                  <Layout.Horizontal
-                    spacing={'medium'}
-                    flex={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}
-                  >
+                  <Layout.Horizontal className={css.horizontalFlex} spacing={'medium'}>
                     <FormMultiTypeConnectorField
                       label={`${selectedType} ${getString('connector')}`}
                       type={ConnectorMap[selectedType]}

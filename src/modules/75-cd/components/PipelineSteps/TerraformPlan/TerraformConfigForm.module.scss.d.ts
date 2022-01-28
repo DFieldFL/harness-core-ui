@@ -10,6 +10,7 @@ declare const styles: {
   readonly connectorIcon: string
   readonly formComponent: string
   readonly formContainerStepOne: string
+  readonly horizontalFlex: string
   readonly modal: string
   readonly newConnectorButton: string
   readonly squareCardContainer: string
