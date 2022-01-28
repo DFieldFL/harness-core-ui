@@ -47,7 +47,7 @@ interface TfVarFileProps {
 }
 
 export default function TfVarFileList(props: TfVarFileProps): React.ReactElement {
-  const { formik, isReadonly = false, allowableTypes } = props
+  const { formik, isReadonly = false, allowableTypes, getNewConnectorSteps, setSelectedConnector } = props
   const inlineInitValues: TerraformVarFileWrapper = {
     varFile: {
       identifier: '',
@@ -133,8 +133,8 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
   }
 
   const getTitle = () => (
-    <Layout.Vertical flex style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Icon name="remotefile" className={css.remoteIcon} size={50} />
+    <Layout.Vertical flex style={{ justifyContent: 'center', alignItems: 'center' }} margin={{ bottom: 'xlarge' }}>
+      <Icon name="service-terraform" className={css.remoteIcon} size={50} padding={{ bottom: 'large' }} />
       <Text color={Color.WHITE}>{getString('pipelineSteps.remoteFile')}</Text>
     </Layout.Vertical>
   )
@@ -280,7 +280,7 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
                     className={cx(css.modal, Classes.DIALOG)}
                   >
                     <div className={css.createTfWizard}>
-                      <StepWizard title={getTitle()} initialStep={1} className={css.manifestWizard}>
+                      <StepWizard title={getTitle()} initialStep={1} className={css.configWizard}>
                         <TFVarStore
                           isReadonly={isReadonly}
                           name={getString('cd.tfVarStore')}
@@ -288,11 +288,12 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
                           isEditMode={isEditMode}
                           allowableTypes={allowableTypes}
                           handleConnectorViewChange={connector => {
-                            props.setSelectedConnector(connector)
+                            setSelectedConnector(connector)
                             setConnectorView(true)
                           }}
+                          setConnectorView={setConnectorView}
                         />
-                        {connectorView ? props.getNewConnectorSteps() : null}
+                        {connectorView ? getNewConnectorSteps() : null}
                         <TFRemoteWizard
                           name={getString('cd.varFileDetails')}
                           onSubmitCallBack={(values: RemoteVar) => {

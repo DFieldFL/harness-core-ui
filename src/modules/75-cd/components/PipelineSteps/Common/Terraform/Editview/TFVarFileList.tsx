@@ -268,6 +268,7 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
                     }}
                     className={cx(css.modal, Classes.DIALOG)}
                   >
+                    {window.console.log('editview')}
                     <div className={css.createTfWizard}>
                       <StepWizard title={getTitle()} initialStep={1} className={css.manifestWizard}>
                         <TFVarStore

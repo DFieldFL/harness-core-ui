@@ -17,6 +17,7 @@ declare const styles: {
   readonly configFileLabel: string
   readonly configLabel: string
   readonly configPlaceHolder: string
+  readonly configWizard: string
   readonly contentTextArea: string
   readonly createTfWizard: string
   readonly crossIcon: string
@@ -27,6 +28,7 @@ declare const styles: {
   readonly dragging: string
   readonly editBtn: string
   readonly fieldBorder: string
+  readonly formComponent: string
   readonly formContainerStepOne: string
   readonly headerContainer: string
   readonly iconMargin: string

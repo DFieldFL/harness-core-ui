@@ -161,3 +161,7 @@ featureRestriction:
     serviceAndDeploymentsLevelUp: 'You have used {{ deploymentsLimit }} free deployments this month and {{ serviceLimit }} free services. Consider upgrading for higher limits.'
     serviceWarningActive: You have used {{ warningLimit }}% of your service subscription limit.
     dpmWarningActive: You have used {{ warningLimit }}% of deployments included in the free plan. After 1,000 deployments, the free plan will be restricted to 100 deployments per month.
+configFileDetails: 'Config File Details'
+configFileStore: 'Specify Terraform Config File Store'
+configFileStepOne: 'Terraform Config Store'
+configFileStoreTitle: 'Config File'

@@ -3051,7 +3051,11 @@ export interface StringsMap {
   'cd.cdTrialHomePage.startTrial.startBtn.description': string
   'cd.chooseProvisionerText': string
   'cd.componentsInstalled': string
+  'cd.configFileDetails': string
   'cd.configFilePlaceHolder': string
+  'cd.configFileStepOne': string
+  'cd.configFileStore': string
+  'cd.configFileStoreTitle': string
   'cd.configIdentifer': string
   'cd.configurationFile': string
   'cd.confirmDeleteTitle': string

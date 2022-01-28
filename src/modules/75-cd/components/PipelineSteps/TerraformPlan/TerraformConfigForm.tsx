@@ -75,12 +75,15 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
   } ${getString('connector')}`
 
   return (
-    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfConfigForm}>
-      <Heading level={2} style={{ color: Color.GREY_800, fontSize: 24 }} margin={{ bottom: 'large' }}>
-        {getString('pipelineSteps.configFiles')}
+    <Layout.Vertical padding="small" className={css.tfConfigForm}>
+      <Heading level={2} style={{ color: Color.BLACK, fontSize: 24, fontWeight: 'bold' }} margin={{ bottom: 'xlarge' }}>
+        {getString('cd.configFileStore')}
       </Heading>
 
-      <Layout.Horizontal flex={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+      <Layout.Horizontal
+        flex={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}
+        margin={{ top: 'xlarge', bottom: 'xlarge' }}
+      >
         {AllowedTypes.map(item => (
           <div key={item} className={css.squareCardContainer}>
             <Card
@@ -123,7 +126,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
       >
         {formik => {
           return (
-            <Form>
+            <Form className={css.formComponent}>
               <div className={css.formContainerStepOne}>
                 {selectedType && (
                   <Layout.Horizontal
@@ -131,7 +134,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
                     flex={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}
                   >
                     <FormMultiTypeConnectorField
-                      label={getString('connector')}
+                      label={`${selectedType} ${getString('connector')}`}
                       type={ConnectorMap[selectedType]}
                       width={400}
                       name="spec.configuration.configFiles.store.spec.connectorRef"
@@ -200,10 +203,10 @@ export const TerraformConfigStepTwo: React.FC<StepProps<any> & TerraformConfigSt
   ]
 
   return (
-    <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfConfigForm}>
-      <Text font="large" color={Color.GREY_800}>
-        {getString('cd.varFileDetails')}
-      </Text>
+    <Layout.Vertical padding="small" className={css.tfConfigForm}>
+      <Heading level={2} style={{ color: Color.BLACK, fontSize: 24, fontWeight: 'bold' }} margin={{ bottom: 'xlarge' }}>
+        {getString('cd.configFileDetails')}
+      </Heading>
       <Formik
         formName="tfRemoteWizardForm"
         initialValues={prevStepData}
@@ -234,7 +237,7 @@ export const TerraformConfigStepTwo: React.FC<StepProps<any> & TerraformConfigSt
         {formik => {
           const connectorValue = formik.values.spec?.configuration?.configFiles?.store?.spec?.connectorRef as Connector
           return (
-            <Form>
+            <Form className={css.formComponent}>
               <div className={css.tfRemoteForm}>
                 {(connectorValue?.connector?.spec?.connectionType === 'Account' ||
                   connectorValue?.connector?.spec?.type === 'Account') && (

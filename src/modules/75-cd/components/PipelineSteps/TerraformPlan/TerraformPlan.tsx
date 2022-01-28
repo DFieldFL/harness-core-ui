@@ -15,8 +15,8 @@ import {
   FormInput,
   getMultiTypeFromValue,
   HarnessDocTooltip,
-  Icon,
   IconName,
+  Icon,
   Label,
   Layout,
   MultiTypeInputType,
@@ -152,13 +152,6 @@ function TerraformPlanWidget(
     setIsEditMode(false)
   }
 
-  const getTitle = () => (
-    <Layout.Vertical flex style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Icon name="remotefile" className={css.remoteIcon} size={50} />
-      <Text color={Color.WHITE}>{getString('pipelineSteps.remoteFile')}</Text>
-    </Layout.Vertical>
-  )
-
   const getBuildPayload = (type: ConnectorInfoDTO['type']) => {
     if (type === Connectors.GIT) {
       return buildGitPayload
@@ -271,6 +264,13 @@ function TerraformPlanWidget(
       setConnectorView(false)
     }
   }
+
+  const getTitle = () => (
+    <Layout.Vertical flex style={{ justifyContent: 'center', alignItems: 'center' }} margin={{ bottom: 'xlarge' }}>
+      <Icon name="service-terraform" className={css.remoteIcon} size={50} padding={{ bottom: 'large' }} />
+      <Text color={Color.WHITE}>{getString('cd.configFileStoreTitle')}</Text>
+    </Layout.Vertical>
+  )
 
   return (
     <Formik<TFPlanFormData>
@@ -567,8 +567,9 @@ function TerraformPlanWidget(
                 className={cx(css.modal, Classes.DIALOG)}
               >
                 <div className={css.createTfWizard}>
-                  <StepWizard title={getTitle()} className={css.manifestWizard} onStepChange={onStepChange}>
+                  <StepWizard title={getTitle()} className={css.configWizard} onStepChange={onStepChange}>
                     <TerraformConfigStepOne
+                      name={getString('cd.configFileStepOne')}
                       data={formik.values}
                       isReadonly={readonly}
                       isEditMode={isEditMode}
@@ -578,6 +579,7 @@ function TerraformPlanWidget(
                     />
                     {connectorView ? getNewConnectorSteps() : null}
                     <TerraformConfigStepTwo
+                      name={getString('cd.configFileDetails')}
                       isReadonly={readonly}
                       allowableTypes={allowableTypes}
                       onSubmitCallBack={(data: any) => {
