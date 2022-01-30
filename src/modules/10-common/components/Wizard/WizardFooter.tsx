@@ -10,12 +10,12 @@ import { Layout, Button, ButtonVariation } from '@wings-software/uicore'
 import cx from 'classnames'
 import type { FormikErrors, FormikProps } from 'formik'
 import { parse } from 'yaml'
+import { isEmpty } from 'lodash-es'
 import { useStrings } from 'framework/strings'
 import type { YamlBuilderHandlerBinding, YamlBuilderProps } from '@common/interfaces/YAMLBuilderProps'
 import { setNewTouchedPanel } from './WizardUtils'
 import type { FormikPropsInterface } from './WizardUtils'
 import css from './Wizard.module.scss'
-import { isEmpty } from 'lodash-es'
 
 interface WizardFooterProps {
   isYamlView: boolean
@@ -38,7 +38,7 @@ interface WizardFooterProps {
   touchedPanels: number[]
   tabsMap: string[]
   loadingYamlView?: boolean
-  validate: () => Promise<FormikErrors<any>> | FormikErrors<any> | void
+  validate?: () => Promise<FormikErrors<any>> | FormikErrors<any> | undefined
   setSubmittedForm: Dispatch<SetStateAction<boolean>>
 }
 
@@ -106,7 +106,7 @@ export const WizardFooter = ({
           rightIcon="chevron-right"
           type="submit"
           disabled={disableSubmit}
-          onClick={e => {
+          onClick={async () => {
             setSubmittedForm(true) // can possibly refactor to use formiksProps submitCount
             if (
               elementsRef.current.some(
@@ -117,10 +117,11 @@ export const WizardFooter = ({
               setValidateOnChange(true)
               showError(getString('addressErrorFields'))
             }
-            if (!isEmpty(validate?.())) {
-              // formikProps.setSubmitting(false)
-              e.preventDefault()
+
+            if (!isEmpty(await validate?.())) {
               showError(getString('addressErrorFields'))
+            } else {
+              formikProps.setSubmitting(true)
             }
           }}
         />
@@ -139,7 +140,7 @@ export const WizardFooter = ({
             text={submitLabel || getString('submit')}
             variation={ButtonVariation.PRIMARY}
             rightIcon="chevron-right"
-            onClick={() => {
+            onClick={async () => {
               setSubmittedForm(true)
               const latestYaml = yamlHandler?.getLatestYaml() || /* istanbul ignore next */ ''
               const errorsYaml =
@@ -149,7 +150,13 @@ export const WizardFooter = ({
                 showError(getString('invalidYamlText'))
                 return
               }
-              validate?.()
+
+              if (!isEmpty(await validate?.())) {
+                showError(getString('addressErrorFields'))
+                return
+              } else {
+                formikProps.setSubmitting(true)
+              }
 
               try {
                 const parsedYaml = parse(latestYaml)
@@ -164,7 +171,6 @@ export const WizardFooter = ({
                 showError(getString('invalidYamlText'))
                 return
               }
-              // return validate?.()
             }}
             disabled={disableSubmit}
           />

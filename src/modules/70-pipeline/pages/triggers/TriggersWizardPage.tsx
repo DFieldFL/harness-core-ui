@@ -1157,6 +1157,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
   }
 
   const handleWebhookSubmit = async (val: FlatValidWebhookFormikValuesInterface): Promise<void> => {
+    console.log('submitting!')
     const triggerYaml = getWebhookTriggerYaml({ values: val })
 
     submitTrigger(triggerYaml)
@@ -1519,7 +1520,9 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             console.log(runPipelineFormErrors)
             // throw runPipelineFormErrors
             // if value runPipelineFormErrors is {}, we're in the clear to validate CICodebase or continue to submit
-            return runPipelineFormErrors || validateCICodebase(values)
+            const val = runPipelineFormErrors || validateCICodebase(values)
+            console.log(val)
+            return isEmpty(val) ? {} : val
           },
           validateOnChange: true,
           enableReinitialize: true
