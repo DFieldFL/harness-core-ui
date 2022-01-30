@@ -18,7 +18,7 @@ import {
 import type { IconName } from '@wings-software/uicore'
 import { useHistory } from 'react-router-dom'
 import cx from 'classnames'
-import { isEqual } from 'lodash-es'
+import { isEqual, isEmpty } from 'lodash-es'
 import { NavigationCheck } from '@common/components/NavigationCheck/NavigationCheck'
 import { useToaster } from '@common/exports'
 import type {
@@ -26,6 +26,7 @@ import type {
   YamlBuilderProps,
   InvocationMapFunction
 } from '@common/interfaces/YAMLBuilderProps'
+import { ErrorsStrip } from '@pipeline/components/ErrorsStrip/ErrorsStrip'
 import {
   renderTitle,
   setNewTouchedPanel,
@@ -79,6 +80,7 @@ interface WizardProps {
   visualYamlProps?: VisualYamlPropsInterface
   wizardType?: string // required for dataTooltip to be unique
   className?: string
+  errorsStripErrors?: any
 }
 
 const Wizard: React.FC<WizardProps> = ({
@@ -97,7 +99,8 @@ const Wizard: React.FC<WizardProps> = ({
   leftNav,
   visualYamlProps = { showVisualYaml: false },
   className = '',
-  wizardType
+  wizardType,
+  errorsStripErrors
 }) => {
   const { wizardLabel } = wizardMap
   const defaultWizardTabId = wizardMap.panels[0].id
@@ -125,7 +128,7 @@ const Wizard: React.FC<WizardProps> = ({
   const isYamlView = selectedView === SelectedView.YAML
   const [yamlHandler, setYamlHandler] = React.useState<YamlBuilderHandlerBinding | undefined>()
   const elementsRef: { current: RefObject<HTMLSpanElement>[] } = useRef(wizardMap.panels?.map(() => createRef()))
-
+  const [submittedForm, setSubmittedForm] = React.useState<boolean>(false)
   const handleTabChange = (data: string): void => {
     const tabsIndex = tabsMap.findIndex(tab => tab === data)
     setSelectedTabId(data)
@@ -140,7 +143,9 @@ const Wizard: React.FC<WizardProps> = ({
   }
   const history = useHistory()
   const { showError, clear } = useToaster()
-
+  // use passed validate instead of validateOnChange
+  // or let's try to use just
+  // const validateMethod = (!formikInitialProps?.validate && validateOnChange) || {}
   const getIsDirtyForm = (parsedYaml: any): boolean =>
     !isEqual(convertFormikValuesToYaml?.(formikInitialProps?.initialValues), parsedYaml)
 
@@ -166,6 +171,7 @@ const Wizard: React.FC<WizardProps> = ({
         positionInHeader={positionInHeader}
         wizardLabel={wizardLabel}
       />
+      {submittedForm && !isEmpty(errorsStripErrors) && <ErrorsStrip formErrors={errorsStripErrors} />}
       <Layout.Horizontal spacing="large" className={css.tabsContainer}>
         <Formik
           {...formikInitialProps}
@@ -283,6 +289,11 @@ const Wizard: React.FC<WizardProps> = ({
                 touchedPanels={touchedPanels}
                 setTouchedPanels={setTouchedPanels}
                 loadingYamlView={loadingYamlView}
+                validate={() => {
+                  console.log('wizard validating')
+                  return formikInitialProps.validate?.(formikProps.values)
+                }}
+                setSubmittedForm={setSubmittedForm}
               />
             </FormikForm>
           )}

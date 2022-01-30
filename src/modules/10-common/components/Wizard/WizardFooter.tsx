@@ -8,13 +8,14 @@
 import React, { RefObject, Dispatch, SetStateAction } from 'react'
 import { Layout, Button, ButtonVariation } from '@wings-software/uicore'
 import cx from 'classnames'
-import type { FormikProps } from 'formik'
+import type { FormikErrors, FormikProps } from 'formik'
 import { parse } from 'yaml'
 import { useStrings } from 'framework/strings'
 import type { YamlBuilderHandlerBinding, YamlBuilderProps } from '@common/interfaces/YAMLBuilderProps'
 import { setNewTouchedPanel } from './WizardUtils'
 import type { FormikPropsInterface } from './WizardUtils'
 import css from './Wizard.module.scss'
+import { isEmpty } from 'lodash-es'
 
 interface WizardFooterProps {
   isYamlView: boolean
@@ -37,6 +38,8 @@ interface WizardFooterProps {
   touchedPanels: number[]
   tabsMap: string[]
   loadingYamlView?: boolean
+  validate: () => Promise<FormikErrors<any>> | FormikErrors<any> | void
+  setSubmittedForm: Dispatch<SetStateAction<boolean>>
 }
 
 export const WizardFooter = ({
@@ -59,7 +62,9 @@ export const WizardFooter = ({
   tabsMap,
   setTouchedPanels,
   touchedPanels,
-  loadingYamlView
+  loadingYamlView,
+  validate,
+  setSubmittedForm
 }: WizardFooterProps): JSX.Element => {
   const { getString } = useStrings()
 
@@ -101,7 +106,8 @@ export const WizardFooter = ({
           rightIcon="chevron-right"
           type="submit"
           disabled={disableSubmit}
-          onClick={() => {
+          onClick={e => {
+            setSubmittedForm(true) // can possibly refactor to use formiksProps submitCount
             if (
               elementsRef.current.some(
                 (element): boolean =>
@@ -109,6 +115,11 @@ export const WizardFooter = ({
               )
             ) {
               setValidateOnChange(true)
+              showError(getString('addressErrorFields'))
+            }
+            if (!isEmpty(validate?.())) {
+              // formikProps.setSubmitting(false)
+              e.preventDefault()
               showError(getString('addressErrorFields'))
             }
           }}
@@ -129,6 +140,7 @@ export const WizardFooter = ({
             variation={ButtonVariation.PRIMARY}
             rightIcon="chevron-right"
             onClick={() => {
+              setSubmittedForm(true)
               const latestYaml = yamlHandler?.getLatestYaml() || /* istanbul ignore next */ ''
               const errorsYaml =
                 (yamlHandler?.getYAMLValidationErrorMap() as unknown as Map<number, string>) ||
@@ -137,6 +149,8 @@ export const WizardFooter = ({
                 showError(getString('invalidYamlText'))
                 return
               }
+              validate?.()
+
               try {
                 const parsedYaml = parse(latestYaml)
                 const processedFormik = yamlObjectKey ? parsedYaml?.[yamlObjectKey] : parsedYaml
@@ -150,6 +164,7 @@ export const WizardFooter = ({
                 showError(getString('invalidYamlText'))
                 return
               }
+              // return validate?.()
             }}
             disabled={disableSubmit}
           />

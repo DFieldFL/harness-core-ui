@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import type { FormikErrors } from 'formik'
 import { useHistory, useParams } from 'react-router-dom'
 import {
@@ -18,7 +18,7 @@ import {
   VisualYamlSelectedView as SelectedView
 } from '@wings-software/uicore'
 import { parse } from 'yaml'
-import { isEmpty, isUndefined, merge, cloneDeep, get } from 'lodash-es'
+import { isEmpty, isUndefined, merge, cloneDeep, get, defaultTo } from 'lodash-es'
 import { CompletionItemKind } from 'vscode-languageserver-types'
 import { Page, useToaster } from '@common/exports'
 import Wizard from '@common/components/Wizard/Wizard'
@@ -46,8 +46,11 @@ import { usePermission } from '@rbac/hooks/usePermission'
 import { PermissionIdentifier } from '@rbac/interfaces/PermissionIdentifier'
 import { ResourceType } from '@rbac/interfaces/ResourceType'
 import type { PipelineType } from '@common/interfaces/RouteInterfaces'
-import { clearRuntimeInput } from '@pipeline/components/PipelineStudio/StepUtil'
 import { Scope } from '@common/interfaces/SecretsInterface'
+import { clearRuntimeInput, validatePipeline } from '@pipeline/components/PipelineStudio/StepUtil'
+import type { KVPair } from '@pipeline/components/PipelineVariablesContext/PipelineVariablesContext'
+
+import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import {
   getIdentifierFromValue,
   getScopeFromValue,
@@ -1056,6 +1059,61 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
     })
   }
 
+  const [formErrors, setFormErrors] = useState<
+    FormikErrors<
+      | FlatValidArtifactFormikValuesInterface
+      | FlatValidWebhookFormikValuesInterface
+      | FlatValidScheduleFormikValuesInterface
+    >
+  >({})
+  // const [expressionFormState, setExpressionFormState] = useState<KVPair>({})
+  const yamlTemplate = useMemo(() => {
+    return parse(defaultTo(template?.data?.inputSetTemplateYaml, ''))?.pipeline
+  }, [template?.data?.inputSetTemplateYaml])
+
+  const getFormErrors = async (
+    latestPipeline: { pipeline: PipelineInfoConfig },
+    latestYamlTemplate: PipelineInfoConfig,
+    orgPipeline: PipelineInfoConfig | undefined
+  ) => {
+    let errors = formErrors
+    function validateErrors(): Promise<
+      FormikErrors<
+        | FlatValidArtifactFormikValuesInterface
+        | FlatValidWebhookFormikValuesInterface
+        | FlatValidScheduleFormikValuesInterface
+      >
+    > {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const validatedErrors =
+            (validatePipeline({
+              pipeline: { ...clearRuntimeInput(latestPipeline.pipeline) },
+              template: latestYamlTemplate,
+              originalPipeline: orgPipeline,
+              getString,
+              viewType: StepViewType.DeploymentForm
+            }) as any) || formErrors
+          resolve(validatedErrors)
+        }, 300)
+      })
+    }
+    if (latestPipeline?.pipeline && latestYamlTemplate && orgPipeline) {
+      errors = await validateErrors()
+      const expressionErrors: KVPair = {}
+      // !TODO
+      // // vaidate replacedExpressions
+      // if (template?.data?.replacedExpressions?.length) {
+      //   template.data.replacedExpressions.forEach((value: string) => {
+      //     const currValue = defaultTo(expressionFormState[value], '')
+      //     if (currValue.trim() === '') expressionErrors[value] = getString('pipeline.expressionRequired')
+      //   })
+      // }
+      setFormErrors({ ...errors, ...expressionErrors })
+    }
+    return errors
+  }
+
   // TriggerConfigDTO is NGTriggerConfigV2 with optional identifier
   const submitTrigger = async (triggerYaml: NGTriggerConfigV2 | TriggerConfigDTO): Promise<void> => {
     if (onEditInitialValues?.identifier) {
@@ -1393,7 +1451,12 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
     }
   )
 
-  const validateCICodebase = (formData: FlatValidArtifactFormikValuesInterface): FormikErrors<Record<string, any>> => {
+  const validateCICodebase = (
+    formData:
+      | FlatValidArtifactFormikValuesInterface
+      | FlatValidWebhookFormikValuesInterface
+      | FlatValidScheduleFormikValuesInterface
+  ): FormikErrors<Record<string, any>> => {
     const pipeline = get(formData, 'originalPipeline') as PipelineInfoConfig
     const isCloneCodebaseEnabledAtLeastAtOneStage = pipeline?.stages?.some(stage =>
       get(stage, 'stage.spec.cloneCodebase')
@@ -1444,10 +1507,19 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             TriggerTypes.WEBHOOK as unknown as NGTriggerSourceV2['type'],
             getString
           ),
-          validate: (
-            formData: FlatValidArtifactFormikValuesInterface
-          ): FormikErrors<FlatValidArtifactFormikValuesInterface> => {
-            return validateCICodebase(formData)
+          validate: async (
+            values: FlatValidWebhookFormikValuesInterface
+          ): Promise<FormikErrors<FlatValidWebhookFormikValuesInterface>> => {
+            console.log('got to validating!')
+            // Validate specifically
+            const latestPipeline = { ...currentPipeline, pipeline: values.pipeline as PipelineInfoConfig }
+            // setCurrentPipeline(latestPipeline)
+            const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
+            // https://github.com/formium/formik/issues/1392
+            console.log(runPipelineFormErrors)
+            // throw runPipelineFormErrors
+            // if value runPipelineFormErrors is {}, we're in the clear to validate CICodebase or continue to submit
+            return runPipelineFormErrors || validateCICodebase(values)
           },
           validateOnChange: true,
           enableReinitialize: true
@@ -1478,6 +1550,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
           positionInHeader: true
         }}
         leftNav={titleWithSwitch}
+        errorsStripErrors={formErrors}
       >
         <WebhookTriggerConfigPanel />
         <WebhookConditionsPanel />
@@ -1500,10 +1573,19 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             initialValues.triggerType as unknown as NGTriggerSourceV2['type'],
             getString
           ),
-          validate: (
-            formData: FlatValidArtifactFormikValuesInterface
-          ): FormikErrors<FlatValidArtifactFormikValuesInterface> => {
-            return validateCICodebase(formData)
+          validate: async (
+            values: FlatValidArtifactFormikValuesInterface
+          ): Promise<FormikErrors<FlatValidArtifactFormikValuesInterface>> => {
+            console.log('got to validating!')
+            // Validate specifically
+            const latestPipeline = { ...currentPipeline, pipeline: values.pipeline as PipelineInfoConfig }
+            setCurrentPipeline(latestPipeline)
+            const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
+            // https://github.com/formium/formik/issues/1392
+            console.log(runPipelineFormErrors)
+            // throw runPipelineFormErrors
+
+            return validateCICodebase(values)
           },
           validateOnChange: true,
           enableReinitialize: true
@@ -1532,6 +1614,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
           loading: loadingYamlSchema,
           invocationMap: invocationMapWebhook
         }}
+        errorsStripErrors={formErrors}
         leftNav={titleWithSwitch}
       >
         <ArtifactTriggerConfigPanel />
@@ -1553,10 +1636,19 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             TriggerTypes.SCHEDULE as unknown as NGTriggerSourceV2['type'],
             getString
           ),
-          validate: (
-            formData: FlatValidArtifactFormikValuesInterface
-          ): FormikErrors<FlatValidArtifactFormikValuesInterface> => {
-            return validateCICodebase(formData)
+          validate: async (
+            values: FlatValidScheduleFormikValuesInterface
+          ): Promise<FormikErrors<FlatValidScheduleFormikValuesInterface>> => {
+            console.log('got to validating!')
+            // Validate specifically
+            const latestPipeline = { ...currentPipeline, pipeline: values.pipeline as PipelineInfoConfig }
+            setCurrentPipeline(latestPipeline)
+            const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
+            // https://github.com/formium/formik/issues/1392
+            console.log(runPipelineFormErrors)
+            // throw runPipelineFormErrors
+
+            return validateCICodebase(values)
           },
           validateOnChange: true,
           enableReinitialize: true
@@ -1585,6 +1677,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
           onYamlSubmit: submitTrigger,
           loading: loadingYamlSchema
         }}
+        errorsStripErrors={formErrors}
       >
         <TriggerOverviewPanel />
         <SchedulePanel />

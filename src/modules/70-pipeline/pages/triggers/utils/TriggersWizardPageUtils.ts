@@ -179,6 +179,7 @@ export interface FlatValidArtifactFormikValuesInterface {
   triggerType: NGTriggerSourceV2['type']
   selectedArtifact: any
   stageId: string
+  pipeline: PipelineInfoConfig
 }
 
 export const TriggerTypes = {
