@@ -91,7 +91,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
           }
         }
       }
-  const isArtifactory = false
+
   const { expressions } = useVariablesExpression()
 
   const gitFetchTypes: SelectOption[] = [
@@ -146,7 +146,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
 
   const connectionType =
     connectorValue?.connector?.spec?.connectionType === 'Account' || connectorValue?.connector?.spec?.type === 'Account'
-
+  const isArtifactory = prevStepData.selectedType === 'Artifactory'
   return (
     <Layout.Vertical spacing="xxlarge" padding="small" className={css.tfVarStore}>
       <Text font="large" color={Color.GREY_800}>
@@ -225,7 +225,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
         })}
       >
         {formik => {
-          window.console.log('formik: ', formik.values)
+          const store = formik.values?.varFile?.spec?.store?.spec
           return (
             <Form>
               <div className={css.tfRemoteForm}>
@@ -241,11 +241,10 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                       placeholder={getString('pipelineSteps.repoName')}
                       multiTextInputProps={{ expressions, allowableTypes }}
                     />
-                    {getMultiTypeFromValue(formik.values?.varFile?.spec?.store?.spec?.repoName) ===
-                      MultiTypeInputType.RUNTIME && (
+                    {getMultiTypeFromValue(store?.repoName) === MultiTypeInputType.RUNTIME && (
                       <ConfigureOptions
                         style={{ alignSelf: 'center' }}
-                        value={formik.values?.varFile?.spec?.store?.spec?.repoName as string}
+                        value={store?.repoName as string}
                         type="String"
                         variableName="varFile.spec.store.spec.repoName"
                         showRequiredField={false}
@@ -269,8 +268,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                     />
                   </div>
                 )}
-                {(formik.values?.varFile?.spec?.store?.spec?.gitFetchType === gitFetchTypes[0].value ||
-                  !isArtifactory) && (
+                {!isArtifactory && (
                   <div className={cx(stepCss.formGroup, stepCss.md)}>
                     <FormInput.MultiTextInput
                       label={getString('pipelineSteps.deploy.inputSet.branch')}
@@ -278,11 +276,10 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                       name="varFile.spec.store.spec.branch"
                       multiTextInputProps={{ expressions, allowableTypes }}
                     />
-                    {getMultiTypeFromValue(formik.values?.varFile?.spec?.store?.spec?.branch) ===
-                      MultiTypeInputType.RUNTIME && (
+                    {getMultiTypeFromValue(store?.branch) === MultiTypeInputType.RUNTIME && (
                       <ConfigureOptions
                         style={{ alignSelf: 'center' }}
-                        value={formik.values?.varFile?.spec?.store?.spec?.branch as string}
+                        value={store?.branch as string}
                         type="String"
                         variableName="varFile.spec.store.spec.branch"
                         showRequiredField={false}
@@ -295,7 +292,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                   </div>
                 )}
 
-                {formik.values?.varFile?.spec?.store?.spec?.gitFetchType === gitFetchTypes[1].value && (
+                {store?.gitFetchType === gitFetchTypes[1].value && (
                   <div className={cx(stepCss.formGroup, stepCss.md)}>
                     <FormInput.MultiTextInput
                       label={getString('pipeline.manifestType.commitId')}
@@ -303,11 +300,10 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                       name="varFile.spec.store.spec.commitId"
                       multiTextInputProps={{ expressions, allowableTypes }}
                     />
-                    {getMultiTypeFromValue(formik.values?.varFile?.spec?.store?.spec?.commitId) ===
-                      MultiTypeInputType.RUNTIME && (
+                    {getMultiTypeFromValue(store?.commitId) === MultiTypeInputType.RUNTIME && (
                       <ConfigureOptions
                         style={{ alignSelf: 'center' }}
-                        value={formik.values?.varFile?.spec?.store?.spec?.commitId as string}
+                        value={store?.commitId as string}
                         type="String"
                         variableName="varFile.spec.store.spec.commitId"
                         showRequiredField={false}
@@ -341,61 +337,57 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                       render={arrayHelpers => {
                         return (
                           <>
-                            {(formik.values?.varFile?.spec?.store?.spec?.paths || []).map(
-                              (path: PathInterface, index: number) => (
+                            {(store?.paths || []).map((path: PathInterface, index: number) => (
+                              <Layout.Horizontal
+                                key={`${path}-${index}`}
+                                flex={{ distribution: 'space-between' }}
+                                style={{ alignItems: 'end' }}
+                              >
                                 <Layout.Horizontal
+                                  spacing="medium"
+                                  style={{ alignItems: 'baseline' }}
+                                  className={css.tfContainer}
                                   key={`${path}-${index}`}
-                                  flex={{ distribution: 'space-between' }}
-                                  style={{ alignItems: 'end' }}
+                                  draggable={true}
+                                  onDragEnd={onDragEnd}
+                                  onDragOver={onDragOver}
+                                  onDragLeave={onDragLeave}
+                                  /* istanbul ignore next */
+                                  onDragStart={event => {
+                                    /* istanbul ignore next */
+                                    onDragStart(event, index)
+                                  }}
+                                  /* istanbul ignore next */
+                                  onDrop={event => onDrop(event, arrayHelpers, index)}
                                 >
-                                  <Layout.Horizontal
-                                    spacing="medium"
-                                    style={{ alignItems: 'baseline' }}
-                                    className={css.tfContainer}
-                                    key={`${path}-${index}`}
-                                    draggable={true}
-                                    onDragEnd={onDragEnd}
-                                    onDragOver={onDragOver}
-                                    onDragLeave={onDragLeave}
-                                    /* istanbul ignore next */
-                                    onDragStart={event => {
-                                      /* istanbul ignore next */
-                                      onDragStart(event, index)
+                                  <Icon name="drag-handle-vertical" className={css.drag} />
+                                  <Text width={12}>{`${index + 1}.`}</Text>
+                                  <FormInput.MultiTextInput
+                                    name={`varFile.spec.store.spec.paths[${index}].path`}
+                                    label=""
+                                    multiTextInputProps={{
+                                      expressions,
+                                      allowableTypes: allowableTypes.filter(item => item !== MultiTypeInputType.RUNTIME)
                                     }}
-                                    /* istanbul ignore next */
-                                    onDrop={event => onDrop(event, arrayHelpers, index)}
-                                  >
-                                    <Icon name="drag-handle-vertical" className={css.drag} />
-                                    <Text width={12}>{`${index + 1}.`}</Text>
-                                    <FormInput.MultiTextInput
-                                      name={`varFile.spec.store.spec.paths[${index}].path`}
+                                    style={{ width: isArtifactory ? 240 : 300 }}
+                                  />
+                                  {isArtifactory && (
+                                    <FormInput.Select
+                                      name={`varFile.spec.store.spec.paths[${index}].fileName`}
                                       label=""
-                                      multiTextInputProps={{
-                                        expressions,
-                                        allowableTypes: allowableTypes.filter(
-                                          item => item !== MultiTypeInputType.RUNTIME
-                                        )
-                                      }}
-                                      style={{ width: isArtifactory ? 240 : 300 }}
+                                      items={[]}
+                                      style={{ width: 240 }}
                                     />
-                                    {isArtifactory && (
-                                      <FormInput.Select
-                                        name={`varFile.spec.store.spec.paths[${index}].fileName`}
-                                        label=""
-                                        items={[]}
-                                        style={{ width: 240 }}
-                                      />
-                                    )}
-                                    <Button
-                                      minimal
-                                      icon="main-trash"
-                                      data-testid={`remove-header-${index}`}
-                                      onClick={() => arrayHelpers.remove(index)}
-                                    />
-                                  </Layout.Horizontal>
+                                  )}
+                                  <Button
+                                    minimal
+                                    icon="main-trash"
+                                    data-testid={`remove-header-${index}`}
+                                    onClick={() => arrayHelpers.remove(index)}
+                                  />
                                 </Layout.Horizontal>
-                              )
-                            )}
+                              </Layout.Horizontal>
+                            ))}
                             <Button
                               icon="plus"
                               variation={ButtonVariation.LINK}
