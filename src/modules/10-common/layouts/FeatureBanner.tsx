@@ -55,7 +55,7 @@ const OverUseInfoText = ({ message }: { message: React.ReactNode }): React.React
         icon="warning-sign"
         color={Color.PRIMARY_10}
         font={{ variation: FontVariation.FORM_MESSAGE_WARNING, weight: 'bold' }}
-        iconProps={{ size: 25, color: Color.YELLOW_900 }}
+        iconProps={{ size: 25, color: Color.YELLOW_900, padding: { right: 'small' } }}
         padding={{ right: 'medium' }}
       >
         {getString('common.overuse')}
@@ -75,7 +75,7 @@ export const LevelUpText = ({ message }: { message: React.ReactNode }): React.Re
         icon="flash"
         color={Color.ORANGE_800}
         font={{ variation: FontVariation.FORM_MESSAGE_WARNING, weight: 'bold' }}
-        iconProps={{ color: Color.ORANGE_800, size: 25 }}
+        iconProps={{ color: Color.ORANGE_800, size: 25, padding: { right: 'small' } }}
         padding={{ right: 'medium' }}
         className={css.btn}
       >
@@ -147,14 +147,14 @@ function getBannerBodyByType(type: BannerType, message: React.ReactNode, module:
   switch (type) {
     case BannerType.INFO:
       return (
-        <Layout.Horizontal width="95%" padding={{ left: 'large' }}>
+        <Layout.Horizontal width="95%" padding={{ left: 'large' }} spacing={'large'}>
           <InfoText message={message} />
           <ManageSubscriptionBtn module={module} />
         </Layout.Horizontal>
       )
     case BannerType.LEVEL_UP:
       return (
-        <Layout.Horizontal width="95%" padding={{ left: 'large' }}>
+        <Layout.Horizontal width="95%" padding={{ left: 'large' }} spacing={'large'}>
           <LevelUpText message={message} />
           <ViewUsageLink module={module} />
           <ExplorePlansBtn module={module} />
@@ -162,7 +162,7 @@ function getBannerBodyByType(type: BannerType, message: React.ReactNode, module:
       )
     case BannerType.OVERUSE:
       return (
-        <Layout.Horizontal width="95%" padding={{ left: 'large' }}>
+        <Layout.Horizontal width="95%" padding={{ left: 'large' }} spacing={'large'}>
           <OverUseInfoText message={message} />
           <ManageSubscriptionBtn module={module} />
         </Layout.Horizontal>

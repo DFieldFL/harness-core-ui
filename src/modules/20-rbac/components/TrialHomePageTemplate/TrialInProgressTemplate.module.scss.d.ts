@@ -7,11 +7,7 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
-  readonly body: string
   readonly container: string
-  readonly content: string
   readonly description: string
-  readonly hasBanner: string
-  readonly hasNoBanner: string
 }
 export default styles

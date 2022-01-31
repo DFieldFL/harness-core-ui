@@ -44,7 +44,7 @@ interface UseExtendTrialOrFeedbackModalReturn {
 }
 
 const getBgImg = (module: string): string => {
-  switch (module) {
+  switch (module.toUpperCase()) {
     case 'CI':
       return ciExtendTrialImg
     case 'CF':

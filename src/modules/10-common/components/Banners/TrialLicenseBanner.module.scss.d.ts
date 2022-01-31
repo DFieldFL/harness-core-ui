@@ -7,10 +7,12 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
-  readonly contactSales: string
   readonly expired: string
-  readonly extendTrial: string
+  readonly infoIcon: string
+  readonly issueIcon: string
+  readonly link: string
   readonly notExpired: string
   readonly trialLicenseBanner: string
+  readonly whiteColor: string
 }
 export default styles

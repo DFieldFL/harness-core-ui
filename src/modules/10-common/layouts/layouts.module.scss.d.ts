@@ -16,5 +16,6 @@ declare const styles: {
   readonly main: string
   readonly overUse: string
   readonly rhs: string
+  readonly trialLicenseBanner: string
 }
 export default styles

@@ -9,20 +9,10 @@
   cursor: pointer;
 }
 
-.body {
-  &.hasBanner {
-    --page-header-height: 50px !important;
-  }
-
-  &.hasNoBanner {
-    --page-header-height: 0px !important;
-  }
-}
-
 .container {
+  height: 100vh;
   padding-left: 80px !important;
   padding-top: 80px !important;
-  height: calc(100vh - var(--page-header-height, 64px));
   background-size: contain !important;
   background-position: right bottom !important;
   .subTitle {

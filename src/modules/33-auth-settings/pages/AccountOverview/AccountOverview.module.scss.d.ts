@@ -8,7 +8,6 @@
 // this is an auto-generated file, do not update this manually
 declare const styles: {
   readonly container: string
-  readonly hasBanner: string
   readonly manageBtn: string
   readonly minWidth: string
   readonly nameInput: string

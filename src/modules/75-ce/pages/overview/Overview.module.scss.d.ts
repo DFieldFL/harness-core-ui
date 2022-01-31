@@ -7,12 +7,9 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
-  readonly body: string
   readonly columnOne: string
   readonly columnTwo: string
   readonly excludeSideNavOverlay: string
-  readonly hasBanner: string
-  readonly hasNoBanner: string
   readonly mainContainer: string
   readonly noColor: string
   readonly subscriptionLimitCtn: string

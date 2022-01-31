@@ -29,11 +29,6 @@
   overflow-wrap: anywhere;
 }
 
-.hasBanner {
-  --page-header-height: 45px !important;
-  height: calc(100vh - var(--page-header-height, 64px));
-}
-
 .userProfilePage {
   display: grid;
   grid-auto-flow: column;

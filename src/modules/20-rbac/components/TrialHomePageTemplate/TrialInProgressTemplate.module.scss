@@ -5,28 +5,14 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-.body {
-  &.hasBanner {
-    --page-header-height: 50px !important;
-  }
-
-  &.hasNoBanner {
-    --page-header-height: 0px !important;
-  }
-}
-
 .container {
+  height: 100vh;
   padding-left: 80px !important;
   padding-top: 80px !important;
   background-position: right bottom !important;
   background-size: contain !important;
-  height: calc(100vh - var(--page-header-height, 64px));
 }
 
 .description {
   line-height: 2 !important;
-}
-
-.content {
-  align-items: center;
 }

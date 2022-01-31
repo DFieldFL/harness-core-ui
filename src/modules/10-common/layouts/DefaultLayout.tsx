@@ -11,7 +11,7 @@ import MainNav from '@common/navigation/MainNav'
 import SideNav from '@common/navigation/SideNav'
 
 import { useSidebar } from '@common/navigation/SidebarProvider'
-
+import { TrialLicenseBanner } from '@common/components/Banners/TrialLicenseBanner'
 import FeatureBanner from './FeatureBanner'
 
 import css from './layouts.module.scss'
@@ -26,6 +26,7 @@ export function DefaultLayout(props: React.PropsWithChildren<unknown>): React.Re
         <NavComponent />
       </SideNav>
       <div className={css.rhs}>
+        <TrialLicenseBanner />
         <FeatureBanner />
         <div className={css.children}>{props.children}</div>
       </div>

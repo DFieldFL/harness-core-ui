@@ -7,10 +7,7 @@
  **/
 // this is an auto-generated file, do not update this manually
 declare const styles: {
-  readonly body: string
   readonly container: string
-  readonly hasBanner: string
-  readonly hasNoBanner: string
   readonly link: string
   readonly linkCursor: string
   readonly subTitle: string

@@ -10,7 +10,6 @@ declare const styles: {
   readonly authentication: string
   readonly avatar: string
   readonly details: string
-  readonly hasBanner: string
   readonly overflow: string
   readonly overview: string
   readonly userProfilePage: string

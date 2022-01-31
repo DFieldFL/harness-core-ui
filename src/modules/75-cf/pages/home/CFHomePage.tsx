@@ -22,7 +22,7 @@ import type { AccountPathProps, Module } from '@common/interfaces/RouteInterface
 import { useQueryParams } from '@common/hooks'
 import { useGetLicensesAndSummary, useGetProjectList } from 'services/cd-ng'
 import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
-import { Editions, ModuleLicenseType } from '@common/constants/SubscriptionTypes'
+import { ModuleLicenseType } from '@common/constants/SubscriptionTypes'
 import { useFFTrialModal } from '@cf/modals/FFTrial/useFFTrialModal'
 import { TrialType } from '@pipeline/components/TrialModalTemplate/trialModalUtils'
 import { useGetProjectCreateSuccessHandler, useGetSignUpHandler } from './cfHomeUtils'
@@ -85,14 +85,6 @@ const CFHomePage: React.FC = () => {
       description: getString('createProject'),
       onClick: openProjectModal
     }
-  }
-
-  const trialBannerProps = {
-    expiryTime: licenseData?.data?.maxExpiryTime,
-    licenseType: licenseData?.data?.licenseType,
-    module: moduleType,
-    edition: licenseData?.data?.edition as Editions,
-    refetch: refetchLicense
   }
 
   const { experience, modal } = useQueryParams<{ experience?: ModuleLicenseType; modal?: ModuleLicenseType }>()
@@ -161,7 +153,6 @@ const CFHomePage: React.FC = () => {
         title={getString('cf.continuous')}
         bgImageUrl={bgImageURL}
         trialInProgressProps={trialInProgressProps}
-        trialBannerProps={trialBannerProps}
       />
     )
   }
@@ -185,7 +176,6 @@ const CFHomePage: React.FC = () => {
       subTitle={getString('cf.homepage.slogan')}
       documentText={getString('cf.homepage.learnMore')}
       documentURL="https://ngdocs.harness.io/article/0a2u2ppp8s-getting-started-with-continuous-features"
-      trialBannerProps={trialBannerProps}
     />
   )
 }

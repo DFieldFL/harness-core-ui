@@ -5,32 +5,21 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useState } from 'react'
-import { Button, Color, Container, Heading, Layout, Text, Page } from '@wings-software/uicore'
-import cx from 'classnames'
+import React from 'react'
+import { Button, Color, Container, Heading, Layout, Text } from '@wings-software/uicore'
 import { useStrings } from 'framework/strings'
-import type { ModuleName } from 'framework/types/ModuleName'
+import { useModuleInfo } from '@common/hooks/useModuleInfo'
 import { useTelemetry } from '@common/hooks/useTelemetry'
 import { Category, PageNames } from '@common/constants/TrackingConstants'
-import type { Editions } from '@common/constants/SubscriptionTypes'
-import { TrialLicenseBanner } from '@common/components/Banners/TrialLicenseBanner'
 import RbacButton from '@rbac/components/Button/Button'
 import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
 import css from './TrialInProgressTemplate.module.scss'
 
-interface TrialBannerProps {
-  expiryTime?: number
-  licenseType?: string
-  module: ModuleName
-  edition?: Editions
-  refetch?: () => void
-}
 interface TrialInProgressTemplateProps {
   title: string
   bgImageUrl: string
   isTrialInProgress?: boolean
   trialInProgressProps: TrialInProgressProps
-  trialBannerProps: TrialBannerProps
 }
 
 interface TrialInProgressProps {
@@ -77,44 +66,35 @@ const TrialInProgressComponent: React.FC<TrialInProgressProps> = trialInProgress
 export const TrialInProgressTemplate: React.FC<TrialInProgressTemplateProps> = ({
   title,
   bgImageUrl,
-  trialInProgressProps,
-  trialBannerProps
+  trialInProgressProps
 }) => {
   const { getString } = useStrings()
-
+  const { module } = useModuleInfo()
   useTelemetry({
     pageName: PageNames.TrialInProgress,
     category: Category.SIGNUP,
-    properties: { module: trialBannerProps.module }
+    properties: { module: module || '' }
   })
 
-  const [hasBanner, setHasBanner] = useState<boolean>(true)
-  const bannerClassName = hasBanner ? css.hasBanner : css.hasNoBanner
   return (
-    <>
-      <TrialLicenseBanner {...trialBannerProps} setHasBanner={setHasBanner} />
-      <Page.Body className={cx(css.body, bannerClassName)}>
-        <Container style={{ background: `transparent url(${bgImageUrl}) no-repeat` }} className={css.container}>
-          <Layout.Vertical spacing="medium">
-            <Layout.Horizontal spacing="small" className={css.content}>
-              <Heading font={{ weight: 'bold', size: 'large' }} color={Color.BLACK_100}>
-                {title}
-              </Heading>
-
-              <Text
-                padding={'xsmall'}
-                border={{ radius: 3 }}
-                color={Color.WHITE}
-                background={Color.ORANGE_500}
-                font={{ align: 'center' }}
-              >
-                {getString('common.trialInProgress')}
-              </Text>
-            </Layout.Horizontal>
-            <TrialInProgressComponent {...trialInProgressProps} />
-          </Layout.Vertical>
-        </Container>
-      </Page.Body>
-    </>
+    <Container style={{ background: `transparent url(${bgImageUrl}) no-repeat` }} className={css.container}>
+      <Layout.Vertical spacing="medium">
+        <Layout.Horizontal spacing="small">
+          <Heading font={{ weight: 'bold', size: 'large' }} color={Color.BLACK_100}>
+            {title}
+          </Heading>
+          <Text
+            padding={'xsmall'}
+            border={{ radius: 3 }}
+            color={Color.WHITE}
+            background={Color.ORANGE_500}
+            font={{ align: 'center' }}
+          >
+            {getString('common.trialInProgress')}
+          </Text>
+        </Layout.Horizontal>
+        <TrialInProgressComponent {...trialInProgressProps} />
+      </Layout.Vertical>
+    </Container>
   )
 }

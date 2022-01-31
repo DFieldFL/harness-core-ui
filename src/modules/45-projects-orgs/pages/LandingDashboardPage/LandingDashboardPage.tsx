@@ -28,7 +28,6 @@ import { ModuleName } from 'framework/types/ModuleName'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import { useStrings } from 'framework/strings'
 import LandingDashboardWidgetWrapper from '@projects-orgs/components/LandingDashboardWidgetWrapper/LandingDashboardWidgetWrapper'
-import { EmailVerificationBanner } from '@common/components/Banners/EmailVerificationBanner'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import { useGetCounts } from 'services/dashboard-service'
@@ -74,7 +73,6 @@ const LandingDashboardPage: React.FC = () => {
     const projetCount = data?.data?.response?.projectsCountDetail?.count
     return data && projetCount ? (
       <LandingDashboardContextProvider>
-        <EmailVerificationBanner />
         <PageHeader
           title={getString('projectsOrgs.landingDashboard.dashboardTitle', {
             name

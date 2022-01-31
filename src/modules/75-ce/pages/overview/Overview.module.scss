@@ -49,16 +49,6 @@
   }
 }
 
-.body {
-  &.hasBanner {
-    --page-header-height: 50px !important;
-  }
-
-  &.hasNoBanner {
-    --page-header-height: 0px !important;
-  }
-}
-
 .subscriptionLimitCtn {
   background-color: var(--grey-0) !important;
   padding: var(--spacing-medium) var(--spacing-xlarge) !important;

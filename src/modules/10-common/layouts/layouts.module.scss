@@ -7,24 +7,29 @@
 
 .featuresBanner {
   height: 56px;
-  display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: 1px solid var(--grey-200);
+  grid-area: 'header';
+  display: flex;
+}
+
+.trialLicenseBanner {
+  height: 56px;
+  flex-direction: row;
+  align-items: center;
+  grid-area: 'header';
 }
 
 .children {
-  height: 100vh;
   overflow-y: auto;
   background-color: var(--primary-bg);
-}
-
-.featuresBanner + .children {
-  height: calc(100vh - 58px);
+  grid-area: 'body';
 }
 
 .rhs {
   height: 100vh;
+  display: grid;
+  grid-template-areas: 'header', 'body';
 }
 
 .main {

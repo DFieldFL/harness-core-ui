@@ -28,10 +28,8 @@ import { useCollaboratorModal } from '@projects-orgs/modals/ProjectModal/useColl
 import routes from '@common/RouteDefinitions'
 import { useStrings } from 'framework/strings'
 import { useToaster } from '@common/components'
-import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import { useDocumentTitle } from '@common/hooks/useDocumentTitle'
 import type { AccountPathProps, OrgPathProps } from '@common/interfaces/RouteInterfaces'
-import { EmailVerificationBanner } from '@common/components/Banners/EmailVerificationBanner'
 import { NGBreadcrumbs } from '@common/components/NGBreadcrumbs/NGBreadcrumbs'
 import RbacButton from '@rbac/components/Button/Button'
 import { FeatureIdentifier } from 'framework/featureStore/FeatureIdentifier'
@@ -54,7 +52,6 @@ const ProjectsListPage: React.FC = () => {
   const [searchParam, setSearchParam] = useState<string>()
   const [page, setPage] = useState(0)
   const history = useHistory()
-  const { currentUserInfo: user } = useAppStore()
 
   const allOrgsSelectOption: SelectOption = useMemo(
     () => ({
@@ -130,11 +127,8 @@ const ProjectsListPage: React.FC = () => {
     openCollaboratorModal({ projectIdentifier: project.identifier, orgIdentifier: project.orgIdentifier || 'default' })
   }
 
-  const bodyClassName = user.emailVerified === undefined || user.emailVerified ? css.noBanner : css.hasBanner
-
   return (
     <Container className={css.projectsPage} height="inherit">
-      <EmailVerificationBanner />
       <Page.Header breadcrumbs={<NGBreadcrumbs />} title={getString('projectsText')} />
       {data?.data?.totalItems || searchParam || loading || error || orgIdentifier ? (
         <Layout.Horizontal spacing="large" className={css.header}>
@@ -208,7 +202,6 @@ const ProjectsListPage: React.FC = () => {
                 messageTitle: getString('noProjects')
               }
         }
-        className={bodyClassName}
       >
         {view === Views.GRID ? (
           <ProjectsGridView

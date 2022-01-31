@@ -10,7 +10,6 @@ import { Button, ButtonVariation, Color, Heading, Layout, PageBody } from '@wing
 import cx from 'classnames'
 import { useHistory, useParams } from 'react-router-dom'
 import { useStrings } from 'framework/strings'
-import { EmailVerificationBanner } from '@common/components/Banners/EmailVerificationBanner'
 import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import RbacButton from '@rbac/components/Button/Button'
@@ -51,7 +50,6 @@ const LandingDashboardWelcomeView: React.FC<WelcomeViewProps> = props => {
 
   return (
     <>
-      <EmailVerificationBanner />
       <PageBody className={cx(css.getStartedMainContainer, className)}>
         <Layout.Vertical spacing="xxxlarge" flex>
           {NG_DASHBOARD_LANDING_PAGE ? (

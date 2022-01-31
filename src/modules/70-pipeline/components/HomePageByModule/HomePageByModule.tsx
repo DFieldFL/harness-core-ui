@@ -22,7 +22,7 @@ import routes from '@common/RouteDefinitions'
 import { useQueryParams } from '@common/hooks'
 import { useGetLicensesAndSummary, useGetProjectList } from 'services/cd-ng'
 import { useFeatureFlags } from '@common/hooks/useFeatureFlag'
-import { Editions, ModuleLicenseType } from '@common/constants/SubscriptionTypes'
+import { ModuleLicenseType } from '@common/constants/SubscriptionTypes'
 import { getTrialModalProps, openModal } from '@pipeline/components/TrialModalTemplate/trialModalUtils'
 import type { UseTrialModalProps } from '@pipeline/components/TrialModalTemplate/trialModalUtils'
 import type { StringsMap } from 'stringTypes'
@@ -186,14 +186,6 @@ const HomePageByModule: React.FC<HomePageModuleProps> = ({ moduleName, bgImageUR
 
   const history = useHistory()
 
-  const trialBannerProps = {
-    expiryTime: licenseData?.data?.maxExpiryTime,
-    licenseType: licenseData?.data?.licenseType,
-    module: moduleName,
-    edition: licenseData?.data?.edition as Editions,
-    refetch: refetchLicense
-  }
-
   useEffect(
     () => {
       openModal({
@@ -247,7 +239,6 @@ const HomePageByModule: React.FC<HomePageModuleProps> = ({ moduleName, bgImageUR
         title={getString(title as keyof StringsMap)}
         bgImageUrl={bgImageURL}
         trialInProgressProps={trialInProgressProps}
-        trialBannerProps={trialBannerProps}
       />
     )
   }
@@ -278,7 +269,6 @@ const HomePageByModule: React.FC<HomePageModuleProps> = ({ moduleName, bgImageUR
       subTitle={getString(subTitle as keyof StringsMap)}
       documentText={getString(documentText as keyof StringsMap)}
       documentURL={documentURL}
-      trialBannerProps={trialBannerProps}
     />
   )
 }

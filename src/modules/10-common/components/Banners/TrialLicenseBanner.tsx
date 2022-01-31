@@ -5,19 +5,37 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import moment from 'moment'
 import cx from 'classnames'
-import { capitalize } from 'lodash-es'
+import { capitalize, pick } from 'lodash-es'
 import { useParams } from 'react-router-dom'
-import { Text, Layout, Button, Color, Page, PageSpinner } from '@wings-software/uicore'
+import {
+  Text,
+  Layout,
+  Button,
+  FontVariation,
+  Color,
+  PageSpinner,
+  ButtonVariation,
+  ButtonSize
+} from '@wings-software/uicore'
 import { useStrings } from 'framework/strings'
-import type { ModuleName } from 'framework/types/ModuleName'
 import type { StringsMap } from 'stringTypes'
 import { useToaster } from '@common/components'
+import type { Module } from 'framework/types/ModuleName'
+import { useModuleInfo } from '@common/hooks/useModuleInfo'
+import { useLocalStorage } from '@common/hooks/useLocalStorage'
 import { useContactSalesMktoModal } from '@common/modals/ContactSales/useContactSalesMktoModal'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
-import { useExtendTrialLicense, StartTrialDTO, useSaveFeedback, FeedbackFormDTO } from 'services/cd-ng'
+import {
+  useExtendTrialLicense,
+  StartTrialDTO,
+  useSaveFeedback,
+  FeedbackFormDTO,
+  useGetLicensesAndSummary,
+  GetLicensesAndSummaryQueryParams
+} from 'services/cd-ng'
 import { useLicenseStore, handleUpdateLicenseStore } from 'framework/LicenseStore/LicenseStoreContext'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import {
@@ -28,29 +46,49 @@ import {
 import { Editions } from '@common/constants/SubscriptionTypes'
 import css from './TrialLicenseBanner.module.scss'
 
-interface TrialBannerProps {
-  expiryTime?: number
-  licenseType?: string
-  module: ModuleName
-  edition?: Editions
-  setHasBanner?: (value: boolean) => void
-  refetch?: () => void
-}
+export const BANNER_KEY = 'license_banner_dismissed'
 
-export const TrialLicenseBanner = (trialBannerProps: TrialBannerProps): React.ReactElement => {
+export const TrialLicenseBanner = (): React.ReactElement => {
   const { getString } = useStrings()
+  const { module } = useModuleInfo()
   const { currentUserInfo } = useAppStore()
   const { accountId } = useParams<AccountPathProps>()
   const { licenseInformation, updateLicenseStore } = useLicenseStore()
   const { showError, showSuccess } = useToaster()
-  const [display, setDisplay] = useState(true)
-  const { module, expiryTime, licenseType, edition, setHasBanner, refetch } = trialBannerProps
-  const days = Math.round(moment(expiryTime).diff(moment.now(), 'days', true))
+  const [isBannerDismissed, setIsBannerDismissed] = useLocalStorage<Partial<Record<Module, boolean>>>(
+    BANNER_KEY,
+    {},
+    window.sessionStorage
+  )
+
+  const {
+    data,
+    refetch,
+    loading: gettingLicense
+  } = useGetLicensesAndSummary({
+    queryParams: { moduleType: module?.toUpperCase() as GetLicensesAndSummaryQueryParams['moduleType'] },
+    accountIdentifier: accountId,
+    lazy: module === undefined || isBannerDismissed[module]
+  })
+
+  const { maxExpiryTime, edition, licenseType } = data?.data || {}
+  const updatedLicenseInfo = data?.data &&
+    module && {
+      ...licenseInformation?.[module.toUpperCase()],
+      ...pick(data?.data, ['licenseType', 'edition']),
+      expiryTime: maxExpiryTime
+    }
+
+  useEffect(() => {
+    if (module) {
+      handleUpdateLicenseStore({ ...licenseInformation }, updateLicenseStore, module, updatedLicenseInfo)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
+  const days = Math.round(moment(maxExpiryTime).diff(moment.now(), 'days', true))
   const isExpired = days < 0
   const expiredDays = Math.abs(days)
   const expiredClassName = isExpired ? css.expired : css.notExpired
-
-  const moduleName = module.toString().toLowerCase()
 
   const moduleDescriptionMap: Record<string, keyof StringsMap> = {
     cd: 'cd.continuous',
@@ -59,7 +97,7 @@ export const TrialLicenseBanner = (trialBannerProps: TrialBannerProps): React.Re
     ci: 'ci.continuous',
     cv: 'cv.continuous'
   }
-  const moduleDescription = getString(moduleDescriptionMap[moduleName])
+  const moduleDescription = (module && getString(moduleDescriptionMap[module])) || ''
 
   const descriptionModuleMap: Record<string, keyof StringsMap> = {
     cd: 'common.module.cd',
@@ -68,7 +106,7 @@ export const TrialLicenseBanner = (trialBannerProps: TrialBannerProps): React.Re
     ci: 'common.module.ci',
     cv: 'common.module.cv'
   }
-  const descriptionModule = getString(descriptionModuleMap[moduleName])
+  const descriptionModule = module && getString(descriptionModuleMap[module])
 
   const { mutate: extendTrial, loading: extendingTrial } = useExtendTrialLicense({
     queryParams: {
@@ -79,14 +117,24 @@ export const TrialLicenseBanner = (trialBannerProps: TrialBannerProps): React.Re
   const { openMarketoContactSales, loading: loadingContactSales } = useContactSalesMktoModal({})
 
   const alertMsg = isExpired ? (
-    <Text font={{ weight: 'semi-bold' }} icon="info" iconProps={{ size: 18, color: Color.RED_500 }}>
+    <Text
+      color={Color.WHITE}
+      font={{ variation: FontVariation.FORM_MESSAGE_WARNING }}
+      icon="issue"
+      iconProps={{ padding: { right: 'small' }, className: css.issueIcon }}
+    >
       {getString('common.banners.trial.expired.description', {
         expiredDays,
         moduleDescription
       })}
     </Text>
   ) : (
-    <Text font={{ weight: 'semi-bold' }} icon="info" iconProps={{ size: 18, color: Color.ORANGE_500 }}>
+    <Text
+      color={Color.PRIMARY_10}
+      font={{ variation: FontVariation.FORM_MESSAGE_WARNING }}
+      icon="info-message"
+      iconProps={{ padding: { right: 'small' }, size: 25, className: css.infoIcon }}
+    >
       {getString('common.banners.trial.description', {
         module: descriptionModule,
         days,
@@ -129,8 +177,8 @@ export const TrialLicenseBanner = (trialBannerProps: TrialBannerProps): React.Re
         refetch?.()
       }
     },
-    module,
-    expiryDateStr: moment(expiryTime).format('MMMM D YYYY'),
+    module: module || '',
+    expiryDateStr: moment(maxExpiryTime).format('MMMM D YYYY'),
     formType: isExpired ? FORM_TYPE.EXTEND_TRIAL : FORM_TYPE.FEEDBACK,
     moduleDescription,
     loading: sendingFeedback
@@ -138,52 +186,57 @@ export const TrialLicenseBanner = (trialBannerProps: TrialBannerProps): React.Re
 
   const handleExtendTrial = async (): Promise<void> => {
     try {
-      const data = await extendTrial({
+      const extendedData = await extendTrial({
         moduleType: module as StartTrialDTO['moduleType'],
         edition: Editions.ENTERPRISE
       })
-      handleUpdateLicenseStore({ ...licenseInformation }, updateLicenseStore, module as any, data?.data)
+      if (module) {
+        handleUpdateLicenseStore({ ...licenseInformation }, updateLicenseStore, module, extendedData?.data)
+      }
       openExtendTrialOrFeedbackModal()
-    } catch (error: any) {
+    } catch (error) {
       showError(error.data?.message || error.message)
     }
   }
 
-  if (licenseType !== 'TRIAL' || !display) {
-    setHasBanner?.(false)
-    return <></>
-  }
-
-  const loading = extendingTrial || loadingContactSales || sendingFeedback
+  const loading = extendingTrial || loadingContactSales || sendingFeedback || gettingLicense
 
   const getExtendOrFeedBackBtn = (): React.ReactElement => {
     if (!isExpired) {
       return (
-        <Button
+        <Text
           onClick={openExtendTrialOrFeedbackModal}
-          padding={'small'}
-          intent={'none'}
           color={Color.PRIMARY_7}
-          className={css.extendTrial}
+          className={css.link}
+          flex={{ alignItems: 'center' }}
         >
           {getString('common.banners.trial.provideFeedback')}
-        </Button>
+        </Text>
       )
     }
     if (expiredDays > 14) {
       return <></>
     }
     return (
-      <Button
-        onClick={handleExtendTrial}
-        padding={'small'}
-        intent={'none'}
-        color={Color.PRIMARY_7}
-        className={css.extendTrial}
-      >
+      <Text onClick={handleExtendTrial} color={Color.WHITE} className={css.link} flex={{ alignItems: 'center' }}>
         {getString('common.banners.trial.expired.extendTrial')}
-      </Button>
+      </Text>
     )
+  }
+
+  const contactSalesLink = (
+    <Layout.Horizontal padding={{ left: 'large' }} flex={{ alignItems: 'center' }}>
+      <Text onClick={openMarketoContactSales} color={isExpired ? Color.WHITE : Color.PRIMARY_6} className={css.link}>
+        {getString('common.banners.trial.contactSales')}
+      </Text>
+      <Text padding={{ left: 'small', right: 'small' }} color={isExpired ? Color.WHITE : Color.PRIMARY_6}>
+        {'or'}
+      </Text>
+    </Layout.Horizontal>
+  )
+
+  if (module === undefined || isBannerDismissed[module] || licenseType !== 'TRIAL') {
+    return <></>
   }
 
   if (loading) {
@@ -191,35 +244,19 @@ export const TrialLicenseBanner = (trialBannerProps: TrialBannerProps): React.Re
   }
 
   return (
-    <Page.Header
-      className={cx(css.trialLicenseBanner, expiredClassName)}
-      title={''}
-      content={
-        <Layout.Horizontal spacing="xxxlarge">
-          <Layout.Horizontal spacing="small" padding={{ right: 'xxxlarge' }}>
-            {alertMsg}
-          </Layout.Horizontal>
-          <Button
-            className={css.contactSales}
-            border={{ color: Color.PRIMARY_7 }}
-            padding="xsmall"
-            text={getString('common.banners.trial.contactSales')}
-            onClick={openMarketoContactSales}
-          />
-          {getExtendOrFeedBackBtn()}
-        </Layout.Horizontal>
-      }
-      toolbar={
-        <Button
-          aria-label="close banner"
-          minimal
-          icon="cross"
-          iconProps={{ size: 18 }}
-          onClick={() => {
-            setDisplay(false), setHasBanner?.(false)
-          }}
-        />
-      }
-    />
+    <div className={cx(css.trialLicenseBanner, expiredClassName)}>
+      <Layout.Horizontal width="95%" padding={{ left: 'large' }}>
+        {alertMsg}
+        {contactSalesLink}
+        {getExtendOrFeedBackBtn()}
+      </Layout.Horizontal>
+      <Button
+        variation={ButtonVariation.ICON}
+        size={ButtonSize.LARGE}
+        icon="cross"
+        data-testid="trial-banner-dismiss"
+        onClick={() => setIsBannerDismissed(prev => (module ? { ...prev, [module]: true } : prev))}
+      />
+    </div>
   )
 }

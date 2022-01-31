@@ -6,7 +6,6 @@
  */
 
 import React from 'react'
-import cx from 'classnames'
 import { useParams } from 'react-router-dom'
 import { Text, Layout, Avatar, Color, Button, ButtonVariation } from '@wings-software/uicore'
 import { useChangePassword } from '@user-profile/modals/useChangePassword/useChangePassword'
@@ -20,7 +19,6 @@ import { Page } from '@common/components'
 import TwoFactorAuthentication from '@user-profile/components/TwoFactorAuthentication/TwoFactorAuthentication'
 import useSwitchAccountModal from '@common/modals/SwitchAccount/useSwitchAccountModal'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
-import { EmailVerificationBanner } from '@common/components/Banners/EmailVerificationBanner'
 import { AuthenticationMechanisms } from '@auth-settings/constants/utils'
 import UserOverView from './views/UserOverView'
 import css from './UserProfile.module.scss'
@@ -51,16 +49,14 @@ const UserProfilePage: React.FC = () => {
   const passwordStrengthPolicy = userPasswordSettings?.loginSettings?.passwordStrengthPolicy
 
   const { openPasswordModal } = useChangePassword()
-  const className = user.emailVerified === undefined || user.emailVerified ? undefined : css.hasBanner
 
   return (
     <>
-      <EmailVerificationBanner />
       <Page.Body
         error={errorWhileFetchingAuthSettings?.message}
         retryOnError={() => refetchLoginSettings()}
         filled
-        className={cx(className, css.userProfilePage)}
+        className={css.userProfilePage}
       >
         <Layout.Vertical className={css.details}>
           <Layout.Vertical margin={{ top: 'large' }}>

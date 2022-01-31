@@ -10,11 +10,9 @@ declare const styles: {
   readonly customselect: string
   readonly expandSearch: string
   readonly filterTab: string
-  readonly hasBanner: string
   readonly header: string
   readonly headerLayout: string
   readonly imageClassName: string
-  readonly noBanner: string
   readonly orgDropdown: string
   readonly orgSelect: string
   readonly projectsPage: string

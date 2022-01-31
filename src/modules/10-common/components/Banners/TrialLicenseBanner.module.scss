@@ -6,21 +6,35 @@
  */
 
 .trialLicenseBanner {
-  height: 5vh !important;
+  display: inline-flex;
+  align-items: center;
+  height: 36px !important;
 }
 
 .expired {
-  background-color: var(--red-100) !important;
+  background-color: var(--red-600) !important;
 }
 
 .notExpired {
-  background-color: var(--yellow-100) !important;
+  background-color: var(--purple-50) !important;
 }
 
-.contactSales {
-  margin-bottom: 2px !important;
+.infoIcon {
+  color: var(--primary-6) !important;
 }
 
-.extendTrial {
-  margin-bottom: 2px !important;
+.issueIcon {
+  color: var(--white) !important;
+}
+
+.whiteColor {
+  color: var(--white) !important;
+}
+
+.link {
+  font-weight: bold;
+  text-decoration: underline;
+  &:hover {
+    cursor: pointer;
+  }
 }
