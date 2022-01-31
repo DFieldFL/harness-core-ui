@@ -121,7 +121,7 @@ export const WizardFooter = ({
             if (!isEmpty(await validate?.())) {
               showError(getString('addressErrorFields'))
             } else {
-              formikProps.setSubmitting(true)
+              formikProps.submitForm()
             }
           }}
         />

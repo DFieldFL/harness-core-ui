@@ -1520,9 +1520,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             console.log(runPipelineFormErrors)
             // throw runPipelineFormErrors
             // if value runPipelineFormErrors is {}, we're in the clear to validate CICodebase or continue to submit
-            const val = runPipelineFormErrors || validateCICodebase(values)
+            // validateCICodebase already in validatePipeline
+            const val = runPipelineFormErrors
             console.log(val)
-            return isEmpty(val) ? {} : val
+            return val
           },
           validateOnChange: true,
           enableReinitialize: true
