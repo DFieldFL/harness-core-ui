@@ -6,12 +6,11 @@
  */
 
 import React from 'react'
-import { act, fireEvent, render, waitFor, getByText as getByTextBody } from '@testing-library/react'
+import { act, fireEvent, render } from '@testing-library/react'
 import { RUNTIME_INPUT_VALUE } from '@wings-software/uicore'
 import { StepFormikRef, StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import { StepType } from '@pipeline/components/PipelineSteps/PipelineStepInterface'
 import { factory, TestStepWidget } from '@pipeline/components/PipelineSteps/Steps/__tests__/StepTestUtil'
-import { findDialogContainer } from '@common/utils/testUtils'
 
 import { TerraformApply } from '../TerraformApply'
 
@@ -93,7 +92,7 @@ describe('Test TerraformApply', () => {
   test('should be able to edit inline config', async () => {
     const ref = React.createRef<StepFormikRef<unknown>>()
     const onUpdate = jest.fn()
-    const { container } = render(
+    const { findByTestId } = render(
       <TestStepWidget
         initialValues={{
           type: 'TerraformApply',
@@ -131,7 +130,7 @@ describe('Test TerraformApply', () => {
                       type: 'Remote',
                       store: {
                         spec: {
-                          connectorRef: 'test',
+                          connectorRef: 'test connector ref',
                           branch: 'test-brancg',
                           folderPath: 'testfolder'
                         }
@@ -149,12 +148,20 @@ describe('Test TerraformApply', () => {
         onUpdate={onUpdate}
       />
     )
-    const editIcon = container.querySelector('[data-name="config-edit"]')
+    const editIcon = await findByTestId('editConfigButton')
     fireEvent.click(editIcon!)
-    const dialog = findDialogContainer() as HTMLElement
 
-    await waitFor(() => getByTextBody(dialog, 'pipelineSteps.configFiles'))
-    expect(dialog).toMatchSnapshot()
+    const gitConnector = await findByTestId('varStore-Git')
+    expect(gitConnector).toBeInTheDocument()
+
+    const gitlabConnector = await findByTestId('varStore-GitLab')
+    expect(gitlabConnector).toBeInTheDocument()
+
+    const githubbConnector = await findByTestId('varStore-Github')
+    expect(githubbConnector).toBeInTheDocument()
+
+    const bitBucketConnector = await findByTestId('varStore-Bitbucket')
+    expect(bitBucketConnector).toBeInTheDocument()
   })
 
   test('should submit form for inline config', async () => {

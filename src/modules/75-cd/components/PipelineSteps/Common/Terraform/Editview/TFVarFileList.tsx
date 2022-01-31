@@ -42,10 +42,12 @@ interface TfVarFileProps {
   formik: FormikProps<TerraformData>
   isReadonly?: boolean
   allowableTypes: MultiTypeInputType[]
+  getNewConnectorSteps?: any
+  setSelectedConnector?: any
 }
 
 export default function TfVarFileList(props: TfVarFileProps): React.ReactElement {
-  const { formik, isReadonly = false, allowableTypes } = props
+  const { formik, isReadonly = false, allowableTypes, getNewConnectorSteps, setSelectedConnector } = props
   const inlineInitValues: TerraformVarFileWrapper = {
     varFile: {
       spec: {},
@@ -66,6 +68,7 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
   const [selectedVar, setSelectedVar] = React.useState(inlineInitValues as any)
   const [selectedVarIndex, setSelectedVarIndex] = React.useState<number>(-1)
   const [showRemoteWizard, setShowRemoteWizard] = React.useState(false)
+  const [connectorView, setConnectorView] = React.useState(false)
   const { getString } = useStrings()
 
   const remoteRender = (varFile: TerraformVarFileWrapper, index: number): React.ReactElement => {
@@ -271,11 +274,18 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
                     <div className={css.createTfWizard}>
                       <StepWizard title={getTitle()} initialStep={1} className={css.manifestWizard}>
                         <TFVarStore
+                          isReadonly={isReadonly}
                           name={getString('cd.tfVarStore')}
                           initialValues={isEditMode ? selectedVar : remoteInitialValues}
                           isEditMode={isEditMode}
                           allowableTypes={allowableTypes}
+                          handleConnectorViewChange={connector => {
+                            setSelectedConnector(connector)
+                            setConnectorView(true)
+                          }}
+                          setConnectorView={setConnectorView}
                         />
+                        {connectorView ? getNewConnectorSteps() : null}
                         <TFRemoteWizard
                           name={getString('cd.varFileDetails')}
                           onSubmitCallBack={(values: RemoteVar) => {
@@ -296,9 +306,7 @@ export default function TfVarFileList(props: TfVarFileProps): React.ReactElement
                       minimal
                       icon="cross"
                       iconProps={{ size: 18 }}
-                      onClick={() => {
-                        setShowRemoteWizard(false)
-                      }}
+                      onClick={() => setShowRemoteWizard(false)}
                       className={css.crossIcon}
                     />
                   </Dialog>

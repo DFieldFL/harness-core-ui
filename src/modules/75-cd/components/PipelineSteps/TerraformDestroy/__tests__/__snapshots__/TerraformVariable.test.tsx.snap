@@ -344,6 +344,7 @@ exports[`Test TerraformDestroy with inline var file and expand the varfiles sect
           <a
             class="configPlaceHolder"
             data-name="config-edit"
+            data-testid="editConfigButton"
           >
             cd.configFilePlaceHolder
           </a>

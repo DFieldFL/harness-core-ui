@@ -60,7 +60,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
             store: {
               spec: {
                 gitFetchType: prevStepData?.varFile?.spec?.store?.spec?.gitFetchType,
-
+                repoName: prevStepData?.varFile?.spec?.store?.spec?.repoName,
                 branch: prevStepData?.varFile?.spec?.store?.spec?.branch,
                 commitId: prevStepData?.varFile?.spec?.store?.spec?.commitId,
                 paths:

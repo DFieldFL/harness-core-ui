@@ -31,13 +31,7 @@ import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorRef
 import type { ConnectorSelectedValue } from '@connectors/components/ConnectorReferenceField/ConnectorReferenceField'
 
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
-import {
-  ConnectorTypes,
-  AllowedTypes,
-  tfVarIcons,
-  ConnectorMap,
-  ConnectorLabelMap
-} from '../../../TerraformPlan/TerraformConfigFormHelper'
+import { ConnectorTypes, AllowedTypes, tfVarIcons, ConnectorMap, ConnectorLabelMap } from './TerraformConfigFormHelper'
 
 import css from './TerraformVarfile.module.scss'
 

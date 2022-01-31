@@ -344,6 +344,7 @@ exports[`Test TerraformDestroy add new terraform var file 1`] = `
           <a
             class="configPlaceHolder"
             data-name="config-edit"
+            data-testid="editConfigButton"
           >
             cd.configFilePlaceHolder
           </a>
@@ -1377,6 +1378,7 @@ exports[`Test TerraformDestroy expand backend Spec config 1`] = `
           <a
             class="configPlaceHolder"
             data-name="config-edit"
+            data-testid="editConfigButton"
           >
             cd.configFilePlaceHolder
           </a>
@@ -2439,6 +2441,7 @@ exports[`Test TerraformDestroy should render edit view as edit step - Inline 1`]
           <a
             class="configPlaceHolder"
             data-name="config-edit"
+            data-testid="editConfigButton"
           >
             cd.configFilePlaceHolder
           </a>

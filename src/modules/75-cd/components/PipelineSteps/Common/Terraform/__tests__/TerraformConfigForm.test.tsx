@@ -10,7 +10,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { MultiTypeInputType } from '@wings-software/uicore'
 import { TestWrapper } from '@common/utils/testUtils'
 
-import { TerraformConfigStepOne, TerraformConfigStepTwo } from '../TerraformConfigForm'
+import { TerraformConfigStepOne, TerraformConfigStepTwo } from '../Editview/TerraformConfigForm'
 
 jest.mock('services/cd-ng', () => ({
   useGetConnector: jest.fn().mockImplementation(() => ({ data: {} }))
@@ -101,6 +101,7 @@ const renderStepTwoComponent = (data?: any): void => {
   render(
     <TestWrapper>
       <TerraformConfigStepTwo
+        isTerraformPlan
         prevStepData={data}
         isReadonly={false}
         allowableTypes={allowableTypes}
@@ -147,7 +148,6 @@ describe('TerraformConfigForm StepTwo tests', () => {
     }
 
     renderStepTwoComponent(prevStepData)
-
     const testRepoName = await screen.getByDisplayValue('git name')
     expect(testRepoName).toBeInTheDocument()
 

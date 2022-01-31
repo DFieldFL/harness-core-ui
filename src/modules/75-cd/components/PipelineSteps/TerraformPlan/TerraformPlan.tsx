@@ -93,8 +93,8 @@ import TfVarFileList from './TfPlanVarFileList'
 
 import TerraformInputStep from './TfPlanInputStep'
 import { TerraformVariableStep } from './TfPlanVariableView'
-import { TerraformConfigStepOne, TerraformConfigStepTwo } from './TerraformConfigForm'
-import { ConnectorMap, ConnectorTypes } from './TerraformConfigFormHelper'
+import { TerraformConfigStepOne, TerraformConfigStepTwo } from '../Common/Terraform/Editview/TerraformConfigForm'
+import { ConnectorMap, ConnectorTypes } from '../Common/Terraform/Editview/TerraformConfigFormHelper'
 
 import { TFMonaco } from '../Common/Terraform/Editview/TFMonacoEditor'
 import stepCss from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
@@ -576,6 +576,7 @@ function TerraformPlanWidget(
                     <TerraformConfigStepOne
                       name={getString('cd.configFileStepOne')}
                       data={formik.values}
+                      isTerraformPlan
                       isReadonly={readonly}
                       isEditMode={isEditMode}
                       allowableTypes={allowableTypes}
@@ -585,6 +586,7 @@ function TerraformPlanWidget(
                     {connectorView ? getNewConnectorSteps() : null}
                     <TerraformConfigStepTwo
                       name={getString('cd.configFileDetails')}
+                      isTerraformPlan
                       isReadonly={readonly}
                       allowableTypes={allowableTypes}
                       onSubmitCallBack={(data: any) => {
