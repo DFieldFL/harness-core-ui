@@ -98,7 +98,7 @@ export class CustomVariables extends Step<CustomVariablesData> {
     viewType
   }: ValidateInputSetProps<CustomVariablesData>): FormikErrors<CustomVariablesData> {
     const errors: FormikErrors<CustomVariablesData> = { variables: [] }
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     data?.variables?.forEach((variable: AllNGVariables, index: number) => {
       const currentVariableTemplate = get(template, `variables[${index}].value`, '')
 

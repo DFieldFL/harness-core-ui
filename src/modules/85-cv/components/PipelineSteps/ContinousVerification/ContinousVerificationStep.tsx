@@ -90,7 +90,7 @@ export class ContinousVerificationStep extends PipelineStep<ContinousVerificatio
   }: ValidateInputSetProps<ContinousVerificationData>): FormikErrors<ContinousVerificationData> {
     const errors: FormikErrors<ContinousVerificationData> = {}
     const { sensitivity, duration, baseline, deploymentTag } = (template?.spec?.spec as spec) || {}
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getString) {
       validateField(sensitivity as string, 'sensitivity', data, errors, getString, isRequired)
       validateField(duration as string, 'duration', data, errors, getString, isRequired)

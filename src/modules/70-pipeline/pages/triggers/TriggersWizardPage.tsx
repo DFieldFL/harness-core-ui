@@ -1092,7 +1092,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
               template: latestYamlTemplate,
               originalPipeline: orgPipeline,
               getString,
-              viewType: StepViewType.DeploymentForm
+              viewType: StepViewType.TriggerForm
             }) as any) || formErrors
           resolve(validatedErrors)
         }, 300)
@@ -1509,7 +1509,8 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             getString
           ),
           validate: async (
-            values: FlatValidWebhookFormikValuesInterface
+            values: Record<string, any>,
+            setErrors: (val: Record<string, any>) => void
           ): Promise<FormikErrors<FlatValidWebhookFormikValuesInterface>> => {
             console.log('got to validating!')
             // Validate specifically
@@ -1523,6 +1524,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             // validateCICodebase already in validatePipeline
             const val = runPipelineFormErrors
             console.log(val)
+            setErrors({ pipeline: val })
             return val
           },
           validateOnChange: true,

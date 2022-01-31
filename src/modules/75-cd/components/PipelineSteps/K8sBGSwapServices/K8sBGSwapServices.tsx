@@ -250,7 +250,7 @@ export class K8sBGSwapServices extends PipelineStep<K8sBGSwapServicesData> {
     getString,
     viewType
   }: ValidateInputSetProps<K8sBGSwapServicesData>): FormikErrors<K8sBGSwapServicesData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors = {} as any
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {

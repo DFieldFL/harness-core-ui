@@ -237,7 +237,7 @@ export class HelmRollback extends PipelineStep<StepElementConfig> {
     getString,
     viewType
   }: ValidateInputSetProps<StepElementConfig>): FormikErrors<StepElementConfig> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors = {} as any
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {

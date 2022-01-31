@@ -323,7 +323,7 @@ export class K8sCanaryDeployStep extends PipelineStep<K8sCanaryDeployData> {
     getString,
     viewType
   }: ValidateInputSetProps<K8sCanaryDeployData>): FormikErrors<K8sCanaryDeployData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors = { spec: {} } as any
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {

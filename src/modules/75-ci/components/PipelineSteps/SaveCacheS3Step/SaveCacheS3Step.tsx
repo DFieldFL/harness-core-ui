@@ -110,7 +110,7 @@ export class SaveCacheS3Step extends PipelineStep<SaveCacheS3StepData> {
     getString,
     viewType
   }: ValidateInputSetProps<SaveCacheS3StepData>): FormikErrors<SaveCacheS3StepData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getString) {
       return validateInputSet(data, template, getInputSetViewValidateFieldsConfig(isRequired), { getString }, viewType)
     }

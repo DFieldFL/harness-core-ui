@@ -371,7 +371,7 @@ export class K8sScaleStep extends PipelineStep<K8sScaleData> {
     getString,
     viewType
   }: ValidateInputSetProps<K8sScaleData>): FormikErrors<K8sScaleData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors = { spec: {} } as any
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {

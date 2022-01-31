@@ -241,7 +241,7 @@ export class TerraformRollback extends PipelineStep<TFRollbackData> {
     viewType
   }: ValidateInputSetProps<TFRollbackData>): FormikErrors<TFRollbackData> {
     const errors = {} as any
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {
       let timeoutSchema = getDurationValidationSchema({ minimum: '10s' })
       if (isRequired) {

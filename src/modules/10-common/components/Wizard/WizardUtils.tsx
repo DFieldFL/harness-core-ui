@@ -24,7 +24,10 @@ import css from './Wizard.module.scss'
 export interface FormikPropsInterface {
   initialValues: any
   validationSchema?: any
-  validate?: (values: any) => Promise<FormikErrors<any>> | FormikErrors<any>
+  validate?: (
+    values: Record<string, any>,
+    setErrors: (val: Record<string, any>) => void
+  ) => Promise<FormikErrors<any>> | FormikErrors<any>
   validateOnBlur?: boolean
   validateOnChange?: boolean
   enableReinitialize?: boolean
@@ -37,14 +40,16 @@ const renderIcon = ({
   panelIndex,
   touchedPanels,
   isEdit,
-  formikValues
+  formikValues,
+  formikErrors
 }: {
   requiredFields?: string[]
-  checkValidPanel?: (formiKValues: any) => boolean
+  checkValidPanel?: (formikValues: Record<string, any>, formikErrors: Record<string, any>) => boolean
   panelIndex: number
   touchedPanels: number[]
   isEdit: boolean
-  formikValues: { [key: string]: any }
+  formikValues: Record<string, any>
+  formikErrors: Record<string, any>
 }): JSX.Element | undefined => {
   if (!touchedPanels.includes(panelIndex) && !isEdit) return
   let iconName: IconName = 'tick-circle'
@@ -59,7 +64,7 @@ const renderIcon = ({
     }
   })
 
-  if (!showWarningIcon && checkValidPanel && !checkValidPanel(formikValues)) {
+  if (!showWarningIcon && checkValidPanel && !checkValidPanel(formikValues, formikErrors)) {
     showWarningIcon = true
   }
   if (showWarningIcon) {
@@ -80,17 +85,19 @@ export const renderTitle = ({
   isEdit,
   selectedTabIndex,
   ref,
-  formikValues
+  formikValues,
+  formikErrors
 }: {
   tabTitle?: string
   tabTitleComponent?: JSX.Element
   requiredFields: string[]
-  checkValidPanel?: (formiKValues: any) => boolean
+  checkValidPanel?: (formikValues: Record<string, any>, formikErrors: Record<string, any>) => boolean
   panelIndex: number
   touchedPanels: number[]
   isEdit: boolean
   selectedTabIndex: number
-  formikValues: { [key: string]: any }
+  formikValues: Record<string, any>
+  formikErrors: Record<string, any>
   ref: RefObject<HTMLSpanElement>
 }): JSX.Element => {
   let title: string | JSX.Element = ''
@@ -103,6 +110,7 @@ export const renderTitle = ({
     touchedPanels,
     isEdit,
     formikValues,
+    formikErrors,
     checkValidPanel
   })
   return (

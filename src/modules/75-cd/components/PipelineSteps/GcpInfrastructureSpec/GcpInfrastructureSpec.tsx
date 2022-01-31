@@ -712,7 +712,7 @@ export class GcpInfrastructureSpec extends PipelineStep<GcpInfrastructureSpecSte
     viewType
   }: ValidateInputSetProps<K8sGcpInfrastructure>): FormikErrors<K8sGcpInfrastructure> {
     const errors: Partial<K8sGcpInfrastructureTemplate> = {}
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (
       isEmpty(data.connectorRef) &&
       isRequired &&

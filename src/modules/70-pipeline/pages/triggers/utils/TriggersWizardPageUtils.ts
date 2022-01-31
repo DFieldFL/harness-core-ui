@@ -373,6 +373,13 @@ const checkValidPayloadConditions = (formikValues: FlatValidWebhookFormikValuesI
   return true
 }
 
+const checkValidPipelineInput = (formikValues: Record<string, any>, formikErrors: Record<string, any>): boolean => {
+  if (formikValues.pipeline && !isEmpty(formikErrors?.pipeline)) {
+    return false
+  }
+  return true
+}
+
 const checkValidEventConditionsForNewArtifact = (formikValues: {
   eventConditions?: AddConditionInterface[]
   versionOperator?: string
@@ -430,7 +437,8 @@ const getPanels = ({
       },
       {
         id: 'Pipeline Input',
-        tabTitle: getString('pipeline.triggers.pipelineInputLabel')
+        tabTitle: getString('pipeline.triggers.pipelineInputLabel'),
+        checkValidPanel: checkValidPipelineInput
         // require all fields for input set and have preflight check handled on backend
       }
     ]

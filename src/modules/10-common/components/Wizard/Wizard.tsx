@@ -44,7 +44,7 @@ export interface PanelInterface {
   tabTitleComponent?: JSX.Element
   iconName?: IconName
   requiredFields?: string[]
-  checkValidPanel?: (formiKValues: any) => boolean
+  checkValidPanel?: (formikValues: Record<string, any>, formikErrors: Record<string, any>) => boolean
 }
 export interface WizardMapInterface {
   wizardLabel?: string
@@ -182,7 +182,7 @@ const Wizard: React.FC<WizardProps> = ({
           {formikProps => {
             const additionalWizardFooterProps =
               typeof formikInitialProps.validate !== 'undefined'
-                ? { validate: () => formikInitialProps?.validate?.(formikProps.values) }
+                ? { validate: () => formikInitialProps?.validate?.(formikProps.values, formikProps.setErrors) }
                 : {}
 
             return (
@@ -248,6 +248,7 @@ const Wizard: React.FC<WizardProps> = ({
                             isEdit,
                             selectedTabIndex,
                             formikValues: formikProps.values,
+                            formikErrors: formikProps.errors,
                             ref: elementsRef.current[panelIndex]
                           })}
                           panel={

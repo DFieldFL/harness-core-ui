@@ -122,7 +122,7 @@ export class HarnessApproval extends PipelineStep<HarnessApprovalData> {
     viewType
   }: ValidateInputSetProps<HarnessApprovalData>): FormikErrors<HarnessApprovalData> {
     const errors: FormikErrors<HarnessApprovalData> = {}
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (
       typeof template?.spec?.approvalMessage === 'string' &&
       isRequired &&

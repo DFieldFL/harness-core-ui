@@ -600,7 +600,7 @@ export class K8sDeleteStep extends PipelineStep<K8sDeleteFormData> {
     getString,
     viewType
   }: ValidateInputSetProps<K8sDeleteFormData>): FormikErrors<K8sDeleteFormData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors: FormikErrors<K8sDeleteFormData> = {}
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {

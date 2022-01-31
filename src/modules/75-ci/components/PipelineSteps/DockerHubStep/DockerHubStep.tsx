@@ -148,7 +148,7 @@ export class DockerHubStep extends PipelineStep<DockerHubStepData> {
     getString,
     viewType
   }: ValidateInputSetProps<DockerHubStepData>): FormikErrors<DockerHubStepData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getString) {
       return validateInputSet(data, template, getInputSetViewValidateFieldsConfig(isRequired), { getString }, viewType)
     }

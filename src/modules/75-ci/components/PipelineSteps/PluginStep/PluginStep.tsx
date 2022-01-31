@@ -117,7 +117,7 @@ export class PluginStep extends PipelineStep<PluginStepData> {
     getString,
     viewType
   }: ValidateInputSetProps<PluginStepData>): FormikErrors<PluginStepData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getString) {
       return validateInputSet(data, template, getInputSetViewValidateFieldsConfig(isRequired), { getString }, viewType)
     }

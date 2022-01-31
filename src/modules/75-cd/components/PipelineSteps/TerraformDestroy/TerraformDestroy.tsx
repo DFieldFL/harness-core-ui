@@ -65,7 +65,7 @@ export class TerraformDestroy extends PipelineStep<TFDestroyData> {
   }: ValidateInputSetProps<TFDestroyData>): FormikErrors<TFDestroyData> {
     /* istanbul ignore next */
     const errors = {} as any
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     /* istanbul ignore next */
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {
       let timeoutSchema = getDurationValidationSchema({ minimum: '10s' })

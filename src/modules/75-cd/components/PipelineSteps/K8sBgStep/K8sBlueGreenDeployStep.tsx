@@ -244,7 +244,7 @@ export class K8sBlueGreenDeployStep extends PipelineStep<K8sBGDeployData> {
     getString,
     viewType
   }: ValidateInputSetProps<K8sBGDeployData>): FormikErrors<K8sBGDeployData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors = { spec: {} } as any
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {

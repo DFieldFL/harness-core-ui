@@ -131,7 +131,7 @@ export class JFrogArtifactoryStep extends PipelineStep<JFrogArtifactoryStepData>
     getString,
     viewType
   }: ValidateInputSetProps<JFrogArtifactoryStepData>): FormikErrors<JFrogArtifactoryStepData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getString) {
       return validateInputSet(data, template, getInputSetViewValidateFieldsConfig(isRequired), { getString }, viewType)
     }

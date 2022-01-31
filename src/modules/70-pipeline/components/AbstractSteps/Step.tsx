@@ -17,6 +17,7 @@ export enum StepViewType {
   InputSet = 'InputSet',
   InputVariable = 'InputVariable',
   DeploymentForm = 'DeploymentForm',
+  TriggerForm = 'TriggerForm',
   StageVariable = 'StageVariable',
   Edit = 'Edit',
   Template = 'Template'

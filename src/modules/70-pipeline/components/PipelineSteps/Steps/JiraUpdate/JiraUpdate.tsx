@@ -60,7 +60,7 @@ export class JiraUpdate extends PipelineStep<JiraUpdateData> {
     viewType
   }: ValidateInputSetProps<JiraUpdateData>): FormikErrors<JiraUpdateData> {
     const errors: FormikErrors<JiraUpdateData> = {}
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (
       typeof template?.spec?.connectorRef === 'string' &&
       isRequired &&

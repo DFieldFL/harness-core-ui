@@ -78,7 +78,7 @@ export class TerraformApply extends PipelineStep<TFFormData> {
     /* istanbul ignore next */
     const errors = {} as any
     /* istanbul ignore next */
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     /* istanbul ignore next */
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {
       let timeoutSchema = getDurationValidationSchema({ minimum: '10s' })

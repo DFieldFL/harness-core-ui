@@ -303,7 +303,7 @@ export class KubernetesServiceSpec extends Step<ServiceSpec> {
     viewType
   }: ValidateInputSetProps<K8SDirectServiceStep>): FormikErrors<K8SDirectServiceStep> {
     const errors: FormikErrors<K8SDirectServiceStep> = {}
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (
       isEmpty(data?.artifacts?.primary?.spec?.connectorRef) &&
       isRequired &&

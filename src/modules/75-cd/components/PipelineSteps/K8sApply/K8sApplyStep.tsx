@@ -448,7 +448,7 @@ export class K8sApplyStep extends PipelineStep<K8sApplyData> {
     getString,
     viewType
   }: ValidateInputSetProps<K8sApplyData>): FormikErrors<K8sApplyData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors = {} as any
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {

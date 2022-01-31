@@ -92,7 +92,7 @@ export class HttpStep extends PipelineStep<HttpStepData> {
     viewType
   }: ValidateInputSetProps<HttpStepData>): FormikErrors<HttpStepData> {
     const errors: FormikErrors<HttpStepData> = { spec: {} }
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     /* istanbul ignore else */
     if (
       getMultiTypeFromValue(template?.spec?.url) === MultiTypeInputType.RUNTIME &&

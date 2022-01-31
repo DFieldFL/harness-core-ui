@@ -237,7 +237,7 @@ export class HelmDeploy extends PipelineStep<StepElementConfig> {
   }: ValidateInputSetProps<StepElementConfig>): FormikErrors<StepElementConfig> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors = {} as any
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {
       let timeoutSchema = getDurationValidationSchema({ minimum: '10s' })
       if (isRequired) {

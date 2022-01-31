@@ -166,9 +166,17 @@ export class RunStep extends PipelineStep<RunStepData> {
     getString,
     viewType
   }: ValidateInputSetProps<RunStepData>): FormikErrors<RunStepData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getString) {
-      return validateInputSet(data, template, getInputSetViewValidateFieldsConfig(isRequired), { getString }, viewType)
+      const res = validateInputSet(
+        data,
+        template,
+        getInputSetViewValidateFieldsConfig(isRequired),
+        { getString },
+        viewType
+      )
+      console.log(res)
+      return res
     }
 
     return {}

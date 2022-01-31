@@ -118,7 +118,7 @@ export class ShellScriptStep extends PipelineStep<ShellScriptData> {
     viewType
   }: ValidateInputSetProps<ShellScriptData>): FormikErrors<ShellScriptData> {
     const errors: FormikErrors<ShellScriptData> = {}
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getMultiTypeFromValue(template?.timeout) === MultiTypeInputType.RUNTIME) {
       let timeoutSchema = getDurationValidationSchema({ minimum: '10s' })
       if (isRequired) {

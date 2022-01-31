@@ -120,7 +120,7 @@ export class ECRStep extends PipelineStep<ECRStepData> {
     getString,
     viewType
   }: ValidateInputSetProps<ECRStepData>): FormikErrors<ECRStepData> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (getString) {
       return validateInputSet(data, template, getInputSetViewValidateFieldsConfig(isRequired), { getString }, viewType)
     }

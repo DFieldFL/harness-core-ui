@@ -406,7 +406,7 @@ export class KubernetesInfraSpec extends PipelineStep<K8SDirectInfrastructureSte
     getString,
     viewType
   }: ValidateInputSetProps<K8SDirectInfrastructure>): FormikErrors<K8SDirectInfrastructure> {
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     const errors: Partial<K8SDirectInfrastructureTemplate> = {}
     if (
       isEmpty(data.connectorRef) &&

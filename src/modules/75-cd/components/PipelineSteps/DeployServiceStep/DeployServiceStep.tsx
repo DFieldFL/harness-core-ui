@@ -732,7 +732,7 @@ export class DeployServiceStep extends Step<DeployServiceData> {
     viewType
   }: ValidateInputSetProps<DeployServiceData>): FormikErrors<DeployServiceData> {
     const errors = {} as any
-    const isRequired = viewType === StepViewType.DeploymentForm
+    const isRequired = viewType === StepViewType.DeploymentForm || viewType === StepViewType.TriggerForm
     if (
       isEmpty(data?.serviceRef) &&
       isRequired &&
