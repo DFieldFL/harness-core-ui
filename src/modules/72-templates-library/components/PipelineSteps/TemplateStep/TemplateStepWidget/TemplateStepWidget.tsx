@@ -30,7 +30,7 @@ import { useStrings } from 'framework/strings'
 import type { AbstractStepFactory } from '@pipeline/components/AbstractSteps/AbstractStepFactory'
 import type { Error, StepElementConfig } from 'services/cd-ng'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
-import { useGetTemplateInputSetYaml } from 'services/template-ng'
+import { useGetTemplate, useGetTemplateInputSetYaml } from 'services/template-ng'
 import { useToaster } from '@common/exports'
 import { PageSpinner } from '@common/components'
 import { Scope } from '@common/interfaces/SecretsInterface'
@@ -54,7 +54,8 @@ export interface TemplateStepWidgetProps {
 }
 
 export interface TemplateStepValues extends TemplateStepNode {
-  inputSetTemplate?: StepElementConfig
+  inputsTemplate?: StepElementConfig
+  allValues?: StepElementConfig
 }
 
 export function TemplateStepWidget(
@@ -70,31 +71,45 @@ export function TemplateStepWidget(
   const scope = getScopeFromValue(initialValues.template.templateRef)
 
   const {
-    data: templateInputYaml,
-    error: inputSetError,
-    refetch,
-    loading
+    data: templateResponse,
+    error: templateError,
+    refetch: refetchTemplate,
+    loading: templateLoading
+  } = useGetTemplate({
+    templateIdentifier: templateRef,
+    queryParams: {
+      accountIdentifier: accountId,
+      projectIdentifier: scope === Scope.PROJECT ? projectIdentifier : undefined,
+      orgIdentifier: scope === Scope.PROJECT || scope === Scope.ORG ? orgIdentifier : undefined,
+      versionLabel: defaultTo(initialValues.template.versionLabel, '')
+    }
+  })
+
+  const {
+    data: templateInputSetYaml,
+    error: templateInputSetError,
+    refetch: refetchTemplateInputSet,
+    loading: templateInputSetLoading
   } = useGetTemplateInputSetYaml({
     templateIdentifier: templateRef,
     queryParams: {
       accountIdentifier: accountId,
       projectIdentifier: scope === Scope.PROJECT ? projectIdentifier : undefined,
       orgIdentifier: scope === Scope.PROJECT || scope === Scope.ORG ? orgIdentifier : undefined,
-      versionLabel: initialValues.template.versionLabel || ''
+      versionLabel: defaultTo(initialValues.template.versionLabel, '')
     }
   })
 
   React.useEffect(() => {
-    if (!loading) {
+    if (!templateLoading && !templateInputSetLoading && templateResponse?.data?.yaml) {
       try {
-        const templateInputs = parse(defaultTo(templateInputYaml?.data, ''))
+        const templateInputs = parse(defaultTo(templateInputSetYaml?.data, ''))
         const mergedTemplateInputs = merge({}, templateInputs, initialValues.template?.templateInputs)
         setFormValues(
           produce(initialValues as TemplateStepValues, draft => {
             setTemplateInputs(draft, mergedTemplateInputs)
-            if (templateInputs) {
-              draft.inputSetTemplate = templateInputs
-            }
+            draft.inputsTemplate = templateInputs
+            draft.allValues = parse(templateResponse?.data?.yaml || '').template.spec
           })
         )
         setTemplateInputs(initialValues, mergedTemplateInputs)
@@ -103,12 +118,12 @@ export function TemplateStepWidget(
         showError(error.message, undefined, 'template.parse.inputSet.error')
       }
     }
-  }, [templateInputYaml?.data, loading])
+  }, [templateLoading, templateResponse?.data && templateInputSetLoading && templateInputSetYaml?.data])
 
   const validateForm = (values: TemplateStepValues) => {
     const errorsResponse = validateStep({
       step: values.template?.templateInputs as StepElementConfig,
-      template: values.inputSetTemplate,
+      template: values.inputsTemplate,
       originalStep: { step: formValues?.template?.templateInputs as StepElementConfig },
       getString,
       viewType: StepViewType.DeploymentForm
@@ -118,6 +133,11 @@ export function TemplateStepWidget(
     } else {
       return errorsResponse
     }
+  }
+
+  const refetch = () => {
+    refetchTemplate()
+    refetchTemplateInputSet()
   }
 
   return (
@@ -146,34 +166,42 @@ export function TemplateStepWidget(
                 />
               </div>
               <Container className={css.inputsContainer}>
-                {loading && <PageSpinner />}
-                {!loading && inputSetError && (
+                {(templateLoading || templateInputSetLoading) && <PageSpinner />}
+                {!templateLoading && !templateInputSetLoading && (templateError || templateInputSetError) && (
                   <Container height={300}>
                     <PageError
-                      message={defaultTo((inputSetError.data as Error)?.message, inputSetError.message)}
+                      message={
+                        defaultTo((templateError?.data as Error)?.message, templateError?.message) ||
+                        defaultTo((templateInputSetError?.data as Error)?.message, templateInputSetError?.message)
+                      }
                       onClick={() => refetch()}
                     />
                   </Container>
                 )}
-                {!loading && !inputSetError && formik.values.inputSetTemplate && (
-                  <Layout.Vertical padding={{ top: 'large', bottom: 'large' }} spacing={'large'}>
-                    <Heading level={5} color={Color.BLACK}>
-                      {getString('templatesLibrary.templateInputs')}
-                    </Heading>
-                    <StepForm
-                      key={`${formik.values.template.templateRef}-${formik.values.template.versionLabel || ''}`}
-                      template={{ step: formik.values.inputSetTemplate }}
-                      values={{ step: formik.values.template?.templateInputs as StepElementConfig }}
-                      allValues={{ step: formik.values.template?.templateInputs as StepElementConfig }}
-                      readonly={readonly}
-                      viewType={StepViewType.InputSet}
-                      path={TEMPLATE_INPUT_PATH}
-                      allowableTypes={allowableTypes}
-                      onUpdate={noop}
-                      hideTitle={true}
-                    />
-                  </Layout.Vertical>
-                )}
+                {!templateLoading &&
+                  !templateInputSetLoading &&
+                  !templateError &&
+                  !templateInputSetError &&
+                  formik.values.inputsTemplate &&
+                  formik.values.allValues && (
+                    <Layout.Vertical padding={{ top: 'large', bottom: 'large' }} spacing={'large'}>
+                      <Heading level={5} color={Color.BLACK}>
+                        {getString('templatesLibrary.templateInputs')}
+                      </Heading>
+                      <StepForm
+                        key={`${formik.values.template.templateRef}-${formik.values.template.versionLabel || ''}`}
+                        template={{ step: formik.values.inputsTemplate }}
+                        values={{ step: formik.values.template?.templateInputs as StepElementConfig }}
+                        allValues={{ step: formik.values.allValues }}
+                        readonly={readonly}
+                        viewType={StepViewType.InputSet}
+                        path={TEMPLATE_INPUT_PATH}
+                        allowableTypes={allowableTypes}
+                        onUpdate={noop}
+                        hideTitle={true}
+                      />
+                    </Layout.Vertical>
+                  )}
               </Container>
             </FormikForm>
           )

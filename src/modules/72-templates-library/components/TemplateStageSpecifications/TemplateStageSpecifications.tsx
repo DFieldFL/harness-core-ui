@@ -23,7 +23,7 @@ import { getIdentifierFromValue, getScopeFromValue } from '@common/components/En
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import { NameId } from '@common/components/NameIdDescriptionTags/NameIdDescriptionTags'
 import { useToaster } from '@common/exports'
-import { useGetTemplateInputSetYaml } from 'services/template-ng'
+import { useGetTemplate, useGetTemplateInputSetYaml } from 'services/template-ng'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import { StageForm } from '@pipeline/components/PipelineInputSetForm/PipelineInputSetForm'
 import { StageErrorContext } from '@pipeline/context/StageErrorContext'
@@ -43,7 +43,8 @@ declare global {
 }
 
 export interface TemplateStageValues extends StageElementConfig {
-  inputSetTemplate?: StageElementConfig
+  inputsTemplate?: StageElementConfig
+  allValues?: StageElementConfig
 }
 
 export const TemplateStageSpecifications = (): JSX.Element => {
@@ -74,10 +75,25 @@ export const TemplateStageSpecifications = (): JSX.Element => {
   )
 
   const {
-    data: templateInputYaml,
-    error: inputSetError,
-    refetch,
-    loading
+    data: templateResponse,
+    error: templateError,
+    refetch: refetchTemplate,
+    loading: templateLoading
+  } = useGetTemplate({
+    templateIdentifier: getIdentifierFromValue(defaultTo(stage?.stage?.template?.templateRef, '')),
+    queryParams: {
+      accountIdentifier: accountId,
+      projectIdentifier: scope === Scope.PROJECT ? projectIdentifier : undefined,
+      orgIdentifier: scope === Scope.PROJECT || scope === Scope.ORG ? orgIdentifier : undefined,
+      versionLabel: defaultTo(stage?.stage?.template?.versionLabel, '')
+    }
+  })
+
+  const {
+    data: templateInputSetYaml,
+    error: templateInputSetError,
+    refetch: refetchTemplateInputSet,
+    loading: templateInputSetLoading
   } = useGetTemplateInputSetYaml({
     templateIdentifier: getIdentifierFromValue(defaultTo(stage?.stage?.template?.templateRef, '')),
     queryParams: {
@@ -89,16 +105,15 @@ export const TemplateStageSpecifications = (): JSX.Element => {
   })
 
   React.useEffect(() => {
-    if (!loading && stage?.stage) {
+    if (!templateLoading && !templateInputSetLoading && stage?.stage && templateResponse?.data?.yaml) {
       try {
-        const templateInputs = parse(defaultTo(templateInputYaml?.data, ''))
+        const templateInputs = parse(defaultTo(templateInputSetYaml?.data, ''))
         const mergedTemplateInputs = merge({}, templateInputs, stage?.stage.template?.templateInputs)
         setFormValues(
           produce(stage?.stage as TemplateStageValues, draft => {
             setTemplateInputs(draft, mergedTemplateInputs)
-            if (templateInputs) {
-              draft.inputSetTemplate = templateInputs
-            }
+            draft.inputsTemplate = templateInputs
+            draft.allValues = parse(templateResponse?.data?.yaml || '').template.spec
           })
         )
         setTemplateInputs(stage.stage, mergedTemplateInputs)
@@ -107,7 +122,7 @@ export const TemplateStageSpecifications = (): JSX.Element => {
         showError(error.message, undefined, 'template.parse.inputSet.error')
       }
     }
-  }, [templateInputYaml?.data, loading])
+  }, [templateLoading, templateResponse?.data && templateInputSetLoading && templateInputSetYaml?.data])
 
   React.useEffect(() => {
     subscribeForm({ tab: TemplateTabs.OVERVIEW, form: formikRef })
@@ -123,10 +138,10 @@ export const TemplateStageSpecifications = (): JSX.Element => {
       isEqual(values.template?.templateRef, stage?.stage?.template?.templateRef) &&
       isEqual(values.template?.versionLabel, stage?.stage?.template?.versionLabel)
     ) {
-      onChange?.(omit(values, 'inputSetTemplate'))
+      onChange?.(omit(values, 'inputsTemplate', 'allValues'))
       const errorsResponse = validateStage({
         stage: values.template?.templateInputs as StageElementConfig,
-        template: values.inputSetTemplate,
+        template: values.inputsTemplate,
         originalStage: stage?.stage?.template?.templateInputs as StageElementConfig,
         getString,
         viewType: StepViewType.DeploymentForm
@@ -135,6 +150,11 @@ export const TemplateStageSpecifications = (): JSX.Element => {
     } else {
       return {}
     }
+  }
+
+  const refetch = () => {
+    refetchTemplate()
+    refetchTemplateInputSet()
   }
 
   const { onRemoveTemplate, onOpenTemplateSelector } = useStageTemplateActions()
@@ -180,37 +200,45 @@ export const TemplateStageSpecifications = (): JSX.Element => {
                   />
                 </Card>
                 <Container className={css.inputsContainer}>
-                  {loading && <PageSpinner />}
-                  {!loading && inputSetError && (
+                  {(templateLoading || templateInputSetLoading) && <PageSpinner />}
+                  {!templateLoading && !templateInputSetLoading && (templateError || templateInputSetError) && (
                     <Container height={300}>
                       <PageError
-                        message={defaultTo((inputSetError.data as Error)?.message, inputSetError.message)}
+                        message={
+                          defaultTo((templateError?.data as Error)?.message, templateError?.message) ||
+                          defaultTo((templateInputSetError?.data as Error)?.message, templateInputSetError?.message)
+                        }
                         onClick={() => refetch()}
                       />
                     </Container>
                   )}
-                  {!loading && !inputSetError && formik.values.inputSetTemplate && (
-                    <Layout.Vertical
-                      margin={{ top: 'medium' }}
-                      padding={{ top: 'large', bottom: 'large' }}
-                      spacing={'large'}
-                    >
-                      <Heading level={5} color={Color.BLACK}>
-                        {getString('templatesLibrary.templateInputs')}
-                      </Heading>
-                      <StageForm
-                        key={`${formik.values.template?.templateRef}-${formik.values.template?.versionLabel || ''}`}
-                        template={{ stage: formik.values.inputSetTemplate }}
-                        allValues={{ stage: formik.values.template?.templateInputs as StageElementConfig }}
-                        path={TEMPLATE_INPUT_PATH}
-                        readonly={isReadonly}
-                        viewType={StepViewType.InputSet}
-                        hideTitle={true}
-                        stageClassName={css.stageCard}
-                        allowableTypes={allowableTypes}
-                      />
-                    </Layout.Vertical>
-                  )}
+                  {!templateLoading &&
+                    !templateInputSetLoading &&
+                    !templateError &&
+                    !templateInputSetError &&
+                    formik.values.inputsTemplate &&
+                    formik.values.allValues && (
+                      <Layout.Vertical
+                        margin={{ top: 'medium' }}
+                        padding={{ top: 'large', bottom: 'large' }}
+                        spacing={'large'}
+                      >
+                        <Heading level={5} color={Color.BLACK}>
+                          {getString('templatesLibrary.templateInputs')}
+                        </Heading>
+                        <StageForm
+                          key={`${formik.values.template?.templateRef}-${formik.values.template?.versionLabel || ''}`}
+                          template={{ stage: formik.values.inputsTemplate }}
+                          allValues={{ stage: formik.values.allValues }}
+                          path={TEMPLATE_INPUT_PATH}
+                          readonly={isReadonly}
+                          viewType={StepViewType.InputSet}
+                          hideTitle={true}
+                          stageClassName={css.stageCard}
+                          allowableTypes={allowableTypes}
+                        />
+                      </Layout.Vertical>
+                    )}
                 </Container>
               </FormikForm>
             )
