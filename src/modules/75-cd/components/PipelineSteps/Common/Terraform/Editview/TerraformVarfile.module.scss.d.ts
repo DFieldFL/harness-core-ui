@@ -10,6 +10,7 @@ declare const styles: {
   readonly addMarginBottom: string
   readonly addMarginTop: string
   readonly addTfVarFile: string
+  readonly artifactHeader: string
   readonly branch: string
   readonly configBtn: string
   readonly configField: string

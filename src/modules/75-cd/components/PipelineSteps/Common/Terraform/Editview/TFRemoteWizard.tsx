@@ -91,7 +91,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
           }
         }
       }
-
+  const isArtifactory = false
   const { expressions } = useVariablesExpression()
 
   const gitFetchTypes: SelectOption[] = [
@@ -225,6 +225,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
         })}
       >
         {formik => {
+          window.console.log('formik: ', formik.values)
           return (
             <Form>
               <div className={css.tfRemoteForm}>
@@ -258,15 +259,18 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                     )}
                   </div>
                 )}
-                <div className={cx(stepCss.formGroup, stepCss.md)}>
-                  <FormInput.Select
-                    items={gitFetchTypes}
-                    name="varFile.spec.store.spec.gitFetchType"
-                    label={getString('pipeline.manifestType.gitFetchTypeLabel')}
-                    placeholder={getString('pipeline.manifestType.gitFetchTypeLabel')}
-                  />
-                </div>
-                {formik.values?.varFile?.spec?.store?.spec?.gitFetchType === gitFetchTypes[0].value && (
+                {!isArtifactory && (
+                  <div className={cx(stepCss.formGroup, stepCss.md)}>
+                    <FormInput.Select
+                      items={gitFetchTypes}
+                      name="varFile.spec.store.spec.gitFetchType"
+                      label={getString('pipeline.manifestType.gitFetchTypeLabel')}
+                      placeholder={getString('pipeline.manifestType.gitFetchTypeLabel')}
+                    />
+                  </div>
+                )}
+                {(formik.values?.varFile?.spec?.store?.spec?.gitFetchType === gitFetchTypes[0].value ||
+                  !isArtifactory) && (
                   <div className={cx(stepCss.formGroup, stepCss.md)}>
                     <FormInput.MultiTextInput
                       label={getString('pipelineSteps.deploy.inputSet.branch')}
@@ -322,11 +326,21 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                     style={{ width: 370 }}
                     allowedTypes={allowableTypes.filter(item => item !== MultiTypeInputType.EXPRESSION)}
                   >
+                    {isArtifactory && (
+                      <Layout.Horizontal className={css.artifactHeader} flex={{ justifyContent: 'space-between' }}>
+                        <Text font="normal" color={Color.GREY_600}>
+                          Artifact Name
+                        </Text>
+                        <Text font="normal" color={Color.GREY_600}>
+                          File Path
+                        </Text>
+                      </Layout.Horizontal>
+                    )}
                     <FieldArray
                       name="varFile.spec.store.spec.paths"
                       render={arrayHelpers => {
                         return (
-                          <div>
+                          <>
                             {(formik.values?.varFile?.spec?.store?.spec?.paths || []).map(
                               (path: PathInterface, index: number) => (
                                 <Layout.Horizontal
@@ -362,8 +376,16 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                                           item => item !== MultiTypeInputType.RUNTIME
                                         )
                                       }}
-                                      style={{ width: 320 }}
+                                      style={{ width: isArtifactory ? 240 : 300 }}
                                     />
+                                    {isArtifactory && (
+                                      <FormInput.Select
+                                        name={`varFile.spec.store.spec.paths[${index}].fileName`}
+                                        label=""
+                                        items={[]}
+                                        style={{ width: 240 }}
+                                      />
+                                    )}
                                     <Button
                                       minimal
                                       icon="main-trash"
@@ -382,7 +404,7 @@ export const TFRemoteWizard: React.FC<StepProps<any> & TFRemoteProps> = ({
                             >
                               {getString('cd.addTFVarFileLabel')}
                             </Button>
-                          </div>
+                          </>
                         )
                       }}
                     />
