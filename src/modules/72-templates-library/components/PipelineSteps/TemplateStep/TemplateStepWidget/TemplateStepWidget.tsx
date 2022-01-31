@@ -109,7 +109,7 @@ export function TemplateStepWidget(
           produce(initialValues as TemplateStepValues, draft => {
             setTemplateInputs(draft, mergedTemplateInputs)
             draft.inputsTemplate = templateInputs
-            draft.allValues = parse(templateResponse?.data?.yaml || '').template.spec
+            draft.allValues = parse(defaultTo(templateResponse?.data?.yaml, '')).template.spec
           })
         )
         setTemplateInputs(initialValues, mergedTemplateInputs)
@@ -189,7 +189,10 @@ export function TemplateStepWidget(
                         {getString('templatesLibrary.templateInputs')}
                       </Heading>
                       <StepForm
-                        key={`${formik.values.template.templateRef}-${formik.values.template.versionLabel || ''}`}
+                        key={`${formik.values.template.templateRef}-${defaultTo(
+                          formik.values.template.versionLabel,
+                          ''
+                        )}`}
                         template={{ step: formik.values.inputsTemplate }}
                         values={{ step: formik.values.template?.templateInputs as StepElementConfig }}
                         allValues={{ step: formik.values.allValues }}

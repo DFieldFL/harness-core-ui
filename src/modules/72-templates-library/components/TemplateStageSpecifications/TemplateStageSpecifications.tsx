@@ -113,7 +113,7 @@ export const TemplateStageSpecifications = (): JSX.Element => {
           produce(stage?.stage as TemplateStageValues, draft => {
             setTemplateInputs(draft, mergedTemplateInputs)
             draft.inputsTemplate = templateInputs
-            draft.allValues = parse(templateResponse?.data?.yaml || '').template.spec
+            draft.allValues = parse(defaultTo(templateResponse?.data?.yaml, '')).template.spec
           })
         )
         setTemplateInputs(stage.stage, mergedTemplateInputs)
@@ -227,7 +227,10 @@ export const TemplateStageSpecifications = (): JSX.Element => {
                           {getString('templatesLibrary.templateInputs')}
                         </Heading>
                         <StageForm
-                          key={`${formik.values.template?.templateRef}-${formik.values.template?.versionLabel || ''}`}
+                          key={`${formik.values.template?.templateRef}-${defaultTo(
+                            formik.values.template?.versionLabel,
+                            ''
+                          )}`}
                           template={{ stage: formik.values.inputsTemplate }}
                           allValues={{ stage: formik.values.allValues }}
                           path={TEMPLATE_INPUT_PATH}
