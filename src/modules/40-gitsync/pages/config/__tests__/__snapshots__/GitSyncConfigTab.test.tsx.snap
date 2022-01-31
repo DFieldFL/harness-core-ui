@@ -116,6 +116,16 @@ exports[`Git Sync - Config tab rendering full sync entities 1`] = `
             gitsync.resyncButtonText
           </span>
         </button>
+        <button
+          class="bp3-button Button--button StyledProps--font StyledProps--main Button--with-current-color Button--variation Button--variation-secondary"
+          type="button"
+        >
+          <span
+            class="bp3-button-text"
+          >
+            gitsync.editConfigButtonText
+          </span>
+        </button>
       </div>
     </div>
   </div>

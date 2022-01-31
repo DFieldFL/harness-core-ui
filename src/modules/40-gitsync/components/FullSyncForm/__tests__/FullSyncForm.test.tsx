@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils'
 import { noop } from 'lodash-es'
 import { GitSyncTestWrapper } from '@common/utils/gitSyncTestUtils'
 import FullSyncForm from '../FullSyncForm'
+import mockFullSyncConfig from './mockData/mockConfig.json'
 
 const pathParams = { accountId: 'dummy', orgIdentifier: 'default', projectIdentifier: 'dummyProject' }
 
@@ -19,7 +20,10 @@ const fetchBranches = jest.fn(() => Promise.resolve([]))
 jest.mock('services/cd-ng', () => ({
   createGitFullSyncConfigPromise: jest.fn().mockImplementation(() => noop()),
   triggerFullSyncPromise: jest.fn().mockImplementation(() => noop()),
-  getListOfBranchesWithStatusPromise: jest.fn().mockImplementation(() => fetchBranches())
+  getListOfBranchesWithStatusPromise: jest.fn().mockImplementation(() => fetchBranches()),
+  useGetGitFullSyncConfig: jest.fn().mockImplementation(() => {
+    return { loading: false, data: mockFullSyncConfig }
+  })
 }))
 
 describe('Test GitFullSyncForm', () => {
