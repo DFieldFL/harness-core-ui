@@ -51,3 +51,4 @@ syncSucessToaster: Sync started for existing Harness entities
 resyncSucessToaster: Resync triggered
 resyncFailToaster: Resync trigger failed
 resyncButtonText: Resync Failed Entities
+editConfigButtonText: Edit config

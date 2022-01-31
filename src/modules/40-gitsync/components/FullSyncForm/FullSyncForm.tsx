@@ -37,7 +37,8 @@ import {
   ResponseGitBranchListDTO,
   GitFullSyncConfigRequestDTO,
   createGitFullSyncConfigPromise,
-  triggerFullSyncPromise
+  triggerFullSyncPromise,
+  useGetGitFullSyncConfig
 } from 'services/cd-ng'
 import { useStrings } from 'framework/strings'
 import { useGitSyncStore } from 'framework/GitRepoStore/GitSyncStoreContext'
@@ -59,7 +60,7 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
   const { isNewUser = true, orgIdentifier, projectIdentifier, onClose, onSuccess } = props
   const config = {} as GitFullSyncConfigRequestDTO
   const { accountId } = useParams<AccountPathProps>()
-  const { showSuccess } = useToaster()
+  const { showSuccess, showError } = useToaster()
   const { getString } = useStrings()
 
   const { gitSyncRepos, loadingRepos } = useGitSyncStore()
@@ -73,6 +74,17 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
   const [createPR, setCreatePR] = useState<boolean>(false) //used for rendering PR title
   const [disableCreatePR, setDisableCreatePR] = useState<boolean>()
   const [disableBranchSelection, setDisableBranchSelection] = useState<boolean>(true)
+
+  const { data: configResponse, loading: loadingConfig } = useGetGitFullSyncConfig({
+    queryParams: { accountIdentifier: accountId, orgIdentifier, projectIdentifier }
+  })
+
+  useEffect(() => {
+    if (!loadingConfig && configResponse?.status !== 'SUCCESS') {
+      showError((configResponse as Error)?.message)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadingConfig])
 
   const defaultInitialFormData: GitFullSyncConfigRequestDTO = {
     baseBranch: config?.baseBranch,
@@ -278,10 +290,9 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
   ])
 
   return (
-    <Container height={'inherit'} className={css.modalContainer}>
-      {loadingRepos ? (
-        <PageSpinner />
-      ) : (
+    <>
+      {(isNewUser && loadingConfig) || loadingRepos ? <PageSpinner /> : undefined}
+      <Container height={'inherit'} className={css.modalContainer}>
         <>
           <Text font={{ variation: FontVariation.H3 }} padding={{ bottom: 'xlarge' }}>
             {getString('gitsync.fullSyncTitle')}
@@ -409,8 +420,8 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
             </Formik>
           </Container>
         </>
-      )}
-    </Container>
+      </Container>
+    </>
   )
 }
 

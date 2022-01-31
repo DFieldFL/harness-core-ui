@@ -1964,6 +1964,7 @@ export interface StringsMap {
   'gitsync.deafaultSyncTitle': string
   'gitsync.defaultBranch': string
   'gitsync.defaultFolder': string
+  'gitsync.editConfigButtonText': string
   'gitsync.enterBranchToSync': string
   'gitsync.entitiesByRepositories': string
   'gitsync.errorFixed': string
