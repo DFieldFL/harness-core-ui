@@ -73,12 +73,11 @@ const config = {
   target: 'web',
   mode: DEV ? 'development' : 'production',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: DEV ? '/' : '',
-    filename: DEV ? 'static/[name].js' : 'static/[name].[contenthash:6].js',
-    chunkFilename: DEV ? 'static/[name].[id].js' : 'static/[name].[id].[contenthash:6].js',
+    path: path.resolve(__dirname, DEV ? 'dist' : 'dist/static'),
+    filename: DEV ? '[name].js' : '[name].[contenthash:6].js',
+    chunkFilename: DEV ? '[name].[id].js' : '[name].[id].[contenthash:6].js',
     pathinfo: false,
-    assetModuleFilename: 'static/images/[hash:6][ext][query]'
+    assetModuleFilename: 'images/[hash:6][ext][query]'
   },
   devtool: DEV ? 'cheap-module-source-map' : 'hidden-source-map',
   devServer: DEV
@@ -223,15 +222,16 @@ const config = {
 
 const commonPlugins = [
   new MiniCssExtractPlugin({
-    filename: DEV ? 'static/[name].css' : 'static/[name].[contenthash:6].css',
-    chunkFilename: DEV ? 'static/[name].[id].css' : 'static/[name].[id].[contenthash:6].css'
+    filename: DEV ? '[name].css' : '[name].[contenthash:6].css',
+    chunkFilename: DEV ? '[name].[id].css' : '[name].[id].[contenthash:6].css'
   }),
   new HTMLWebpackPlugin({
     template: 'src/index.html',
-    filename: 'index.html',
+    filename: DEV ? 'index.html' : '../index.html',
     minify: false,
     templateParameters: {
-      __DEV__: DEV
+      __DEV__: DEV,
+      __NON_CDN_BASE_PATH__: DEV ? '/' : '/static/'
     }
   }),
   new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
@@ -278,7 +278,7 @@ const prodOnlyPlugins = [
       gitCommit: process.env.GIT_COMMIT,
       gitBranch: process.env.GIT_BRANCH
     },
-    filename: 'static/version.json'
+    filename: 'version.json'
   }),
   new CircularDependencyPlugin({
     exclude: /node_modules/,
@@ -286,7 +286,7 @@ const prodOnlyPlugins = [
   }),
   new HTMLWebpackPlugin({
     template: 'src/versions.html',
-    filename: 'static/versions.html',
+    filename: 'versions.html',
     minify: false,
     inject: false
   })

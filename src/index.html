@@ -76,7 +76,9 @@
       }
     </script>
     <script>
-      window.resourceBasePath = window.HARNESS_ENABLE_CDN ? '//static.harness.io/ng-static/' : ''
+      window.resourceBasePath = window.HARNESS_ENABLE_CDN
+        ? '//static.harness.io/ng-static/'
+        : '<%= __NON_CDN_BASE_PATH__ %>'
     </script>
   </head>
   <body>
