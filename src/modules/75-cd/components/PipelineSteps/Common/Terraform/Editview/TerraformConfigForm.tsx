@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {
   Button,
   Color,
@@ -43,6 +43,7 @@ interface TerraformConfigStepOneProps {
   isReadonly: boolean
   allowableTypes: MultiTypeInputType[]
   isEditMode: boolean
+  selectedConnector: string
   setConnectorView: (val: boolean) => void
   setSelectedConnector: (val: ConnectorTypes) => void
   isTerraformPlan?: boolean
@@ -55,12 +56,12 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
   nextStep,
   isEditMode,
   setConnectorView,
+  selectedConnector,
   setSelectedConnector,
   isTerraformPlan = false
 }) => {
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
-  const [selectedType, setSelectedType] = useState('')
   const { accountId, projectIdentifier, orgIdentifier } = useParams<{
     projectIdentifier: string
     orgIdentifier: string
@@ -71,12 +72,11 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
     const selectedStore = isTerraformPlan
       ? data?.spec?.configuration?.configFiles?.store?.type
       : data?.spec?.configuration?.spec?.configFiles?.store?.type
-    setSelectedType(selectedStore)
     setSelectedConnector(selectedStore)
   }, [isEditMode])
 
   const newConnectorLabel = `${getString('newLabel')} ${
-    !!selectedType && getString(ConnectorLabelMap[selectedType as ConnectorTypes])
+    !!selectedConnector && getString(ConnectorLabelMap[selectedConnector as ConnectorTypes])
   } ${getString('connector')}`
   const connectorError = getString('pipelineSteps.build.create.connectorRequiredError')
   const validationSchema = isTerraformPlan
@@ -120,10 +120,9 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
           <div key={item} className={css.squareCardContainer}>
             <Card
               className={css.connectorIcon}
-              selected={item === selectedType}
+              selected={item === selectedConnector}
               data-testid={`varStore-${item}`}
               onClick={() => {
-                setSelectedType(item)
                 setSelectedConnector(item as ConnectorTypes)
               }}
             >
@@ -139,7 +138,6 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
         enableReinitialize={true}
         onSubmit={() => {
           /* istanbul ignore next */
-          setSelectedType('')
         }}
         initialValues={data}
         validationSchema={validationSchema}
@@ -151,11 +149,11 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
           return (
             <Form className={css.formComponent}>
               <div className={css.formContainerStepOne}>
-                {selectedType && (
+                {selectedConnector && (
                   <Layout.Horizontal className={css.horizontalFlex} spacing={'medium'}>
                     <FormMultiTypeConnectorField
-                      label={`${selectedType} ${getString('connector')}`}
-                      type={ConnectorMap[selectedType]}
+                      label={`${selectedConnector} ${getString('connector')}`}
+                      type={ConnectorMap[selectedConnector]}
                       width={400}
                       name={
                         isTerraformPlan
@@ -180,7 +178,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
                       iconProps={{ size: 12 }}
                       onClick={() => {
                         setConnectorView(true)
-                        nextStep?.({ ...data, selectedType })
+                        nextStep?.({ ...data, selectedType: selectedConnector })
                       }}
                     />
                   </Layout.Horizontal>
@@ -193,7 +191,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
                   type="submit"
                   text={getString('continue')}
                   rightIcon="chevron-right"
-                  onClick={() => nextStep?.({ ...formik.values, selectedType })}
+                  onClick={() => nextStep?.({ ...formik.values, selectedType: selectedConnector })}
                   disabled={!disabled}
                 />
               </Layout.Horizontal>

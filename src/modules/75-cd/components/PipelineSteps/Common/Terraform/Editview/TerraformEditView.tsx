@@ -178,7 +178,6 @@ export default function TerraformEditView(
 
   const getNewConnectorSteps = () => {
     const connectorType = ConnectorMap[selectedConnector]
-    window.console.log('ConnectorMap[selectedConnector]', connectorType, selectedConnector)
     const buildPayload = getBuildPayload(ConnectorMap[selectedConnector])
     return (
       <StepWizard title={getString('connectors.createNewConnector')}>
@@ -569,6 +568,7 @@ export default function TerraformEditView(
                             isEditMode={isEditMode}
                             allowableTypes={allowableTypes}
                             setConnectorView={setConnectorView}
+                            selectedConnector={selectedConnector}
                             setSelectedConnector={setSelectedConnector}
                           />
                           {connectorView ? getNewConnectorSteps() : null}

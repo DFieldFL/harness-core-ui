@@ -27,6 +27,7 @@ const renderStepOneComponent = (data: any): void => {
         allowableTypes={allowableTypes}
         setConnectorView={jest.fn()}
         setSelectedConnector={jest.fn()}
+        selectedConnector={'Git'}
       />
     </TestWrapper>
   )

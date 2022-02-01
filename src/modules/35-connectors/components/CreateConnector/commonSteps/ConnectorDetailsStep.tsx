@@ -149,9 +149,7 @@ const ConnectorDetailsStep: React.FC<StepProps<ConnectorConfigDTO> & ConnectorDe
             identifier: IdentifierSchema()
           })}
           initialValues={{
-            ...(getInitialValues() as DetailsForm),
-            ...prevStepData,
-            ...props.formData
+            ...(getInitialValues() as DetailsForm)
           }}
         >
           {formikProps => {

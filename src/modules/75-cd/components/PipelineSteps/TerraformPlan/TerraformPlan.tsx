@@ -581,6 +581,7 @@ function TerraformPlanWidget(
                       isEditMode={isEditMode}
                       allowableTypes={allowableTypes}
                       setConnectorView={setConnectorView}
+                      selectedConnector={selectedConnector}
                       setSelectedConnector={setSelectedConnector}
                     />
                     {connectorView ? getNewConnectorSteps() : null}
