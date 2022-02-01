@@ -231,7 +231,7 @@ const commonPlugins = [
     minify: false,
     templateParameters: {
       __DEV__: DEV,
-      __NON_CDN_BASE_PATH__: DEV ? '/' : '/static/'
+      __NON_CDN_BASE_PATH__: DEV ? '/' : 'static/'
     }
   }),
   new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
