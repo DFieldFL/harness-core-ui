@@ -303,9 +303,7 @@ const CVSLOsListingPage: React.FC<CVSLOsListingPageProps> = ({ monitoredService 
             <NoDataCard
               image={slosEmptyState}
               messageTitle={getString('cv.slos.noData')}
-              message={
-                'A service level objective (SLO) is the sum of a collection of performance metrics (Service Level Indicator or SLI) such as uptime, response time, and error rate that are used to measure the services performance. At least one SLO is required to monitor a service.'
-              }
+              message={getString('cv.slos.noSLOsStateMessage')}
               button={getAddSLOButton()}
             />
           )}

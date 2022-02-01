@@ -49,7 +49,7 @@ describe('Create SLO', () => {
     cy.contains('p', 'SLOs').click()
     cy.contains('p', 'No SLOs Present.').should('be.visible')
 
-    cy.contains('span', 'New SLO').click()
+    cy.contains('span', 'Create SLO').click()
 
     // Filling details Under Name tab for SLO creation
     cy.fillName('SLO-1')
@@ -183,7 +183,7 @@ describe('Create SLO', () => {
     cy.intercept('POST', getSliGraph, errorResponse)
 
     cy.contains('p', 'SLOs').click()
-    cy.contains('span', 'New SLO').click()
+    cy.contains('span', 'Create SLO').click()
 
     cy.contains('h2', 'Create SLO').should('be.visible')
 
@@ -373,7 +373,7 @@ describe('Create SLO', () => {
 
     cy.contains('h2', 'SLO-1').should('be.visible')
 
-    cy.contains('span', 'New SLO').click()
+    cy.contains('span', 'Create SLO').click()
 
     cy.fillName('SLO-1')
     cy.get('input[name="User Journey"]').click()
