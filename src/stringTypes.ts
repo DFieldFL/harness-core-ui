@@ -2804,7 +2804,9 @@ export interface StringsMap {
   'pipeline.triggers.artifactTriggerConfigPanel.selectAManifest': string
   'pipeline.triggers.artifactTriggerConfigPanel.selectAnArtifact': string
   'pipeline.triggers.cannotParseInputValues': string
+  'pipeline.triggers.cannotParseInputYaml': string
   'pipeline.triggers.cannotParseTriggersData': string
+  'pipeline.triggers.cannotParseTriggersYaml': string
   'pipeline.triggers.conditionsPanel.artifactBuild': string
   'pipeline.triggers.conditionsPanel.attribute': string
   'pipeline.triggers.conditionsPanel.branchName': string

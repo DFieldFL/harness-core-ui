@@ -24,7 +24,13 @@ import css from './Wizard.module.scss'
 export interface FormikPropsInterface {
   initialValues: any
   validationSchema?: any
-  validate?: (formikProps: FormikProps<any>) => Promise<FormikErrors<any>> | FormikErrors<any> | any
+  validate?: ({
+    formikProps,
+    latestYaml
+  }: {
+    formikProps: FormikProps<any>
+    latestYaml?: string
+  }) => Promise<FormikErrors<any>> | FormikErrors<any> | any
   validateOnBlur?: boolean
   validateOnChange?: boolean
   enableReinitialize?: boolean

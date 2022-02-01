@@ -37,7 +37,7 @@ interface WizardFooterProps {
   touchedPanels: number[]
   tabsMap: string[]
   loadingYamlView?: boolean
-  validate?: () => Promise<FormikErrors<any>> | FormikErrors<any> | undefined
+  validate?: (arg?: { latestYaml?: string }) => Promise<FormikErrors<any>> | FormikErrors<any>
   setSubmittedForm: Dispatch<SetStateAction<boolean>>
 }
 
@@ -106,7 +106,7 @@ export const WizardFooter = ({
           type="submit"
           disabled={disableSubmit}
           onClick={async () => {
-            setSubmittedForm(true) // can possibly refactor to use formiksProps submitCount
+            setSubmittedForm(true)
 
             if (
               elementsRef.current.some(
@@ -117,8 +117,9 @@ export const WizardFooter = ({
               setValidateOnChange(true)
               showError(getString('addressErrorFields'))
             }
-
-            if (isEmpty(await validate?.())) {
+            const validateErrors = await validate?.()
+            if (isEmpty(validateErrors)) {
+              // submit form if given validate is empty
               formikProps.submitForm()
             }
           }}
@@ -149,7 +150,7 @@ export const WizardFooter = ({
                 return
               }
 
-              if (!isEmpty(await validate?.())) {
+              if (!isEmpty(await validate?.({ latestYaml }))) {
                 return
               } else {
                 formikProps.setSubmitting(true)

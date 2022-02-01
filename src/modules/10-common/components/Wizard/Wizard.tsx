@@ -149,9 +149,6 @@ const Wizard: React.FC<WizardProps> = ({
   }
   const history = useHistory()
   const { showError, clear } = useToaster()
-  // use passed validate instead of validateOnChange
-  // or let's try to use just
-  // const validateMethod = (!formikInitialProps?.validate && validateOnChange) || {}
   const getIsDirtyForm = (parsedYaml: any): boolean =>
     !isEqual(convertFormikValuesToYaml?.(formikInitialProps?.initialValues), parsedYaml)
 
@@ -187,7 +184,10 @@ const Wizard: React.FC<WizardProps> = ({
           {formikProps => {
             const additionalWizardFooterProps =
               typeof formikInitialProps.validate !== 'undefined'
-                ? { validate: () => formikInitialProps?.validate?.(formikProps) }
+                ? {
+                    validate: async (arg?: { latestYaml?: string }) =>
+                      await formikInitialProps?.validate?.({ formikProps, latestYaml: arg?.latestYaml })
+                  }
                 : {}
 
             return (

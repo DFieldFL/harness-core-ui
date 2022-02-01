@@ -48,7 +48,6 @@ import { ResourceType } from '@rbac/interfaces/ResourceType'
 import type { PipelineType } from '@common/interfaces/RouteInterfaces'
 import { Scope } from '@common/interfaces/SecretsInterface'
 import { clearRuntimeInput, validatePipeline } from '@pipeline/components/PipelineStudio/StepUtil'
-import type { KVPair } from '@pipeline/components/PipelineVariablesContext/PipelineVariablesContext'
 import { ErrorsStrip } from '@pipeline/components/ErrorsStrip/ErrorsStrip'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import {
@@ -1105,7 +1104,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       | FlatValidScheduleFormikValuesInterface
     >
   >({})
-  // const [expressionFormState, setExpressionFormState] = useState<KVPair>({})
+
   const yamlTemplate = useMemo(() => {
     return parse(defaultTo(template?.data?.inputSetTemplateYaml, ''))?.pipeline
   }, [template?.data?.inputSetTemplateYaml])
@@ -1139,16 +1138,8 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
     }
     if (latestPipeline?.pipeline && latestYamlTemplate && orgPipeline) {
       errors = await validateErrors()
-      const expressionErrors: KVPair = {}
-      // !TODO
-      // // vaidate replacedExpressions
-      // if (template?.data?.replacedExpressions?.length) {
-      //   template.data.replacedExpressions.forEach((value: string) => {
-      //     const currValue = defaultTo(expressionFormState[value], '')
-      //     if (currValue.trim() === '') expressionErrors[value] = getString('pipeline.expressionRequired')
-      //   })
-      // }
-      setFormErrors({ ...errors, ...expressionErrors })
+
+      setFormErrors(errors)
     }
     return errors
   }
@@ -1560,15 +1551,45 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
 
   const renderErrorsStrip = (): JSX.Element => <ErrorsStrip formErrors={formErrors} />
 
-  const validateTriggerPipeline = async (
+  const getTriggerPipelineValues = (triggerYaml: string) => {
+    try {
+      const triggerResponseJson = parse(triggerYaml)
+      try {
+        const triggerPipelineYaml = parse(triggerResponseJson?.trigger.inputYaml || '')
+        return triggerPipelineYaml
+      } catch (e) {
+        setErrorToasterMessage(getString('pipeline.triggers.cannotParseInputYaml'))
+        // backend api to provide additional details on submit
+      }
+    } catch (e) {
+      setErrorToasterMessage(getString('pipeline.triggers.cannotParseTriggersYaml'))
+      // backend api to provide additional details on submit
+    }
+  }
+
+  const validateTriggerPipeline = async ({
+    formikProps,
+    latestYaml: triggerYaml
+  }: {
     formikProps: FormikProps<any>
-  ): Promise<FormikErrors<FlatValidWebhookFormikValuesInterface>> => {
+    latestYaml?: any // validate from YAML view
+  }): Promise<FormikErrors<FlatValidWebhookFormikValuesInterface>> => {
     const { values, setErrors } = formikProps
+    let latestPipelineFromYamlView
     const latestPipeline = {
       ...currentPipeline,
       pipeline: values.pipeline as PipelineInfoConfig
     }
-    const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
+
+    if (triggerYaml) {
+      latestPipelineFromYamlView = getTriggerPipelineValues(triggerYaml)
+    }
+
+    const runPipelineFormErrors = await getFormErrors(
+      latestPipelineFromYamlView || latestPipeline,
+      yamlTemplate,
+      values.pipeline
+    )
     // https://github.com/formium/formik/issues/1392
     const errors: any = await { ...runPipelineFormErrors }
     const ciCodebaseErrors = validateCICodebase(values)

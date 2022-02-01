@@ -450,6 +450,8 @@ triggers:
   copyAsUrl: 'Copy as Webhook URL'
   copyAsCurl: 'Copy as cURL Command'
   cannotParseTriggersData: 'Cannot parse trigger data'
+  cannotParseTriggersYaml: 'Cannot parse trigger YAML'
+  cannotParseInputYaml: 'Cannot parse inputYaml in trigger YAML'
   cannotParseInputValues: 'Cannot parse pipeline input values'
   validation:
     triggerName: 'Trigger Name is required.'
