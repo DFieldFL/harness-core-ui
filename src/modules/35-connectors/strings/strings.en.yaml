@@ -713,18 +713,16 @@ ceGcp:
     description: 'Cloud Billing export to BigQuery enables you to export detailed Google Cloud billing data (such as usage and cost estimate data) automatically throughout the day to a BigQuery dataset that you specify.'
     followInstruction: 'Please follow the instructions to provide create a Billing export for the specified Project Id'
     launchTemplate: 'Launch GCP console'
-    datasetIdLabel: 'Dataset Id'
-    tableIdLabel: 'Table Id'
-    tooltipDescription: GCP DataSet Id where billing table is available
-    tableIdTooltipDesc: GCP Table Id where billing export is available
+    datasetIdLabel: 'Dataset Name'
+    tableIdLabel: 'Table Name'
   billingExtention:
-    heading: 'How to create GCP Billing Export and find DataSet Id?'
+    heading: 'How to create GCP Billing Export and find DataSet Name?'
     prerequisite: 'Pre-Requisite:A project where the Cloud Billing data will be stored with billing enabled on the project.'
     step1: 'Create a BigQuery dataset in which to store the data(Recommended) / Or use Existing DataSet (Harness Docs)'
     step2: '{{ $.connectors.ceGcp.grantPermission.step1}}'
     step3:
       p1: 'Click on Create Dataset, enter a '
-      p2: 'DatasetID'
+      p2: '{{ $.connectors.ceGcp.billingExport.datasetIdLabel }}'
       p3: ' and click on create.'
     step4: 'Enable Cloud Billing export of cost data and pricing data to be written into the dataset.'
     step5: 'Open the console -> Navigation menu (menu), and then select Billing.'

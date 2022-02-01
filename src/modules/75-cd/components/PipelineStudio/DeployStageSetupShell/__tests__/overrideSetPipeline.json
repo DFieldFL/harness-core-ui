@@ -1,0 +1,263 @@
+{
+  "state": {
+    "pipeline": {
+      "name": "pip",
+      "identifier": "pip",
+      "stages": [
+        {
+          "stage": {
+            "name": "Stage 1",
+            "identifier": "st1",
+            "description": "",
+            "type": "Deployment",
+            "spec": {
+              "serviceConfig": {
+                "service": {
+                  "identifier": "selected_service",
+                  "name": "Service 1",
+                  "description": ""
+                }
+              }
+            }
+          }
+        },
+        {
+          "stage": {
+            "name": "Stage 2",
+            "identifier": "s2",
+            "description": "",
+            "type": "Deployment",
+            "spec": {
+              "serviceConfig": {
+                "serviceRef": "other_service"
+              }
+            }
+          }
+        },
+        {
+          "stage": {
+            "name": "Stage 3",
+            "identifier": "s3",
+            "description": "",
+            "type": "Deployment",
+            "spec": {}
+          }
+        }
+      ]
+    },
+    "originalPipeline": {
+      "name": "pip",
+      "identifier": "pip",
+      "stages": [
+        {
+          "stage": {
+            "name": "st1",
+            "identifier": "st1",
+            "description": "",
+            "type": "Deployment",
+            "spec": {
+              "serviceConfig": {
+                "service": {
+                  "identifier": "service",
+                  "name": "service",
+                  "description": ""
+                },
+                "serviceDefinition": {
+                  "type": "Kubernetes",
+                  "spec": {
+                    "artifacts": {
+                      "sidecars": [
+                        {
+                          "sidecar": {
+                            "type": "Dockerhub",
+                            "identifier": "sc",
+                            "spec": { "connectorRef": "kkkk", "imagePath": "pa" }
+                          }
+                        }
+                      ]
+                    },
+                    "manifests": [
+                      {
+                        "manifest": {
+                          "identifier": "adsacsd",
+                          "type": "K8sManifest",
+                          "spec": {
+                            "store": {
+                              "type": "Git",
+                              "spec": {
+                                "connectorRef": "k8",
+                                "gitFetchType": "Branch",
+                                "branch": "acf",
+                                "paths": ["<+input>"]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "artifactOverrideSets": [
+                      {
+                        "overrideSet": {
+                          "identifier": "Set1",
+                          "artifacts": {
+                            "primary": {
+                              "type": "Dockerhub",
+                              "spec": { "connectorRef": "newok", "imagePath": "primimage" }
+                            },
+                            "sidecars": [
+                              {
+                                "sidecar": {
+                                  "type": "Dockerhub",
+                                  "identifier": "side1",
+                                  "spec": { "connectorRef": "kkkk", "imagePath": "sideima" }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "overrideSet": {
+                          "identifier": "Set2",
+                          "artifacts": {
+                            "primary": { "type": "Dockerhub", "spec": { "connectorRef": "ok", "imagePath": "prim2" } },
+                            "sidecars": [
+                              {
+                                "sidecar": {
+                                  "type": "Dockerhub",
+                                  "identifier": "side2",
+                                  "spec": { "connectorRef": "New_Artifact1", "imagePath": "side2im" }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "manifestOverrideSets": [
+                      {
+                        "overrideSet": {
+                          "identifier": "manor",
+                          "manifests": [
+                            {
+                              "manifest": {
+                                "identifier": "man2",
+                                "type": "K8sManifest",
+                                "spec": {
+                                  "store": {
+                                    "type": "Git",
+                                    "spec": {
+                                      "connectorRef": "k8",
+                                      "gitFetchType": "Branch",
+                                      "branch": "br",
+                                      "paths": ["none"]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "tags": null
+              }
+            }
+          }
+        },
+        {
+          "stage": {
+            "name": "st2",
+            "identifier": "st2",
+            "description": "",
+            "type": "Deployment",
+            "spec": {
+              "serviceConfig": {
+                "service": {
+                  "identifier": null,
+                  "name": null,
+                  "description": null
+                },
+                "serviceDefinition": {
+                  "type": "Kubernetes",
+                  "spec": {
+                    "artifacts": { "sidecars": [] },
+                    "manifests": [],
+                    "artifactOverrideSets": [],
+                    "manifestOverrideSets": []
+                  }
+                },
+                "useFromStage": { "stage": "st1" },
+                "stageOverrides": {
+                  "artifacts": { "sidecars": [] },
+                  "manifests": [],
+                  "useArtifactOverrideSets": [""],
+                  "useManifestOverrideSets": []
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "pipelineIdentifier": "-1",
+    "pipelineView": {
+      "isSplitViewOpen": true,
+      "isDrawerOpened": false,
+      "splitViewData": { "type": "StageView" },
+      "drawerData": { "type": "AddCommand" }
+    },
+    "selectionState": { "selectedStageId": "s3" },
+    "isLoading": false,
+    "isBEPipelineUpdated": false,
+    "isDBInitialized": true,
+    "isUpdated": true,
+    "isInitialized": true,
+    "error": ""
+  },
+  "stepsFactory": { "invocationMap": {}, "stepBank": {}, "stepIconMap": {}, "type": "pipeline-factory" },
+  "stagesMap": {
+    "Deployment": {
+      "name": "Deploy",
+      "type": "Deployment",
+      "icon": "pipeline-deploy",
+      "iconColor": "var(--pipeline-deploy-stage-color)",
+      "isApproval": false,
+      "openExecutionStrategy": true
+    },
+    "ci": {
+      "name": "Deploy",
+      "type": "ci",
+      "icon": "pipeline-build",
+      "iconColor": "var(--pipeline-build-stage-color)",
+      "isApproval": false,
+      "openExecutionStrategy": false
+    },
+    "Pipeline": {
+      "name": "Deploy",
+      "type": "Pipeline",
+      "icon": "pipeline",
+      "iconColor": "var(--pipeline-blue-color)",
+      "isApproval": false,
+      "openExecutionStrategy": false
+    },
+    "Custom": {
+      "name": "Deploy",
+      "type": "Custom",
+      "icon": "pipeline-custom",
+      "iconColor": "var(--pipeline-custom-stage-color)",
+      "isApproval": false,
+      "openExecutionStrategy": false
+    },
+    "Approval": {
+      "name": "Deploy",
+      "type": "Approval",
+      "icon": "pipeline-approval",
+      "iconColor": "var(--pipeline-approval-stage-color)",
+      "isApproval": false,
+      "openExecutionStrategy": false
+    }
+  }
+}

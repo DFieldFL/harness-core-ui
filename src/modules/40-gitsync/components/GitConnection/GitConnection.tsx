@@ -9,16 +9,19 @@ import React, { useState } from 'react'
 import cx from 'classnames'
 import { useParams } from 'react-router-dom'
 import { Radio } from '@blueprintjs/core'
-import { Button, Card, Color, Container, Layout, StepProps, Text } from '@wings-software/uicore'
-import { pick } from 'lodash-es'
-import { useStrings } from 'framework/strings'
 import {
-  GitSyncConfig,
-  isSaasGitPromise,
-  ResponseSaasGitDTO,
-  usePostGitSync,
-  usePostGitSyncSetting
-} from 'services/cd-ng'
+  Button,
+  Card,
+  Color,
+  Container,
+  getErrorInfoFromErrorObject,
+  Layout,
+  StepProps,
+  Text
+} from '@wings-software/uicore'
+import { defaultTo, pick } from 'lodash-es'
+import { useStrings } from 'framework/strings'
+import { GitSyncConfig, ResponseSaasGitDTO, useIsSaasGit, usePostGitSync, usePostGitSyncSetting } from 'services/cd-ng'
 import { useToaster } from '@common/exports'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import DelegatesGit from '@gitsync/icons/DelegatesGit.svg'
@@ -43,7 +46,7 @@ const GitConnection: React.FC<StepProps<GitConnectionStepProps> & GitConnectionP
   const { accountId, projectIdentifier, orgIdentifier } = useParams<ProjectPathProps>()
   const { prevStepData, onSuccess, isLastStep } = props
   const [isSaaS, setIsSaaS] = useState<boolean | undefined>()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [agent, setAgent] = useState<Agent | undefined>()
   const { getString } = useStrings()
   const { showError, showSuccess } = useToaster()
@@ -53,29 +56,38 @@ const GitConnection: React.FC<StepProps<GitConnectionStepProps> & GitConnectionP
   })
 
   const { mutate: registerAgent } = usePostGitSyncSetting({
+    queryParams: { accountIdentifier: accountId },
     requestOptions: { headers: { accept: 'application/json' } }
   })
 
+  const { mutate: isSaasGit, loading: checkingIsSaasGit } = useIsSaasGit({
+    queryParams: {},
+    requestOptions: {
+      headers: { 'content-type': 'application/json' }
+    }
+  })
+
   React.useEffect(() => {
-    setLoading(true)
-    isSaasGitPromise({
+    isSaasGit(undefined, {
       queryParams: {
-        repoURL: encodeURIComponent(prevStepData?.repo || '')
-      },
-      body: undefined
+        repoURL: encodeURIComponent(defaultTo(prevStepData?.repo, ''))
+      }
     })
       .then((res: ResponseSaasGitDTO) => {
-        const { saasGit } = res?.data || {}
+        const { saasGit } = defaultTo(res?.data, {})
         if (typeof saasGit !== 'undefined') {
           setAgent(saasGit ? Agent.Manager : Agent.Delegate)
           setIsSaaS(saasGit)
         }
       })
       .catch(e => {
-        showError(e.data?.message || e.message)
+        showError(getErrorInfoFromErrorObject(e))
       })
-    setLoading(false)
   }, [prevStepData?.repo])
+
+  React.useEffect(() => {
+    setLoading(checkingIsSaasGit)
+  }, [checkingIsSaasGit])
 
   const onSubmit = async (): Promise<void> => {
     setLoading(true)
@@ -95,9 +107,8 @@ const GitConnection: React.FC<StepProps<GitConnectionStepProps> & GitConnectionP
       } as GitSyncConfig
       await createGitSyncRepo(params)
       const { status } = await registerAgent({
-        accountIdentifier: accountId,
         projectIdentifier,
-        organizationIdentifier: orgIdentifier,
+        orgIdentifier,
         executeOnDelegate: agent === Agent.Delegate
       })
       if (status === 'SUCCESS') {

@@ -64,6 +64,23 @@ describe('SLOCardHeader', () => {
     ).toBeInTheDocument()
   })
 
+  test('it should have monitored service identifier query param when edit from MS details page', () => {
+    const { container } = render(<ComponentWrapper monitoredServiceIdentifier="monitored_service_identifier" />)
+
+    userEvent.click(container.querySelector('[data-icon="Options"]')!)
+
+    expect(document.querySelector('[icon="edit"]')).toBeInTheDocument()
+
+    userEvent.click(document.querySelector('[icon="edit"]')!)
+
+    expect(
+      screen.getByText(
+        routes.toCVEditSLOs({ ...pathParams, identifier: dashboardWidgetsContent.sloIdentifier, module: 'cv' }) +
+          '?monitoredServiceIdentifier=monitored_service_identifier'
+      )
+    ).toBeInTheDocument()
+  })
+
   test('delete should show the conformation dialog', async () => {
     const onDelete = jest.fn()
 
@@ -204,10 +221,10 @@ describe('SLOCardHeader', () => {
 
     await waitFor(() => {
       expect(onResetErrorBudget).toBeCalledWith(dashboardWidgetsContent.sloIdentifier, {
-        errorBudgetAtReset: 200,
+        errorBudgetAtReset: 100,
         errorBudgetIncrementPercentage: 100,
         reason: 'REASON',
-        remainingErrorBudgetAtReset: 160
+        remainingErrorBudgetAtReset: 60
       })
     })
   })

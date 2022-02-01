@@ -265,6 +265,109 @@ exports[`DeployStageSetupShell tests opens services tab by default 1`] = `
                 class="contentSection"
               >
                 <div
+                  class="StyledProps--font StyledProps--main StyledProps--margin-bottom-xlarge StyledProps--margin-left-xlarge"
+                >
+                  <div
+                    class="StyledProps--font StyledProps--main"
+                  >
+                    <div
+                      class="Layout--horizontal Layout--layout-spacing-xxxlarge StyledProps--main StyledProps--flex StyledProps--flex-justifyContent-flex-start"
+                    >
+                      <section
+                        class="stageSelectionGrid"
+                      >
+                        <div
+                          class="Layout--horizontal Layout--layout-spacing-medium StyledProps--main StyledProps--flex"
+                        >
+                          <label
+                            class="bp3-control bp3-radio StyledProps--font Radio--radio propagateFromRadio StyledProps--main StyledProps--color StyledProps--color-grey500 StyledProps--font-weight-semi-bold"
+                          >
+                            <input
+                              type="radio"
+                            />
+                            <span
+                              class="bp3-control-indicator"
+                            />
+                            Propagate from:
+                          </label>
+                          <div
+                            class="bp3-form-group bp3-disabled stageSelectDropDown"
+                          >
+                            <div
+                              class="bp3-form-content"
+                            >
+                              <div
+                                class="bp3-popover-wrapper Select--main bp3-fill"
+                              >
+                                <div
+                                  class="bp3-popover-target"
+                                >
+                                  <div
+                                    class="bp3-input-group bp3-disabled"
+                                  >
+                                    <input
+                                      autocomplete="off"
+                                      class="bp3-input"
+                                      disabled=""
+                                      name="selectedPropagatedState"
+                                      placeholder="- pipeline.selectStagePlaceholder -"
+                                      style="padding-right: 0px;"
+                                      type="text"
+                                      value=""
+                                    />
+                                    <span
+                                      class="bp3-input-action"
+                                    >
+                                      <span
+                                        class="bp3-icon bp3-icon-chevron-down StyledProps--main StyledProps--padding-small"
+                                        icon="chevron-down"
+                                      >
+                                        <svg
+                                          data-icon="chevron-down"
+                                          height="14"
+                                          viewBox="0 0 16 16"
+                                          width="14"
+                                        >
+                                          <desc>
+                                            chevron-down
+                                          </desc>
+                                          <path
+                                            d="M12 5c-.28 0-.53.11-.71.29L8 8.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42l4 4c.18.18.43.29.71.29s.53-.11.71-.29l4-4A1.003 1.003 0 0012 5z"
+                                            fill-rule="evenodd"
+                                          />
+                                        </svg>
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <span
+                            data-tooltip-id="selectPropagatedState"
+                          />
+                        </div>
+                      </section>
+                      <section
+                        class="stageSelectionGrid"
+                      >
+                        <label
+                          class="bp3-control bp3-radio StyledProps--font Radio--radio StyledProps--main StyledProps--color StyledProps--color-grey500 StyledProps--font-weight-semi-bold"
+                        >
+                          <input
+                            checked=""
+                            type="radio"
+                          />
+                          <span
+                            class="bp3-control-indicator"
+                          />
+                          cd.pipelineSteps.serviceTab.differentService
+                        </label>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+                <div
                   class="tabHeading"
                 >
                   cd.pipelineSteps.serviceTab.aboutYourService
@@ -301,51 +404,23 @@ exports[`DeployStageSetupShell tests opens services tab by default 1`] = `
                           class="bp3-form-content"
                         >
                           <div
-                            class="Layout--horizontal StyledProps--main MultiTypeInput--main"
+                            class="Layout--horizontal StyledProps--main MultiTypeInput--main MultiTypeInput--disabled"
                             style="width: 300px;"
                           >
                             <div
-                              class="bp3-popover-wrapper MultiTypeInput--select MultiTypeInput--fixedValueInput Select--main bp3-fill"
+                              class="TextInput--main MultiTypeInput--input"
                             >
                               <div
-                                class="bp3-popover-target"
+                                class="bp3-input-group bp3-disabled"
                               >
-                                <div
-                                  class="bp3-input-group"
-                                >
-                                  <input
-                                    autocomplete="off"
-                                    class="bp3-input"
-                                    name="serviceRef"
-                                    placeholder="cd.pipelineSteps.serviceTab.selectService"
-                                    style="padding-right: 0px;"
-                                    type="text"
-                                    value=""
-                                  />
-                                  <span
-                                    class="bp3-input-action"
-                                  >
-                                    <span
-                                      class="bp3-icon bp3-icon-chevron-down StyledProps--main StyledProps--padding-small"
-                                      icon="chevron-down"
-                                    >
-                                      <svg
-                                        data-icon="chevron-down"
-                                        height="14"
-                                        viewBox="0 0 16 16"
-                                        width="14"
-                                      >
-                                        <desc>
-                                          chevron-down
-                                        </desc>
-                                        <path
-                                          d="M12 5c-.28 0-.53.11-.71.29L8 8.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42l4 4c.18.18.43.29.71.29s.53-.11.71-.29l4-4A1.003 1.003 0 0012 5z"
-                                          fill-rule="evenodd"
-                                        />
-                                      </svg>
-                                    </span>
-                                  </span>
-                                </div>
+                                <input
+                                  class="bp3-input"
+                                  disabled=""
+                                  name="serviceRef"
+                                  placeholder="<+input>"
+                                  type="text"
+                                  value="<+input>"
+                                />
                               </div>
                             </div>
                             <span
@@ -355,21 +430,21 @@ exports[`DeployStageSetupShell tests opens services tab by default 1`] = `
                                 class="bp3-popover-target"
                               >
                                 <button
-                                  class="MultiTypeInput--btn MultiTypeInput--FIXED"
+                                  class="MultiTypeInput--btn MultiTypeInput--RUNTIME"
                                 >
                                   <span
                                     class="bp3-icon StyledProps--main"
-                                    data-icon="fixed-input"
+                                    data-icon="runtime-input"
                                   >
                                     <svg
                                       height="12"
-                                      viewBox="0 0 9 9"
+                                      viewBox="0 0 10 7.97"
                                       width="12"
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
                                       <path
-                                        d="M5.61 7.55c.62-.7.3-1.42.18-2.35a.32.32 0 01.1-.29l1.43-1.42a.76.76 0 01.28-.15c.39-.1 1 0 1.28-.29a.34.34 0 000-.51L6.46.12a.33.33 0 00-.52 0c-.28.29-.2.9-.28 1.3a.53.53 0 01-.13.23L4.09 3.12a.29.29 0 01-.28.09c-.89-.11-1.6-.49-2.27.11-.29.26-.29.43 0 .7l1.31 1.34.15.16-.15.15-2.7 2.69a.36.36 0 000 .54.36.36 0 00.54-.05l2.63-2.68.17-.17.17.16c.45.46.9.91 1.36 1.36.21.21.42.22.59.03z"
-                                        fill="currentColor"
+                                        d="M8.14 4L8 3.72a2.53 2.53 0 01-.12-.3l-.16-.35c-.11-.25-.22-.38-.32-.38s-.28.15-.37.44C7 3.1 7 3.07 7 3a.73.73 0 01.24-.46.66.66 0 01.42-.26c.25 0 .5.35.76 1.05l.07.17.07-.12c.47-.73.86-1.1 1.18-1.1a.71.71 0 01.29.07l-.4.42h-.11c-.24 0-.52.28-.86.83l-.09.16.07.2c.29.79.53 1.18.71 1.18s.31-.12.4-.36q.09.06.09.12t-.27.39a.74.74 0 01-.45.23c-.25 0-.51-.36-.77-1.07l-.12-.25-.1.17c-.44.76-.87 1.14-1.28 1.14a.65.65 0 01-.39-.12L6.84 5a.32.32 0 00.23.1c.25 0 .53-.25.83-.74l.17-.28zm-4-.32L1.7.59h2.47S5 .52 5.35 1a3.28 3.28 0 01.42 1.14h.31L5.94 0H0v.31l3.06 3.74L0 7.62V8h6.08l.38-2.36-.31-.07a2.43 2.43 0 01-.52 1c-.42.48-2 .41-2 .41H1.39z"
+                                        fill="current-color"
                                       />
                                     </svg>
                                   </span>
@@ -379,17 +454,6 @@ exports[`DeployStageSetupShell tests opens services tab by default 1`] = `
                           </div>
                         </div>
                       </div>
-                      <button
-                        class="bp3-button Button--button StyledProps--font StyledProps--main Button--with-current-color Button--variation Button--variation-link Button--size Button--small"
-                        id="add-new-service"
-                        type="button"
-                      >
-                        <span
-                          class="bp3-button-text"
-                        >
-                          cd.pipelineSteps.serviceTab.plusNewService
-                        </span>
-                      </button>
                     </div>
                   </div>
                 </div>

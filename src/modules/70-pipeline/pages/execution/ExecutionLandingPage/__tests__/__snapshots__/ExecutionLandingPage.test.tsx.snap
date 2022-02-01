@@ -256,28 +256,25 @@ exports[`<ExecutionLandingPage /> tests loading state - snapshot test 1`] = `
                 type="button"
               >
                 <span
-                  class="bp3-icon bp3-icon-edit StyledProps--main StyledProps--padding-right-xsmall"
-                  icon="edit"
+                  class="bp3-icon StyledProps--main StyledProps--padding-right-xsmall"
+                  data-icon="main-view"
                 >
                   <svg
-                    data-icon="edit"
                     height="16"
-                    viewBox="0 0 16 16"
+                    viewBox="0 0 14 9"
                     width="16"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <desc>
-                      edit
-                    </desc>
                     <path
-                      d="M3.25 10.26l2.47 2.47 6.69-6.69-2.46-2.48-6.7 6.7zM.99 14.99l3.86-1.39-2.46-2.44-1.4 3.83zm12.25-14c-.48 0-.92.2-1.24.51l-1.44 1.44 2.47 2.47 1.44-1.44c.32-.32.51-.75.51-1.24.01-.95-.77-1.74-1.74-1.74z"
-                      fill-rule="evenodd"
+                      d="M7 3.5c-.5 0-.9.4-.9.9s.4.9.9.9.9-.4.9-.9-.4-.9-.9-.9zm7 .9c0-.1 0-.1 0 0 0-.2-.1-.3-.1-.4-.4-.6-1-1.1-1.5-1.6-1.2-1-2.5-1.9-4-2.2C7.5 0 6.7-.1 5.8.1 5 .3 4.3.6 3.6 1c-1.1.6-2.1 1.5-3 2.4-.2.2-.3.4-.5.6-.1.2-.1.5 0 .8.4.6 1 1.1 1.5 1.6 1.2 1 2.5 1.9 4 2.2.8.2 1.7.2 2.6 0 .8-.1 1.5-.4 2.2-.8 1.1-.6 2.1-1.5 3-2.4.2-.2.3-.4.5-.6 0-.1.1-.2.1-.3v-.1zM7 7C5.6 7 4.4 5.8 4.4 4.4S5.6 1.7 7 1.7s2.6 1.2 2.6 2.6S8.5 7 7 7z"
+                      fill="#4d5969"
                     />
                   </svg>
                 </span>
                 <span
                   class="bp3-button-text"
                 >
-                  edit
+                  common.viewText
                 </span>
               </button>
               <div

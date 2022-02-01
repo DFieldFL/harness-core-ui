@@ -1580,8 +1580,6 @@ export interface StringsMap {
   'connectors.ceGcp.billingExport.heading': string
   'connectors.ceGcp.billingExport.launchTemplate': string
   'connectors.ceGcp.billingExport.tableIdLabel': string
-  'connectors.ceGcp.billingExport.tableIdTooltipDesc': string
-  'connectors.ceGcp.billingExport.tooltipDescription': string
   'connectors.ceGcp.billingExtention.heading': string
   'connectors.ceGcp.billingExtention.link1': string
   'connectors.ceGcp.billingExtention.link2': string

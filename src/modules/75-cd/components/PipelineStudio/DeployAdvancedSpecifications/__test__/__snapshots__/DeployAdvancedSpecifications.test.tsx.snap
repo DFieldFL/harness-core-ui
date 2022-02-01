@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Deploy advanced specifications test Should match snapshot 1`] = `
+<div>
+  <div
+    class="serviceOverrides"
+  >
+    <div
+      class="contentSection"
+    >
+      <div
+        class="tabHeading"
+      >
+        <span
+          data-tooltip-id="conditionalExecutionDeployStage"
+        >
+          pipeline.conditionalExecution.title
+        </span>
+      </div>
+      <div
+        class="bp3-card bp3-elevation-0 Card--card sectionCard"
+        id="conditionalExecution"
+      >
+        <div
+          class="Layout--horizontal StyledProps--main"
+        >
+          <div
+            class="conditional-execution-mock"
+          >
+            <button
+              name="updateConditionalExecution"
+            >
+              Conditional Execution button
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="tabHeading"
+      >
+        <span
+          data-tooltip-id="failureStrategyDeployStage"
+        >
+          pipeline.failureStrategies.title
+        </span>
+      </div>
+      <div
+        class="bp3-card bp3-elevation-0 Card--card sectionCard"
+        id="failureStrategy"
+      >
+        <div
+          class="Layout--horizontal StyledProps--main"
+        >
+          <div>
+            <div
+              class="failure-strategy-mock"
+            >
+              <button
+                name="updateFailureStrategy"
+              >
+                Failure Strategy button
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="StyledProps--font StyledProps--main StyledProps--margin-top-xxlarge"
+      />
+    </div>
+  </div>
+</div>
+`;

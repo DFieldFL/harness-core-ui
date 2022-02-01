@@ -71,12 +71,20 @@ export default function DeployServiceSpecifications(props: React.PropsWithChildr
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceUpdateStage = useCallback(
-    debounce((stage?: StageElementConfig) => (stage ? updateStage(stage) : Promise.resolve()), 300),
+    debounce(
+      (changedStage?: StageElementConfig) =>
+        changedStage ? updateStage(changedStage) : /* istanbul ignore next */ Promise.resolve(),
+      300
+    ),
     [updateStage]
   )
   const { stage } = getStageFromPipeline<DeploymentStageElementConfig>(selectedStageId || '')
   const getDeploymentType = (): string => {
-    return get(stage, 'stage.spec.serviceConfig.serviceDefinition.type', !NG_NATIVE_HELM ? 'Kubernetes' : undefined)
+    return get(
+      stage,
+      'stage.spec.serviceConfig.serviceDefinition.type',
+      !NG_NATIVE_HELM ? 'Kubernetes' : /* istanbul ignore next */ undefined
+    )
   }
 
   const [setupModeType, setSetupMode] = useState('')

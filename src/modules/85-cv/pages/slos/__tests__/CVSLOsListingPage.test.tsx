@@ -132,6 +132,23 @@ describe('CVSLOsListingPage', () => {
     expect(screen.getByText(routes.toCVCreateSLOs({ ...pathParams, module: 'cv' }))).toBeInTheDocument()
   })
 
+  test('it should have monitored service identifier query param when adding new SLO from MS details page', () => {
+    render(
+      <ComponentWrapper
+        monitoredService={{ identifier: 'monitored_service_identifier', name: 'monitored_service_identifier' }}
+      />
+    )
+
+    userEvent.click(screen.getByText('cv.slos.newSLO'))
+
+    expect(
+      screen.getByText(
+        routes.toCVCreateSLOs({ ...pathParams, module: 'cv' }) +
+          '?monitoredServiceIdentifier=monitored_service_identifier'
+      )
+    ).toBeInTheDocument()
+  })
+
   test('it should show the loader while fetching the user journeys', () => {
     useGetAllJourneys.mockReturnValue({ data: {}, loading: true, error: null, refetch: jest.fn() })
 

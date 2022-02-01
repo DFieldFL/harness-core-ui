@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Deploy infra specifications test Should match snapshot 1`] = `
+<div>
+  <div
+    class="serviceOverrides"
+  >
+    <div
+      class="contentSection"
+    >
+      <div
+        class="tabHeading"
+        id="environment"
+      >
+        environment
+      </div>
+      <div
+        class="bp3-card bp3-elevation-0 Card--card sectionCard"
+      >
+        <div
+          class="step-widget-mock"
+        >
+          <button
+            name="updateStepWidget"
+          >
+            Step Widget button
+          </button>
+        </div>
+      </div>
+      <div
+        class="tabHeading"
+        id="infrastructureDefinition"
+      >
+        <span
+          class="align"
+          data-tooltip-id="pipelineStep.infrastructureDefinition"
+        >
+          pipelineSteps.deploy.infrastructure.infraDefinition
+        </span>
+      </div>
+      <div
+        class="bp3-card bp3-elevation-0 Card--card sectionCard"
+      >
+        <p
+          class="StyledProps--font StyledProps--main info StyledProps--margin-bottom-medium"
+        >
+          <span
+            class="align"
+            data-tooltip-id="pipelineStep.infrastructureDefinitionMethod"
+          >
+            pipelineSteps.deploy.infrastructure.selectMethod
+          </span>
+        </p>
+        <div
+          class="select-infrastucture-type-mock"
+        >
+          <button
+            name="updateSelectInfrastructureType"
+          >
+            Select Infrastructure Type button
+          </button>
+        </div>
+      </div>
+      <div
+        class="StyledProps--font StyledProps--main StyledProps--margin-top-xxlarge"
+      />
+    </div>
+  </div>
+</div>
+`;

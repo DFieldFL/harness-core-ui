@@ -61,6 +61,7 @@
 
 .keyContainer {
   flex-shrink: 1;
+  width: fit-content !important;
 }
 
 .keyType {
@@ -77,6 +78,10 @@
   background-color: var(--grey-100);
   flex-shrink: 0;
   margin-right: var(--spacing-5);
+}
+
+.keyRedactionWarning {
+  max-width: 350px;
 }
 
 .keyCopyIcon {

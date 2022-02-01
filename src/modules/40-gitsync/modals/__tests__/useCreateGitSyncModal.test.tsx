@@ -17,6 +17,11 @@ const pathParams = { accountId: 'dummy', orgIdentifier: 'default', projectIdenti
 
 const createGitSynRepo = jest.fn()
 const getGitConnector = jest.fn(() => Promise.resolve({}))
+const isSaas = jest.fn(() =>
+  Promise.resolve({
+    data: { saasGit: true }
+  })
+)
 
 jest.mock('services/cd-ng', () => ({
   usePostGitSync: jest.fn().mockImplementation(() => ({ mutate: createGitSynRepo })),
@@ -26,11 +31,7 @@ jest.mock('services/cd-ng', () => ({
     .fn()
     .mockResolvedValue({ data: ['master', 'devBranch'], status: 'SUCCESS' }),
   useGetTestGitRepoConnectionResult: jest.fn().mockImplementation(() => ({ mutate: jest.fn })),
-  isSaasGitPromise: jest.fn().mockImplementation(() => {
-    return Promise.resolve({
-      data: { saasGit: {} }
-    })
-  }),
+  useIsSaasGit: jest.fn().mockImplementation(() => ({ mutate: isSaas })),
   usePostGitSyncSetting: jest.fn().mockImplementation(() => {
     return {
       mutate: jest.fn()
@@ -135,6 +136,7 @@ describe('Test useCreateGitSyncModal', () => {
       expect(findByText(dialog, 'gitsync.connectToGitProvider')).toBeTruthy()
     })
 
+    expect(isSaas).toBeCalledTimes(1)
     await act(async () => {
       const submitBtn = await findByText(dialog, 'save')
       fireEvent.click(submitBtn)

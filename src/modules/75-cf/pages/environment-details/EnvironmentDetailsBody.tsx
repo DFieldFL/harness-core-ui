@@ -91,7 +91,7 @@ const ApiInfoCell = withApiKey(({ apiKey }) => {
             >
               {apiKeyText}
             </Text>
-            <Text font={{ variation: FontVariation.TINY }} color={Color.ORANGE_900}>
+            <Text font={{ variation: FontVariation.TINY }} color={Color.ORANGE_900} className={css.keyRedactionWarning}>
               {getEnvString('apiKeys.redactionWarning')}
             </Text>
           </div>

@@ -14,7 +14,8 @@ import {
   Button,
   getMultiTypeFromValue,
   MultiTypeInputType,
-  MultiTextInputProps
+  MultiTextInputProps,
+  RUNTIME_INPUT_VALUE
 } from '@wings-software/uicore'
 import { connect, FormikContext } from 'formik'
 import { get, isEmpty } from 'lodash-es'
@@ -73,7 +74,10 @@ export const MultiTypeListInputSet = (props: MultiTypeListProps): React.ReactEle
   const { getString } = useStrings()
 
   const [value, setValue] = React.useState<ListUIType>(() => {
-    const initialValue = get(formik?.values, name, '') as ListType
+    let initialValue = get(formik?.values, name, '')
+    if (initialValue === RUNTIME_INPUT_VALUE) {
+      initialValue = []
+    }
     const initialValueInCorrectFormat = (initialValue || []).map((item: string | { [key: string]: string }) => ({
       id: uuid('', nameSpace()),
       value: withObjectStructure && keyName ? ((item as { [key: string]: string })[keyName] as string) : item
@@ -115,7 +119,10 @@ export const MultiTypeListInputSet = (props: MultiTypeListProps): React.ReactEle
   }
 
   React.useEffect(() => {
-    const initialValue = get(formik?.values, name, '') as ListType
+    let initialValue = get(formik?.values, name, '')
+    if (initialValue === RUNTIME_INPUT_VALUE) {
+      initialValue = []
+    }
     const valueWithoutEmptyItems = value.filter(item => !!item.value)
 
     if (isEmpty(valueWithoutEmptyItems) && initialValue) {
@@ -137,16 +144,18 @@ export const MultiTypeListInputSet = (props: MultiTypeListProps): React.ReactEle
     let valueInCorrectFormat: ListType = []
     if (Array.isArray(value)) {
       valueInCorrectFormat = value
-        .filter(item => !!item.value)
+        .filter(item => !!item.value && typeof item.value === 'string')
         .map(item => {
           return withObjectStructure && keyName ? { [keyName]: item.value } : item.value
         }) as ListType
     }
 
-    if (isEmpty(valueInCorrectFormat)) {
-      formik?.setFieldValue(name, undefined)
-    } else {
-      formik?.setFieldValue(name, valueInCorrectFormat)
+    if (get(formik?.values, name, '') !== RUNTIME_INPUT_VALUE) {
+      if (isEmpty(valueInCorrectFormat)) {
+        formik?.setFieldValue(name, undefined)
+      } else {
+        formik?.setFieldValue(name, valueInCorrectFormat)
+      }
     }
   }, [name, value, formik?.setFieldValue])
 
@@ -163,7 +172,7 @@ export const MultiTypeListInputSet = (props: MultiTypeListProps): React.ReactEle
           {value.map(({ id, value: valueValue }, index: number) => {
             // const valueError = get(error, `[${index}].value`)
 
-            return (
+            return typeof valueValue === 'string' ? (
               <div className={css.group} key={id}>
                 <div style={{ flexGrow: 1 }}>
                   <MultiTextInput
@@ -190,7 +199,7 @@ export const MultiTypeListInputSet = (props: MultiTypeListProps): React.ReactEle
                   />
                 )}
               </div>
-            )
+            ) : null
           })}
 
           {!disabled && (

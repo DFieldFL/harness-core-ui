@@ -34,6 +34,7 @@ jest.mock('services/cd-ng', () => ({
   useGetConnector: jest.fn(() => ConnectorResponse)
 }))
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const getStepData = () => {
   return {
     stage: {
@@ -47,6 +48,7 @@ const getStepData = () => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const renderComponent = (stepData?: any, onSubmit?: () => void) => {
   const pipelineContextMockValue = getDummyPipelineContextValue()
   return render(

@@ -26,8 +26,10 @@ import routes from '@common/RouteDefinitions'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import { useStrings } from 'framework/strings'
 import { ServiceLevelObjectiveDTO, useGetServiceLevelObjective, useSaveSLOData, useUpdateSLOData } from 'services/cv'
-import { getErrorMessage } from '@cv/utils/CommonUtils'
+import { useQueryParams } from '@common/hooks'
+import { getCVMonitoringServicesSearchParam, getErrorMessage } from '@cv/utils/CommonUtils'
 import sloReviewChange from '@cv/assets/sloReviewChange.svg'
+import { MonitoredServiceEnum } from '@cv/pages/monitored-service/MonitoredServicePage.constants'
 import CreateSLOForm from './components/CreateSLOForm/CreateSLOForm'
 import { getSLOInitialFormData, createSLORequestPayload, getIsUserUpdatedSLOData } from './CVCreateSLO.utils'
 import { getSLOFormValidationSchema } from './CVCreateSLO.constants'
@@ -40,6 +42,7 @@ const CVCreateSLO: React.FC = () => {
   const { accountId, orgIdentifier, projectIdentifier, identifier } = useParams<
     ProjectPathProps & { identifier: string }
   >()
+  const { monitoredServiceIdentifier } = useQueryParams<{ monitoredServiceIdentifier?: string }>()
 
   const projectIdentifierRef = useRef<string>()
   const sloPayloadRef = useRef<ServiceLevelObjectiveDTO | null>(null)
@@ -142,6 +145,24 @@ const CVCreateSLO: React.FC = () => {
     [projectIdentifier, orgIdentifier, accountId]
   )
 
+  const handleRedirect = (): void => {
+    if (monitoredServiceIdentifier) {
+      history.push({
+        pathname: routes.toCVAddMonitoringServicesEdit({
+          accountId,
+          orgIdentifier,
+          projectIdentifier,
+          identifier: monitoredServiceIdentifier,
+          module: 'cv'
+        }),
+        search: getCVMonitoringServicesSearchParam({ tab: MonitoredServiceEnum.SLOs })
+      })
+      return
+    }
+
+    history.push(routes.toCVSLOs({ accountId, orgIdentifier, projectIdentifier, module: 'cv' }))
+  }
+
   const handleSLOSubmit = async (values: SLOForm): Promise<void> => {
     const sloCreateRequestPayload = createSLORequestPayload(values, orgIdentifier, projectIdentifier)
 
@@ -158,12 +179,12 @@ const CVCreateSLO: React.FC = () => {
         } else {
           await updateSLO(sloCreateRequestPayload)
           showSuccess(getString('cv.slos.sloUpdated'))
-          history.push(routes.toCVSLOs({ accountId, orgIdentifier, projectIdentifier, module: 'cv' }))
+          handleRedirect()
         }
       } else {
         await createSLO(sloCreateRequestPayload)
         showSuccess(getString('cv.slos.sloCreated'))
-        history.push(routes.toCVSLOs({ accountId, orgIdentifier, projectIdentifier, module: 'cv' }))
+        handleRedirect()
       }
     } catch (e) {
       showError(getErrorMessage(e))

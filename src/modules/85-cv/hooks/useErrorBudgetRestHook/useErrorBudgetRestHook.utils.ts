@@ -10,7 +10,7 @@ export const calculateErrorBudgetByIncrement = (currentErrorBudget: number, incr
     return 0
   }
 
-  return Math.round(currentErrorBudget + currentErrorBudget * (increment / 100))
+  return Math.floor(currentErrorBudget + currentErrorBudget * (increment / 100))
 }
 
 export const calculateRemainingErrorBudgetByIncrement = (
@@ -22,5 +22,5 @@ export const calculateRemainingErrorBudgetByIncrement = (
     return 0
   }
 
-  return Math.round(remainingErrorBudget + currentErrorBudget * (increment / 100))
+  return Math.floor(remainingErrorBudget + currentErrorBudget * (increment / 100))
 }

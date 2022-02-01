@@ -34,7 +34,12 @@ import { PeriodTypes } from '../components/CVCreateSLO/CVCreateSLO.types'
 import type { SLOCardHeaderProps } from '../CVSLOsListingPage.types'
 import css from '../CVSLOsListingPage.module.scss'
 
-const SLOCardHeader: React.FC<SLOCardHeaderProps> = ({ serviceLevelObjective, onDelete, onResetErrorBudget }) => {
+const SLOCardHeader: React.FC<SLOCardHeaderProps> = ({
+  serviceLevelObjective,
+  onDelete,
+  onResetErrorBudget,
+  monitoredServiceIdentifier
+}) => {
   const history = useHistory()
   const { getString } = useStrings()
   const { accountId, orgIdentifier, projectIdentifier } = useParams<ProjectPathProps>()
@@ -58,7 +63,8 @@ const SLOCardHeader: React.FC<SLOCardHeaderProps> = ({ serviceLevelObjective, on
         orgIdentifier,
         projectIdentifier,
         module: 'cv'
-      })
+      }),
+      search: monitoredServiceIdentifier ? `?monitoredServiceIdentifier=${monitoredServiceIdentifier}` : ''
     })
   }
 

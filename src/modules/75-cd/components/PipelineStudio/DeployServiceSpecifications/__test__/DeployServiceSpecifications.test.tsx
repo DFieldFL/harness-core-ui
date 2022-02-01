@@ -16,7 +16,8 @@ import {
   PipelineContext
 } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineContext'
 import { StageType } from '@pipeline/utils/stageHelpers'
-
+import * as useValidationErrors from '@pipeline/components/PipelineStudio/PiplineHooks/useValidationErrors'
+import { StageErrorContext } from '@pipeline/context/StageErrorContext'
 import overridePipelineContext from './overrideSetPipeline.json'
 import DeployServiceSpecifications from '../DeployServiceSpecifications'
 import connectorListJSON from './connectorList.json'
@@ -79,6 +80,7 @@ jest.mock('lodash-es', () => ({
   noop: jest.fn()
 }))
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const intersectionObserverMock = () => ({
   observe: () => null,
   unobserve: () => null
@@ -132,5 +134,41 @@ describe('Deploy service stage specifications', () => {
     )
 
     await waitFor(() => expect(queryByText('variablesText')).toBeTruthy())
+  })
+
+  test('Should Deployment Type section be present', async () => {
+    const { findByText } = render(
+      <TestWrapper>
+        <PipelineContext.Provider value={getOverrideContextValue()}>
+          <DeployServiceSpecifications />
+        </PipelineContext.Provider>
+      </TestWrapper>
+    )
+
+    expect(await waitFor(() => findByText('deploymentTypeText'))).toBeInTheDocument()
+  })
+
+  test('Should call submitFormsForTab when errorMap is not empty', async () => {
+    const errorContextProvider = {
+      state: {} as any,
+      checkErrorsForTab: jest.fn().mockResolvedValue(Promise.resolve()),
+      subscribeForm: () => undefined,
+      unSubscribeForm: () => undefined,
+      submitFormsForTab: jest.fn()
+    }
+
+    jest.spyOn(useValidationErrors, 'useValidationErrors').mockReturnValue({ errorMap: new Map([['error', []]]) })
+
+    render(
+      <TestWrapper>
+        <PipelineContext.Provider value={getOverrideContextValue()}>
+          <StageErrorContext.Provider value={errorContextProvider}>
+            <DeployServiceSpecifications />
+          </StageErrorContext.Provider>
+        </PipelineContext.Provider>
+      </TestWrapper>
+    )
+
+    expect(errorContextProvider.submitFormsForTab).toBeCalled()
   })
 })

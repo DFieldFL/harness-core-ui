@@ -14,6 +14,7 @@ declare const styles: {
   readonly keyCopyContainer: string
   readonly keyCopyIcon: string
   readonly keyDeleteButton: string
+  readonly keyRedactionWarning: string
   readonly keyType: string
   readonly paginationContainer: string
   readonly table: string

@@ -36,7 +36,7 @@ const DeployAdvancedSpecifications: React.FC<AdvancedSpecifications> = ({ childr
     getStageFromPipeline,
     updateStage
   } = usePipelineContext()
-  const { stage } = getStageFromPipeline(selectedStageId || '')
+  const { stage } = getStageFromPipeline(selectedStageId || /* istanbul ignore next */ '')
 
   const formikRef = React.useRef<StepFormikRef | null>(null)
   const scrollRef = React.useRef<HTMLDivElement | null>(null)
@@ -68,11 +68,15 @@ const DeployAdvancedSpecifications: React.FC<AdvancedSpecifications> = ({ childr
                 isReadonly={isReadonly}
                 selectedStage={stage}
                 onUpdate={when => {
-                  const { stage: pipelineStage } = getStageFromPipeline(selectedStageId || '')
+                  const { stage: pipelineStage } = getStageFromPipeline(
+                    selectedStageId || /* istanbul ignore next */ ''
+                  )
+                  /* istanbul ignore else */
                   if (pipelineStage && pipelineStage.stage) {
                     const stageData = produce(pipelineStage, draft => {
                       set(draft, 'stage.when', when)
                     })
+                    /* istanbul ignore else */
                     if (stageData.stage) updateStage(stageData.stage)
                   }
                 }}
@@ -94,14 +98,19 @@ const DeployAdvancedSpecifications: React.FC<AdvancedSpecifications> = ({ childr
                 isReadonly={isReadonly}
                 ref={formikRef}
                 onUpdate={({ failureStrategies }) => {
-                  const { stage: pipelineStage } = getStageFromPipeline(selectedStageId || '')
+                  const { stage: pipelineStage } = getStageFromPipeline(
+                    selectedStageId || /* istanbul ignore next */ ''
+                  )
+                  /* istanbul ignore else */
                   if (pipelineStage && pipelineStage.stage) {
                     const stageData = produce(pipelineStage, draft => {
                       set(draft, 'stage.failureStrategies', failureStrategies)
                     })
+                    /* istanbul ignore else */
                     if (stageData.stage) {
                       updateStage(stageData.stage)
                       const errors = formikRef.current?.getErrors()
+                      /* istanbul ignore else */
                       if (isEmpty(errors)) {
                         const telemetryData = failureStrategies.map(strategy => ({
                           onError: strategy.onFailure?.errors?.join(', '),

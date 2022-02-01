@@ -67,7 +67,11 @@ export default function DeployInfraSpecifications(props: React.PropsWithChildren
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceUpdateStage = React.useCallback(
-    debounce((stage?: StageElementConfig) => (stage ? updateStage(stage) : Promise.resolve()), 100),
+    debounce(
+      (changedStage?: StageElementConfig) =>
+        changedStage ? updateStage(changedStage) : /* instanbul ignore next */ Promise.resolve(),
+      100
+    ),
     [updateStage]
   )
 

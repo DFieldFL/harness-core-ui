@@ -9,7 +9,7 @@ import React from 'react'
 import { Layout, Tabs, Tab, Button, Icon, ButtonVariation } from '@wings-software/uicore'
 import cx from 'classnames'
 import type { HarnessIconName } from '@wings-software/uicore/dist/icons/HarnessIcons'
-import { Expander } from '@blueprintjs/core'
+import { Expander, IconName } from '@blueprintjs/core'
 import ExecutionGraph, {
   ExecutionGraphAddStepEvent,
   ExecutionGraphEditStepEvent,
@@ -52,6 +52,8 @@ const TabsOrder = [
   DeployTabs.EXECUTION,
   DeployTabs.ADVANCED
 ]
+
+const iconNames = { warningSign: 'warning-sign' as IconName }
 
 export default function DeployStageSetupShell(): JSX.Element {
   const { getString } = useStrings()
@@ -116,6 +118,7 @@ export default function DeployStageSetupShell(): JSX.Element {
 
   React.useEffect(() => {
     if (selectedTabId === DeployTabs.EXECUTION) {
+      /* istanbul ignore else */
       if (data?.stage && data?.stage.type === StageType.DEPLOY) {
         if (!data?.stage?.spec?.execution) {
           const stageType = data?.stage?.type
@@ -134,6 +137,7 @@ export default function DeployStageSetupShell(): JSX.Element {
         } else {
           // set default (empty) values
           // NOTE: this cannot be set in advance as data.stage.spec.execution===undefined is a trigger to open ExecutionStrategy for CD stage
+          /* istanbul ignore else */
           if (data?.stage?.spec?.execution) {
             if (!data.stage.spec.execution.steps) {
               data.stage.spec.execution.steps = []
@@ -208,9 +212,9 @@ export default function DeployStageSetupShell(): JSX.Element {
           title={
             <span className={css.title} data-warning={servicesHasWarning}>
               <Icon
-                name={servicesHasWarning ? 'warning-sign' : 'services'}
+                name={servicesHasWarning ? /* istanbul ignore next */ iconNames.warningSign : 'services'}
                 size={16}
-                className={servicesHasWarning ? '' : 'hover'}
+                className={servicesHasWarning ? /* istanbul ignore next */ '' : 'hover'}
               />
               {getString('service')}
             </span>
@@ -223,9 +227,9 @@ export default function DeployStageSetupShell(): JSX.Element {
           title={
             <span className={css.title} data-warning={infraHasWarning}>
               <Icon
-                name={infraHasWarning ? 'warning-sign' : 'infrastructure'}
+                name={infraHasWarning ? /* istanbul ignore next */ iconNames.warningSign : 'infrastructure'}
                 size={16}
-                className={infraHasWarning ? '' : 'hover'}
+                className={infraHasWarning ? /* istanbul ignore next */ '' : 'hover'}
               />
               {getString('infrastructureText')}
             </span>
@@ -238,9 +242,9 @@ export default function DeployStageSetupShell(): JSX.Element {
           title={
             <span className={css.title} data-warning={executionHasWarning}>
               <Icon
-                name={executionHasWarning ? 'warning-sign' : 'execution'}
+                name={executionHasWarning ? /* istanbul ignore next */ iconNames.warningSign : 'execution'}
                 size={16}
-                className={executionHasWarning ? '' : 'hover'}
+                className={executionHasWarning ? /* istanbul ignore next */ '' : 'hover'}
               />
               {getString('executionText')}
             </span>
@@ -319,9 +323,9 @@ export default function DeployStageSetupShell(): JSX.Element {
           title={
             <span className={css.title} data-warning={failureHasWarning}>
               <Icon
-                name={failureHasWarning ? 'warning-sign' : 'advanced'}
+                name={failureHasWarning ? /* istanbul ignore next */ iconNames.warningSign : 'advanced'}
                 size={16}
-                className={failureHasWarning ? '' : 'hover'}
+                className={failureHasWarning ? /* istanbul ignore next */ '' : 'hover'}
               />
               Advanced
             </span>

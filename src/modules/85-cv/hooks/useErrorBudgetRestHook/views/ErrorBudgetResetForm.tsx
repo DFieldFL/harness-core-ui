@@ -83,15 +83,8 @@ const ErrorBudgetResetForm: React.FC<ErrorBudgetResetFormProps> = ({ serviceLeve
         onSubmit={values => {
           onSubmit({
             ...values,
-            errorBudgetAtReset: calculateErrorBudgetByIncrement(
-              serviceLevelObjective.totalErrorBudget,
-              values.errorBudgetIncrementPercentage
-            ),
-            remainingErrorBudgetAtReset: calculateRemainingErrorBudgetByIncrement(
-              serviceLevelObjective.totalErrorBudget,
-              serviceLevelObjective.errorBudgetRemaining,
-              values.errorBudgetIncrementPercentage
-            )
+            errorBudgetAtReset: serviceLevelObjective.totalErrorBudget,
+            remainingErrorBudgetAtReset: serviceLevelObjective.errorBudgetRemaining
           })
         }}
       >
