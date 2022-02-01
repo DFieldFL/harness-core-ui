@@ -128,7 +128,7 @@ exports[`CVSLOsListingPage Risk filter select and deselect 1`] = `
         <span
           class="bp3-button-text"
         >
-          cv.slos.newSLO
+          cv.slos.createSLO
         </span>
       </button>
     </div>

@@ -19,6 +19,7 @@ import {
   FlexExpander,
   Container
 } from '@wings-software/uicore'
+import slosEmptyState from '@cv/assets/slosEmptyState.svg'
 import { Page } from '@common/exports'
 import routes from '@common/RouteDefinitions'
 import { useStrings } from 'framework/strings'
@@ -170,7 +171,7 @@ const CVSLOsListingPage: React.FC<CVSLOsListingPageProps> = ({ monitoredService 
   const getAddSLOButton = (): JSX.Element => (
     <RbacButton
       icon="plus"
-      text={getString('cv.slos.newSLO')}
+      text={getString('cv.slos.createSLO')}
       variation={ButtonVariation.PRIMARY}
       onClick={() => {
         history.push(routes.toCVCreateSLOs({ accountId, orgIdentifier, projectIdentifier }))
@@ -203,7 +204,7 @@ const CVSLOsListingPage: React.FC<CVSLOsListingPageProps> = ({ monitoredService 
 
   return (
     <>
-      {!monitoredService?.identifier && (
+      {!monitoredService?.identifier && !!content?.length && (
         <>
           <Page.Header breadcrumbs={<NGBreadcrumbs />} title={getString('cv.slos.title')} />
           <Page.Header title={getAddSLOButton()} />
@@ -245,37 +246,35 @@ const CVSLOsListingPage: React.FC<CVSLOsListingPageProps> = ({ monitoredService 
         className={css.pageBody}
       >
         <Layout.Vertical height="100%" padding={{ top: 'medium', left: 'xlarge', right: 'xlarge', bottom: 'xlarge' }}>
-          <Layout.Horizontal className={css.sloFiltersRow1}>
-            {monitoredService?.identifier && getAddSLOButton()}
-            <Container
-              className={getClassNameForMonitoredServicePage(css.sloDropdownFilters, monitoredService?.identifier)}
-            >
-              <SLODashbordFilters
-                filterState={filterState}
-                dispatch={dispatch}
-                filterItemsData={filterItemsData}
-                hideMonitoresServicesFilter={Boolean(monitoredService)}
-              />
-            </Container>
-          </Layout.Horizontal>
-
-          <CardSelect<SLORiskFilter>
-            type={CardSelectType.CardView}
-            data={getSLORiskTypeFilter(
-              getString,
-              riskCountResponse?.data?.riskCounts as RiskCount[] | undefined,
-              riskCountResponse?.data?.totalCount
-            )}
-            cardClassName={css.sloRiskFilterCard}
-            renderItem={({ ...props }) => <SLOCardSelect key={props.identifier} {...props} />}
-            selected={filterState.sloRiskFilter as SLORiskFilter}
-            onChange={onFilter}
-          />
-
-          <hr />
-
           {!!content?.length && (
             <>
+              <Layout.Horizontal className={css.sloFiltersRow1}>
+                {monitoredService?.identifier && getAddSLOButton()}
+                <Container
+                  className={getClassNameForMonitoredServicePage(css.sloDropdownFilters, monitoredService?.identifier)}
+                >
+                  <SLODashbordFilters
+                    filterState={filterState}
+                    dispatch={dispatch}
+                    filterItemsData={filterItemsData}
+                    hideMonitoresServicesFilter={Boolean(monitoredService)}
+                  />
+                </Container>
+              </Layout.Horizontal>
+
+              <CardSelect<SLORiskFilter>
+                type={CardSelectType.CardView}
+                data={getSLORiskTypeFilter(
+                  getString,
+                  riskCountResponse?.data?.riskCounts as RiskCount[] | undefined,
+                  riskCountResponse?.data?.totalCount
+                )}
+                cardClassName={css.sloRiskFilterCard}
+                renderItem={({ ...props }) => <SLOCardSelect key={props.identifier} {...props} />}
+                selected={filterState.sloRiskFilter as SLORiskFilter}
+                onChange={onFilter}
+              />
+              <hr />
               <div className={css.sloCardContainer} data-testid="slo-card-container">
                 {content.map(serviceLevelObjective => (
                   <Card key={serviceLevelObjective.sloIdentifier} className={css.sloCard}>
@@ -301,7 +300,14 @@ const CVSLOsListingPage: React.FC<CVSLOsListingPageProps> = ({ monitoredService 
           )}
 
           {getIsWidgetDataEmpty(content?.length, dashboardWidgetsLoading) && (
-            <NoDataCard icon="join-table" message={getString('cv.slos.noData')} />
+            <NoDataCard
+              image={slosEmptyState}
+              messageTitle={getString('cv.slos.noData')}
+              message={
+                'A service level objective (SLO) is the sum of a collection of performance metrics (Service Level Indicator or SLI) such as uptime, response time, and error rate that are used to measure the services performance. At least one SLO is required to monitor a service.'
+              }
+              button={getAddSLOButton()}
+            />
           )}
         </Layout.Vertical>
       </Page.Body>

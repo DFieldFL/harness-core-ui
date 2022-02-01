@@ -106,14 +106,14 @@ describe('CVSLOsListingPage', () => {
     jest.spyOn(cvServices, 'useResetErrorBudget').mockReturnValue({ mutate: jest.fn(), loading: false } as any)
   })
 
-  test('Without monitoredServiceIdentifier it should render with the page header and +New SLO button', () => {
+  test('Without monitoredServiceIdentifier and without slos data it should render NO SLos screen', () => {
     render(<ComponentWrapper />)
 
-    expect(screen.getByText('cv.slos.title')).toBeInTheDocument()
-    expect(screen.getByText('cv.slos.newSLO')).toBeInTheDocument()
+    expect(screen.getByText('cv.slos.noData')).toBeInTheDocument()
+    expect(screen.getByText('cv.slos.createSLO')).toBeInTheDocument()
   })
 
-  test('With monitoredServiceIdentifier it should not render with the page header and render +New SLO button', () => {
+  test('With monitoredServiceIdentifier it should not render with the page headers', () => {
     render(
       <ComponentWrapper
         monitoredService={{ identifier: 'monitored_service_identifier', name: 'monitored_service_identifier' }}
@@ -121,13 +121,13 @@ describe('CVSLOsListingPage', () => {
     )
 
     expect(screen.queryByText('cv.slos.title')).not.toBeInTheDocument()
-    expect(screen.queryByText('cv.slos.newSLO')).toBeInTheDocument()
+    expect(screen.getByText('cv.slos.createSLO')).toBeInTheDocument()
   })
 
   test('add new SLO should go to create page', async () => {
     render(<ComponentWrapper />)
 
-    userEvent.click(screen.getByText('cv.slos.newSLO'))
+    userEvent.click(screen.getByText('cv.slos.createSLO'))
 
     expect(screen.getByText(routes.toCVCreateSLOs({ ...pathParams, module: 'cv' }))).toBeInTheDocument()
   })

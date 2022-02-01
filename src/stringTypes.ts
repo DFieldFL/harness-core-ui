@@ -4984,8 +4984,8 @@ export interface StringsMap {
   'cv.slos.healthSource': string
   'cv.slos.healthSourceForSLI': string
   'cv.slos.latencySLI': string
-  'cv.slos.newSLO': string
   'cv.slos.noData': string
+  'cv.slos.noSLOsStateMessage': string
   'cv.slos.pickMetricsSLI': string
   'cv.slos.reviewChanges': string
   'cv.slos.selectHealthsource': string
