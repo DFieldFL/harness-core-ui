@@ -35,11 +35,10 @@
 
 .summaryDetailsContainer {
   .container {
-    border-right: 1px solid var(--grey-200);
     padding: var(--spacing-xsmall) var(--spacing-xlarge) !important;
 
-    &:last-child {
-      border-right: none;
+    &:first-child {
+      border-right: 1px solid var(--grey-200);
     }
   }
 }

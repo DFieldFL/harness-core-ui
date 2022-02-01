@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Layout,
   Card,
@@ -33,6 +33,7 @@ import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import routes from '@common/RouteDefinitions'
 import RecommendationSummaryCard from './RecommendationSummaryCard'
 import css from './PerspectiveSummary.module.scss'
+import { getViewFilterForId } from '@ce/utils/perspectiveUtils'
 
 const StatsTrendRenderer: React.FC<{ val: number }> = ({ val }) => {
   if (+val === 0) {
@@ -373,10 +374,16 @@ const PerspectiveSummary: React.FC<PerspectiveSummaryProps> = ({
   isDefaultPerspective,
   hasClusterAsSource
 }) => {
+  const { perspectiveId } = useParams<{
+    perspectiveId: string
+  }>()
+
   let showForecastedCostCard = true
   if (!fetching && !forecastedCostData?.cost?.statsValue) {
     showForecastedCostCard = false
   }
+
+  const recommendationFilters = useMemo(() => [getViewFilterForId(perspectiveId)], [perspectiveId])
 
   return (
     <Layout.Horizontal margin="xlarge" spacing="large">
@@ -400,7 +407,7 @@ const PerspectiveSummary: React.FC<PerspectiveSummaryProps> = ({
           showTrend={false}
         />
       )}
-      {hasClusterAsSource && <RecommendationSummaryCard />}
+      {hasClusterAsSource && <RecommendationSummaryCard filters={recommendationFilters} />}
     </Layout.Horizontal>
   )
 }

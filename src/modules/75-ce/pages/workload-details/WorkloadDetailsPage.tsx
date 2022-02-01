@@ -216,6 +216,8 @@ const WorkloadDetailsPage: () => JSX.Element = () => {
             summaryData={summaryData?.perspectiveTrendStats as any}
             fetching={summaryFetching}
             infoData={infoData}
+            showRecommendations={!recommendation}
+            recommendationFilters={filters}
           />
         </Container>
         {!isChartGridEmpty && (

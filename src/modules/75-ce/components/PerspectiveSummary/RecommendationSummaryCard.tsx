@@ -12,12 +12,19 @@ import { useParams, useHistory } from 'react-router-dom'
 import cx from 'classnames'
 import { useStrings } from 'framework/strings'
 import routes from '@common/RouteDefinitions'
-import { getViewFilterForId } from '@ce/utils/perspectiveUtils'
 import formatCost from '@ce/utils/formatCost'
-import { K8sRecommendationFilterDtoInput, useRecommendationsSummaryQuery } from 'services/ce/services'
+import {
+  K8sRecommendationFilterDtoInput,
+  QlceViewFilterWrapperInput,
+  useRecommendationsSummaryQuery
+} from 'services/ce/services'
 import css from './PerspectiveSummary.module.scss'
 
-const RecommendationSummaryCard: () => JSX.Element = () => {
+interface RecommendationSummaryCardProps {
+  filters: QlceViewFilterWrapperInput[]
+}
+
+const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.Element = ({ filters }) => {
   const { perspectiveId, accountId, perspectiveName } = useParams<{
     perspectiveId: string
     accountId: string
@@ -31,7 +38,7 @@ const RecommendationSummaryCard: () => JSX.Element = () => {
   const [{ data, fetching: recommendationFetching }] = useRecommendationsSummaryQuery({
     variables: {
       filter: {
-        perspectiveFilters: getViewFilterForId(perspectiveId),
+        perspectiveFilters: filters,
         minSaving: 0
       } as unknown as K8sRecommendationFilterDtoInput
     }

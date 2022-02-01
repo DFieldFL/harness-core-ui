@@ -6,11 +6,18 @@
  */
 
 import React from 'react'
-import { Container, Layout, Text, Icon, Color } from '@wings-software/uicore'
-import type { Maybe, PerspectiveTrendStats, ClusterData, InstanceDetails } from 'services/ce/services'
+import { Container, Layout, Text, Icon, Color, FlexExpander } from '@wings-software/uicore'
+import type {
+  Maybe,
+  PerspectiveTrendStats,
+  ClusterData,
+  InstanceDetails,
+  QlceViewFilterWrapperInput
+} from 'services/ce/services'
 import { useStrings } from 'framework/strings'
 import { CCM_PAGE_TYPE } from '@ce/types'
 import { OVERVIEW_FIELD_MAPPER } from './constants'
+import RecommendationSummaryCard from '../PerspectiveSummary/RecommendationSummaryCard'
 import css from './WorkloadSummary.module.scss'
 
 interface KeyValuePairRendererProps {
@@ -101,15 +108,20 @@ interface WorkloadSummaryProps {
   summaryData: Maybe<PerspectiveTrendStats> | undefined
   infoData: ClusterData | InstanceDetails
   pageType: CCM_PAGE_TYPE
+  showRecommendations?: boolean
+  recommendationFilters?: QlceViewFilterWrapperInput[]
 }
 
 const WorkloadSummary: (props: WorkloadSummaryProps) => JSX.Element = ({
   fetching,
   summaryData,
   infoData,
-  pageType
+  pageType,
+  showRecommendations,
+  recommendationFilters
 }) => {
   const { getString } = useStrings()
+
   if (fetching) {
     return (
       <Container className={css.loadingContainer}>
@@ -141,6 +153,16 @@ const WorkloadSummary: (props: WorkloadSummaryProps) => JSX.Element = ({
         <Text className={css.headingText}>{getString('ce.perspectives.workloadDetails.costDetailsText')}</Text>
         <CostDetails pageType={pageType} summaryData={summaryData} />
       </Container>
+      <FlexExpander />
+      {showRecommendations && recommendationFilters ? (
+        <Container
+          margin={{
+            right: 'large'
+          }}
+        >
+          <RecommendationSummaryCard filters={recommendationFilters} />
+        </Container>
+      ) : null}
     </Layout.Horizontal>
   )
 }

@@ -494,6 +494,9 @@ exports[`test cases for Node details Page should be able to render the details p
             </div>
           </div>
         </div>
+        <span
+          style="flex-grow: 1;"
+        />
       </div>
     </div>
     <div
