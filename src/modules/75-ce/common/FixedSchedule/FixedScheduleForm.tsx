@@ -30,7 +30,12 @@ import { useParams } from 'react-router-dom'
 import DaysOfWeekSelector from '@ce/common/DaysOfWeekSelector/DaysOfWeekSelector'
 import { useStrings } from 'framework/strings'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
-import { getStaticSchedulePeriodString, getStaticSchedulePeriodTime, getUserTimeZone } from '@ce/utils/momentUtils'
+import {
+  getMinDate,
+  getStaticSchedulePeriodString,
+  getStaticSchedulePeriodTime,
+  getUserTimeZone
+} from '@ce/utils/momentUtils'
 import type { FixedScheduleClient, ScheduleTime } from '@ce/components/COCreateGateway/models'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import { useValidateStaticScheduleList } from 'services/lw'
@@ -235,6 +240,8 @@ const PeriodSelection = ({ formikProps }: PeriodSelectionProps) => {
     setNeverEnds(checked)
   }
 
+  const hasBeginningDate = !_isEmpty(formikProps.values.beginsOn)
+
   return (
     <Container className={css.inputRow}>
       <Heading level={3} className={css.heading}>
@@ -248,7 +255,9 @@ const PeriodSelection = ({ formikProps }: PeriodSelectionProps) => {
             disabled={true}
             dateProps={{
               timePickerProps: { useAmPm: true },
-              minDate: new Date()
+              minDate: hasBeginningDate
+                ? new Date(getMinDate([new Date(formikProps.values.beginsOn as string), new Date()]))
+                : new Date()
             }}
             value={
               formikProps.values.beginsOn ? `${getStaticSchedulePeriodTime(formikProps.values.beginsOn)}` : undefined
@@ -270,12 +279,8 @@ const PeriodSelection = ({ formikProps }: PeriodSelectionProps) => {
               disabled={true}
               dateProps={{
                 timePickerProps: { useAmPm: true },
-                defaultValue: !_isEmpty(formikProps.values.beginsOn)
-                  ? new Date(formikProps.values.beginsOn as string)
-                  : new Date(),
-                minDate: !_isEmpty(formikProps.values.beginsOn)
-                  ? new Date(formikProps.values.beginsOn as string)
-                  : new Date()
+                defaultValue: hasBeginningDate ? new Date(formikProps.values.beginsOn as string) : new Date(),
+                minDate: hasBeginningDate ? new Date(formikProps.values.beginsOn as string) : new Date()
               }}
               value={
                 !_isEmpty(formikProps.values.endsOn)
