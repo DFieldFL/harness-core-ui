@@ -10,15 +10,16 @@
   &:first-child {
     margin-top: 0 !important;
   }
-  .shrinkCol {
-    flex-grow: 0;
-  }
+
   .col1 {
-    flex: 1;
+    flex: 0 200px;
     flex-wrap: wrap;
     min-width: 100px;
     text-align: left;
     flex-shrink: 0;
+    &.shrinkCol {
+      flex: 0 140px;
+    }
 
     > div {
       flex-wrap: wrap;
@@ -43,7 +44,6 @@
     margin: 0 var(--spacing-medium) !important;
   }
   .col3 {
-    flex: 0.2;
     > span {
       flex: 1;
       cursor: pointer;

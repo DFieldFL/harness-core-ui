@@ -51,7 +51,7 @@ const FixedSchedules: React.FC<FixedSchedulesProps> = props => {
     schedule: selectedSchedule,
     scheduleIndex: editParams.index,
     addSchedule: handleScheduleAddition,
-    allCreatedSchedules: props.schedules?.filter(s => !s.isDeleted)
+    allCreatedSchedules: props.schedules
   })
 
   const addFixedSchedule = () => {

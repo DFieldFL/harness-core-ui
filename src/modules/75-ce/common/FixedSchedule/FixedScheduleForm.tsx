@@ -114,7 +114,7 @@ const FixedScheduleForm: React.FC<FixedScheduleFormProps> = props => {
         {
           schedules: [
             ...props.allSchedules
-              .filter((_, i) => i !== props.scheduleIndex)
+              .filter((s, i) => !s.isDeleted && i !== props.scheduleIndex)
               .map(s => Utils.convertScheduleClientToSchedule(s, idParams)),
             Utils.convertScheduleClientToSchedule(updatedData, idParams)
           ]
