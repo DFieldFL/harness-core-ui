@@ -14,7 +14,6 @@ import { isEmpty } from 'lodash-es'
 import { useStrings } from 'framework/strings'
 import type { YamlBuilderHandlerBinding, YamlBuilderProps } from '@common/interfaces/YAMLBuilderProps'
 import { setNewTouchedPanel } from './WizardUtils'
-import type { FormikPropsInterface } from './WizardUtils'
 import css from './Wizard.module.scss'
 
 interface WizardFooterProps {
@@ -31,7 +30,7 @@ interface WizardFooterProps {
   elementsRef: { current: RefObject<HTMLSpanElement>[] }
   showError: (str: string) => void
   yamlBuilderReadOnlyModeProps?: YamlBuilderProps
-  formikProps: FormikProps<FormikPropsInterface>
+  formikProps: FormikProps<any>
   setSelectedTabId: Dispatch<SetStateAction<string>>
   setSelectedTabIndex: Dispatch<SetStateAction<number>>
   setTouchedPanels: Dispatch<SetStateAction<number[]>>
@@ -108,6 +107,7 @@ export const WizardFooter = ({
           disabled={disableSubmit}
           onClick={async () => {
             setSubmittedForm(true) // can possibly refactor to use formiksProps submitCount
+
             if (
               elementsRef.current.some(
                 (element): boolean =>
@@ -118,9 +118,7 @@ export const WizardFooter = ({
               showError(getString('addressErrorFields'))
             }
 
-            if (!isEmpty(await validate?.())) {
-              showError(getString('addressErrorFields'))
-            } else {
+            if (isEmpty(await validate?.())) {
               formikProps.submitForm()
             }
           }}
@@ -152,7 +150,6 @@ export const WizardFooter = ({
               }
 
               if (!isEmpty(await validate?.())) {
-                showError(getString('addressErrorFields'))
                 return
               } else {
                 formikProps.setSubmitting(true)

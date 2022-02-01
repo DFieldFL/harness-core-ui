@@ -18,7 +18,7 @@ import {
 import type { IconName } from '@wings-software/uicore'
 import { useHistory } from 'react-router-dom'
 import cx from 'classnames'
-import { isEqual, isEmpty } from 'lodash-es'
+import { isEqual } from 'lodash-es'
 import { NavigationCheck } from '@common/components/NavigationCheck/NavigationCheck'
 import { useToaster } from '@common/exports'
 import type {
@@ -26,7 +26,6 @@ import type {
   YamlBuilderProps,
   InvocationMapFunction
 } from '@common/interfaces/YAMLBuilderProps'
-import { ErrorsStrip } from '@pipeline/components/ErrorsStrip/ErrorsStrip'
 import {
   renderTitle,
   setNewTouchedPanel,
@@ -44,7 +43,13 @@ export interface PanelInterface {
   tabTitleComponent?: JSX.Element
   iconName?: IconName
   requiredFields?: string[]
-  checkValidPanel?: (formikValues: Record<string, any>, formikErrors: Record<string, any>) => boolean
+  checkValidPanel?: ({
+    formikValues,
+    formikErrors
+  }: {
+    formikValues: { [key: string]: any }
+    formikErrors: { [key: string]: any }
+  }) => boolean
 }
 export interface WizardMapInterface {
   wizardLabel?: string
@@ -80,7 +85,7 @@ interface WizardProps {
   visualYamlProps?: VisualYamlPropsInterface
   wizardType?: string // required for dataTooltip to be unique
   className?: string
-  errorsStripErrors?: any
+  renderErrorsStrip?: () => JSX.Element // component currently only allowed for pipeline components
 }
 
 const Wizard: React.FC<WizardProps> = ({
@@ -100,7 +105,7 @@ const Wizard: React.FC<WizardProps> = ({
   visualYamlProps = { showVisualYaml: false },
   className = '',
   wizardType,
-  errorsStripErrors
+  renderErrorsStrip
 }) => {
   const { wizardLabel } = wizardMap
   const defaultWizardTabId = wizardMap.panels[0].id
@@ -172,7 +177,7 @@ const Wizard: React.FC<WizardProps> = ({
         positionInHeader={positionInHeader}
         wizardLabel={wizardLabel}
       />
-      {submittedForm && !isEmpty(errorsStripErrors) && <ErrorsStrip formErrors={errorsStripErrors} />}
+      {submittedForm && renderErrorsStrip?.()}
       <Layout.Horizontal spacing="large" className={css.tabsContainer}>
         <Formik
           {...formikInitialProps}
@@ -182,7 +187,7 @@ const Wizard: React.FC<WizardProps> = ({
           {formikProps => {
             const additionalWizardFooterProps =
               typeof formikInitialProps.validate !== 'undefined'
-                ? { validate: () => formikInitialProps?.validate?.(formikProps.values, formikProps.setErrors) }
+                ? { validate: () => formikInitialProps?.validate?.(formikProps) }
                 : {}
 
             return (
@@ -247,8 +252,8 @@ const Wizard: React.FC<WizardProps> = ({
                             touchedPanels,
                             isEdit,
                             selectedTabIndex,
-                            formikValues: formikProps.values,
-                            formikErrors: formikProps.errors,
+                            formikVals: formikProps.values,
+                            formikErrs: formikProps.errors,
                             ref: elementsRef.current[panelIndex]
                           })}
                           panel={

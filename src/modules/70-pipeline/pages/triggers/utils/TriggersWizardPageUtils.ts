@@ -329,7 +329,12 @@ export const isRowFilled = (payloadCondition: AddConditionInterface): boolean =>
 const isIdentifierIllegal = (identifier: string): boolean =>
   regexIdentifier.test(identifier) && illegalIdentifiers.includes(identifier)
 
-const checkValidTriggerConfiguration = (formikValues: FlatValidWebhookFormikValuesInterface): boolean => {
+const checkValidTriggerConfiguration = ({
+  formikValues
+}: {
+  formikValues: { [key: string]: any }
+  formikErrors: { [key: string]: any }
+}): boolean => {
   const sourceRepo = formikValues['sourceRepo']
   const identifier = formikValues['identifier']
   const connectorURLType = formikValues.connectorRef?.connector?.spec?.type
@@ -348,7 +353,7 @@ const checkValidTriggerConfiguration = (formikValues: FlatValidWebhookFormikValu
   return true
 }
 
-const checkValidPayloadConditions = (formikValues: FlatValidWebhookFormikValuesInterface): boolean => {
+const checkValidPayloadConditions = ({ formikValues }: { formikValues: { [key: string]: any } }): boolean => {
   const payloadConditions = formikValues['payloadConditions']
   const headerConditions = formikValues['headerConditions']
   if (
@@ -373,19 +378,23 @@ const checkValidPayloadConditions = (formikValues: FlatValidWebhookFormikValuesI
   return true
 }
 
-const checkValidPipelineInput = (formikValues: Record<string, any>, formikErrors: Record<string, any>): boolean => {
+const checkValidPipelineInput = ({
+  formikValues,
+  formikErrors
+}: {
+  formikValues: { [key: string]: any }
+  formikErrors: { [key: string]: any }
+}): boolean => {
   if (formikValues.pipeline && !isEmpty(formikErrors?.pipeline)) {
     return false
   }
   return true
 }
 
-const checkValidEventConditionsForNewArtifact = (formikValues: {
-  eventConditions?: AddConditionInterface[]
-  versionOperator?: string
-  versionValue?: string
-  buildOperator?: string
-  buildValue?: string
+const checkValidEventConditionsForNewArtifact = ({
+  formikValues
+}: {
+  formikValues: { [key: string]: any }
 }): boolean => {
   const eventConditions = formikValues['eventConditions']
   if (
@@ -401,18 +410,18 @@ const checkValidEventConditionsForNewArtifact = (formikValues: {
   return true
 }
 
-const checkValidOverview = (formikValues: FlatValidScheduleFormikValuesInterface): boolean =>
+const checkValidOverview = ({ formikValues }: { formikValues: { [key: string]: any } }): boolean =>
   isIdentifierIllegal(formikValues?.identifier) ? false : true
 
-const checkValidSelectedArtifact = (formikValues: FlatValidArtifactFormikValuesInterface): boolean => {
+const checkValidSelectedArtifact = ({ formikValues }: { formikValues: { [key: string]: any } }): boolean => {
   return !isEmpty(formikValues?.selectedArtifact)
 }
 
-const checkValidArtifactTrigger = (formikValues: FlatValidArtifactFormikValuesInterface): boolean => {
-  return isIdentifierIllegal(formikValues?.identifier) ? false : true && checkValidSelectedArtifact(formikValues)
+const checkValidArtifactTrigger = ({ formikValues }: { formikValues: { [key: string]: any } }): boolean => {
+  return isIdentifierIllegal(formikValues?.identifier) ? false : true && checkValidSelectedArtifact({ formikValues })
 }
 
-const checkValidCronExpression = (formikValues: FlatValidScheduleFormikValuesInterface): boolean =>
+const checkValidCronExpression = ({ formikValues }: { formikValues: { [key: string]: any } }): boolean =>
   isCronValid(formikValues?.expression || '')
 
 const getPanels = ({

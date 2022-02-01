@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react'
-import type { FormikErrors } from 'formik'
+import type { FormikErrors, FormikProps } from 'formik'
 import { useHistory, useParams } from 'react-router-dom'
 import {
   Layout,
@@ -18,7 +18,7 @@ import {
   VisualYamlSelectedView as SelectedView
 } from '@wings-software/uicore'
 import { parse } from 'yaml'
-import { isEmpty, isUndefined, merge, cloneDeep, get, defaultTo } from 'lodash-es'
+import { isEmpty, isUndefined, merge, cloneDeep, get, defaultTo, set } from 'lodash-es'
 import { CompletionItemKind } from 'vscode-languageserver-types'
 import { Page, useToaster } from '@common/exports'
 import Wizard from '@common/components/Wizard/Wizard'
@@ -49,7 +49,7 @@ import type { PipelineType } from '@common/interfaces/RouteInterfaces'
 import { Scope } from '@common/interfaces/SecretsInterface'
 import { clearRuntimeInput, validatePipeline } from '@pipeline/components/PipelineStudio/StepUtil'
 import type { KVPair } from '@pipeline/components/PipelineVariablesContext/PipelineVariablesContext'
-
+import { ErrorsStrip } from '@pipeline/components/ErrorsStrip/ErrorsStrip'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import {
   getIdentifierFromValue,
@@ -237,7 +237,9 @@ const getArtifactManifestTriggerYaml = ({
   }
 
   // actions will be required thru validation
-  const stringifyPipelineRuntimeInput = yamlStringify({ pipeline: clearNullUndefined(newPipelineObj) })
+  const stringifyPipelineRuntimeInput = yamlStringify({
+    pipeline: clearNullUndefined(newPipelineObj)
+  })
 
   // clears any runtime inputs
   const artifactSourceSpec = clearRuntimeInputValue(
@@ -309,7 +311,12 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
   } = queryParamsOnNew || {}
 
   const { data: template } = useMutateAsGet(useGetTemplateFromPipeline, {
-    queryParams: { accountIdentifier: accountId, orgIdentifier, pipelineIdentifier, projectIdentifier },
+    queryParams: {
+      accountIdentifier: accountId,
+      orgIdentifier,
+      pipelineIdentifier,
+      projectIdentifier
+    },
     body: {
       stageIdentifiers: []
     }
@@ -358,7 +365,11 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       projectIdentifier,
       orgIdentifier,
       accountIdentifier: accountId,
-      scope: getScopeFromDTO({ accountIdentifier: accountId, orgIdentifier, projectIdentifier })
+      scope: getScopeFromDTO({
+        accountIdentifier: accountId,
+        orgIdentifier,
+        projectIdentifier
+      })
     }
   })
 
@@ -433,7 +444,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
         onEditInitialValues.pipeline || {}
       )
       const newPipeline = clearRuntimeInput(newOnEditPipeline)
-      setOnEditInitialValues({ ...onEditInitialValues, pipeline: newPipeline as unknown as PipelineInfoConfig })
+      setOnEditInitialValues({
+        ...onEditInitialValues,
+        pipeline: newPipeline as unknown as PipelineInfoConfig
+      })
       setCurrentPipeline({ pipeline: newPipeline }) // will reset initialValues
       setMergedPipelineKey(1)
     } else if (template?.data?.inputSetTemplateYaml) {
@@ -453,7 +467,11 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
 
   const { data: pipelineResponse } = useGetPipeline({
     pipelineIdentifier,
-    queryParams: { accountIdentifier: accountId, orgIdentifier, projectIdentifier }
+    queryParams: {
+      accountIdentifier: accountId,
+      orgIdentifier,
+      projectIdentifier
+    }
   })
 
   const originalPipeline: PipelineInfoConfig | undefined = parse(
@@ -465,12 +483,18 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       const newOnEditInitialValues = getWebhookTriggerValues({
         triggerResponseYaml: triggerResponse.data.yaml
       })
-      setOnEditInitialValues({ ...onEditInitialValues, ...newOnEditInitialValues })
+      setOnEditInitialValues({
+        ...onEditInitialValues,
+        ...newOnEditInitialValues
+      })
     } else if (triggerResponse?.data?.yaml && triggerResponse.data.type === TriggerTypes.SCHEDULE) {
       const newOnEditInitialValues = getScheduleTriggerValues({
         triggerResponseYaml: triggerResponse.data.yaml
       })
-      setOnEditInitialValues({ ...onEditInitialValues, ...newOnEditInitialValues })
+      setOnEditInitialValues({
+        ...onEditInitialValues,
+        ...newOnEditInitialValues
+      })
     } else if (
       triggerResponse?.data?.yaml &&
       (triggerResponse.data.type === TriggerTypes.MANIFEST || triggerResponse.data.type === TriggerTypes.ARTIFACT)
@@ -478,7 +502,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       const newOnEditInitialValues = getArtifactTriggerValues({
         triggerResponseYaml: triggerResponse?.data?.yaml
       })
-      setOnEditInitialValues({ ...onEditInitialValues, ...newOnEditInitialValues })
+      setOnEditInitialValues({
+        ...onEditInitialValues,
+        ...newOnEditInitialValues
+      })
     }
   }, [triggerIdentifier, triggerResponse, template])
 
@@ -529,7 +556,9 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       autoAbortPreviousExecutions = false
     } = val
 
-    const stringifyPipelineRuntimeInput = yamlStringify({ pipeline: clearNullUndefined(pipelineRuntimeInput) })
+    const stringifyPipelineRuntimeInput = yamlStringify({
+      pipeline: clearNullUndefined(pipelineRuntimeInput)
+    })
 
     if (formikValueSourceRepo !== GitSourceProviders.CUSTOM.value) {
       if (
@@ -654,7 +683,9 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       }
 
       if (secureToken && triggerYaml.source?.spec) {
-        triggerYaml.source.spec.spec = { authToken: { type: 'inline', spec: { value: secureToken } } }
+        triggerYaml.source.spec.spec = {
+          authToken: { type: 'inline', spec: { value: secureToken } }
+        }
       }
 
       if (triggerYaml.source?.spec) {
@@ -767,7 +798,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
           connectorRef,
           repoName,
           secureToken: authToken?.spec?.value,
-          actions: (actions || []).map((action: string) => ({ label: action, value: action })),
+          actions: (actions || []).map((action: string) => ({
+            label: action,
+            value: action
+          })),
           anyAction: (actions || []).length === 0,
           sourceBranchOperator,
           sourceBranchValue,
@@ -905,7 +939,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
         setErrorToasterMessage(getString('pipeline.triggers.cannotParseInputValues'))
       }
       const expressionBreakdownValues = getBreakdownValues(expression)
-      const newExpressionBreakdown = { ...resetScheduleObject, ...expressionBreakdownValues }
+      const newExpressionBreakdown = {
+        ...resetScheduleObject,
+        ...expressionBreakdownValues
+      }
       newOnEditInitialValues = {
         name,
         identifier,
@@ -1036,7 +1073,9 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
     } = val
 
     // actions will be required thru validation
-    const stringifyPipelineRuntimeInput = yamlStringify({ pipeline: clearNullUndefined(pipelineRuntimeInput) })
+    const stringifyPipelineRuntimeInput = yamlStringify({
+      pipeline: clearNullUndefined(pipelineRuntimeInput)
+    })
     return clearNullUndefined({
       name,
       identifier,
@@ -1120,7 +1159,11 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       try {
         const { status, data } = await updateTrigger(yamlStringify({ trigger: clearNullUndefined(triggerYaml) }) as any)
         if (status === ResponseStatus.SUCCESS) {
-          showSuccess(getString('pipeline.triggers.toast.successfulUpdate', { name: data?.name }))
+          showSuccess(
+            getString('pipeline.triggers.toast.successfulUpdate', {
+              name: data?.name
+            })
+          )
           history.push(
             routes.toTriggersPage({
               accountId,
@@ -1139,7 +1182,11 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       try {
         const { status, data } = await createTrigger(yamlStringify({ trigger: clearNullUndefined(triggerYaml) }) as any)
         if (status === ResponseStatus.SUCCESS) {
-          showSuccess(getString('pipeline.triggers.toast.successfulCreate', { name: data?.name }))
+          showSuccess(
+            getString('pipeline.triggers.toast.successfulCreate', {
+              name: data?.name
+            })
+          )
           history.push(
             routes.toTriggersPage({
               accountId,
@@ -1157,7 +1204,6 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
   }
 
   const handleWebhookSubmit = async (val: FlatValidWebhookFormikValuesInterface): Promise<void> => {
-    console.log('submitting!')
     const triggerYaml = getWebhookTriggerYaml({ values: val })
 
     submitTrigger(triggerYaml)
@@ -1333,7 +1379,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       setErrorToasterMessage('')
       try {
         const triggerYaml = parse(yaml)
-        setInitialValues({ ...initialValues, ...getWebhookTriggerValues({ triggerYaml }) })
+        setInitialValues({
+          ...initialValues,
+          ...getWebhookTriggerValues({ triggerYaml })
+        })
         setWizardKey(wizardKey + 1)
       } catch (e) {
         setErrorToasterMessage(getString('pipeline.triggers.cannotParseInputValues'))
@@ -1347,7 +1396,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       setErrorToasterMessage('')
       try {
         const triggerYaml = parse(yaml)
-        setInitialValues({ ...initialValues, ...getScheduleTriggerValues({ triggerYaml }) })
+        setInitialValues({
+          ...initialValues,
+          ...getScheduleTriggerValues({ triggerYaml })
+        })
         setWizardKey(wizardKey + 1)
       } catch (e) {
         setErrorToasterMessage(getString('pipeline.triggers.cannotParseInputValues'))
@@ -1361,7 +1413,10 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
       setErrorToasterMessage('')
       try {
         const triggerYaml = parse(yaml)
-        setInitialValues({ ...initialValues, ...getArtifactTriggerValues({ triggerYaml }) })
+        setInitialValues({
+          ...initialValues,
+          ...getArtifactTriggerValues({ triggerYaml })
+        })
         setWizardKey(wizardKey + 1)
       } catch (e) {
         setErrorToasterMessage(getString('pipeline.triggers.cannotParseInputValues'))
@@ -1391,13 +1446,21 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
   const isTriggerRbacDisabled = !isExecutable
 
   const wizardMap = initialValues.triggerType
-    ? getWizardMap({ triggerType: initialValues.triggerType, getString, triggerName: initialValues?.name })
+    ? getWizardMap({
+        triggerType: initialValues.triggerType,
+        getString,
+        triggerName: initialValues?.name
+      })
     : undefined
 
   const titleWithSwitch = ({ selectedView }: { selectedView: SelectedView }): JSX.Element => (
     <Layout.Horizontal
       spacing="medium"
-      style={{ paddingLeft: 'var(--spacing-xlarge)', paddingTop: 'var(--spacing-xsmall)', alignItems: 'baseline' }}
+      style={{
+        paddingLeft: 'var(--spacing-xlarge)',
+        paddingTop: 'var(--spacing-xsmall)',
+        alignItems: 'baseline'
+      }}
     >
       <Text color={Color.GREY_800} font={{ weight: 'bold' }} style={{ fontSize: 20 }}>
         {wizardMap?.wizardLabel}{' '}
@@ -1495,6 +1558,34 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
     return {}
   }
 
+  const renderErrorsStrip = (): JSX.Element => <ErrorsStrip formErrors={formErrors} />
+
+  const validateTriggerPipeline = async (
+    formikProps: FormikProps<any>
+  ): Promise<FormikErrors<FlatValidWebhookFormikValuesInterface>> => {
+    const { values, setErrors } = formikProps
+    const latestPipeline = {
+      ...currentPipeline,
+      pipeline: values.pipeline as PipelineInfoConfig
+    }
+    const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
+    // https://github.com/formium/formik/issues/1392
+    const errors: any = await { ...runPipelineFormErrors }
+    const ciCodebaseErrors = validateCICodebase(values)
+    if (!isEmpty(ciCodebaseErrors)) {
+      const [ciCodebaseErrorsEntry] = Object.entries(ciCodebaseErrors)
+      set(errors, ciCodebaseErrorsEntry[0], ciCodebaseErrorsEntry[1])
+      setErrors({ pipeline: errors?.pipeline })
+      setFormErrors({ pipeline: errors }) // error strip
+      return errors
+    } else if (!isEmpty(runPipelineFormErrors)) {
+      setErrors(runPipelineFormErrors)
+      // To do: have errors outlines display
+      return runPipelineFormErrors
+    }
+    return errors
+  }
+
   const renderWebhookWizard = (): JSX.Element | undefined => {
     const isEdit = !!onEditInitialValues?.identifier
     if (!wizardMap) return undefined
@@ -1508,25 +1599,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             TriggerTypes.WEBHOOK as unknown as NGTriggerSourceV2['type'],
             getString
           ),
-          validate: async (
-            values: Record<string, any>,
-            setErrors: (val: Record<string, any>) => void
-          ): Promise<FormikErrors<FlatValidWebhookFormikValuesInterface>> => {
-            console.log('got to validating!')
-            // Validate specifically
-            const latestPipeline = { ...currentPipeline, pipeline: values.pipeline as PipelineInfoConfig }
-            // setCurrentPipeline(latestPipeline)
-            const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
-            // https://github.com/formium/formik/issues/1392
-            console.log(runPipelineFormErrors)
-            // throw runPipelineFormErrors
-            // if value runPipelineFormErrors is {}, we're in the clear to validate CICodebase or continue to submit
-            // validateCICodebase already in validatePipeline
-            const val = runPipelineFormErrors
-            console.log(val)
-            setErrors({ pipeline: val })
-            return val
-          },
+          validate: validateTriggerPipeline,
           validateOnChange: true,
           enableReinitialize: true
         }}
@@ -1556,7 +1629,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
           positionInHeader: true
         }}
         leftNav={titleWithSwitch}
-        errorsStripErrors={formErrors}
+        renderErrorsStrip={renderErrorsStrip}
       >
         <WebhookTriggerConfigPanel />
         <WebhookConditionsPanel />
@@ -1579,20 +1652,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             initialValues.triggerType as unknown as NGTriggerSourceV2['type'],
             getString
           ),
-          validate: async (
-            values: FlatValidArtifactFormikValuesInterface
-          ): Promise<FormikErrors<FlatValidArtifactFormikValuesInterface>> => {
-            console.log('got to validating!')
-            // Validate specifically
-            const latestPipeline = { ...currentPipeline, pipeline: values.pipeline as PipelineInfoConfig }
-            setCurrentPipeline(latestPipeline)
-            const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
-            // https://github.com/formium/formik/issues/1392
-            console.log(runPipelineFormErrors)
-            // throw runPipelineFormErrors
-
-            return validateCICodebase(values)
-          },
+          validate: validateTriggerPipeline,
           validateOnChange: true,
           enableReinitialize: true
         }}
@@ -1620,7 +1680,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
           loading: loadingYamlSchema,
           invocationMap: invocationMapWebhook
         }}
-        errorsStripErrors={formErrors}
+        renderErrorsStrip={renderErrorsStrip}
         leftNav={titleWithSwitch}
       >
         <ArtifactTriggerConfigPanel />
@@ -1642,20 +1702,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
             TriggerTypes.SCHEDULE as unknown as NGTriggerSourceV2['type'],
             getString
           ),
-          validate: async (
-            values: FlatValidScheduleFormikValuesInterface
-          ): Promise<FormikErrors<FlatValidScheduleFormikValuesInterface>> => {
-            console.log('got to validating!')
-            // Validate specifically
-            const latestPipeline = { ...currentPipeline, pipeline: values.pipeline as PipelineInfoConfig }
-            setCurrentPipeline(latestPipeline)
-            const runPipelineFormErrors = await getFormErrors(latestPipeline, yamlTemplate, values.pipeline)
-            // https://github.com/formium/formik/issues/1392
-            console.log(runPipelineFormErrors)
-            // throw runPipelineFormErrors
-
-            return validateCICodebase(values)
-          },
+          validate: validateTriggerPipeline,
           validateOnChange: true,
           enableReinitialize: true
         }}
@@ -1683,7 +1730,7 @@ const TriggersWizardPage: React.FC = (): JSX.Element => {
           onYamlSubmit: submitTrigger,
           loading: loadingYamlSchema
         }}
-        errorsStripErrors={formErrors}
+        renderErrorsStrip={renderErrorsStrip}
       >
         <TriggerOverviewPanel />
         <SchedulePanel />

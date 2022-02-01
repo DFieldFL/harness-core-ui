@@ -175,7 +175,6 @@ export class RunStep extends PipelineStep<RunStepData> {
         { getString },
         viewType
       )
-      console.log(res)
       return res
     }
 

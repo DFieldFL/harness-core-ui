@@ -24,10 +24,7 @@ import css from './Wizard.module.scss'
 export interface FormikPropsInterface {
   initialValues: any
   validationSchema?: any
-  validate?: (
-    values: Record<string, any>,
-    setErrors: (val: Record<string, any>) => void
-  ) => Promise<FormikErrors<any>> | FormikErrors<any>
+  validate?: (formikProps: FormikProps<any>) => Promise<FormikErrors<any>> | FormikErrors<any> | any
   validateOnBlur?: boolean
   validateOnChange?: boolean
   enableReinitialize?: boolean
@@ -40,23 +37,29 @@ const renderIcon = ({
   panelIndex,
   touchedPanels,
   isEdit,
-  formikValues,
-  formikErrors
+  formikVals,
+  formikErrs
 }: {
   requiredFields?: string[]
-  checkValidPanel?: (formikValues: Record<string, any>, formikErrors: Record<string, any>) => boolean
+  checkValidPanel?: ({
+    formikValues,
+    formikErrors
+  }: {
+    formikValues: { [key: string]: any }
+    formikErrors: { [key: string]: any }
+  }) => boolean
   panelIndex: number
   touchedPanels: number[]
   isEdit: boolean
-  formikValues: Record<string, any>
-  formikErrors: Record<string, any>
+  formikVals: { [key: string]: any }
+  formikErrs: { [key: string]: any }
 }): JSX.Element | undefined => {
   if (!touchedPanels.includes(panelIndex) && !isEdit) return
   let iconName: IconName = 'tick-circle'
   let iconColor = Color.GREEN_500
 
   let showWarningIcon = requiredFields?.some(requiredField => {
-    const val = formikValues[requiredField]
+    const val = formikVals[requiredField]
     // empty array should not show warning as valid yaml spec
     // set array to undefined to see warning
     if (isUndefined(val) || (typeof val === 'string' && val === '')) {
@@ -64,7 +67,7 @@ const renderIcon = ({
     }
   })
 
-  if (!showWarningIcon && checkValidPanel && !checkValidPanel(formikValues, formikErrors)) {
+  if (!showWarningIcon && checkValidPanel && !checkValidPanel({ formikValues: formikVals, formikErrors: formikErrs })) {
     showWarningIcon = true
   }
   if (showWarningIcon) {
@@ -85,19 +88,25 @@ export const renderTitle = ({
   isEdit,
   selectedTabIndex,
   ref,
-  formikValues,
-  formikErrors
+  formikVals,
+  formikErrs
 }: {
   tabTitle?: string
   tabTitleComponent?: JSX.Element
   requiredFields: string[]
-  checkValidPanel?: (formikValues: Record<string, any>, formikErrors: Record<string, any>) => boolean
+  checkValidPanel?: ({
+    formikValues,
+    formikErrors
+  }: {
+    formikValues: { [key: string]: any }
+    formikErrors: { [key: string]: any }
+  }) => boolean
   panelIndex: number
   touchedPanels: number[]
   isEdit: boolean
   selectedTabIndex: number
-  formikValues: Record<string, any>
-  formikErrors: Record<string, any>
+  formikVals: { [key: string]: any }
+  formikErrs: { [key: string]: any }
   ref: RefObject<HTMLSpanElement>
 }): JSX.Element => {
   let title: string | JSX.Element = ''
@@ -109,8 +118,8 @@ export const renderTitle = ({
     panelIndex,
     touchedPanels,
     isEdit,
-    formikValues,
-    formikErrors,
+    formikVals,
+    formikErrs,
     checkValidPanel
   })
   return (
@@ -201,7 +210,7 @@ export const renderYamlBuilder = ({
   loadingYamlView?: boolean
   yamlBuilderReadOnlyModeProps: YamlBuilderProps
   convertFormikValuesToYaml?: (formikPropsValues: any) => any
-  formikProps: FormikProps<FormikPropsInterface>
+  formikProps: FormikProps<any>
   setYamlHandler: Dispatch<SetStateAction<YamlBuilderHandlerBinding | undefined>>
   invocationMap?: Map<RegExp, InvocationMapFunction>
   schema?: Record<string, any>
