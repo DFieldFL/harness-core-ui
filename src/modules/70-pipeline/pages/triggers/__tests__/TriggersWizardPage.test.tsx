@@ -61,6 +61,11 @@ jest.mock('@common/hooks', () => ({
   useMutateAsGet: jest.fn()
 }))
 
+window.IntersectionObserver = jest.fn().mockImplementation(() => ({
+  observe: () => null,
+  unobserve: () => null
+}))
+
 const params = {
   accountId: 'testAcc',
   orgIdentifier: 'testOrg',

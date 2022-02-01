@@ -60,6 +60,11 @@ jest.mock('react-monaco-editor', () => ({ value, onChange, name }: any) => (
   <textarea value={value} onChange={e => onChange(e.target.value)} name={name || 'spec.source.spec.script'} />
 ))
 
+window.IntersectionObserver = jest.fn().mockImplementation(() => ({
+  observe: () => null,
+  unobserve: () => null
+}))
+
 const params = {
   accountId: 'testAcc',
   orgIdentifier: 'testOrg',

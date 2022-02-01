@@ -212,8 +212,7 @@ describe('Wizard tests', () => {
       fireEvent.change(numberOnly2, { target: { value: '2000' } })
 
       const numOfWarningSigns = document.body.querySelectorAll('[icon="warning-sign"]')?.length
-
-      await waitFor(() => expect(numOfWarningSigns).toEqual(1))
+      await waitFor(() => expect(numOfWarningSigns).toEqual(2)) // 1 error strip, 1 wizard tab
     })
 
     test('Show error toaster message', async () => {
