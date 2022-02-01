@@ -177,22 +177,24 @@ export default function TerraformEditView(
   }
 
   const getNewConnectorSteps = () => {
+    const connectorType = ConnectorMap[selectedConnector]
+    window.console.log('ConnectorMap[selectedConnector]', connectorType, selectedConnector)
     const buildPayload = getBuildPayload(ConnectorMap[selectedConnector])
     return (
       <StepWizard title={getString('connectors.createNewConnector')}>
         <ConnectorDetailsStep
-          type={ConnectorMap[selectedConnector]}
+          type={connectorType}
           name={getString('overview')}
           isEditMode={isEditMode}
           gitDetails={{ repoIdentifier, branch, getDefaultFromOtherRepo: true }}
         />
         <GitDetailsStep
-          type={ConnectorMap[selectedConnector]}
+          type={connectorType}
           name={getString('details')}
           isEditMode={isEditMode}
           connectorInfo={undefined}
         />
-        {ConnectorMap[selectedConnector] === Connectors.GIT ? (
+        {connectorType === Connectors.GIT ? (
           <StepGitAuthentication
             name={getString('credentials')}
             onConnectorCreated={() => {
@@ -206,7 +208,7 @@ export default function TerraformEditView(
             projectIdentifier={projectIdentifier}
           />
         ) : null}
-        {ConnectorMap[selectedConnector] === Connectors.GITHUB ? (
+        {connectorType === Connectors.GITHUB ? (
           <StepGithubAuthentication
             name={getString('credentials')}
             onConnectorCreated={() => {
@@ -220,7 +222,7 @@ export default function TerraformEditView(
             projectIdentifier={projectIdentifier}
           />
         ) : null}
-        {ConnectorMap[selectedConnector] === Connectors.BITBUCKET ? (
+        {connectorType === Connectors.BITBUCKET ? (
           <StepBitbucketAuthentication
             name={getString('credentials')}
             onConnectorCreated={() => {
@@ -234,7 +236,7 @@ export default function TerraformEditView(
             projectIdentifier={projectIdentifier}
           />
         ) : null}
-        {ConnectorMap[selectedConnector] === Connectors.GITLAB ? (
+        {connectorType === Connectors.GITLAB ? (
           <StepGitlabAuthentication
             name={getString('credentials')}
             identifier={CONNECTOR_CREDENTIALS_STEP_IDENTIFIER}
@@ -261,7 +263,7 @@ export default function TerraformEditView(
           connectorInfo={undefined}
           isStep={true}
           isLastStep={false}
-          type={ConnectorMap[selectedConnector]}
+          type={connectorType}
         />
       </StepWizard>
     )

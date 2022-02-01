@@ -72,6 +72,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
       ? data?.spec?.configuration?.configFiles?.store?.type
       : data?.spec?.configuration?.spec?.configFiles?.store?.type
     setSelectedType(selectedStore)
+    setSelectedConnector(selectedStore)
   }, [isEditMode])
 
   const newConnectorLabel = `${getString('newLabel')} ${
