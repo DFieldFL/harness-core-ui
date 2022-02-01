@@ -1134,3 +1134,557 @@ exports[`INPUT SET SELECTOR input set displayed in popover list: snapshot aftero
   </span>
 </div>
 `;
+
+exports[`INPUT SET SELECTOR input set displayed in popover list: snapshot afteropening the input set list 3`] = `
+<div>
+  <span
+    class="bp3-popover-wrapper isPopoverParent"
+  >
+    <span
+      class="bp3-popover-target bp3-popover-open"
+    >
+      <div
+        class="renderSelectedValue"
+      >
+        <li
+          class="selectedInputSetLi"
+          data-testid="inputset1"
+          draggable="true"
+        >
+          <button
+            class="bp3-button Button--button StyledProps--font StyledProps--main selectedInputSetCard StyledProps--margin-top-small StyledProps--margin-bottom-small StyledProps--margin-right-small StyledProps--color StyledProps--color-primary7 Button--with-current-color Button--round Button--withRightIcon"
+            data-testid="button-is1"
+            type="button"
+          >
+            <span
+              class="bp3-button-text"
+            >
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+              >
+                <button
+                  class="bp3-button Button--button StyledProps--font StyledProps--main selectedInputSetOrder StyledProps--font StyledProps--font-weight-semi-bold Button--with-current-color Button--round Button--iconOnly Button--without-shadow"
+                  style="width: 20px; height: 20px;"
+                  type="button"
+                >
+                  <span
+                    class="bp3-button-text"
+                  >
+                    1
+                  </span>
+                </button>
+                <p
+                  class="StyledProps--font StyledProps--main selectedInputSetLabel StyledProps--color StyledProps--color-primary8"
+                  style="display: flex; align-items: center;"
+                >
+                  <span
+                    class="bp3-icon StyledProps--main selectedInputSetTypeIcon StyledProps--padding-right-xsmall"
+                    data-icon="yaml-builder-input-sets"
+                  >
+                    <svg
+                      height="16"
+                      viewBox="0 0 18 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="#22272D"
+                      >
+                        <path
+                          d="M12.946 5.347a.49.49 0 00-.492-.486H4.581a.49.49 0 00-.492.486c0 .269.22.486.492.486h7.873a.49.49 0 00.492-.486zM4.581 8.264c-.272 0-.492.218-.492.486s.22.486.492.486H9.01c.271 0 .492-.218.492-.486s-.22-.486-.492-.486H4.58zm7.92 5.833H3.644a.55.55 0 01-.538-.56V2.018a.55.55 0 01.538-.56h9.748a.55.55 0 01.54.56v5.325c0 .269.22.486.491.486a.49.49 0 00.492-.486V2.02c0-.844-.679-1.533-1.523-1.533H3.643c-.844 0-1.523.69-1.523 1.533v11.517c0 .844.68 1.533 1.523 1.533h8.859a.49.49 0 00.492-.486.49.49 0 00-.492-.486z"
+                        />
+                        <path
+                          d="M15.676 10.418h-1.005V9.413a.524.524 0 10-1.048 0v1.004H12.28a.524.524 0 000 1.049h1.343v1.343a.524.524 0 101.048 0v-1.343h1.005a.524.524 0 000-1.048z"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  is1
+                </p>
+              </div>
+            </span>
+            <span
+              class="bp3-icon bp3-icon-cross StyledProps--main"
+              icon="cross"
+              style="cursor: pointer;"
+            >
+              <svg
+                data-icon="cross"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+              >
+                <desc>
+                  cross
+                </desc>
+                <path
+                  d="M9.41 8l3.29-3.29c.19-.18.3-.43.3-.71a1.003 1.003 0 00-1.71-.71L8 6.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42L6.59 8 3.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71L8 9.41l3.29 3.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71L9.41 8z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </span>
+          </button>
+        </li>
+        <li
+          class="selectedInputSetLi"
+          data-testid="inputset2"
+          draggable="true"
+        >
+          <button
+            class="bp3-button Button--button StyledProps--font StyledProps--main selectedInputSetCard StyledProps--margin-top-small StyledProps--margin-bottom-small StyledProps--margin-right-small StyledProps--color StyledProps--color-primary7 Button--with-current-color Button--round Button--withRightIcon"
+            data-testid="button-is2"
+            type="button"
+          >
+            <span
+              class="bp3-button-text"
+            >
+              <div
+                class="Layout--horizontal Layout--layout-spacing-small StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+              >
+                <button
+                  class="bp3-button Button--button StyledProps--font StyledProps--main selectedInputSetOrder StyledProps--font StyledProps--font-weight-semi-bold Button--with-current-color Button--round Button--iconOnly Button--without-shadow"
+                  style="width: 20px; height: 20px;"
+                  type="button"
+                >
+                  <span
+                    class="bp3-button-text"
+                  >
+                    2
+                  </span>
+                </button>
+                <p
+                  class="StyledProps--font StyledProps--main selectedInputSetLabel StyledProps--color StyledProps--color-primary8"
+                  style="display: flex; align-items: center;"
+                >
+                  <span
+                    class="bp3-icon StyledProps--main selectedInputSetTypeIcon StyledProps--padding-right-xsmall"
+                    data-icon="yaml-builder-input-sets"
+                  >
+                    <svg
+                      height="16"
+                      viewBox="0 0 18 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="#22272D"
+                      >
+                        <path
+                          d="M12.946 5.347a.49.49 0 00-.492-.486H4.581a.49.49 0 00-.492.486c0 .269.22.486.492.486h7.873a.49.49 0 00.492-.486zM4.581 8.264c-.272 0-.492.218-.492.486s.22.486.492.486H9.01c.271 0 .492-.218.492-.486s-.22-.486-.492-.486H4.58zm7.92 5.833H3.644a.55.55 0 01-.538-.56V2.018a.55.55 0 01.538-.56h9.748a.55.55 0 01.54.56v5.325c0 .269.22.486.491.486a.49.49 0 00.492-.486V2.02c0-.844-.679-1.533-1.523-1.533H3.643c-.844 0-1.523.69-1.523 1.533v11.517c0 .844.68 1.533 1.523 1.533h8.859a.49.49 0 00.492-.486.49.49 0 00-.492-.486z"
+                        />
+                        <path
+                          d="M15.676 10.418h-1.005V9.413a.524.524 0 10-1.048 0v1.004H12.28a.524.524 0 000 1.049h1.343v1.343a.524.524 0 101.048 0v-1.343h1.005a.524.524 0 000-1.048z"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                  is2
+                </p>
+              </div>
+            </span>
+            <span
+              class="bp3-icon bp3-icon-cross StyledProps--main"
+              icon="cross"
+              style="cursor: pointer;"
+            >
+              <svg
+                data-icon="cross"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+              >
+                <desc>
+                  cross
+                </desc>
+                <path
+                  d="M9.41 8l3.29-3.29c.19-.18.3-.43.3-.71a1.003 1.003 0 00-1.71-.71L8 6.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42L6.59 8 3.3 11.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71L8 9.41l3.29 3.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71L9.41 8z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </span>
+          </button>
+        </li>
+        <button
+          class="bp3-button bp3-minimal Button--button StyledProps--font StyledProps--main addInputSetButton StyledProps--color StyledProps--color-primary7 Button--with-current-color Button--iconOnly Button--without-shadow Button--withLeftIcon Button--variation Button--variation-link"
+          type="button"
+        >
+          <span
+            class="bp3-icon bp3-icon-small-plus StyledProps--main"
+            icon="small-plus"
+          >
+            <svg
+              data-icon="small-plus"
+              height="16"
+              viewBox="0 0 16 16"
+              width="16"
+            >
+              <desc>
+                small-plus
+              </desc>
+              <path
+                d="M11 7H9V5c0-.55-.45-1-1-1s-1 .45-1 1v2H5c-.55 0-1 .45-1 1s.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1V9h2c.55 0 1-.45 1-1s-.45-1-1-1z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </span>
+          <span
+            class="bp3-button-text"
+          >
+            pipeline.inputSets.selectPlaceholder
+          </span>
+        </button>
+      </div>
+    </span>
+    <div
+      class="bp3-overlay bp3-overlay-open bp3-overlay-inline"
+    >
+      <div
+        class="bp3-transition-container bp3-popover-appear bp3-popover-appear-active"
+        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0);"
+      >
+        <div
+          class="bp3-popover bp3-minimal"
+          style="transform-origin: center top;"
+        >
+          <div
+            class="bp3-popover-content"
+          >
+            <div
+              class="Layout--vertical Layout--layout-spacing-small StyledProps--main popoverContainer"
+            >
+              <div
+                class="searchContainer"
+              >
+                <div
+                  class="TextInput--main"
+                >
+                  <div
+                    class="bp3-input-group search"
+                  >
+                    <input
+                      class="bp3-input"
+                      placeholder="search"
+                      style="padding-right: 0px;"
+                      type="text"
+                      value=""
+                    />
+                    <span
+                      class="bp3-input-action"
+                    >
+                      <span
+                        class="bp3-icon bp3-icon-chevron-down StyledProps--main"
+                        icon="chevron-down"
+                      >
+                        <svg
+                          data-icon="chevron-down"
+                          height="12"
+                          viewBox="0 0 16 16"
+                          width="12"
+                        >
+                          <desc>
+                            chevron-down
+                          </desc>
+                          <path
+                            d="M12 5c-.28 0-.53.11-.71.29L8 8.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42l4 4c.18.18.43.29.71.29s.53-.11.71-.29l4-4A1.003 1.003 0 0012 5z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="StyledProps--font StyledProps--main overlayIsHelperTextContainer StyledProps--border StyledProps--border-bottom"
+              >
+                <p
+                  class="StyledProps--font StyledProps--main overlayIsHelperText"
+                >
+                  pipeline.inputSets.overlayISHelperText
+                </p>
+              </div>
+              <div
+                class="Layout--vertical StyledProps--main StyledProps--padding-bottom-medium"
+              >
+                <ul
+                  class="bp3-menu list multiple"
+                >
+                  <li
+                    class="item"
+                    data-testid="0-inputset1"
+                    draggable="true"
+                  >
+                    <div
+                      class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-distribution-space-between"
+                    >
+                      <label
+                        class="bp3-control bp3-checkbox StyledProps--font Checkbox--checkbox checkbox StyledProps--main"
+                      >
+                        <input
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="bp3-control-indicator"
+                        />
+                        <div
+                          class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+                        >
+                          <span
+                            class="bp3-icon StyledProps--main"
+                            data-icon="yaml-builder-input-sets"
+                          >
+                            <svg
+                              height="16"
+                              viewBox="0 0 18 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g
+                                fill="#22272D"
+                              >
+                                <path
+                                  d="M12.946 5.347a.49.49 0 00-.492-.486H4.581a.49.49 0 00-.492.486c0 .269.22.486.492.486h7.873a.49.49 0 00.492-.486zM4.581 8.264c-.272 0-.492.218-.492.486s.22.486.492.486H9.01c.271 0 .492-.218.492-.486s-.22-.486-.492-.486H4.58zm7.92 5.833H3.644a.55.55 0 01-.538-.56V2.018a.55.55 0 01.538-.56h9.748a.55.55 0 01.54.56v5.325c0 .269.22.486.491.486a.49.49 0 00.492-.486V2.02c0-.844-.679-1.533-1.523-1.533H3.643c-.844 0-1.523.69-1.523 1.533v11.517c0 .844.68 1.533 1.523 1.533h8.859a.49.49 0 00.492-.486.49.49 0 00-.492-.486z"
+                                />
+                                <path
+                                  d="M15.676 10.418h-1.005V9.413a.524.524 0 10-1.048 0v1.004H12.28a.524.524 0 000 1.049h1.343v1.343a.524.524 0 101.048 0v-1.343h1.005a.524.524 0 000-1.048z"
+                                />
+                              </g>
+                            </svg>
+                          </span>
+                          <div
+                            class="StyledProps--font StyledProps--main nameIdContainer"
+                          >
+                            <p
+                              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--font-weight-bold StyledProps--color StyledProps--color-grey800"
+                              style="--text-line-clamp: 1;"
+                            >
+                              is1
+                            </p>
+                            <p
+                              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--font-small StyledProps--margin-top-xsmall StyledProps--color StyledProps--color-grey450"
+                              style="--text-line-clamp: 1;"
+                            >
+                              idLabel
+                            </p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <span
+                      class="order"
+                    >
+                      <p
+                        class="StyledProps--font StyledProps--main orderText"
+                      >
+                        1
+                      </p>
+                      <span
+                        class="bp3-icon bp3-icon-drag-handle-vertical StyledProps--main drag"
+                        icon="drag-handle-vertical"
+                      >
+                        <svg
+                          data-icon="drag-handle-vertical"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <desc>
+                            drag-handle-vertical
+                          </desc>
+                          <path
+                            d="M6 9c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4-6c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zM6 13c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0-8c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4 8c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0 8c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </li>
+                  <li
+                    class="item"
+                    data-testid="1-inputset2"
+                    draggable="true"
+                  >
+                    <div
+                      class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-distribution-space-between"
+                    >
+                      <label
+                        class="bp3-control bp3-checkbox StyledProps--font Checkbox--checkbox checkbox StyledProps--main"
+                      >
+                        <input
+                          checked=""
+                          type="checkbox"
+                        />
+                        <span
+                          class="bp3-control-indicator"
+                        />
+                        <div
+                          class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+                        >
+                          <span
+                            class="bp3-icon StyledProps--main"
+                            data-icon="yaml-builder-input-sets"
+                          >
+                            <svg
+                              height="16"
+                              viewBox="0 0 18 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <g
+                                fill="#22272D"
+                              >
+                                <path
+                                  d="M12.946 5.347a.49.49 0 00-.492-.486H4.581a.49.49 0 00-.492.486c0 .269.22.486.492.486h7.873a.49.49 0 00.492-.486zM4.581 8.264c-.272 0-.492.218-.492.486s.22.486.492.486H9.01c.271 0 .492-.218.492-.486s-.22-.486-.492-.486H4.58zm7.92 5.833H3.644a.55.55 0 01-.538-.56V2.018a.55.55 0 01.538-.56h9.748a.55.55 0 01.54.56v5.325c0 .269.22.486.491.486a.49.49 0 00.492-.486V2.02c0-.844-.679-1.533-1.523-1.533H3.643c-.844 0-1.523.69-1.523 1.533v11.517c0 .844.68 1.533 1.523 1.533h8.859a.49.49 0 00.492-.486.49.49 0 00-.492-.486z"
+                                />
+                                <path
+                                  d="M15.676 10.418h-1.005V9.413a.524.524 0 10-1.048 0v1.004H12.28a.524.524 0 000 1.049h1.343v1.343a.524.524 0 101.048 0v-1.343h1.005a.524.524 0 000-1.048z"
+                                />
+                              </g>
+                            </svg>
+                          </span>
+                          <div
+                            class="StyledProps--font StyledProps--main nameIdContainer"
+                          >
+                            <p
+                              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--font-weight-bold StyledProps--color StyledProps--color-grey800"
+                              style="--text-line-clamp: 1;"
+                            >
+                              is2
+                            </p>
+                            <p
+                              class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--font-small StyledProps--margin-top-xsmall StyledProps--color StyledProps--color-grey450"
+                              style="--text-line-clamp: 1;"
+                            >
+                              idLabel
+                            </p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <span
+                      class="order"
+                    >
+                      <p
+                        class="StyledProps--font StyledProps--main orderText"
+                      >
+                        2
+                      </p>
+                      <span
+                        class="bp3-icon bp3-icon-drag-handle-vertical StyledProps--main drag"
+                        icon="drag-handle-vertical"
+                      >
+                        <svg
+                          data-icon="drag-handle-vertical"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                        >
+                          <desc>
+                            drag-handle-vertical
+                          </desc>
+                          <path
+                            d="M6 9c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4-6c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zM6 13c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0-8c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm4 8c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0 8c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </li>
+                  <li
+                    class="item"
+                  >
+                    <div
+                      class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-distribution-space-between"
+                    >
+                      <div
+                        class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+                      >
+                        <label
+                          class="bp3-control bp3-checkbox StyledProps--font Checkbox--checkbox checkbox StyledProps--main"
+                        >
+                          <input
+                            type="checkbox"
+                          />
+                          <span
+                            class="bp3-control-indicator"
+                          />
+                          <div
+                            class="Layout--horizontal StyledProps--main StyledProps--flex StyledProps--flex-alignItems-center"
+                          >
+                            <span
+                              class="bp3-icon StyledProps--main"
+                              data-icon="step-group"
+                            >
+                              <svg
+                                height="16"
+                                id="step-group_svg__Layer_1"
+                                viewBox="0 0 21 20"
+                                width="16"
+                                x="0"
+                                xml:space="preserve"
+                                xmlns="http://www.w3.org/2000/svg"
+                                y="0"
+                              >
+                                <style>
+                                  .step-group_svg__st0{fill:#fff!important}
+                                </style>
+                                <path
+                                  class="step-group_svg__st0"
+                                  d="M1 .8h13v13.3H1z"
+                                />
+                                <path
+                                  d="M14 1H1v13h13V1zm1-1v15H0V0h15z"
+                                />
+                                <path
+                                  class="step-group_svg__st0"
+                                  d="M7 6h13v13H7z"
+                                />
+                                <path
+                                  class="step-group_svg__st1"
+                                  d="M20 6H7v13h13V6zm1-1v15H6V5h15z"
+                                />
+                              </svg>
+                            </span>
+                            <div
+                              class="StyledProps--font StyledProps--main nameIdContainer"
+                            >
+                              <p
+                                class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--font-weight-bold StyledProps--color StyledProps--color-grey800"
+                                data-testid="popover-ol1"
+                                style="--text-line-clamp: 1;"
+                              >
+                                ol1
+                              </p>
+                              <p
+                                class="StyledProps--font Text--lineclamp StyledProps--main StyledProps--font-small StyledProps--margin-top-xsmall StyledProps--color StyledProps--color-grey450"
+                                style="--text-line-clamp: 1;"
+                              >
+                                idLabel
+                              </p>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <button
+                  class="bp3-button Button--button StyledProps--font StyledProps--main StyledProps--margin-small Button--with-current-color Button--variation Button--variation-primary"
+                  type="button"
+                >
+                  <span
+                    class="bp3-button-text"
+                  >
+                    pipeline.inputSets.applyInputSets
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </span>
+</div>
+`;

@@ -61,7 +61,6 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
   const [selectedType, setSelectedType] = useState('')
-
   const { accountId, projectIdentifier, orgIdentifier } = useParams<{
     projectIdentifier: string
     orgIdentifier: string
@@ -69,13 +68,16 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
   }>()
 
   useEffect(() => {
-    setSelectedType(data?.spec?.configuration?.configFiles?.store?.type)
+    const selectedStore = isTerraformPlan
+      ? data?.spec?.configuration?.configFiles?.store?.type
+      : data?.spec?.configuration?.spec?.configFiles?.store?.type
+    setSelectedType(selectedStore)
   }, [isEditMode])
 
   const newConnectorLabel = `${getString('newLabel')} ${
     !!selectedType && getString(ConnectorLabelMap[selectedType as ConnectorTypes])
   } ${getString('connector')}`
-
+  const connectorError = getString('pipelineSteps.build.create.connectorRequiredError')
   const validationSchema = isTerraformPlan
     ? Yup.object().shape({
         spec: Yup.object().shape({
@@ -83,7 +85,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
             configFiles: Yup.object().shape({
               store: Yup.object().shape({
                 spec: Yup.object().shape({
-                  connectorRef: Yup.string().required(getString('pipelineSteps.build.create.connectorRequiredError'))
+                  connectorRef: Yup.string().required(connectorError)
                 })
               })
             })
@@ -97,7 +99,7 @@ export const TerraformConfigStepOne: React.FC<StepProps<any> & TerraformConfigSt
               configFiles: Yup.object().shape({
                 store: Yup.object().shape({
                   spec: Yup.object().shape({
-                    connectorRef: Yup.string().required(getString('pipelineSteps.build.create.connectorRequiredError'))
+                    connectorRef: Yup.string().required(connectorError)
                   })
                 })
               })
@@ -219,32 +221,34 @@ export const TerraformConfigStepTwo: React.FC<StepProps<any> & TerraformConfigSt
 }) => {
   const { getString } = useStrings()
   const { expressions } = useVariablesExpression()
-
   const gitFetchTypes: SelectOption[] = [
     { label: getString('gitFetchTypes.fromBranch'), value: getString('pipelineSteps.deploy.inputSet.branch') },
     { label: getString('gitFetchTypes.fromCommit'), value: getString('pipelineSteps.commitIdValue') }
   ]
+  const configSetup = {
+    configFiles: Yup.object().shape({
+      store: Yup.object().shape({
+        spec: Yup.object().shape({
+          gitFetchType: Yup.string().required(getString('cd.gitFetchTypeRequired')),
+          branch: Yup.string().when('gitFetchType', {
+            is: 'Branch',
+            then: Yup.string().trim().required(getString('validation.branchName'))
+          }),
+          commitId: Yup.string().when('gitFetchType', {
+            is: 'CommitId',
+            then: Yup.string().trim().required(getString('validation.commitId'))
+          }),
+          folderPath: Yup.string().required(getString('pipeline.manifestType.folderPathRequired'))
+        })
+      })
+    })
+  }
 
   const validationSchema = isTerraformPlan
     ? Yup.object().shape({
         spec: Yup.object().shape({
           configuration: Yup.object().shape({
-            configFiles: Yup.object().shape({
-              store: Yup.object().shape({
-                spec: Yup.object().shape({
-                  gitFetchType: Yup.string().required(getString('cd.gitFetchTypeRequired')),
-                  branch: Yup.string().when('gitFetchType', {
-                    is: 'Branch',
-                    then: Yup.string().trim().required(getString('validation.branchName'))
-                  }),
-                  commitId: Yup.string().when('gitFetchType', {
-                    is: 'CommitId',
-                    then: Yup.string().trim().required(getString('validation.commitId'))
-                  }),
-                  folderPath: Yup.string().required(getString('pipeline.manifestType.folderPathRequired'))
-                })
-              })
-            })
+            ...configSetup
           })
         })
       })
@@ -252,23 +256,7 @@ export const TerraformConfigStepTwo: React.FC<StepProps<any> & TerraformConfigSt
         spec: Yup.object().shape({
           configuration: Yup.object().shape({
             spec: Yup.object().shape({
-              configFiles: Yup.object().shape({
-                store: Yup.object().shape({
-                  spec: Yup.object().shape({
-                    connectorRef: Yup.string().required(getString('pipelineSteps.build.create.connectorRequiredError')),
-                    gitFetchType: Yup.string().required(getString('cd.gitFetchTypeRequired')),
-                    branch: Yup.string().when('gitFetchType', {
-                      is: 'Branch',
-                      then: Yup.string().trim().required(getString('validation.branchName'))
-                    }),
-                    commitId: Yup.string().when('gitFetchType', {
-                      is: 'Commit',
-                      then: Yup.string().trim().required(getString('validation.commitId'))
-                    }),
-                    folderPath: Yup.string().required(getString('pipeline.manifestType.folderPathRequired'))
-                  })
-                })
-              })
+              ...configSetup
             })
           })
         })
