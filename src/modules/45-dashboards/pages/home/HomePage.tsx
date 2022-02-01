@@ -631,25 +631,14 @@ const HomePage: React.FC = () => {
               style={{ justifyContent: 'space-between', alignItems: 'center', width: '100%' }}
             >
               <section style={{ display: 'flex' }}>
-                {folderId === 'shared' && (
-                  <Button
-                    intent="primary"
-                    text={getString('dashboardLabel')}
-                    onClick={() => showModal()}
-                    icon="plus"
-                    style={{ minWidth: '110px', marginRight: 'var(--spacing-11)' }}
-                  />
-                )}
-                {folderId !== 'shared' && (
-                  <RbacButton
-                    intent="primary"
-                    text={getString('dashboardLabel')}
-                    onClick={() => showModal()}
-                    icon="plus"
-                    style={{ minWidth: '110px', marginRight: 'var(--spacing-11)' }}
-                    permission={permissionObj}
-                  />
-                )}
+                <RbacButton
+                  intent="primary"
+                  text={getString('dashboardLabel')}
+                  onClick={() => showModal()}
+                  icon="plus"
+                  style={{ minWidth: '110px', marginRight: 'var(--spacing-11)' }}
+                  permission={permissionObj}
+                />
 
                 <Layout.Horizontal className={css.predefinedTags + ' ' + css.mainNavTag}>
                   <ModuleTagsFilter selectedFilter={selectedFilter} setPredefinedFilter={setPredefinedFilter} />

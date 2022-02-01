@@ -30,7 +30,8 @@ import { useModalHook } from '@harness/use-modal'
 
 import { Select } from '@blueprintjs/select'
 
-import { Classes, Dialog, Menu, MenuItem } from '@blueprintjs/core'
+import { Classes, Dialog, Menu } from '@blueprintjs/core'
+import RbacMenuItem from '@rbac/components/MenuItem/MenuItem'
 import * as Yup from 'yup'
 import { NavLink, useParams, useHistory } from 'react-router-dom'
 import { useGet, useMutate } from 'restful-react'
@@ -388,9 +389,9 @@ const FoldersPage: React.FC = () => {
                   icon="plus"
                   style={{ minWidth: '110px', marginRight: 'var(--spacing-11)' }}
                   permission={{
-                    permission: PermissionIdentifier.EDIT_ACCOUNT,
+                    permission: PermissionIdentifier.EDIT_DASHBOARD,
                     resource: {
-                      resourceType: ResourceType.ACCOUNT
+                      resourceType: ResourceType.DASHBOARDS
                     }
                   }}
                 />
@@ -499,11 +500,17 @@ const FoldersPage: React.FC = () => {
                           <CardBody.Menu
                             menuContent={
                               <Menu>
-                                <MenuItem
+                                <RbacMenuItem
                                   text="Delete"
                                   onClick={() => {
                                     setDeleteContext(folder)
                                     openDialog()
+                                  }}
+                                  permission={{
+                                    permission: PermissionIdentifier.EDIT_DASHBOARD,
+                                    resource: {
+                                      resourceType: ResourceType.DASHBOARDS
+                                    }
                                   }}
                                 />
                               </Menu>
