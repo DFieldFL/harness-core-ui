@@ -74,6 +74,7 @@ import StepGitlabAuthentication from '@connectors/components/CreateConnector/Git
 import StepGithubAuthentication from '@connectors/components/CreateConnector/GithubConnector/StepAuth/StepGithubAuthentication'
 import StepBitbucketAuthentication from '@connectors/components/CreateConnector/BitbucketConnector/StepAuth/StepBitbucketAuthentication'
 import DelegateSelectorStep from '@connectors/components/CreateConnector/commonSteps/DelegateSelectorStep/DelegateSelectorStep'
+import StepArtifactoryAuthentication from '@connectors/components/CreateConnector/ArtifactoryConnector/StepAuth/StepArtifactoryAuthentication'
 import { Connectors, CONNECTOR_CREDENTIALS_STEP_IDENTIFIER } from '@connectors/constants'
 import {
   buildBitbucketPayload,
@@ -169,22 +170,23 @@ function TerraformPlanWidget(
   }
 
   const getNewConnectorSteps = () => {
-    const buildPayload = getBuildPayload(ConnectorMap[selectedConnector])
+    const connectorType = ConnectorMap[selectedConnector]
+    const buildPayload = getBuildPayload(connectorType)
     return (
       <StepWizard title={getString('connectors.createNewConnector')}>
-        <ConnectorDetailsStep
-          type={ConnectorMap[selectedConnector]}
+        {connectorType !== Connectors.ARTIFACTORY ? <ConnectorDetailsStep
+          type={connectorType}
           name={getString('overview')}
           isEditMode={isEditMode}
           gitDetails={{ repoIdentifier, branch, getDefaultFromOtherRepo: true }}
-        />
-        <GitDetailsStep
-          type={ConnectorMap[selectedConnector]}
+        />: null}
+        {connectorType !== Connectors.ARTIFACTORY ? <GitDetailsStep
+          type={connectorType}
           name={getString('details')}
           isEditMode={isEditMode}
           connectorInfo={undefined}
-        />
-        {ConnectorMap[selectedConnector] === Connectors.GIT ? (
+        />: null}
+        {connectorType === Connectors.GIT ? (
           <StepGitAuthentication
             name={getString('credentials')}
             onConnectorCreated={() => {
@@ -198,7 +200,7 @@ function TerraformPlanWidget(
             projectIdentifier={projectIdentifier}
           />
         ) : null}
-        {ConnectorMap[selectedConnector] === Connectors.GITHUB ? (
+        {connectorType === Connectors.GITHUB ? (
           <StepGithubAuthentication
             name={getString('credentials')}
             onConnectorCreated={() => {
@@ -212,7 +214,7 @@ function TerraformPlanWidget(
             projectIdentifier={projectIdentifier}
           />
         ) : null}
-        {ConnectorMap[selectedConnector] === Connectors.BITBUCKET ? (
+        {connectorType === Connectors.BITBUCKET ? (
           <StepBitbucketAuthentication
             name={getString('credentials')}
             onConnectorCreated={() => {
@@ -226,7 +228,7 @@ function TerraformPlanWidget(
             projectIdentifier={projectIdentifier}
           />
         ) : null}
-        {ConnectorMap[selectedConnector] === Connectors.GITLAB ? (
+        {connectorType === Connectors.GITLAB ? (
           <StepGitlabAuthentication
             name={getString('credentials')}
             identifier={CONNECTOR_CREDENTIALS_STEP_IDENTIFIER}
@@ -241,6 +243,37 @@ function TerraformPlanWidget(
             projectIdentifier={projectIdentifier}
           />
         ) : null}
+        {connectorType === Connectors.ARTIFACTORY ? (
+          <StepArtifactoryAuthentication
+            name={getString('details')}
+            identifier={CONNECTOR_CREDENTIALS_STEP_IDENTIFIER}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            connectorInfo={undefined}
+            accountId={accountId}
+            orgIdentifier={orgIdentifier}
+            projectIdentifier={projectIdentifier}
+          />
+        ) : // <ArtifactoryConnectorStep
+        //   name={getString('credentials')}
+        //   // identifier={CONNECTOR_CREDENTIALS_STEP_IDENTIFIER}
+        //   // onConnectorCreated={() => {
+        //   //   // Handle on success
+        //   // }}
+        //   isEditMode={isEditMode}
+        //   setIsEditMode={setIsEditMode}
+        //   connectorInfo={undefined}
+        //   accountId={accountId}
+        //   orgIdentifier={orgIdentifier}
+        //   projectIdentifier={projectIdentifier}
+        //   onClose={() => {
+        //     // Handle on close
+        //   }}
+        //   onSuccess={() => {
+        //     // Handle on close
+        //   }}
+        // />
+        null}
         <DelegateSelectorStep
           name={getString('delegate.DelegateselectionLabel')}
           isEditMode={isEditMode}
@@ -253,7 +286,7 @@ function TerraformPlanWidget(
           connectorInfo={undefined}
           isStep={true}
           isLastStep={false}
-          type={ConnectorMap[selectedConnector]}
+          type={connectorType}
         />
       </StepWizard>
     )

@@ -10,7 +10,7 @@
  * This is required for the transform to work
  */
 const customGenerator = require('./scripts/swagger-custom-generator.js')
-
+console.log('process.env.cdng_schema_path', process.env.cdng_schema_path)
 module.exports = {
   portal: {
     output: 'src/services/portal/index.tsx',
