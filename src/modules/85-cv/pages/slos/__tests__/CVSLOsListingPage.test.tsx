@@ -139,7 +139,7 @@ describe('CVSLOsListingPage', () => {
       />
     )
 
-    userEvent.click(screen.getByText('cv.slos.newSLO'))
+    userEvent.click(screen.getByText('cv.slos.createSLO'))
 
     expect(
       screen.getByText(
