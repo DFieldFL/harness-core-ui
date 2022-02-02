@@ -7,8 +7,16 @@
 
 import React from 'react'
 import { connect } from 'formik'
-import { Text, getMultiTypeFromValue, MultiTypeInputType, FormikForm, Color, Container } from '@wings-software/uicore'
-import { isEmpty } from 'lodash-es'
+import {
+  Text,
+  getMultiTypeFromValue,
+  MultiTypeInputType,
+  FormikForm,
+  Color,
+  Container,
+  Layout
+} from '@wings-software/uicore'
+import { isEmpty, startCase } from 'lodash-es'
 import cx from 'classnames'
 import { useStrings } from 'framework/strings'
 import { ShellScriptMonacoField } from '@common/components/ShellScriptMonaco/ShellScriptMonaco'
@@ -22,6 +30,7 @@ import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import { Connectors } from '@connectors/constants'
 import type { RunStepProps } from './RunStep'
 import { CIStep } from '../CIStep/CIStep'
+import { getOptionalSubLabel } from '../CIStep/CIStepOptionalConfig'
 import { shouldRenderRunTimeInputView } from '../CIStep/StepUtils'
 import css from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
@@ -126,7 +135,7 @@ export const RunStepInputSetBasic: React.FC<RunStepProps> = ({
         <div className={cx(css.formGroup, css.sm, css.topMargin4)}>
           <FormMultiTypeCheckboxField
             name={`${prefix}spec.privileged`}
-            label={getString('ci.privileged')}
+            label={getString('ci.privileged').concat(` (${startCase(getString('common.optionalLabel'))})`)}
             disabled={readonly}
             multiTypeTextbox={{
               expressions,
@@ -148,15 +157,18 @@ export const RunStepInputSetBasic: React.FC<RunStepProps> = ({
               }}
               multiTypeFieldSelectorProps={{
                 label: (
-                  <Text
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    className={css.inpLabel}
-                    color={Color.GREY_800}
-                    font={{ size: 'small', weight: 'semi-bold' }}
-                    tooltipProps={{ dataTooltipId: 'reportPaths' }}
-                  >
-                    {getString('pipelineSteps.reportPathsLabel')}
-                  </Text>
+                  <Layout.Horizontal flex={{ justifyContent: 'flex-start', alignItems: 'baseline' }}>
+                    <Text
+                      style={{ display: 'flex', alignItems: 'center' }}
+                      className={css.inpLabel}
+                      color={Color.GREY_800}
+                      font={{ size: 'small', weight: 'semi-bold' }}
+                    >
+                      {getString('pipelineSteps.reportPathsLabel')}
+                    </Text>
+                    &nbsp;
+                    {getOptionalSubLabel('reportPaths', getString)}
+                  </Layout.Horizontal>
                 ),
                 allowedTypes: allowableTypes.filter(
                   type => type !== MultiTypeInputType.EXPRESSION && type !== MultiTypeInputType.RUNTIME
@@ -178,15 +190,18 @@ export const RunStepInputSetBasic: React.FC<RunStepProps> = ({
             }}
             multiTypeFieldSelectorProps={{
               label: (
-                <Text
-                  style={{ display: 'flex', alignItems: 'center' }}
-                  className={css.inpLabel}
-                  color={Color.GREY_800}
-                  font={{ size: 'small', weight: 'semi-bold' }}
-                  tooltipProps={{ dataTooltipId: 'environmentVariables' }}
-                >
-                  {getString('environmentVariables')}
-                </Text>
+                <Layout.Horizontal flex={{ justifyContent: 'flex-start', alignItems: 'baseline' }}>
+                  <Text
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    className={css.inpLabel}
+                    color={Color.GREY_800}
+                    font={{ size: 'small', weight: 'semi-bold' }}
+                  >
+                    {getString('environmentVariables')}
+                  </Text>
+                  &nbsp;
+                  {getOptionalSubLabel('environmentVariables', getString)}
+                </Layout.Horizontal>
               ),
               allowedTypes: allowableTypes.filter(type => type !== MultiTypeInputType.EXPRESSION)
             }}
@@ -207,14 +222,18 @@ export const RunStepInputSetBasic: React.FC<RunStepProps> = ({
             }}
             multiTypeFieldSelectorProps={{
               label: (
-                <Text
-                  style={{ display: 'flex', alignItems: 'center' }}
-                  className={css.inpLabel}
-                  color={Color.GREY_800}
-                  font={{ size: 'small', weight: 'semi-bold' }}
-                >
-                  {getString('pipelineSteps.outputVariablesLabel')}
-                </Text>
+                <Layout.Horizontal flex={{ justifyContent: 'flex-start', alignItems: 'baseline' }}>
+                  <Text
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    className={css.inpLabel}
+                    color={Color.GREY_800}
+                    font={{ size: 'small', weight: 'semi-bold' }}
+                  >
+                    {getString('pipelineSteps.outputVariablesLabel')}
+                  </Text>
+                  &nbsp;
+                  {getOptionalSubLabel('outputVariables', getString)}
+                </Layout.Horizontal>
               ),
               allowedTypes: allowableTypes.filter(
                 type => type !== MultiTypeInputType.EXPRESSION && type !== MultiTypeInputType.RUNTIME
