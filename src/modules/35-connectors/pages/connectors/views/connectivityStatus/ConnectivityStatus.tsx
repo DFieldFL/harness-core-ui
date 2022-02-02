@@ -1,4 +1,11 @@
-import React, { useState, useEffect } from 'react'
+/*
+ * Copyright 2022 Harness Inc. All rights reserved.
+ * Use of this source code is governed by the PolyForm Shield 1.0.0 license
+ * that can be found in the licenses directory at the root of this repository, also available at
+ * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
+ */
+
+import React, { useState } from 'react'
 import {
   Text,
   Layout,
@@ -44,7 +51,8 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
 
   const [errorMessage, setErrorMessage] = useState<ErrorMessage>()
   const { getString } = useStrings()
-  const { branch, repoIdentifier } = data.gitDetails || {}
+  const { gitDetails = {}, connector: { identifier = '' } = {} } = data
+  const { branch, repoIdentifier } = gitDetails
   const [stepDetails, setStepDetails] = useState<StepDetails>({
     step: 1,
     intent: Intent.WARNING,
@@ -54,7 +62,7 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
   const { openErrorModal } = useTestConnectionErrorModal({})
 
   const { mutate: reloadTestConnection } = useGetTestConnectionResult({
-    identifier: data.connector?.identifier || '',
+    identifier: identifier,
     queryParams: {
       accountIdentifier: accountId,
       orgIdentifier: orgIdentifier,
@@ -71,6 +79,7 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
 
   const executeStepVerify = async (): Promise<void> => {
     if (stepDetails.step === StepIndex.get(STEP.TEST_CONNECTION) && stepDetails.status === 'PROCESS') {
+      setTesting(true)
       try {
         const result = await reloadTestConnection()
         setStatus(result?.data?.status)
@@ -113,12 +122,6 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
   }
   const stepName = GetTestConnectionValidationTextByType(data.connector?.type)
 
-  useEffect(() => {
-    if (testing) {
-      executeStepVerify()
-    }
-  }, [testing])
-
   const renderStatusText = (
     icon: IconName,
     iconProps: Partial<IconProps>,
@@ -140,30 +143,55 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
 
   const connectorStatus = status || data.status?.status
   const isStatusSuccess = connectorStatus === ConnectorStatus.SUCCESS
+  const errorSummary = errorMessage?.errorSummary || data?.status?.errorSummary
 
   const renderTooltip = () => {
-    return errorMessage?.errorSummary || data?.status?.errorSummary ? (
-      <Layout.Vertical font={{ size: 'small' }} spacing="small" padding="small">
-        <Text font={{ size: 'small' }} color={Color.WHITE}>
-          {errorMessage?.errorSummary || data.status?.errorSummary}
-        </Text>
-        {errorMessage?.errors || data?.status?.errors ? (
-          <Text
-            color={Color.BLUE_400}
-            onClick={e => {
-              e.stopPropagation()
-              openErrorModal((errorMessage as ErrorMessage) || data?.status)
-            }}
-            className={css.viewDetails}
-          >
-            {getString('connectors.testConnectionStep.errorDetails')}
+    if (errorSummary) {
+      return (
+        <Layout.Vertical font={{ size: 'small' }} spacing="small" padding="small">
+          <Text font={{ size: 'small' }} color={Color.WHITE}>
+            {errorSummary}
           </Text>
-        ) : null}
-      </Layout.Vertical>
-    ) : (
+          {errorMessage?.errors || data?.status?.errors ? (
+            <Text
+              color={Color.BLUE_400}
+              onClick={e => {
+                e.stopPropagation()
+                openErrorModal((errorMessage as ErrorMessage) || data?.status)
+              }}
+              className={css.viewDetails}
+            >
+              {getString('connectors.testConnectionStep.errorDetails')}
+            </Text>
+          ) : null}
+        </Layout.Vertical>
+      )
+    }
+    return (
       <Text padding="small" color={Color.WHITE}>
         {getString('noDetails')}
       </Text>
+    )
+  }
+
+  const renderStatus = () => {
+    if (!(connectorStatus || errorMessage)) {
+      return undefined
+    }
+    if (isStatusSuccess) {
+      return renderStatusText(
+        'full-circle',
+        { size: 6, color: Color.GREEN_500 },
+        '',
+        getString('success').toLowerCase()
+      )
+    }
+
+    return renderStatusText(
+      'warning-sign',
+      { size: 12, color: Color.RED_500 },
+      renderTooltip(),
+      getString('failed').toLowerCase()
     )
   }
 
@@ -172,23 +200,7 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
       {!testing ? (
         <>
           <Layout.Vertical width="100px">
-            <Layout.Horizontal spacing="small">
-              {connectorStatus || errorMessage
-                ? isStatusSuccess
-                  ? renderStatusText(
-                      'full-circle',
-                      { size: 6, color: Color.GREEN_500 },
-                      '',
-                      getString('success').toLowerCase()
-                    )
-                  : renderStatusText(
-                      'warning-sign',
-                      { size: 12, color: Color.RED_500 },
-                      renderTooltip(),
-                      getString('failed').toLowerCase()
-                    )
-                : undefined}
-            </Layout.Horizontal>
+            <Layout.Horizontal spacing="small">{renderStatus()}</Layout.Horizontal>
             {connectorStatus ? (
               <Text font={{ size: 'small' }} color={Color.GREY_400}>
                 {<ReactTimeago date={lastTestedAt || data.status?.testedAt || ''} />}
@@ -203,7 +215,7 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
               className={css.testBtn}
               onClick={e => {
                 e.stopPropagation()
-                setTesting(true)
+                executeStepVerify()
                 setStepDetails({
                   step: 1,
                   intent: Intent.WARNING,
