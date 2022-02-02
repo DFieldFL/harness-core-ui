@@ -5,7 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import React, { useState } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import {
   Text,
   Layout,
@@ -26,7 +26,8 @@ import {
   useGetTestConnectionResult,
   ConnectorConnectivityDetails,
   ConnectorValidationResult,
-  ConnectorResponse
+  ConnectorResponse,
+  ErrorDetail
 } from 'services/cd-ng'
 
 import { StepIndex, STEP } from '@connectors/common/VerifyOutOfClusterDelegate/VerifyOutOfClusterDelegate'
@@ -41,6 +42,42 @@ export type ErrorMessage = ConnectorValidationResult & { useErrorHandler?: boole
 
 interface ConnectivityStatusProps {
   data: ConnectorResponse
+}
+
+interface WarningTooltipProps {
+  errorSummary?: string
+  errors?: ErrorDetail[]
+  onClick: (event: MouseEvent<HTMLDivElement>) => void
+  errorDeatailsText: string
+  noDetailsText: string
+}
+
+const WarningTooltip: React.FC<WarningTooltipProps> = ({
+  errorSummary,
+  errors,
+  onClick,
+  errorDeatailsText,
+  noDetailsText
+}) => {
+  if (errorSummary) {
+    return (
+      <Layout.Vertical font={{ size: 'small' }} spacing="small" padding="small">
+        <Text font={{ size: 'small' }} color={Color.WHITE}>
+          {errorSummary}
+        </Text>
+        {errors ? (
+          <Text color={Color.BLUE_400} onClick={onClick} className={css.viewDetails}>
+            {errorDeatailsText}
+          </Text>
+        ) : null}
+      </Layout.Vertical>
+    )
+  }
+  return (
+    <Text padding="small" color={Color.WHITE}>
+      {noDetailsText}
+    </Text>
+  )
 }
 
 const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
@@ -145,31 +182,17 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
   const errorSummary = errorMessage?.errorSummary || data?.status?.errorSummary
 
   const renderTooltip = () => {
-    if (errorSummary) {
-      return (
-        <Layout.Vertical font={{ size: 'small' }} spacing="small" padding="small">
-          <Text font={{ size: 'small' }} color={Color.WHITE}>
-            {errorSummary}
-          </Text>
-          {errorMessage?.errors || data?.status?.errors ? (
-            <Text
-              color={Color.BLUE_400}
-              onClick={e => {
-                e.stopPropagation()
-                openErrorModal((errorMessage as ErrorMessage) || data?.status)
-              }}
-              className={css.viewDetails}
-            >
-              {getString('connectors.testConnectionStep.errorDetails')}
-            </Text>
-          ) : null}
-        </Layout.Vertical>
-      )
-    }
     return (
-      <Text padding="small" color={Color.WHITE}>
-        {getString('noDetails')}
-      </Text>
+      <WarningTooltip
+        errorSummary={errorSummary}
+        errors={errorMessage?.errors || data?.status?.errors}
+        onClick={e => {
+          e.stopPropagation()
+          openErrorModal((errorMessage as ErrorMessage) || data?.status)
+        }}
+        errorDeatailsText={getString('connectors.testConnectionStep.errorDetails')}
+        noDetailsText={getString('noDetails')}
+      />
     )
   }
 
