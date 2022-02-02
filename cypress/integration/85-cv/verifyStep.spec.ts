@@ -1,23 +1,20 @@
-const pipelineListAPI =
-  '/pipeline/api/pipelines/list?routingId=*&accountIdentifier=*&projectIdentifier=*&module=cd&orgIdentifier=*&searchTerm=&page=0&sort=lastUpdatedAt%2CDESC&size=20'
-const pipelineSummaryAPI =
-  '/pipeline/api/pipelines/summary/appdtest?routingId=*&accountIdentifier=*&orgIdentifier=*&projectIdentifier=*'
-const pipelineDetailsAPI = '/pipeline/api/pipelines/appdtest?accountIdentifier=*&orgIdentifier=*&projectIdentifier=*'
-const pipelineExecutionSummaryAPI =
-  '/pipeline/api/pipelines/execution/summary?routingId=*&accountIdentifier=*&projectIdentifier=*&orgIdentifier=*&module=cd&size=20&pipelineIdentifier=*&page=0&myDeployments=false'
-const pipelineExecutionAPI =
-  '/pipeline/api/pipelines/execution/C9mgNjxSS7-B-qQek27iuA?routingId=*&orgIdentifier=*&projectIdentifier=*&accountIdentifier=*'
-const pipelineExecutionForNodeAPI =
-  '/pipeline/api/pipelines/execution/C9mgNjxSS7-B-qQek27iuA?routingId=*&orgIdentifier=*&projectIdentifier=*&accountIdentifier=*&stageNodeId=g_LkakmWRPm-wC6rfC2ufg'
-const deploymentActivitySummaryAPI =
-  'cv/api/activity/GZNwefkdR2aBhc7owmJ1-w/deployment-activity-summary?routingId=*&accountId=*'
-const deploymentTimeseriesDataAPI =
-  '/cv/api/verify-step/GZNwefkdR2aBhc7owmJ1-w/deployment-timeseries-data?routingId=*&accountId=*&anomalousMetricsOnly=*&anomalousNodesOnly=*&pageNumber=0&pageSize=10'
-const deploymentTimeseriesDataWithNodeFilterAPI =
-  '/cv/api/verify-step/GZNwefkdR2aBhc7owmJ1-w/deployment-timeseries-data?routingId=*&accountId=*&anomalousMetricsOnly=*&anomalousNodesOnly=*&hostNames=harness-deployment-canary-7445f86dbf-ml857&pageNumber=0&pageSize=10'
-const healthSourceAPI = 'cv/api/activity/GZNwefkdR2aBhc7owmJ1-w/healthSources?routingId=*&accountId=*'
-const nodeNamesFilterAPI = 'cv/api/verify-step/GZNwefkdR2aBhc7owmJ1-w/all-node-names?routingId=*&accountId=*'
-const transactionsFilterAPI = 'cv/api/verify-step/GZNwefkdR2aBhc7owmJ1-w/all-transaction-names?routingId=*&accountId=*'
+import {
+  pipelineDetailsAPI,
+  pipelineExecutionAPI,
+  pipelineExecutionForNodeAPI,
+  pipelineExecutionSummaryAPI,
+  pipelineListAPI,
+  pipelineSummaryAPI
+} from '../../support/70-pipeline/constants'
+
+import {
+  deploymentActivitySummaryAPI,
+  deploymentTimeseriesDataAPI,
+  deploymentTimeseriesDataWithNodeFilterAPI,
+  healthSourceAPI,
+  nodeNamesFilterAPI,
+  transactionsFilterAPI
+} from '../../support/85-cv/verifyStep/constants'
 
 describe('Verify step', () => {
   beforeEach(() => {
