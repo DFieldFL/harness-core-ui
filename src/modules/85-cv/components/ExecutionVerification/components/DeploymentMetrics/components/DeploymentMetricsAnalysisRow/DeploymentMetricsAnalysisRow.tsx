@@ -71,7 +71,7 @@ export function DeploymentMetricsAnalysisRow(props: DeploymentMetricsAnalysisRow
       </div>
       {filteredCharts.length < charts.length && (
         <Container style={{ textAlign: 'center' }}>
-          <Button onClick={handleLoadMore} variation={ButtonVariation.LINK}>
+          <Button data-testid="loadMore_button" onClick={handleLoadMore} variation={ButtonVariation.LINK}>
             {getString('pipeline.verification.loadMore')}
           </Button>
         </Container>

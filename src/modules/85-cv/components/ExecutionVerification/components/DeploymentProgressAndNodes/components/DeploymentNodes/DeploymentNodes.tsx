@@ -24,6 +24,7 @@ export interface DeploymentNodesProps {
   nodes: DeploymentNodeAnalysisResult[]
   onClick?: (node: DeploymentNodeAnalysisResult) => void
   selectedNode?: DeploymentNodeAnalysisResult
+  nodeType?: string
 }
 
 interface NodeHealthPopoverProps {
@@ -56,7 +57,7 @@ function NodeHealthPopover(props: NodeHealthPopoverProps): JSX.Element {
 }
 
 export function DeploymentNodes(props: DeploymentNodesProps): JSX.Element {
-  const { className, nodes: deploymentNodes, onClick, selectedNode } = props
+  const { className, nodes: deploymentNodes, onClick, selectedNode, nodeType } = props
   const ref = useRef<HTMLDivElement>(null)
   const [coordinates, setCoordinates] = useState<HexagonCoordinates[]>([])
   const [hexagonPartSizes, setHexagonPartSizes] = useState<DeploymentNodeSubPartSize>(DefaultNodeSubPartSize)
@@ -82,6 +83,7 @@ export function DeploymentNodes(props: DeploymentNodesProps): JSX.Element {
             <Container
               key={index}
               className={css.hexagonContainer}
+              data-testid={nodeType ? `${nodeType}Node-${index}` : ''}
               onClick={() => {
                 onClick?.(nodes?.[index])
               }}

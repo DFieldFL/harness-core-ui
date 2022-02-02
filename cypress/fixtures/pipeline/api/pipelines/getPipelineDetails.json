@@ -1,0 +1,19 @@
+{
+  "status": "SUCCESS",
+  "data": {
+    "yamlPipeline": "pipeline:\n    name: appd-test\n    identifier: appdtest\n    projectIdentifier: shaswat\n    orgIdentifier: default\n    tags: {}\n    stages:\n        - stage:\n              name: appd\n              identifier: appd\n              description: \"\"\n              type: Deployment\n              spec:\n                  serviceConfig:\n                      serviceRef: appd\n                      serviceDefinition:\n                          type: Kubernetes\n                          spec:\n                              variables: []\n                  infrastructure:\n                      environmentRef: prod\n                      infrastructureDefinition:\n                          type: KubernetesDirect\n                          spec:\n                              connectorRef: account.k8sqasetup\n                              namespace: harness\n                              releaseName: release-<+INFRA_KEY>\n                      allowSimultaneousDeployments: true\n                  execution:\n                      steps:\n                          - step:\n                                type: Verify\n                                name: appd_dev\n                                identifier: appd_dev\n                                spec:\n                                    type: Rolling\n                                    spec:\n                                        sensitivity: HIGH\n                                        duration: 5m\n                                        deploymentTag: test\n                                timeout: 2h\n                                failureStrategies:\n                                    - onFailure:\n                                          errors:\n                                              - Verification\n                                          action:\n                                              type: ManualIntervention\n                                              spec:\n                                                  timeout: 2h\n                                                  onTimeout:\n                                                      action:\n                                                          type: StageRollback\n                                    - onFailure:\n                                          errors:\n                                              - Unknown\n                                          action:\n                                              type: ManualIntervention\n                                              spec:\n                                                  timeout: 2h\n                                                  onTimeout:\n                                                      action:\n                                                          type: Ignore\n                      rollbackSteps: []\n              tags: {}\n              failureStrategies:\n                  - onFailure:\n                        errors:\n                            - AllErrors\n                        action:\n                            type: StageRollback\n",
+    "version": 15,
+    "gitDetails": {
+      "objectId": null,
+      "branch": null,
+      "repoIdentifier": null,
+      "rootFolder": null,
+      "filePath": null,
+      "repoName": null
+    },
+    "entityValidityDetails": { "valid": true, "invalidYaml": null },
+    "modules": ["cd"]
+  },
+  "metaData": null,
+  "correlationId": "150a0e0c-4fa4-425f-82de-4847a5a787cf"
+}

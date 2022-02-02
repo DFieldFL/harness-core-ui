@@ -60,6 +60,7 @@ export function PrimaryAndCanaryNodes(props: PrimaryAndCanaryNodesProps): JSX.El
           onClick={node => {
             onSelectCallback?.(isEqual(node, selectedNode) ? undefined : node)
           }}
+          nodeType="canary"
         />
       </Container>
     </Container>

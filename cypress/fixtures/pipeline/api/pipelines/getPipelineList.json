@@ -1,0 +1,61 @@
+{
+  "status": "SUCCESS",
+  "data": {
+    "content": [
+      {
+        "name": "appd-test",
+        "identifier": "appdtest",
+        "tags": {},
+        "version": 15,
+        "numOfStages": 1,
+        "createdAt": 1641552750888,
+        "lastUpdatedAt": 1641552750888,
+        "modules": ["cd"],
+        "executionSummaryInfo": {
+          "numOfErrors": [0, 0, 0, 0, 0, 0, 0],
+          "deployments": [0, 1, 0, 0, 0, 0, 0],
+          "lastExecutionTs": 1643285292924,
+          "lastExecutionStatus": "Success",
+          "lastExecutionId": "C9mgNjxSS7-B-qQek27iuA"
+        },
+        "filters": {
+          "cd": {
+            "deploymentTypes": ["Kubernetes"],
+            "environmentNames": ["prod"],
+            "serviceNames": ["appd"],
+            "infrastructureTypes": ["KubernetesDirect"]
+          }
+        },
+        "stageNames": ["appd"],
+        "gitDetails": {
+          "objectId": null,
+          "branch": null,
+          "repoIdentifier": null,
+          "rootFolder": null,
+          "filePath": null,
+          "repoName": null
+        },
+        "entityValidityDetails": { "valid": true, "invalidYaml": null }
+      }
+    ],
+    "pageable": {
+      "sort": { "unsorted": false, "sorted": true, "empty": false },
+      "pageNumber": 0,
+      "pageSize": 20,
+      "offset": 0,
+      "paged": true,
+      "unpaged": false
+    },
+    "totalPages": 1,
+    "totalElements": 4,
+    "last": true,
+    "sort": { "unsorted": false, "sorted": true, "empty": false },
+    "first": true,
+    "numberOfElements": 4,
+    "size": 20,
+    "number": 0,
+    "empty": false
+  },
+  "metaData": null,
+  "correlationId": "36226302-fb77-4710-80d5-688076014cee"
+}

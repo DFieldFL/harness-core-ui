@@ -43,6 +43,7 @@ exports[`Unit tests for SummaryOfDeployedNodes Ensure content is rendered correc
         </p>
         <p
           class="StyledProps--font StyledProps--main viewDetails StyledProps--intent-primary"
+          data-testid="pipeline.verification.analysisTab.metrics"
           style="display: flex; align-items: center;"
         >
           viewDetails
@@ -96,6 +97,7 @@ exports[`Unit tests for SummaryOfDeployedNodes Ensure content is rendered correc
         </p>
         <p
           class="StyledProps--font StyledProps--main viewDetails StyledProps--intent-primary"
+          data-testid="pipeline.verification.analysisTab.logs"
           style="display: flex; align-items: center;"
         >
           viewDetails

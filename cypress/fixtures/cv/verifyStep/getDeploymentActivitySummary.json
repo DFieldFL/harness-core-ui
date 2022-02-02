@@ -1,0 +1,66 @@
+{
+  "metaData": {},
+  "resource": {
+    "serviceName": "appd",
+    "serviceIdentifier": "appd",
+    "envName": "prod",
+    "envIdentifier": "prod",
+    "deploymentTag": null,
+    "deploymentVerificationJobInstanceSummary": {
+      "progressPercentage": 100,
+      "remainingTimeMs": 0,
+      "startTime": 1643284380000,
+      "durationMs": 300000,
+      "risk": "UNHEALTHY",
+      "environmentName": "prod",
+      "jobName": null,
+      "verificationJobInstanceId": "GZNwefkdR2aBhc7owmJ1-w",
+      "activityId": "GZNwefkdR2aBhc7owmJ1-w",
+      "activityStartTime": 1643285299275,
+      "status": "VERIFICATION_FAILED",
+      "additionalInfo": {
+        "primary": [
+          {
+            "hostName": "harness-deployment-5f67d57589-gp4pd",
+            "risk": "NO_ANALYSIS",
+            "anomalousMetricsCount": 0,
+            "anomalousLogClustersCount": 0
+          },
+          {
+            "hostName": "harness-deployment-7445f86dbf-h8blt",
+            "risk": "NO_ANALYSIS",
+            "anomalousMetricsCount": 0,
+            "anomalousLogClustersCount": 0
+          },
+          {
+            "hostName": "harness-deployment-5f67d57589-4jc4c",
+            "risk": "NO_ANALYSIS",
+            "anomalousMetricsCount": 0,
+            "anomalousLogClustersCount": 0
+          }
+        ],
+        "canary": [
+          {
+            "hostName": "harness-deployment-canary-7445f86dbf-ml857",
+            "risk": "UNHEALTHY",
+            "anomalousMetricsCount": 3,
+            "anomalousLogClustersCount": 0
+          },
+          {
+            "hostName": "harness-deployment-canary-56b5cc7c5b-9rpq7",
+            "risk": "HEALTHY",
+            "anomalousMetricsCount": 1,
+            "anomalousLogClustersCount": 0
+          }
+        ],
+        "primaryInstancesLabel": "primary",
+        "canaryInstancesLabel": "canary",
+        "trafficSplitPercentage": null,
+        "type": "CANARY"
+      },
+      "timeSeriesAnalysisSummary": { "totalNumMetrics": 10, "numAnomMetrics": 3 },
+      "logsAnalysisSummary": { "totalClusterCount": 0, "anomalousClusterCount": 0 }
+    }
+  },
+  "responseMessages": []
+}

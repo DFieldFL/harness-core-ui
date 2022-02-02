@@ -1,0 +1,12 @@
+{
+  "metaData": {},
+  "resource": [
+    {
+      "identifier": "appd_prod/appdtest",
+      "name": "appd-test",
+      "type": "APP_DYNAMICS",
+      "verificationType": "TIME_SERIES"
+    }
+  ],
+  "responseMessages": []
+}

@@ -1,0 +1,545 @@
+{
+  "status": "SUCCESS",
+  "data": {
+    "content": [
+      {
+        "pipelineIdentifier": "appdtest",
+        "planExecutionId": "C9mgNjxSS7-B-qQek27iuA",
+        "name": "appd-test",
+        "status": "Success",
+        "tags": [],
+        "executionTriggerInfo": {
+          "triggerType": "MANUAL",
+          "triggeredBy": {
+            "uuid": "lv0euRhKRCyiXWzS7pOg6g",
+            "identifier": "Admin",
+            "extraInfo": { "email": "admin@harness.io" }
+          },
+          "isRerun": true,
+          "rerunInfo": {
+            "rootExecutionId": "nKnXBABzQDSURN3reVzFvw",
+            "rootTriggerType": "MANUAL",
+            "prevExecutionId": "Bg1oatfxSYyTSDHBgDJ59w",
+            "prevTriggerType": "MANUAL"
+          }
+        },
+        "governanceMetadata": {
+          "id": "",
+          "deny": false,
+          "details": [],
+          "message": "FF: [OPA_PIPELINE_GOVERNANCE] is disabled for account: [kmpySmUISimoRrJL6NL73w]",
+          "timestamp": "0",
+          "status": "",
+          "accountId": "",
+          "orgId": "",
+          "projectId": "",
+          "entity": "",
+          "type": "",
+          "action": "",
+          "created": "0"
+        },
+        "moduleInfo": {
+          "cd": {
+            "__recast": "io.harness.cdng.pipeline.executions.beans.CDPipelineModuleInfo",
+            "envIdentifiers": ["prod"],
+            "environmentTypes": ["Production"],
+            "infrastructureTypes": ["KubernetesDirect"],
+            "serviceDefinitionTypes": ["Kubernetes"],
+            "serviceIdentifiers": ["appd"]
+          }
+        },
+        "layoutNodeMap": {
+          "g_LkakmWRPm-wC6rfC2ufg": {
+            "nodeType": "Deployment",
+            "nodeGroup": "STAGE",
+            "nodeIdentifier": "appd",
+            "name": "appd",
+            "nodeUuid": "g_LkakmWRPm-wC6rfC2ufg",
+            "status": "Success",
+            "module": "cd",
+            "moduleInfo": {
+              "cd": {
+                "__recast": "io.harness.cdng.pipeline.executions.beans.CDStageModuleInfo",
+                "serviceInfo": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary",
+                  "identifier": "appd",
+                  "displayName": "appd",
+                  "deploymentType": "Kubernetes",
+                  "artifacts": {
+                    "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary$ArtifactsSummary",
+                    "sidecars": []
+                  }
+                },
+                "infraExecutionSummary": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.InfraExecutionSummary",
+                  "identifier": "prod",
+                  "name": "prod",
+                  "type": "Production"
+                }
+              }
+            },
+            "startTs": 1643285294039,
+            "endTs": 1643285313530,
+            "edgeLayoutList": { "currentNodeChildren": [], "nextIds": [] },
+            "nodeRunInfo": {
+              "whenCondition": "<+OnPipelineSuccess>",
+              "evaluatedCondition": true,
+              "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+            },
+            "failureInfo": { "message": "" },
+            "failureInfoDTO": { "message": "", "failureTypeList": [], "responseMessages": [] }
+          }
+        },
+        "modules": ["cd"],
+        "startingNodeId": "g_LkakmWRPm-wC6rfC2ufg",
+        "startTs": 1643285292750,
+        "endTs": 1643285313831,
+        "createdAt": 1643285293024,
+        "canRetry": true,
+        "showRetryHistory": false,
+        "runSequence": 5,
+        "successfulStagesCount": 1,
+        "runningStagesCount": 0,
+        "failedStagesCount": 0,
+        "totalStagesCount": 1,
+        "stagesExecution": false
+      },
+      {
+        "pipelineIdentifier": "appdtest",
+        "planExecutionId": "vmXDDffBSPaLTDtThXEeWw",
+        "name": "appd-test",
+        "status": "Aborted",
+        "tags": [],
+        "executionTriggerInfo": {
+          "triggerType": "MANUAL",
+          "triggeredBy": {
+            "uuid": "lv0euRhKRCyiXWzS7pOg6g",
+            "identifier": "Admin",
+            "extraInfo": { "email": "admin@harness.io" }
+          },
+          "isRerun": false
+        },
+        "governanceMetadata": {
+          "id": "",
+          "deny": false,
+          "details": [],
+          "message": "FF: [OPA_PIPELINE_GOVERNANCE] is disabled for account: [kmpySmUISimoRrJL6NL73w]",
+          "timestamp": "0",
+          "status": "",
+          "accountId": "",
+          "orgId": "",
+          "projectId": "",
+          "entity": "",
+          "type": "",
+          "action": "",
+          "created": "0"
+        },
+        "moduleInfo": {
+          "cd": {
+            "__recast": "io.harness.cdng.pipeline.executions.beans.CDPipelineModuleInfo",
+            "envIdentifiers": ["prod"],
+            "environmentTypes": ["Production"],
+            "infrastructureTypes": ["KubernetesDirect"],
+            "serviceDefinitionTypes": ["Kubernetes"],
+            "serviceIdentifiers": ["appd"]
+          }
+        },
+        "layoutNodeMap": {
+          "pFlvCaqeRp2DMtMRxMUIHg": {
+            "nodeType": "Deployment",
+            "nodeGroup": "STAGE",
+            "nodeIdentifier": "appd",
+            "name": "appd",
+            "nodeUuid": "pFlvCaqeRp2DMtMRxMUIHg",
+            "status": "Aborted",
+            "module": "cd",
+            "moduleInfo": {
+              "cd": {
+                "__recast": "io.harness.cdng.pipeline.executions.beans.CDStageModuleInfo",
+                "serviceInfo": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary",
+                  "identifier": "appd",
+                  "displayName": "appd",
+                  "deploymentType": "Kubernetes",
+                  "artifacts": {
+                    "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary$ArtifactsSummary",
+                    "sidecars": []
+                  }
+                },
+                "infraExecutionSummary": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.InfraExecutionSummary",
+                  "identifier": "prod",
+                  "name": "prod",
+                  "type": "Production"
+                }
+              }
+            },
+            "startTs": 1642761401727,
+            "endTs": 1643109441340,
+            "edgeLayoutList": { "currentNodeChildren": [], "nextIds": [] },
+            "nodeRunInfo": {
+              "whenCondition": "<+OnPipelineSuccess>",
+              "evaluatedCondition": true,
+              "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+            },
+            "failureInfo": { "message": "" },
+            "failureInfoDTO": { "message": "", "failureTypeList": [], "responseMessages": [] }
+          }
+        },
+        "modules": ["cd"],
+        "startingNodeId": "pFlvCaqeRp2DMtMRxMUIHg",
+        "startTs": 1642761401564,
+        "endTs": 1643109442273,
+        "createdAt": 1642761401621,
+        "canRetry": true,
+        "showRetryHistory": false,
+        "runSequence": 4,
+        "successfulStagesCount": 0,
+        "runningStagesCount": 0,
+        "failedStagesCount": 0,
+        "totalStagesCount": 1,
+        "stagesExecution": false
+      },
+      {
+        "pipelineIdentifier": "appdtest",
+        "planExecutionId": "Bg1oatfxSYyTSDHBgDJ59w",
+        "name": "appd-test",
+        "status": "Success",
+        "tags": [],
+        "executionTriggerInfo": {
+          "triggerType": "MANUAL",
+          "triggeredBy": {
+            "uuid": "lv0euRhKRCyiXWzS7pOg6g",
+            "identifier": "Admin",
+            "extraInfo": { "email": "admin@harness.io" }
+          },
+          "isRerun": true,
+          "rerunInfo": {
+            "rootExecutionId": "nKnXBABzQDSURN3reVzFvw",
+            "rootTriggerType": "MANUAL",
+            "prevExecutionId": "nKnXBABzQDSURN3reVzFvw",
+            "prevTriggerType": "MANUAL"
+          }
+        },
+        "governanceMetadata": {
+          "id": "",
+          "deny": false,
+          "details": [],
+          "message": "FF: [OPA_PIPELINE_GOVERNANCE] is disabled for account: [kmpySmUISimoRrJL6NL73w]",
+          "timestamp": "0",
+          "status": "",
+          "accountId": "",
+          "orgId": "",
+          "projectId": "",
+          "entity": "",
+          "type": "",
+          "action": "",
+          "created": "0"
+        },
+        "moduleInfo": {
+          "cd": {
+            "__recast": "io.harness.cdng.pipeline.executions.beans.CDPipelineModuleInfo",
+            "envIdentifiers": ["prod"],
+            "environmentTypes": ["Production"],
+            "infrastructureTypes": ["KubernetesDirect"],
+            "serviceDefinitionTypes": ["Kubernetes"],
+            "serviceIdentifiers": ["appd"]
+          }
+        },
+        "layoutNodeMap": {
+          "Nk67sM29TJK2RHgSHOE93g": {
+            "nodeType": "Deployment",
+            "nodeGroup": "STAGE",
+            "nodeIdentifier": "appd",
+            "name": "appd",
+            "nodeUuid": "Nk67sM29TJK2RHgSHOE93g",
+            "status": "Success",
+            "module": "cd",
+            "moduleInfo": {
+              "cd": {
+                "__recast": "io.harness.cdng.pipeline.executions.beans.CDStageModuleInfo",
+                "serviceInfo": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary",
+                  "identifier": "appd",
+                  "displayName": "appd",
+                  "deploymentType": "Kubernetes",
+                  "artifacts": {
+                    "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary$ArtifactsSummary",
+                    "sidecars": []
+                  }
+                },
+                "infraExecutionSummary": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.InfraExecutionSummary",
+                  "identifier": "prod",
+                  "name": "prod",
+                  "type": "Production"
+                }
+              }
+            },
+            "startTs": 1642695960514,
+            "endTs": 1642696166330,
+            "edgeLayoutList": { "currentNodeChildren": [], "nextIds": [] },
+            "nodeRunInfo": {
+              "whenCondition": "<+OnPipelineSuccess>",
+              "evaluatedCondition": true,
+              "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+            },
+            "failureInfo": { "message": "" },
+            "failureInfoDTO": { "message": "", "failureTypeList": [], "responseMessages": [] }
+          }
+        },
+        "modules": ["cd"],
+        "startingNodeId": "Nk67sM29TJK2RHgSHOE93g",
+        "startTs": 1642695959965,
+        "endTs": 1642696166629,
+        "createdAt": 1642695960171,
+        "canRetry": true,
+        "showRetryHistory": false,
+        "runSequence": 3,
+        "successfulStagesCount": 1,
+        "runningStagesCount": 0,
+        "failedStagesCount": 0,
+        "totalStagesCount": 1,
+        "stagesExecution": false
+      },
+      {
+        "pipelineIdentifier": "appdtest",
+        "planExecutionId": "nKnXBABzQDSURN3reVzFvw",
+        "name": "appd-test",
+        "status": "Failed",
+        "tags": [],
+        "executionTriggerInfo": {
+          "triggerType": "MANUAL",
+          "triggeredBy": {
+            "uuid": "lv0euRhKRCyiXWzS7pOg6g",
+            "identifier": "Admin",
+            "extraInfo": { "email": "admin@harness.io" }
+          },
+          "isRerun": false
+        },
+        "executionErrorInfo": { "message": "" },
+        "governanceMetadata": {
+          "id": "",
+          "deny": false,
+          "details": [],
+          "message": "FF: [OPA_PIPELINE_GOVERNANCE] is disabled for account: [kmpySmUISimoRrJL6NL73w]",
+          "timestamp": "0",
+          "status": "",
+          "accountId": "",
+          "orgId": "",
+          "projectId": "",
+          "entity": "",
+          "type": "",
+          "action": "",
+          "created": "0"
+        },
+        "moduleInfo": {
+          "cd": {
+            "__recast": "io.harness.cdng.pipeline.executions.beans.CDPipelineModuleInfo",
+            "envIdentifiers": ["prod"],
+            "environmentTypes": ["Production"],
+            "infrastructureTypes": ["KubernetesDirect"],
+            "serviceDefinitionTypes": ["Kubernetes"],
+            "serviceIdentifiers": ["appd"]
+          }
+        },
+        "layoutNodeMap": {
+          "XczEk81hR5y9o_5M-1UzGg": {
+            "nodeType": "Deployment",
+            "nodeGroup": "STAGE",
+            "nodeIdentifier": "appd",
+            "name": "appd",
+            "nodeUuid": "XczEk81hR5y9o_5M-1UzGg",
+            "status": "Failed",
+            "module": "cd",
+            "moduleInfo": {
+              "cd": {
+                "__recast": "io.harness.cdng.pipeline.executions.beans.CDStageModuleInfo",
+                "serviceInfo": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary",
+                  "identifier": "appd",
+                  "displayName": "appd",
+                  "deploymentType": "Kubernetes",
+                  "artifacts": {
+                    "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary$ArtifactsSummary",
+                    "sidecars": []
+                  }
+                },
+                "infraExecutionSummary": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.InfraExecutionSummary",
+                  "identifier": "prod",
+                  "name": "prod",
+                  "type": "Production"
+                }
+              }
+            },
+            "startTs": 1641583779854,
+            "endTs": 1641583794931,
+            "edgeLayoutList": { "currentNodeChildren": [], "nextIds": [] },
+            "nodeRunInfo": {
+              "whenCondition": "<+OnPipelineSuccess>",
+              "evaluatedCondition": true,
+              "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+            },
+            "failureInfo": { "message": "" },
+            "failureInfoDTO": {
+              "message": "",
+              "failureTypeList": [],
+              "responseMessages": [
+                {
+                  "code": "DEFAULT_ERROR_CODE",
+                  "level": "ERROR",
+                  "message": "Verification failed",
+                  "exception": null,
+                  "failureTypes": ["VERIFICATION_FAILURE"]
+                }
+              ]
+            }
+          }
+        },
+        "modules": ["cd"],
+        "startingNodeId": "XczEk81hR5y9o_5M-1UzGg",
+        "startTs": 1641583779054,
+        "endTs": 1641583795631,
+        "createdAt": 1641583779293,
+        "canRetry": true,
+        "showRetryHistory": false,
+        "runSequence": 2,
+        "successfulStagesCount": 0,
+        "runningStagesCount": 0,
+        "failedStagesCount": 1,
+        "totalStagesCount": 1,
+        "stagesExecution": false
+      },
+      {
+        "pipelineIdentifier": "appdtest",
+        "planExecutionId": "cSwXfMu9RWK2I2-clmZhWQ",
+        "name": "appd-test",
+        "status": "Expired",
+        "tags": [],
+        "executionTriggerInfo": {
+          "triggerType": "MANUAL",
+          "triggeredBy": {
+            "uuid": "lv0euRhKRCyiXWzS7pOg6g",
+            "identifier": "Admin",
+            "extraInfo": { "email": "admin@harness.io" }
+          },
+          "isRerun": false
+        },
+        "governanceMetadata": {
+          "id": "",
+          "deny": false,
+          "details": [],
+          "message": "FF: [OPA_PIPELINE_GOVERNANCE] is disabled for account: [kmpySmUISimoRrJL6NL73w]",
+          "timestamp": "0",
+          "status": "",
+          "accountId": "",
+          "orgId": "",
+          "projectId": "",
+          "entity": "",
+          "type": "",
+          "action": "",
+          "created": "0"
+        },
+        "moduleInfo": {
+          "cd": {
+            "__recast": "io.harness.cdng.pipeline.executions.beans.CDPipelineModuleInfo",
+            "envIdentifiers": ["prod"],
+            "environmentTypes": ["Production"],
+            "infrastructureTypes": ["KubernetesDirect"],
+            "serviceDefinitionTypes": ["Kubernetes"],
+            "serviceIdentifiers": ["appd"]
+          }
+        },
+        "layoutNodeMap": {
+          "c9eKTNrQSQ2FdnKWmrKhlw": {
+            "nodeType": "Deployment",
+            "nodeGroup": "STAGE",
+            "nodeIdentifier": "appd",
+            "name": "appd",
+            "nodeUuid": "c9eKTNrQSQ2FdnKWmrKhlw",
+            "status": "Expired",
+            "module": "cd",
+            "moduleInfo": {
+              "cd": {
+                "__recast": "io.harness.cdng.pipeline.executions.beans.CDStageModuleInfo",
+                "serviceInfo": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary",
+                  "identifier": "appd",
+                  "displayName": "appd",
+                  "deploymentType": "Kubernetes",
+                  "artifacts": {
+                    "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary$ArtifactsSummary",
+                    "sidecars": []
+                  }
+                },
+                "infraExecutionSummary": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.InfraExecutionSummary",
+                  "identifier": "prod",
+                  "name": "prod",
+                  "type": "Production"
+                }
+              }
+            },
+            "startTs": 1641552756182,
+            "endTs": 1641559960667,
+            "edgeLayoutList": { "currentNodeChildren": [], "nextIds": [] },
+            "nodeRunInfo": {
+              "whenCondition": "<+OnPipelineSuccess>",
+              "evaluatedCondition": true,
+              "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+            },
+            "failureInfo": {
+              "message": "Please Check the timeout configuration on the step to extend the duration of the step"
+            },
+            "failureInfoDTO": {
+              "message": "Please Check the timeout configuration on the step to extend the duration of the step",
+              "failureTypeList": ["EXPIRED"],
+              "responseMessages": [
+                {
+                  "code": "TIMEOUT_ENGINE_EXCEPTION",
+                  "level": "ERROR",
+                  "message": "Please Check the timeout configuration on the step to extend the duration of the step",
+                  "exception": null,
+                  "failureTypes": ["EXPIRED"]
+                }
+              ]
+            }
+          }
+        },
+        "modules": ["cd"],
+        "startingNodeId": "c9eKTNrQSQ2FdnKWmrKhlw",
+        "startTs": 1641552755764,
+        "endTs": 1641559960962,
+        "createdAt": 1641552755971,
+        "canRetry": true,
+        "showRetryHistory": false,
+        "runSequence": 1,
+        "successfulStagesCount": 0,
+        "runningStagesCount": 0,
+        "failedStagesCount": 0,
+        "totalStagesCount": 1,
+        "stagesExecution": false
+      }
+    ],
+    "pageable": {
+      "sort": { "unsorted": false, "sorted": true, "empty": false },
+      "pageNumber": 0,
+      "pageSize": 20,
+      "offset": 0,
+      "paged": true,
+      "unpaged": false
+    },
+    "totalPages": 1,
+    "totalElements": 5,
+    "last": true,
+    "sort": { "unsorted": false, "sorted": true, "empty": false },
+    "first": true,
+    "numberOfElements": 5,
+    "size": 20,
+    "number": 0,
+    "empty": false
+  },
+  "metaData": null,
+  "correlationId": "3dc1d1dd-fa21-4652-b6ef-81e2e652f740"
+}

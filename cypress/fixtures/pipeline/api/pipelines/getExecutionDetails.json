@@ -1,0 +1,417 @@
+{
+  "status": "SUCCESS",
+  "data": {
+    "pipelineExecutionSummary": {
+      "pipelineIdentifier": "appdtest",
+      "planExecutionId": "C9mgNjxSS7-B-qQek27iuA",
+      "name": "appd-test",
+      "status": "Success",
+      "tags": [],
+      "executionTriggerInfo": {
+        "triggerType": "MANUAL",
+        "triggeredBy": {
+          "uuid": "lv0euRhKRCyiXWzS7pOg6g",
+          "identifier": "Admin",
+          "extraInfo": { "email": "admin@harness.io" }
+        },
+        "isRerun": true,
+        "rerunInfo": {
+          "rootExecutionId": "nKnXBABzQDSURN3reVzFvw",
+          "rootTriggerType": "MANUAL",
+          "prevExecutionId": "Bg1oatfxSYyTSDHBgDJ59w",
+          "prevTriggerType": "MANUAL"
+        }
+      },
+      "governanceMetadata": {
+        "id": "",
+        "deny": false,
+        "details": [],
+        "message": "FF: [OPA_PIPELINE_GOVERNANCE] is disabled for account: [kmpySmUISimoRrJL6NL73w]",
+        "timestamp": "0",
+        "status": "",
+        "accountId": "",
+        "orgId": "",
+        "projectId": "",
+        "entity": "",
+        "type": "",
+        "action": "",
+        "created": "0"
+      },
+      "moduleInfo": {
+        "cd": {
+          "__recast": "io.harness.cdng.pipeline.executions.beans.CDPipelineModuleInfo",
+          "envIdentifiers": ["prod"],
+          "environmentTypes": ["Production"],
+          "infrastructureTypes": ["KubernetesDirect"],
+          "serviceDefinitionTypes": ["Kubernetes"],
+          "serviceIdentifiers": ["appd"]
+        }
+      },
+      "layoutNodeMap": {
+        "g_LkakmWRPm-wC6rfC2ufg": {
+          "nodeType": "Deployment",
+          "nodeGroup": "STAGE",
+          "nodeIdentifier": "appd",
+          "name": "appd",
+          "nodeUuid": "g_LkakmWRPm-wC6rfC2ufg",
+          "status": "Success",
+          "module": "cd",
+          "moduleInfo": {
+            "cd": {
+              "__recast": "io.harness.cdng.pipeline.executions.beans.CDStageModuleInfo",
+              "serviceInfo": {
+                "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary",
+                "identifier": "appd",
+                "displayName": "appd",
+                "deploymentType": "Kubernetes",
+                "artifacts": {
+                  "__recast": "io.harness.cdng.pipeline.executions.beans.ServiceExecutionSummary$ArtifactsSummary",
+                  "sidecars": []
+                }
+              },
+              "infraExecutionSummary": {
+                "__recast": "io.harness.cdng.pipeline.executions.beans.InfraExecutionSummary",
+                "identifier": "prod",
+                "name": "prod",
+                "type": "Production"
+              }
+            }
+          },
+          "startTs": 1643285294039,
+          "endTs": 1643285313530,
+          "edgeLayoutList": { "currentNodeChildren": [], "nextIds": [] },
+          "nodeRunInfo": {
+            "whenCondition": "<+OnPipelineSuccess>",
+            "evaluatedCondition": true,
+            "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+          },
+          "failureInfo": { "message": "" },
+          "failureInfoDTO": { "message": "", "failureTypeList": [], "responseMessages": [] }
+        }
+      },
+      "modules": ["cd"],
+      "startingNodeId": "g_LkakmWRPm-wC6rfC2ufg",
+      "startTs": 1643285292750,
+      "endTs": 1643285313831,
+      "createdAt": 1643285293024,
+      "canRetry": true,
+      "showRetryHistory": false,
+      "runSequence": 5,
+      "successfulStagesCount": 1,
+      "runningStagesCount": 0,
+      "failedStagesCount": 0,
+      "totalStagesCount": 1,
+      "stagesExecution": false
+    },
+    "executionGraph": {
+      "rootNodeId": "1Y7CUBG_QfeP1x-z8Flluw",
+      "nodeMap": {
+        "-KqUSX71QEaT-hnsyG8igw": {
+          "uuid": "-KqUSX71QEaT-hnsyG8igw",
+          "setupId": "g_LkakmWRPm-wC6rfC2ufg",
+          "name": "appd",
+          "identifier": "appd",
+          "baseFqn": "pipeline.stages.appd",
+          "outcomes": {},
+          "stepParameters": {
+            "uuid": "g_LkakmWRPm-wC6rfC2ufg",
+            "identifier": "appd",
+            "name": "appd",
+            "description": "",
+            "skipCondition": null,
+            "failureStrategies": [
+              { "onFailure": { "errors": ["ALL_ERRORS"], "action": { "type": "STAGE_ROLLBACK" } } }
+            ],
+            "variables": { "__recast": "java.util.LinkedHashMap" },
+            "tags": {},
+            "type": "Deployment",
+            "specConfig": { "childNodeID": null }
+          },
+          "startTs": 1643285294039,
+          "endTs": 1643285313530,
+          "stepType": "DEPLOYMENT_STAGE_STEP",
+          "status": "Success",
+          "failureInfo": { "message": "", "failureTypeList": [], "responseMessages": [] },
+          "skipInfo": null,
+          "nodeRunInfo": {
+            "whenCondition": "<+OnPipelineSuccess>",
+            "evaluatedCondition": true,
+            "expressions": [{ "expression": "OnPipelineSuccess", "expressionValue": "true", "count": 1 }]
+          },
+          "executableResponses": [{ "child": { "childNodeId": "HfiLS20MRmWi2VyAj3N7FQ", "logKeys": [], "units": [] } }],
+          "unitProgresses": [],
+          "progressData": null,
+          "delegateInfoList": [],
+          "interruptHistories": [],
+          "stepDetails": null
+        },
+        "MC56t3BmR4mUBHPuiL6JWQ": {
+          "uuid": "MC56t3BmR4mUBHPuiL6JWQ",
+          "setupId": "7oyK8ZkUQUCz69jfuAb6ig",
+          "name": "appd_dev",
+          "identifier": "appd_dev",
+          "baseFqn": "pipeline.stages.appd.spec.execution.steps.appd_dev",
+          "outcomes": {
+            "output": {
+              "progressPercentage": 100,
+              "estimatedRemainingTime": "0 minutes",
+              "activityId": "GZNwefkdR2aBhc7owmJ1-w",
+              "verifyStepExecutionId": "GZNwefkdR2aBhc7owmJ1-w"
+            }
+          },
+          "stepParameters": {
+            "serviceIdentifier": "appd",
+            "envIdentifier": "prod",
+            "deploymentTag": "test",
+            "sensitivity": "HIGH",
+            "verificationJobBuilder": {
+              "sensitivity": { "isRuntimeParam": false, "value": "HIGH" },
+              "trafficSplitPercentage": null,
+              "uuid": null,
+              "identifier": null,
+              "jobName": null,
+              "createdAt": 0,
+              "lastUpdatedAt": 0,
+              "projectIdentifier": null,
+              "orgIdentifier": null,
+              "activitySourceIdentifier": null,
+              "type": null,
+              "accountId": null,
+              "dataSources": null,
+              "monitoringSources": null,
+              "allMonitoringSourcesEnabled": false,
+              "duration": { "isRuntimeParam": false, "value": "5m" },
+              "isDefaultJob": false
+            }
+          },
+          "startTs": 1643285298154,
+          "endTs": 1643285312920,
+          "stepType": "Verify",
+          "status": "Success",
+          "failureInfo": {
+            "message": "",
+            "failureTypeList": [],
+            "responseMessages": [
+              {
+                "code": "DEFAULT_ERROR_CODE",
+                "level": "ERROR",
+                "message": "Verification failed",
+                "exception": null,
+                "failureTypes": ["VERIFICATION_FAILURE"]
+              }
+            ]
+          },
+          "skipInfo": null,
+          "nodeRunInfo": {
+            "whenCondition": "<+OnStageSuccess>",
+            "evaluatedCondition": true,
+            "expressions": [{ "expression": "OnStageSuccess", "expressionValue": "true", "count": 1 }]
+          },
+          "executableResponses": [
+            { "async": { "callbackIds": ["GZNwefkdR2aBhc7owmJ1-w"], "logKeys": [], "units": [] } }
+          ],
+          "unitProgresses": [],
+          "progressData": null,
+          "delegateInfoList": [],
+          "interruptHistories": [
+            {
+              "interruptId": "7VMhXMpVQcO2l2tsO2Kjpg",
+              "tookEffectAt": 1643285312783,
+              "interruptType": "MARK_SUCCESS",
+              "interruptConfig": {
+                "issuedBy": {
+                  "issueTime": "2022-01-27T12:08:32.569Z",
+                  "manualIssuer": {
+                    "emailId": "",
+                    "userId": "",
+                    "type": "USER",
+                    "identifier": "lv0euRhKRCyiXWzS7pOg6g"
+                  }
+                }
+              }
+            }
+          ],
+          "stepDetails": null
+        },
+        "m11OM04hS1ajutJggLZMFQ": {
+          "uuid": "m11OM04hS1ajutJggLZMFQ",
+          "setupId": "nZm5m6EnQYywPwHhP30cyQ",
+          "name": "Infrastructure",
+          "identifier": "spec",
+          "baseFqn": "pipeline.stages.appd.spec.infrastructure.infrastructureDefinition.spec",
+          "outcomes": {
+            "output": {
+              "connectorRef": "account.k8sqasetup",
+              "namespace": "harness",
+              "releaseName": "release-<+INFRA_KEY>",
+              "environment": {
+                "name": "prod",
+                "identifier": "prod",
+                "description": "",
+                "type": "Production",
+                "tags": {}
+              },
+              "infrastructureKey": "4ad9d13ec3dcc8bae9f61ef647cce701126930c3"
+            }
+          },
+          "stepParameters": {
+            "connectorRef": "account.k8sqasetup",
+            "namespace": "harness",
+            "releaseName": "release-<+INFRA_KEY>",
+            "metadata": null
+          },
+          "startTs": 1643285296834,
+          "endTs": 1643285297515,
+          "stepType": "INFRASTRUCTURE",
+          "status": "Success",
+          "failureInfo": { "message": "", "failureTypeList": [], "responseMessages": [] },
+          "skipInfo": null,
+          "nodeRunInfo": null,
+          "executableResponses": [{ "sync": { "logKeys": [], "units": [] } }],
+          "unitProgresses": [
+            { "unitName": "Execute", "status": "SUCCESS", "startTime": "1643285296956", "endTime": "1643285297491" }
+          ],
+          "progressData": null,
+          "delegateInfoList": [],
+          "interruptHistories": [],
+          "stepDetails": null
+        },
+        "1Y7CUBG_QfeP1x-z8Flluw": {
+          "uuid": "1Y7CUBG_QfeP1x-z8Flluw",
+          "setupId": "DsqjLuU5Suyto_qWzywRTw",
+          "name": "appd-test",
+          "identifier": "pipeline",
+          "baseFqn": "pipeline",
+          "outcomes": {},
+          "stepParameters": {
+            "childNodeID": "DsqjLuU5Suyto_qWzywRTwstages",
+            "name": "appd-test",
+            "identifier": "appdtest",
+            "description": "",
+            "tags": {},
+            "variables": { "__recast": "java.util.LinkedHashMap" },
+            "executionId": "C9mgNjxSS7-B-qQek27iuA",
+            "sequenceId": 5
+          },
+          "startTs": 1643285293123,
+          "endTs": 1643285313831,
+          "stepType": "PIPELINE_SECTION",
+          "status": "Success",
+          "failureInfo": { "message": "", "failureTypeList": [], "responseMessages": [] },
+          "skipInfo": null,
+          "nodeRunInfo": null,
+          "executableResponses": [
+            { "child": { "childNodeId": "DsqjLuU5Suyto_qWzywRTwstages", "logKeys": [], "units": [] } }
+          ],
+          "unitProgresses": [],
+          "progressData": null,
+          "delegateInfoList": [],
+          "interruptHistories": [],
+          "stepDetails": null
+        },
+        "I8juD43FQWuLhHvD6Tm2Uw": {
+          "uuid": "I8juD43FQWuLhHvD6Tm2Uw",
+          "setupId": "DsqjLuU5Suyto_qWzywRTwstages",
+          "name": "stages",
+          "identifier": "stages",
+          "baseFqn": "pipeline.stages",
+          "outcomes": {},
+          "stepParameters": { "childNodeId": "g_LkakmWRPm-wC6rfC2ufg", "logMessage": "Stages" },
+          "startTs": 1643285293850,
+          "endTs": 1643285313716,
+          "stepType": "STAGES_STEP",
+          "status": "Success",
+          "failureInfo": { "message": "", "failureTypeList": [], "responseMessages": [] },
+          "skipInfo": null,
+          "nodeRunInfo": null,
+          "executableResponses": [{ "child": { "childNodeId": "g_LkakmWRPm-wC6rfC2ufg", "logKeys": [], "units": [] } }],
+          "unitProgresses": [],
+          "progressData": null,
+          "delegateInfoList": [],
+          "interruptHistories": [],
+          "stepDetails": null
+        },
+        "gYzbLq2KT8ysdbTvXTpj6A": {
+          "uuid": "gYzbLq2KT8ysdbTvXTpj6A",
+          "setupId": "jJyzNFD-TV-qw8pQaR8QXA",
+          "name": "Service",
+          "identifier": "serviceConfig",
+          "baseFqn": "pipeline.stages.appd.spec.serviceConfig",
+          "outcomes": {
+            "output": {
+              "serviceResult": {
+                "identifier": "appd",
+                "name": "appd",
+                "description": "appd",
+                "type": "Kubernetes",
+                "tags": {}
+              },
+              "variablesResult": {},
+              "manifestResults": null
+            }
+          },
+          "stepParameters": { "serviceRef": "appd", "childNodeId": null },
+          "startTs": 1643285294538,
+          "endTs": 1643285296547,
+          "stepType": "SERVICE_CONFIG",
+          "status": "Success",
+          "failureInfo": { "message": "", "failureTypeList": [], "responseMessages": [] },
+          "skipInfo": null,
+          "nodeRunInfo": null,
+          "executableResponses": [
+            {
+              "child": {
+                "childNodeId": "service-jJyzNFD-TV-qw8pQaR8QXA",
+                "logKeys": [
+                  "accountId:kmpySmUISimoRrJL6NL73w/orgId:default/projectId:shaswat/pipelineId:appdtest/runSequence:5/level0:pipeline/level1:stages/level2:appd/level3:spec/level4:serviceConfig"
+                ],
+                "units": []
+              }
+            }
+          ],
+          "unitProgresses": [],
+          "progressData": null,
+          "delegateInfoList": [],
+          "interruptHistories": [],
+          "stepDetails": null
+        },
+        "fsQXwL0lS-2W5cOUrfkSWw": {
+          "uuid": "fsQXwL0lS-2W5cOUrfkSWw",
+          "setupId": "fWq3lLA8TDmSZPGTvvfy1w",
+          "name": "Execution",
+          "identifier": "execution",
+          "baseFqn": "pipeline.stages.appd.spec.execution",
+          "outcomes": {},
+          "stepParameters": { "childNodeId": "fWq3lLA8TDmSZPGTvvfy1wsteps", "logMessage": "Execution Element" },
+          "startTs": 1643285297829,
+          "endTs": 1643285313319,
+          "stepType": "NG_SECTION_WITH_ROLLBACK_INFO",
+          "status": "Success",
+          "failureInfo": { "message": "", "failureTypeList": [], "responseMessages": [] },
+          "skipInfo": null,
+          "nodeRunInfo": null,
+          "executableResponses": [
+            { "child": { "childNodeId": "fWq3lLA8TDmSZPGTvvfy1wsteps", "logKeys": [], "units": [] } }
+          ],
+          "unitProgresses": [],
+          "progressData": null,
+          "delegateInfoList": [],
+          "interruptHistories": [],
+          "stepDetails": null
+        }
+      },
+      "nodeAdjacencyListMap": {
+        "-KqUSX71QEaT-hnsyG8igw": { "children": ["gYzbLq2KT8ysdbTvXTpj6A"], "nextIds": [] },
+        "MC56t3BmR4mUBHPuiL6JWQ": { "children": [], "nextIds": [] },
+        "m11OM04hS1ajutJggLZMFQ": { "children": [], "nextIds": ["fsQXwL0lS-2W5cOUrfkSWw"] },
+        "1Y7CUBG_QfeP1x-z8Flluw": { "children": ["I8juD43FQWuLhHvD6Tm2Uw"], "nextIds": [] },
+        "I8juD43FQWuLhHvD6Tm2Uw": { "children": ["-KqUSX71QEaT-hnsyG8igw"], "nextIds": [] },
+        "gYzbLq2KT8ysdbTvXTpj6A": { "children": [], "nextIds": ["m11OM04hS1ajutJggLZMFQ"] },
+        "fsQXwL0lS-2W5cOUrfkSWw": { "children": ["MC56t3BmR4mUBHPuiL6JWQ"], "nextIds": [] }
+      },
+      "representationStrategy": "camelCase"
+    }
+  },
+  "metaData": null,
+  "correlationId": "caeb367d-a191-4707-be07-df84212edbd1"
+}

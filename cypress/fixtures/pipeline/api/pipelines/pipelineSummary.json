@@ -1,0 +1,40 @@
+{
+  "status": "SUCCESS",
+  "data": {
+    "name": "appd-test",
+    "identifier": "appdtest",
+    "tags": {},
+    "version": 15,
+    "numOfStages": 1,
+    "createdAt": 1641552750888,
+    "lastUpdatedAt": 1641552750888,
+    "modules": ["cd"],
+    "executionSummaryInfo": {
+      "numOfErrors": [0, 0, 0, 0, 0, 0, 0],
+      "deployments": [0, 1, 0, 0, 0, 0, 0],
+      "lastExecutionTs": 1643285292924,
+      "lastExecutionStatus": "Success",
+      "lastExecutionId": "C9mgNjxSS7-B-qQek27iuA"
+    },
+    "filters": {
+      "cd": {
+        "deploymentTypes": ["Kubernetes"],
+        "environmentNames": ["prod"],
+        "serviceNames": ["appd"],
+        "infrastructureTypes": ["KubernetesDirect"]
+      }
+    },
+    "stageNames": ["appd"],
+    "gitDetails": {
+      "objectId": null,
+      "branch": null,
+      "repoIdentifier": null,
+      "rootFolder": null,
+      "filePath": null,
+      "repoName": null
+    },
+    "entityValidityDetails": { "valid": true, "invalidYaml": null }
+  },
+  "metaData": null,
+  "correlationId": "acb0e5fc-9236-4e5a-9f5b-188244b542a8"
+}

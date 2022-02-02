@@ -1,0 +1,18 @@
+{
+  "metaData": {},
+  "resource": {
+    "pageResponse": {
+      "totalPages": 1,
+      "totalItems": 0,
+      "pageItemCount": 0,
+      "pageSize": 0,
+      "content": [],
+      "pageIndex": 0,
+      "empty": false
+    },
+    "deploymentTimeRange": { "startTime": "2022-01-27 11:53:00", "endTime": "2022-01-27 11:54:00" },
+    "deploymentStartTime": 1643284380000,
+    "deploymentEndTime": 1643284440000
+  },
+  "responseMessages": []
+}

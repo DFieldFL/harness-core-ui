@@ -52,6 +52,7 @@ function SummaryText(props: SummaryTextProps): JSX.Element {
         onClick={() => updateQueryParams({ view: 'log', type: tabId, filterAnomalous: 'true' })}
         rightIcon="arrow-right"
         className={css.viewDetails}
+        data-testid={tabId}
       >
         {getString('viewDetails')}
       </Text>

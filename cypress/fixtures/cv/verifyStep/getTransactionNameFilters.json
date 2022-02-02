@@ -1,0 +1,5 @@
+{
+  "metaData": {},
+  "resource": ["/todolist/inside", "/todolist/exception", "/todolist/requestLogin", "/todolist/register"],
+  "responseMessages": []
+}
