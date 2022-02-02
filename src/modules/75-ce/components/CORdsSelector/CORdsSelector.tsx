@@ -28,6 +28,7 @@ import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import { Region, useAllRegions, ContainerServiceServiceMinimal, useAllResourcesOfAccount, Resource } from 'services/lw'
 import { useStrings } from 'framework/strings'
 import type { GatewayDetails } from '../COCreateGateway/models'
+import css from './CORdsSelector.module.scss'
 
 interface CORdsSelectorProps {
   gatewayDetails: GatewayDetails
@@ -217,6 +218,7 @@ const RDSServicesTable: React.FC<RDSServicesTableProps> = props => {
       <Radio
         checked={props.selectedDb?.id === tableProps.row.original.id}
         onClick={_ => props.setSelectedDb(tableProps.row.original)}
+        className={css.radioBtn}
       />
     )
   }

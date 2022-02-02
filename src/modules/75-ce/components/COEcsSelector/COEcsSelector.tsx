@@ -36,6 +36,7 @@ import {
 } from 'services/lw'
 import { useStrings } from 'framework/strings'
 import type { GatewayDetails } from '../COCreateGateway/models'
+import css from './COEcsSelector.module.scss'
 
 interface COEcsSelectorProps {
   gatewayDetails: GatewayDetails
@@ -346,6 +347,7 @@ const ECSServicesTable: React.FC<ECSServicesTableProps> = props => {
       <Radio
         checked={props.selectedService?.name === tableProps.row.original.name}
         onClick={_ => props.setSelectedService(tableProps.row.original)}
+        className={css.radioBtn}
       />
     )
   }
