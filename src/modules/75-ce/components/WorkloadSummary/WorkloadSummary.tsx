@@ -12,7 +12,7 @@ import type {
   PerspectiveTrendStats,
   ClusterData,
   InstanceDetails,
-  QlceViewFilterWrapperInput
+  K8sRecommendationFilterDtoInput
 } from 'services/ce/services'
 import { useStrings } from 'framework/strings'
 import { CCM_PAGE_TYPE } from '@ce/types'
@@ -109,7 +109,7 @@ interface WorkloadSummaryProps {
   infoData: ClusterData | InstanceDetails
   pageType: CCM_PAGE_TYPE
   showRecommendations?: boolean
-  recommendationFilters?: QlceViewFilterWrapperInput[]
+  recommendationFilters?: K8sRecommendationFilterDtoInput
 }
 
 const WorkloadSummary: (props: WorkloadSummaryProps) => JSX.Element = ({

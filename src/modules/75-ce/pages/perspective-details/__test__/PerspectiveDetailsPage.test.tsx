@@ -17,7 +17,7 @@ import {
   FetchViewFieldsDocument,
   FetchperspectiveGridDocument,
   FetchPerspectiveBudgetDocument,
-  RecommendationsSummaryDocument
+  PerspectiveRecommendationsDocument
 } from 'services/ce/services'
 import PerspectiveDetailsPage from '../PerspectiveDetailsPage'
 
@@ -116,7 +116,7 @@ describe('test cases for Perspective details Page', () => {
             }
           })
         }
-        if (query === RecommendationsSummaryDocument) {
+        if (query === PerspectiveRecommendationsDocument) {
           return fromValue({
             data: {
               recommendationStatsV2: {

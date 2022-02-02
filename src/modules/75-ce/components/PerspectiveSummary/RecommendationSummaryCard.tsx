@@ -15,13 +15,13 @@ import routes from '@common/RouteDefinitions'
 import formatCost from '@ce/utils/formatCost'
 import {
   K8sRecommendationFilterDtoInput,
-  QlceViewFilterWrapperInput,
-  useRecommendationsSummaryQuery
+  usePerspectiveRecommendationsQuery,
+  RecommendationItemDto
 } from 'services/ce/services'
 import css from './PerspectiveSummary.module.scss'
 
 interface RecommendationSummaryCardProps {
-  filters: QlceViewFilterWrapperInput[]
+  filters: K8sRecommendationFilterDtoInput
 }
 
 const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.Element = ({ filters }) => {
@@ -35,26 +35,16 @@ const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.
 
   const history = useHistory()
 
-  const [{ data, fetching: recommendationFetching }] = useRecommendationsSummaryQuery({
+  const [{ data, fetching: recommendationFetching }] = usePerspectiveRecommendationsQuery({
     variables: {
       filter: {
-        perspectiveFilters: filters,
-        minSaving: 0
+        ...filters,
+        minSaving: 0,
+        offset: 0,
+        limit: 10
       } as unknown as K8sRecommendationFilterDtoInput
     }
   })
-
-  const nagvigateToRecommendations: () => void = () => {
-    history.push({
-      pathname: routes.toCERecommendations({
-        accountId
-      }),
-      search: qs.stringify({
-        perspectiveId,
-        perspectiveName
-      })
-    })
-  }
 
   if (recommendationFetching) {
     return (
@@ -67,6 +57,34 @@ const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.
   }
 
   const recommendationData = data?.recommendationStatsV2
+
+  const nagvigateToRecommendations: () => void = () => {
+    const recommendationsDetails = (data?.recommendationsV2?.items || []) as RecommendationItemDto[]
+
+    if (recommendationsDetails.length === 1 && recommendationData?.count === 1) {
+      const recommendationId = recommendationsDetails[0].id
+      const recommendationName = recommendationsDetails[0].resourceName || recommendationId
+
+      recommendationId &&
+        history.push({
+          pathname: routes.toCERecommendationDetails({
+            accountId,
+            recommendation: recommendationId,
+            recommendationName: recommendationName
+          })
+        })
+    } else {
+      history.push({
+        pathname: routes.toCERecommendations({
+          accountId
+        }),
+        search: qs.stringify({
+          perspectiveId,
+          perspectiveName
+        })
+      })
+    }
+  }
 
   if (!recommendationData || !recommendationData?.count) {
     return (

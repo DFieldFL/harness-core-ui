@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Harness Inc. All rights reserved.
+ * Copyright 2022 Harness Inc. All rights reserved.
  * Use of this source code is governed by the PolyForm Shield 1.0.0 license
  * that can be found in the licenses directory at the root of this repository, also available at
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
@@ -548,6 +548,32 @@ export function useFetchPerspectiveListQuery(
   options: Omit<Urql.UseQueryArgs<FetchPerspectiveListQueryVariables>, 'query'> = {}
 ) {
   return Urql.useQuery<FetchPerspectiveListQuery>({ query: FetchPerspectiveListDocument, ...options })
+}
+export const PerspectiveRecommendationsDocument = gql`
+  query PerspectiveRecommendations($filter: K8sRecommendationFilterDTOInput) {
+    recommendationStatsV2(filter: $filter) {
+      totalMonthlyCost
+      totalMonthlySaving
+      count
+    }
+    recommendationsV2(filter: $filter) {
+      items {
+        clusterName
+        namespace
+        id
+        resourceType
+        resourceName
+        monthlyCost
+        monthlySaving
+      }
+    }
+  }
+`
+
+export function usePerspectiveRecommendationsQuery(
+  options: Omit<Urql.UseQueryArgs<PerspectiveRecommendationsQueryVariables>, 'query'> = {}
+) {
+  return Urql.useQuery<PerspectiveRecommendationsQuery>({ query: PerspectiveRecommendationsDocument, ...options })
 }
 export const FetchPerspectiveDetailsSummaryDocument = gql`
   query FetchPerspectiveDetailsSummary(
@@ -1619,6 +1645,37 @@ export type FetchPerspectiveListQuery = {
   perspectives: Maybe<{
     __typename?: 'PerspectiveData'
     customerViews: Maybe<Array<Maybe<{ __typename?: 'QLCEView'; id: Maybe<string>; name: Maybe<string> }>>>
+  }>
+}
+
+export type PerspectiveRecommendationsQueryVariables = Exact<{
+  filter: Maybe<K8sRecommendationFilterDtoInput>
+}>
+
+export type PerspectiveRecommendationsQuery = {
+  __typename?: 'Query'
+  recommendationStatsV2: Maybe<{
+    __typename?: 'RecommendationOverviewStats'
+    totalMonthlyCost: number
+    totalMonthlySaving: number
+    count: number
+  }>
+  recommendationsV2: Maybe<{
+    __typename?: 'RecommendationsDTO'
+    items: Maybe<
+      Array<
+        Maybe<{
+          __typename?: 'RecommendationItemDTO'
+          clusterName: Maybe<string>
+          namespace: Maybe<string>
+          id: string
+          resourceType: ResourceType
+          resourceName: Maybe<string>
+          monthlyCost: Maybe<number>
+          monthlySaving: Maybe<number>
+        }>
+      >
+    >
   }>
 }
 

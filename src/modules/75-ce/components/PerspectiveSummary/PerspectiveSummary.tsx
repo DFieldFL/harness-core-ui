@@ -24,16 +24,22 @@ import {
 import cx from 'classnames'
 import { useHistory, useParams } from 'react-router-dom'
 import { useStrings } from 'framework/strings'
-import { PerspectiveTrendStats, Maybe, useFetchPerspectiveBudgetQuery, BudgetSummary } from 'services/ce/services'
+import {
+  PerspectiveTrendStats,
+  Maybe,
+  useFetchPerspectiveBudgetQuery,
+  BudgetSummary,
+  K8sRecommendationFilterDtoInput
+} from 'services/ce/services'
 import useBudgetModal from '@ce/components/PerspectiveReportsAndBudget/PerspectiveCreateBudget'
 import formatCost from '@ce/utils/formatCost'
 import { useGetLastMonthCost, useGetForecastCost } from 'services/ce'
 
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import routes from '@common/RouteDefinitions'
+import { getViewFilterForId } from '@ce/utils/perspectiveUtils'
 import RecommendationSummaryCard from './RecommendationSummaryCard'
 import css from './PerspectiveSummary.module.scss'
-import { getViewFilterForId } from '@ce/utils/perspectiveUtils'
 
 const StatsTrendRenderer: React.FC<{ val: number }> = ({ val }) => {
   if (+val === 0) {
@@ -383,7 +389,13 @@ const PerspectiveSummary: React.FC<PerspectiveSummaryProps> = ({
     showForecastedCostCard = false
   }
 
-  const recommendationFilters = useMemo(() => [getViewFilterForId(perspectiveId)], [perspectiveId])
+  const recommendationFilters = useMemo(
+    () =>
+      ({
+        perspectiveFilters: [getViewFilterForId(perspectiveId)]
+      } as K8sRecommendationFilterDtoInput),
+    [perspectiveId]
+  )
 
   return (
     <Layout.Horizontal margin="xlarge" spacing="large">
