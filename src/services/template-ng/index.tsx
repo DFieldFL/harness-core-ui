@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Harness Inc. All rights reserved.
+ * Copyright 2022 Harness Inc. All rights reserved.
  * Use of this source code is governed by the PolyForm Shield 1.0.0 license
  * that can be found in the licenses directory at the root of this repository, also available at
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
@@ -25,6 +25,9 @@ export type AuditFilterProperties = FilterProperties & {
     | 'ADD_COLLABORATOR'
     | 'REMOVE_COLLABORATOR'
     | 'REVOKE_TOKEN'
+    | 'LOGIN'
+    | 'LOGIN2FA'
+    | 'UNSUCCESSFUL_LOGIN'
     | 'ADD_MEMBERSHIP'
     | 'REMOVE_MEMBERSHIP'
   )[]
@@ -35,6 +38,11 @@ export type AuditFilterProperties = FilterProperties & {
   resources?: ResourceDTO[]
   scopes?: ResourceScopeDTO[]
   startTime?: number
+}
+
+export interface ByteString {
+  empty?: boolean
+  validUtf8?: boolean
 }
 
 export interface CcmConnectorFilter {
@@ -95,7 +103,83 @@ export type ConnectorFilterProperties = FilterProperties & {
     | 'SumoLogic'
     | 'PagerDuty'
     | 'CustomHealth'
+    | 'ServiceNow'
+    | 'ErrorTracking'
   )[]
+}
+
+export interface Descriptor {
+  containingType?: Descriptor
+  enumTypes?: EnumDescriptor[]
+  extendable?: boolean
+  extensions?: FieldDescriptor[]
+  fields?: FieldDescriptor[]
+  file?: FileDescriptor
+  fullName?: string
+  index?: number
+  name?: string
+  nestedTypes?: Descriptor[]
+  oneofs?: OneofDescriptor[]
+  options?: MessageOptions
+}
+
+export interface EntityDetailProtoDTO {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: EntityDetailProtoDTO
+  descriptorForType?: Descriptor
+  entityRefCase?: 'IDENTIFIERREF' | 'INPUTSETREF' | 'TEMPLATEREF' | 'ENTITYREF_NOT_SET'
+  identifierRef?: IdentifierRefProtoDTO
+  identifierRefOrBuilder?: IdentifierRefProtoDTOOrBuilder
+  initializationErrorString?: string
+  initialized?: boolean
+  inputSetRef?: InputSetReferenceProtoDTO
+  inputSetRefOrBuilder?: InputSetReferenceProtoDTOOrBuilder
+  name?: string
+  nameBytes?: ByteString
+  parserForType?: ParserEntityDetailProtoDTO
+  serializedSize?: number
+  templateRef?: TemplateReferenceProtoDTO
+  templateRefOrBuilder?: TemplateReferenceProtoDTOOrBuilder
+  type?:
+    | 'PROJECTS'
+    | 'PIPELINES'
+    | 'CONNECTORS'
+    | 'SECRETS'
+    | 'SERVICE'
+    | 'ENVIRONMENT'
+    | 'INPUT_SETS'
+    | 'CV_CONFIG'
+    | 'DELEGATES'
+    | 'DELEGATE_CONFIGURATIONS'
+    | 'CV_VERIFICATION_JOB'
+    | 'CV_KUBERNETES_ACTIVITY_SOURCE'
+    | 'INTEGRATION_STEPS'
+    | 'INTEGRATION_STAGE'
+    | 'DEPLOYMENT_STAGE'
+    | 'DEPLOYMENT_STEPS'
+    | 'PIPELINE_STEPS'
+    | 'APPROVAL_STAGE'
+    | 'TRIGGERS'
+    | 'FEATURE_FLAG_STAGE'
+    | 'MONITORED_SERVICE'
+    | 'TEMPLATE'
+    | 'GIT_REPOSITORIES'
+    | 'FEATURE_FLAGS'
+    | 'HTTP_STEP'
+    | 'SHELL_SCRIPT_STEP'
+    | 'K8S_CANARY_DEPLOY_STEP'
+    | 'JIRA_CREATE_STEP'
+    | 'SERVICENOW_APPROVAL_STEP'
+    | 'JIRA_UPDATE_STEP'
+    | 'JIRA_APPROVAL_STEP'
+    | 'HARNESS_APPROVAL_STEP'
+    | 'BARRIER_STEP'
+    | 'VERIFY_STEP'
+    | 'UNRECOGNIZED'
+  typeValue?: number
+  unknownFields?: UnknownFieldSet
 }
 
 export interface EntityGitDetails {
@@ -103,12 +187,74 @@ export interface EntityGitDetails {
   filePath?: string
   objectId?: string
   repoIdentifier?: string
+  repoName?: string
   rootFolder?: string
 }
 
 export interface EntityValidityDetails {
   invalidYaml?: string
   valid?: boolean
+}
+
+export interface EnumDescriptor {
+  containingType?: Descriptor
+  file?: FileDescriptor
+  fullName?: string
+  index?: number
+  name?: string
+  options?: EnumOptions
+  values?: EnumValueDescriptor[]
+}
+
+export interface EnumOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  allowAlias?: boolean
+  defaultInstanceForType?: EnumOptions
+  deprecated?: boolean
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  parserForType?: ParserEnumOptions
+  serializedSize?: number
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
+}
+
+export interface EnumValueDescriptor {
+  file?: FileDescriptor
+  fullName?: string
+  index?: number
+  name?: string
+  number?: number
+  options?: EnumValueOptions
+  type?: EnumDescriptor
+}
+
+export interface EnumValueOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: EnumValueOptions
+  deprecated?: boolean
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  parserForType?: ParserEnumValueOptions
+  serializedSize?: number
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
 }
 
 export interface Environment {
@@ -377,6 +523,7 @@ export interface Error {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -411,6 +558,7 @@ export interface Error {
     | 'BUCKET_SERVER_ERROR'
     | 'GIT_SYNC_ERROR'
     | 'TEMPLATE_EXCEPTION'
+    | 'ENTITY_REFERENCE_EXCEPTION'
   correlationId?: string
   detailedMessage?: string
   message?: string
@@ -684,6 +832,7 @@ export interface Failure {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -718,10 +867,163 @@ export interface Failure {
     | 'BUCKET_SERVER_ERROR'
     | 'GIT_SYNC_ERROR'
     | 'TEMPLATE_EXCEPTION'
+    | 'ENTITY_REFERENCE_EXCEPTION'
   correlationId?: string
   errors?: ValidationError[]
   message?: string
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
+export interface FieldDescriptor {
+  containingOneof?: OneofDescriptor
+  containingType?: Descriptor
+  defaultValue?: { [key: string]: any }
+  enumType?: EnumDescriptor
+  extension?: boolean
+  extensionScope?: Descriptor
+  file?: FileDescriptor
+  fullName?: string
+  index?: number
+  javaType?: 'INT' | 'LONG' | 'FLOAT' | 'DOUBLE' | 'BOOLEAN' | 'STRING' | 'BYTE_STRING' | 'ENUM' | 'MESSAGE'
+  jsonName?: string
+  liteJavaType?: 'INT' | 'LONG' | 'FLOAT' | 'DOUBLE' | 'BOOLEAN' | 'STRING' | 'BYTE_STRING' | 'ENUM' | 'MESSAGE'
+  liteType?:
+    | 'DOUBLE'
+    | 'FLOAT'
+    | 'INT64'
+    | 'UINT64'
+    | 'INT32'
+    | 'FIXED64'
+    | 'FIXED32'
+    | 'BOOL'
+    | 'STRING'
+    | 'GROUP'
+    | 'MESSAGE'
+    | 'BYTES'
+    | 'UINT32'
+    | 'ENUM'
+    | 'SFIXED32'
+    | 'SFIXED64'
+    | 'SINT32'
+    | 'SINT64'
+  mapField?: boolean
+  messageType?: Descriptor
+  name?: string
+  number?: number
+  optional?: boolean
+  options?: FieldOptions
+  packable?: boolean
+  packed?: boolean
+  repeated?: boolean
+  required?: boolean
+  type?:
+    | 'DOUBLE'
+    | 'FLOAT'
+    | 'INT64'
+    | 'UINT64'
+    | 'INT32'
+    | 'FIXED64'
+    | 'FIXED32'
+    | 'BOOL'
+    | 'STRING'
+    | 'GROUP'
+    | 'MESSAGE'
+    | 'BYTES'
+    | 'UINT32'
+    | 'ENUM'
+    | 'SFIXED32'
+    | 'SFIXED64'
+    | 'SINT32'
+    | 'SINT64'
+}
+
+export interface FieldOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  ctype?: 'STRING' | 'CORD' | 'STRING_PIECE'
+  defaultInstanceForType?: FieldOptions
+  deprecated?: boolean
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  jstype?: 'JS_NORMAL' | 'JS_STRING' | 'JS_NUMBER'
+  lazy?: boolean
+  packed?: boolean
+  parserForType?: ParserFieldOptions
+  serializedSize?: number
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
+  weak?: boolean
+}
+
+export interface FileDescriptor {
+  dependencies?: FileDescriptor[]
+  enumTypes?: EnumDescriptor[]
+  extensions?: FieldDescriptor[]
+  file?: FileDescriptor
+  fullName?: string
+  messageTypes?: Descriptor[]
+  name?: string
+  options?: FileOptions
+  package?: string
+  publicDependencies?: FileDescriptor[]
+  services?: ServiceDescriptor[]
+  syntax?: 'UNKNOWN' | 'PROTO2' | 'PROTO3'
+}
+
+export interface FileOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  ccEnableArenas?: boolean
+  ccGenericServices?: boolean
+  csharpNamespace?: string
+  csharpNamespaceBytes?: ByteString
+  defaultInstanceForType?: FileOptions
+  deprecated?: boolean
+  descriptorForType?: Descriptor
+  goPackage?: string
+  goPackageBytes?: ByteString
+  initializationErrorString?: string
+  initialized?: boolean
+  javaGenerateEqualsAndHash?: boolean
+  javaGenericServices?: boolean
+  javaMultipleFiles?: boolean
+  javaOuterClassname?: string
+  javaOuterClassnameBytes?: ByteString
+  javaPackage?: string
+  javaPackageBytes?: ByteString
+  javaStringCheckUtf8?: boolean
+  objcClassPrefix?: string
+  objcClassPrefixBytes?: ByteString
+  optimizeFor?: 'SPEED' | 'CODE_SIZE' | 'LITE_RUNTIME'
+  parserForType?: ParserFileOptions
+  phpClassPrefix?: string
+  phpClassPrefixBytes?: ByteString
+  phpGenericServices?: boolean
+  phpMetadataNamespace?: string
+  phpMetadataNamespaceBytes?: ByteString
+  phpNamespace?: string
+  phpNamespaceBytes?: ByteString
+  pyGenericServices?: boolean
+  rubyPackage?: string
+  rubyPackageBytes?: ByteString
+  serializedSize?: number
+  swiftPrefix?: string
+  swiftPrefixBytes?: ByteString
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
 }
 
 export interface FilterDTO {
@@ -748,6 +1050,108 @@ export interface FilterProperties {
   }
 }
 
+export interface IdentifierRefProtoDTO {
+  accountIdentifier?: StringValue
+  accountIdentifierOrBuilder?: StringValueOrBuilder
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: IdentifierRefProtoDTO
+  descriptorForType?: Descriptor
+  identifier?: StringValue
+  identifierOrBuilder?: StringValueOrBuilder
+  initializationErrorString?: string
+  initialized?: boolean
+  metadata?: {
+    [key: string]: string
+  }
+  metadataCount?: number
+  metadataMap?: {
+    [key: string]: string
+  }
+  orgIdentifier?: StringValue
+  orgIdentifierOrBuilder?: StringValueOrBuilder
+  parserForType?: ParserIdentifierRefProtoDTO
+  projectIdentifier?: StringValue
+  projectIdentifierOrBuilder?: StringValueOrBuilder
+  scope?: 'ACCOUNT' | 'ORG' | 'PROJECT' | 'UNKNOWN' | 'UNRECOGNIZED'
+  scopeValue?: number
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
+}
+
+export interface IdentifierRefProtoDTOOrBuilder {
+  accountIdentifier?: StringValue
+  accountIdentifierOrBuilder?: StringValueOrBuilder
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: Message
+  descriptorForType?: Descriptor
+  identifier?: StringValue
+  identifierOrBuilder?: StringValueOrBuilder
+  initializationErrorString?: string
+  initialized?: boolean
+  metadata?: {
+    [key: string]: string
+  }
+  metadataCount?: number
+  metadataMap?: {
+    [key: string]: string
+  }
+  orgIdentifier?: StringValue
+  orgIdentifierOrBuilder?: StringValueOrBuilder
+  projectIdentifier?: StringValue
+  projectIdentifierOrBuilder?: StringValueOrBuilder
+  scope?: 'ACCOUNT' | 'ORG' | 'PROJECT' | 'UNKNOWN' | 'UNRECOGNIZED'
+  scopeValue?: number
+  unknownFields?: UnknownFieldSet
+}
+
+export interface InputSetReferenceProtoDTO {
+  accountIdentifier?: StringValue
+  accountIdentifierOrBuilder?: StringValueOrBuilder
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: InputSetReferenceProtoDTO
+  descriptorForType?: Descriptor
+  identifier?: StringValue
+  identifierOrBuilder?: StringValueOrBuilder
+  initializationErrorString?: string
+  initialized?: boolean
+  orgIdentifier?: StringValue
+  orgIdentifierOrBuilder?: StringValueOrBuilder
+  parserForType?: ParserInputSetReferenceProtoDTO
+  pipelineIdentifier?: StringValue
+  pipelineIdentifierOrBuilder?: StringValueOrBuilder
+  projectIdentifier?: StringValue
+  projectIdentifierOrBuilder?: StringValueOrBuilder
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
+}
+
+export interface InputSetReferenceProtoDTOOrBuilder {
+  accountIdentifier?: StringValue
+  accountIdentifierOrBuilder?: StringValueOrBuilder
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: Message
+  descriptorForType?: Descriptor
+  identifier?: StringValue
+  identifierOrBuilder?: StringValueOrBuilder
+  initializationErrorString?: string
+  initialized?: boolean
+  orgIdentifier?: StringValue
+  orgIdentifierOrBuilder?: StringValueOrBuilder
+  pipelineIdentifier?: StringValue
+  pipelineIdentifierOrBuilder?: StringValueOrBuilder
+  projectIdentifier?: StringValue
+  projectIdentifierOrBuilder?: StringValueOrBuilder
+  unknownFields?: UnknownFieldSet
+}
+
 export interface JsonNode {
   array?: boolean
   bigDecimal?: boolean
@@ -772,6 +1176,83 @@ export interface JsonNode {
   valueNode?: boolean
 }
 
+export interface Message {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: MessageLite
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  parserForType?: ParserMessage
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
+}
+
+export interface MessageLite {
+  defaultInstanceForType?: MessageLite
+  initialized?: boolean
+  parserForType?: ParserMessageLite
+  serializedSize?: number
+}
+
+export interface MessageOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: MessageOptions
+  deprecated?: boolean
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  mapEntry?: boolean
+  messageSetWireFormat?: boolean
+  noStandardDescriptorAccessor?: boolean
+  parserForType?: ParserMessageOptions
+  serializedSize?: number
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
+}
+
+export interface MethodDescriptor {
+  clientStreaming?: boolean
+  file?: FileDescriptor
+  fullName?: string
+  index?: number
+  inputType?: Descriptor
+  name?: string
+  options?: MethodOptions
+  outputType?: Descriptor
+  serverStreaming?: boolean
+  service?: ServiceDescriptor
+}
+
+export interface MethodOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: MethodOptions
+  deprecated?: boolean
+  descriptorForType?: Descriptor
+  idempotencyLevel?: 'IDEMPOTENCY_UNKNOWN' | 'NO_SIDE_EFFECTS' | 'IDEMPOTENT'
+  initializationErrorString?: string
+  initialized?: boolean
+  parserForType?: ParserMethodOptions
+  serializedSize?: number
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
+}
+
 export interface NGTag {
   key: string
   value: string
@@ -793,6 +1274,66 @@ export interface NGTemplateInfoConfig {
   }
   type: 'Step' | 'Stage'
   versionLabel: string
+}
+
+export interface NamePart {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: NamePart
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  isExtension?: boolean
+  namePart?: string
+  namePartBytes?: ByteString
+  parserForType?: ParserNamePart
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
+}
+
+export interface NamePartOrBuilder {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: Message
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  isExtension?: boolean
+  namePart?: string
+  namePartBytes?: ByteString
+  unknownFields?: UnknownFieldSet
+}
+
+export interface OneofDescriptor {
+  containingType?: Descriptor
+  fieldCount?: number
+  fields?: FieldDescriptor[]
+  file?: FileDescriptor
+  fullName?: string
+  index?: number
+  name?: string
+  options?: OneofOptions
+}
+
+export interface OneofOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: OneofOptions
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  parserForType?: ParserOneofOptions
+  serializedSize?: number
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
 }
 
 export interface Page {
@@ -842,6 +1383,86 @@ export interface Pageable {
   unpaged?: boolean
 }
 
+export interface Parser {
+  [key: string]: any
+}
+
+export interface ParserEntityDetailProtoDTO {
+  [key: string]: any
+}
+
+export interface ParserEnumOptions {
+  [key: string]: any
+}
+
+export interface ParserEnumValueOptions {
+  [key: string]: any
+}
+
+export interface ParserFieldOptions {
+  [key: string]: any
+}
+
+export interface ParserFileOptions {
+  [key: string]: any
+}
+
+export interface ParserIdentifierRefProtoDTO {
+  [key: string]: any
+}
+
+export interface ParserInputSetReferenceProtoDTO {
+  [key: string]: any
+}
+
+export interface ParserMessage {
+  [key: string]: any
+}
+
+export interface ParserMessageLite {
+  [key: string]: any
+}
+
+export interface ParserMessageOptions {
+  [key: string]: any
+}
+
+export interface ParserMethodOptions {
+  [key: string]: any
+}
+
+export interface ParserNamePart {
+  [key: string]: any
+}
+
+export interface ParserOneofOptions {
+  [key: string]: any
+}
+
+export interface ParserServiceOptions {
+  [key: string]: any
+}
+
+export interface ParserStringValue {
+  [key: string]: any
+}
+
+export interface ParserTemplateReferenceProtoDTO {
+  [key: string]: any
+}
+
+export interface ParserUninterpretedOption {
+  [key: string]: any
+}
+
+export interface ParserYamlOutputProperties {
+  [key: string]: any
+}
+
+export interface ParserYamlProperties {
+  [key: string]: any
+}
+
 export type PipelineFilterProperties = FilterProperties & {
   description?: string
   moduleProperties?: {
@@ -862,7 +1483,28 @@ export interface ResourceDTO {
   labels?: {
     [key: string]: string
   }
-  type: string
+  type:
+    | 'ORGANIZATION'
+    | 'PROJECT'
+    | 'USER_GROUP'
+    | 'SECRET'
+    | 'RESOURCE_GROUP'
+    | 'USER'
+    | 'ROLE'
+    | 'ROLE_ASSIGNMENT'
+    | 'PIPELINE'
+    | 'TRIGGER'
+    | 'TEMPLATE'
+    | 'INPUT_SET'
+    | 'DELEGATE_CONFIGURATION'
+    | 'SERVICE'
+    | 'ENVIRONMENT'
+    | 'DELEGATE'
+    | 'SERVICE_ACCOUNT'
+    | 'CONNECTOR'
+    | 'API_KEY'
+    | 'TOKEN'
+    | 'DELEGATE_TOKEN'
 }
 
 export interface ResourceScopeDTO {
@@ -891,6 +1533,13 @@ export interface ResponseBoolean {
 export interface ResponseFilterDTO {
   correlationId?: string
   data?: FilterDTO
+  metaData?: { [key: string]: any }
+  status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
+export interface ResponseListEntityDetailProtoDTO {
+  correlationId?: string
+  data?: EntityDetailProtoDTO[]
   metaData?: { [key: string]: any }
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
 }
@@ -1156,6 +1805,7 @@ export interface ResponseMessage {
     | 'TIMESCALE_NOT_AVAILABLE'
     | 'MIGRATION_EXCEPTION'
     | 'REQUEST_PROCESSING_INTERRUPTED'
+    | 'SECRET_MANAGER_ID_NOT_FOUND'
     | 'GCP_SECRET_MANAGER_OPERATION_ERROR'
     | 'GCP_SECRET_OPERATION_ERROR'
     | 'GIT_OPERATION_ERROR'
@@ -1190,6 +1840,7 @@ export interface ResponseMessage {
     | 'BUCKET_SERVER_ERROR'
     | 'GIT_SYNC_ERROR'
     | 'TEMPLATE_EXCEPTION'
+    | 'ENTITY_REFERENCE_EXCEPTION'
   exception?: Throwable
   failureTypes?: (
     | 'EXPIRED'
@@ -1254,10 +1905,51 @@ export interface ResponseTemplateWrapperResponse {
   status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
 }
 
+export interface ResponseVariableMergeServiceResponse {
+  correlationId?: string
+  data?: VariableMergeServiceResponse
+  metaData?: { [key: string]: any }
+  status?: 'SUCCESS' | 'FAILURE' | 'ERROR'
+}
+
 export type SampleErrorMetadataDTO = ErrorMetadataDTO & {
   sampleMap?: {
     [key: string]: string
   }
+}
+
+export interface ServiceDescriptor {
+  file?: FileDescriptor
+  fullName?: string
+  index?: number
+  methods?: MethodDescriptor[]
+  name?: string
+  options?: ServiceOptions
+}
+
+export interface ServiceExpressionProperties {
+  expression?: string
+  serviceName?: string
+}
+
+export interface ServiceOptions {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  allFieldsRaw?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: ServiceOptions
+  deprecated?: boolean
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  parserForType?: ParserServiceOptions
+  serializedSize?: number
+  uninterpretedOptionCount?: number
+  uninterpretedOptionList?: UninterpretedOption[]
+  uninterpretedOptionOrBuilderList?: UninterpretedOptionOrBuilder[]
+  unknownFields?: UnknownFieldSet
 }
 
 export interface Sort {
@@ -1274,7 +1966,36 @@ export interface StackTraceElement {
   nativeMethod?: boolean
 }
 
+export interface StringValue {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: StringValue
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  parserForType?: ParserStringValue
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
+  value?: string
+  valueBytes?: ByteString
+}
+
+export interface StringValueOrBuilder {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: Message
+  descriptorForType?: Descriptor
+  initializationErrorString?: string
+  initialized?: boolean
+  unknownFields?: UnknownFieldSet
+  value?: string
+  valueBytes?: ByteString
+}
+
 export interface TemplateApplyRequest {
+  checkForAccess?: boolean
   originalEntityYaml: string
 }
 
@@ -1320,9 +2041,58 @@ export interface TemplateMergeResponse {
   templateReferenceSummaries?: TemplateReferenceSummary[]
 }
 
+export interface TemplateReferenceProtoDTO {
+  accountIdentifier?: StringValue
+  accountIdentifierOrBuilder?: StringValueOrBuilder
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: TemplateReferenceProtoDTO
+  descriptorForType?: Descriptor
+  identifier?: StringValue
+  identifierOrBuilder?: StringValueOrBuilder
+  initializationErrorString?: string
+  initialized?: boolean
+  orgIdentifier?: StringValue
+  orgIdentifierOrBuilder?: StringValueOrBuilder
+  parserForType?: ParserTemplateReferenceProtoDTO
+  projectIdentifier?: StringValue
+  projectIdentifierOrBuilder?: StringValueOrBuilder
+  scope?: 'ACCOUNT' | 'ORG' | 'PROJECT' | 'UNKNOWN' | 'UNRECOGNIZED'
+  scopeValue?: number
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
+  versionLabel?: StringValue
+  versionLabelOrBuilder?: StringValueOrBuilder
+}
+
+export interface TemplateReferenceProtoDTOOrBuilder {
+  accountIdentifier?: StringValue
+  accountIdentifierOrBuilder?: StringValueOrBuilder
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: Message
+  descriptorForType?: Descriptor
+  identifier?: StringValue
+  identifierOrBuilder?: StringValueOrBuilder
+  initializationErrorString?: string
+  initialized?: boolean
+  orgIdentifier?: StringValue
+  orgIdentifierOrBuilder?: StringValueOrBuilder
+  projectIdentifier?: StringValue
+  projectIdentifierOrBuilder?: StringValueOrBuilder
+  scope?: 'ACCOUNT' | 'ORG' | 'PROJECT' | 'UNKNOWN' | 'UNRECOGNIZED'
+  scopeValue?: number
+  unknownFields?: UnknownFieldSet
+  versionLabel?: StringValue
+  versionLabelOrBuilder?: StringValueOrBuilder
+}
+
 export interface TemplateReferenceSummary {
   fqn?: string
   scope?: 'account' | 'org' | 'project' | 'unknown'
+  stableTemplate?: boolean
   templateIdentifier?: string
   versionLabel?: string
 }
@@ -1384,9 +2154,111 @@ export interface Throwable {
   suppressed?: Throwable[]
 }
 
+export interface UninterpretedOption {
+  aggregateValue?: string
+  aggregateValueBytes?: ByteString
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: UninterpretedOption
+  descriptorForType?: Descriptor
+  doubleValue?: number
+  identifierValue?: string
+  identifierValueBytes?: ByteString
+  initializationErrorString?: string
+  initialized?: boolean
+  nameCount?: number
+  nameList?: NamePart[]
+  nameOrBuilderList?: NamePartOrBuilder[]
+  negativeIntValue?: number
+  parserForType?: ParserUninterpretedOption
+  positiveIntValue?: number
+  serializedSize?: number
+  stringValue?: ByteString
+  unknownFields?: UnknownFieldSet
+}
+
+export interface UninterpretedOptionOrBuilder {
+  aggregateValue?: string
+  aggregateValueBytes?: ByteString
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: Message
+  descriptorForType?: Descriptor
+  doubleValue?: number
+  identifierValue?: string
+  identifierValueBytes?: ByteString
+  initializationErrorString?: string
+  initialized?: boolean
+  nameCount?: number
+  nameList?: NamePart[]
+  nameOrBuilderList?: NamePartOrBuilder[]
+  negativeIntValue?: number
+  positiveIntValue?: number
+  stringValue?: ByteString
+  unknownFields?: UnknownFieldSet
+}
+
+export interface UnknownFieldSet {
+  defaultInstanceForType?: UnknownFieldSet
+  initialized?: boolean
+  parserForType?: Parser
+  serializedSize?: number
+  serializedSizeAsMessageSet?: number
+}
+
 export interface ValidationError {
   error?: string
   fieldId?: string
+}
+
+export interface VariableMergeServiceResponse {
+  errorResponses?: string[]
+  metadataMap?: {
+    [key: string]: VariableResponseMapValue
+  }
+  serviceExpressionPropertiesList?: ServiceExpressionProperties[]
+  yaml?: string
+}
+
+export interface VariableResponseMapValue {
+  yamlOutputProperties?: YamlOutputProperties
+  yamlProperties?: YamlProperties
+}
+
+export interface YamlOutputProperties {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: YamlOutputProperties
+  descriptorForType?: Descriptor
+  fqn?: string
+  fqnBytes?: ByteString
+  initializationErrorString?: string
+  initialized?: boolean
+  localName?: string
+  localNameBytes?: ByteString
+  parserForType?: ParserYamlOutputProperties
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
+}
+
+export interface YamlProperties {
+  allFields?: {
+    [key: string]: { [key: string]: any }
+  }
+  defaultInstanceForType?: YamlProperties
+  descriptorForType?: Descriptor
+  fqn?: string
+  fqnBytes?: ByteString
+  initializationErrorString?: string
+  initialized?: boolean
+  localName?: string
+  localNameBytes?: ByteString
+  parserForType?: ParserYamlProperties
+  serializedSize?: number
+  unknownFields?: UnknownFieldSet
 }
 
 export type FilterDTORequestBody = FilterDTO
@@ -1505,7 +2377,7 @@ export const postFilterPromise = (
   )
 
 export interface UpdateFilterQueryParams {
-  accountIdentifier?: string
+  accountIdentifier: string
 }
 
 export type UpdateFilterProps = Omit<
@@ -1556,7 +2428,7 @@ export const updateFilterPromise = (
   )
 
 export interface DeleteFilterQueryParams {
-  accountIdentifier?: string
+  accountIdentifier: string
   orgIdentifier?: string
   projectIdentifier?: string
   type:
@@ -1617,7 +2489,7 @@ export const deleteFilterPromise = (
   )
 
 export interface GetFilterQueryParams {
-  accountIdentifier?: string
+  accountIdentifier: string
   orgIdentifier?: string
   projectIdentifier?: string
   type:
@@ -2077,6 +2949,76 @@ export const getTemplateInputSetYamlPromise = (
     signal
   )
 
+export interface GetTemplateReferencesQueryParams {
+  accountIdentifier: string
+  orgIdentifier?: string
+  projectIdentifier?: string
+}
+
+export type GetTemplateReferencesProps = Omit<
+  MutateProps<
+    ResponseListEntityDetailProtoDTO,
+    Failure | Error,
+    GetTemplateReferencesQueryParams,
+    CreateTemplateBodyRequestBody,
+    void
+  >,
+  'path' | 'verb'
+>
+
+export const GetTemplateReferences = (props: GetTemplateReferencesProps) => (
+  <Mutate<
+    ResponseListEntityDetailProtoDTO,
+    Failure | Error,
+    GetTemplateReferencesQueryParams,
+    CreateTemplateBodyRequestBody,
+    void
+  >
+    verb="POST"
+    path={`/templates/templateReferences`}
+    base={getConfig('template/api')}
+    {...props}
+  />
+)
+
+export type UseGetTemplateReferencesProps = Omit<
+  UseMutateProps<
+    ResponseListEntityDetailProtoDTO,
+    Failure | Error,
+    GetTemplateReferencesQueryParams,
+    CreateTemplateBodyRequestBody,
+    void
+  >,
+  'path' | 'verb'
+>
+
+export const useGetTemplateReferences = (props: UseGetTemplateReferencesProps) =>
+  useMutate<
+    ResponseListEntityDetailProtoDTO,
+    Failure | Error,
+    GetTemplateReferencesQueryParams,
+    CreateTemplateBodyRequestBody,
+    void
+  >('POST', `/templates/templateReferences`, { base: getConfig('template/api'), ...props })
+
+export const getTemplateReferencesPromise = (
+  props: MutateUsingFetchProps<
+    ResponseListEntityDetailProtoDTO,
+    Failure | Error,
+    GetTemplateReferencesQueryParams,
+    CreateTemplateBodyRequestBody,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  mutateUsingFetch<
+    ResponseListEntityDetailProtoDTO,
+    Failure | Error,
+    GetTemplateReferencesQueryParams,
+    CreateTemplateBodyRequestBody,
+    void
+  >('POST', getConfig('template/api'), `/templates/templateReferences`, props, signal)
+
 export interface UpdateExistingTemplateLabelQueryParams {
   accountIdentifier: string
   orgIdentifier?: string
@@ -2369,6 +3311,117 @@ export const updateTemplateSettingsPromise = (
     void,
     UpdateTemplateSettingsPathParams
   >('PUT', getConfig('template/api'), `/templates/updateTemplateSettings/${templateIdentifier}`, props, signal)
+
+export interface ValidateTheIdentifierIsUniqueQueryParams {
+  accountIdentifier?: string
+  orgIdentifier?: string
+  projectIdentifier?: string
+  identifier?: string
+  versionLabel?: string
+}
+
+export type ValidateTheIdentifierIsUniqueProps = Omit<
+  GetProps<ResponseBoolean, Failure | Error, ValidateTheIdentifierIsUniqueQueryParams, void>,
+  'path'
+>
+
+/**
+ * Validate Identifier is unique
+ */
+export const ValidateTheIdentifierIsUnique = (props: ValidateTheIdentifierIsUniqueProps) => (
+  <Get<ResponseBoolean, Failure | Error, ValidateTheIdentifierIsUniqueQueryParams, void>
+    path={`/templates/validateUniqueIdentifier`}
+    base={getConfig('template/api')}
+    {...props}
+  />
+)
+
+export type UseValidateTheIdentifierIsUniqueProps = Omit<
+  UseGetProps<ResponseBoolean, Failure | Error, ValidateTheIdentifierIsUniqueQueryParams, void>,
+  'path'
+>
+
+/**
+ * Validate Identifier is unique
+ */
+export const useValidateTheIdentifierIsUnique = (props: UseValidateTheIdentifierIsUniqueProps) =>
+  useGet<ResponseBoolean, Failure | Error, ValidateTheIdentifierIsUniqueQueryParams, void>(
+    `/templates/validateUniqueIdentifier`,
+    { base: getConfig('template/api'), ...props }
+  )
+
+/**
+ * Validate Identifier is unique
+ */
+export const validateTheIdentifierIsUniquePromise = (
+  props: GetUsingFetchProps<ResponseBoolean, Failure | Error, ValidateTheIdentifierIsUniqueQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  getUsingFetch<ResponseBoolean, Failure | Error, ValidateTheIdentifierIsUniqueQueryParams, void>(
+    getConfig('template/api'),
+    `/templates/validateUniqueIdentifier`,
+    props,
+    signal
+  )
+
+export interface CreateVariablesQueryParams {
+  accountIdentifier: string
+  orgIdentifier?: string
+  projectIdentifier?: string
+}
+
+export type CreateVariablesProps = Omit<
+  MutateProps<ResponseVariableMergeServiceResponse, Failure | Error, CreateVariablesQueryParams, void, void>,
+  'path' | 'verb'
+>
+
+/**
+ * Create variables for Template
+ */
+export const CreateVariables = (props: CreateVariablesProps) => (
+  <Mutate<ResponseVariableMergeServiceResponse, Failure | Error, CreateVariablesQueryParams, void, void>
+    verb="POST"
+    path={`/templates/variables`}
+    base={getConfig('template/api')}
+    {...props}
+  />
+)
+
+export type UseCreateVariablesProps = Omit<
+  UseMutateProps<ResponseVariableMergeServiceResponse, Failure | Error, CreateVariablesQueryParams, void, void>,
+  'path' | 'verb'
+>
+
+/**
+ * Create variables for Template
+ */
+export const useCreateVariables = (props: UseCreateVariablesProps) =>
+  useMutate<ResponseVariableMergeServiceResponse, Failure | Error, CreateVariablesQueryParams, void, void>(
+    'POST',
+    `/templates/variables`,
+    { base: getConfig('template/api'), ...props }
+  )
+
+/**
+ * Create variables for Template
+ */
+export const createVariablesPromise = (
+  props: MutateUsingFetchProps<
+    ResponseVariableMergeServiceResponse,
+    Failure | Error,
+    CreateVariablesQueryParams,
+    void,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  mutateUsingFetch<ResponseVariableMergeServiceResponse, Failure | Error, CreateVariablesQueryParams, void, void>(
+    'POST',
+    getConfig('template/api'),
+    `/templates/variables`,
+    props,
+    signal
+  )
 
 export interface DeleteTemplateVersionsOfIdentifierQueryParams {
   accountIdentifier: string

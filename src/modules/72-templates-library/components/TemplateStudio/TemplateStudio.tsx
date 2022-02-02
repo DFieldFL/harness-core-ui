@@ -38,6 +38,7 @@ import type { GitFilterScope } from '@common/components/GitFilters/GitFilters'
 import { useQueryParams } from '@common/hooks'
 import { useAppStore } from 'framework/AppStore/AppStoreContext'
 import NoEntityFound from '@pipeline/pages/utils/NoEntityFound/NoEntityFound'
+import { TemplateVariablesContextProvider } from '@templates-library/components/TemplateVariablesContext/TemplateVariablesContext'
 import { TemplateContext } from './TemplateContext/TemplateContext'
 import css from './TemplateStudio.module.scss'
 
@@ -251,7 +252,7 @@ export function TemplateStudio(): React.ReactElement {
   }, [projectIdentifier, orgIdentifier])
 
   return (
-    <>
+    <TemplateVariablesContextProvider template={template}>
       <NavigationCheck
         when={template?.identifier !== ''}
         shouldBlockNavigation={nextLocation => {
@@ -307,6 +308,6 @@ export function TemplateStudio(): React.ReactElement {
           <RightDrawer />
         </Layout.Vertical>
       </Page.Body>
-    </>
+    </TemplateVariablesContextProvider>
   )
 }
