@@ -100,7 +100,7 @@ exports[`Certificate Upload Screen render upload component along with other fiel
                   autocomplete="off"
                   class="bp3-input"
                   name="password"
-                  type="text"
+                  type="password"
                   value=""
                 />
               </div>
@@ -228,7 +228,7 @@ exports[`Certificate Upload Screen render upload component in edit mode 1`] = `
                   class="bp3-input"
                   disabled=""
                   name="password"
-                  type="text"
+                  type="password"
                   value=""
                 />
               </div>

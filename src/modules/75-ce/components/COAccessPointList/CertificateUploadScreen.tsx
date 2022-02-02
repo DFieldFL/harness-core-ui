@@ -84,6 +84,7 @@ const CertificateUpload: React.FC<CertificateUploadProps> = props => {
             />
             <FormInput.Text
               name={'password'}
+              inputGroup={{ type: 'password' }}
               label={getString('password')}
               disabled={isEditMode && !props.editableFieldsMap['password']}
             />
