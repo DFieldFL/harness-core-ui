@@ -182,6 +182,7 @@ const PickMetric: React.FC<Omit<SLIProps, 'children'>> = ({ formikProps, ...rest
                 type: 'number',
                 min: 0,
                 max: SLIMetricType === SLIMetricTypes.RATIO ? 100 : undefined,
+                step: 'any',
                 rightElement:
                   SLIMetricType === SLIMetricTypes.RATIO ? <Icon name="percentage" padding="small" /> : undefined
               }}

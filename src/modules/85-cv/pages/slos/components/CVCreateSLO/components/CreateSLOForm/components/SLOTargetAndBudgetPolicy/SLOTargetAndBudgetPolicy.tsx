@@ -97,6 +97,7 @@ const SLOTargetAndBudgetPolicy: React.FC<SLOTargetAndBudgetPolicyProps> = ({ chi
                   type: 'number',
                   min: 0,
                   max: 100,
+                  step: 'any',
                   rightElement: <Icon name="percentage" padding="small" />
                 }}
                 className={css.sloTarget}

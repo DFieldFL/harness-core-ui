@@ -235,7 +235,7 @@ exports[`SLOCardHeader it should successfully reset the error budget 1`] = `
         cv.yourExistingErrorBudgetIs
          
         <span
-          class="StyledProps--font StyledProps--main StyledProps--font-variation-body2"
+          class="StyledProps--font StyledProps--main StyledProps--font-variation-body StyledProps--font-weight-bold"
           data-testid="existing-error-budget"
         >
           100
@@ -246,7 +246,7 @@ exports[`SLOCardHeader it should successfully reset the error budget 1`] = `
         cv.andYouHave
          
         <span
-          class="StyledProps--font StyledProps--main StyledProps--font-variation-body2 StyledProps--color StyledProps--color-green500"
+          class="StyledProps--font StyledProps--main StyledProps--font-variation-body StyledProps--font-weight-bold StyledProps--color StyledProps--color-green500"
           data-testid="remaining-error-budget"
         >
           60

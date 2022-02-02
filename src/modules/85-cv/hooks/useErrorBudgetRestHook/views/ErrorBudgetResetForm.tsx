@@ -39,17 +39,17 @@ const ErrorBudgetResetForm: React.FC<ErrorBudgetResetFormProps> = ({ serviceLeve
     <Container width={650}>
       <Text font={{ variation: FontVariation.BODY }} color={Color.BLACK}>
         {getString('cv.yourExistingErrorBudgetIs')}{' '}
-        <Text tag="span" font={{ variation: FontVariation.BODY2 }} data-testid="existing-error-budget">
-          {serviceLevelObjective.totalErrorBudget} {getString('cv.minutes')}
+        <Text tag="span" font={{ variation: FontVariation.BODY, weight: 'bold' }} data-testid="existing-error-budget">
+          {serviceLevelObjective.totalErrorBudget.toLocaleString()} {getString('cv.minutes')}
         </Text>
         , {getString('cv.andYouHave')}{' '}
         <Text
           tag="span"
-          font={{ variation: FontVariation.BODY2 }}
+          font={{ variation: FontVariation.BODY, weight: 'bold' }}
           color={getRiskColorValue(serviceLevelObjective.errorBudgetRisk, false)}
           data-testid="remaining-error-budget"
         >
-          {serviceLevelObjective.errorBudgetRemaining} {getString('cv.minutes')}
+          {serviceLevelObjective.errorBudgetRemaining.toLocaleString()} {getString('cv.minutes')}
         </Text>{' '}
         {getString('cv.left')}.
       </Text>
@@ -118,7 +118,7 @@ const ErrorBudgetResetForm: React.FC<ErrorBudgetResetFormProps> = ({ serviceLeve
                     {calculateErrorBudgetByIncrement(
                       serviceLevelObjective.totalErrorBudget,
                       formik.values.errorBudgetIncrementPercentage
-                    )}
+                    ).toLocaleString()}
                   </Heading>
                   <Text inline font={{ variation: FontVariation.FORM_HELP }}>
                     {' '}
@@ -138,7 +138,7 @@ const ErrorBudgetResetForm: React.FC<ErrorBudgetResetFormProps> = ({ serviceLeve
                       serviceLevelObjective.totalErrorBudget,
                       serviceLevelObjective.errorBudgetRemaining,
                       formik.values.errorBudgetIncrementPercentage
-                    )}
+                    ).toLocaleString()}
                   </Heading>
                   <Text inline font={{ variation: FontVariation.FORM_HELP }}>
                     {' '}
