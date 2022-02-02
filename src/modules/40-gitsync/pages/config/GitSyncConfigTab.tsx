@@ -95,7 +95,13 @@ const GitSyncConfigTab: React.FC = () => {
     () => (
       <Dialog isOpen={true} enforceFocus={false} onClose={hideModal} className={css.dialog}>
         <GitSyncStoreProvider>
-          <FullSyncForm isNewUser={false} orgIdentifier={orgIdentifier} projectIdentifier={projectIdentifier} />
+          <FullSyncForm
+            isNewUser={false}
+            orgIdentifier={orgIdentifier}
+            projectIdentifier={projectIdentifier}
+            onClose={hideModal}
+            onSuccess={hideModal}
+          />
         </GitSyncStoreProvider>
       </Dialog>
     ),

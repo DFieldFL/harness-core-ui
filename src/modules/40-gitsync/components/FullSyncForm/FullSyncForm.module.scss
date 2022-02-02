@@ -14,7 +14,8 @@
         color: var(--grey-600) !important;
       }
 
-      .bp3-input-group input {
+      .bp3-input-group input,
+      .bp3-menu {
         width: 400px;
       }
 
@@ -54,6 +55,11 @@
       }
     }
   }
+}
+
+.isModalStep {
+  padding: var(--spacing-xxlarge) !important;
+  height: 720px;
 }
 
 .branchSelector {

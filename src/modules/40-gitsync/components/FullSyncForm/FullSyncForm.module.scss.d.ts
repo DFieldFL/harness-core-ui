@@ -13,6 +13,7 @@ declare const styles: {
   readonly formBody: string
   readonly formRow: string
   readonly gitBranchSelectorPopover: string
+  readonly isModalStep: string
   readonly modalBody: string
   readonly modalContainer: string
   readonly prTitle: string
