@@ -36,7 +36,7 @@ import { FormMultiTypeTextAreaField } from '@common/components'
 import StepCommonFields, {
   GetImagePullPolicyOptions,
   GetShellOptions
-} from '@pipeline/components/StepCommonFields/StepCommonFields'
+} from '@ci/components/PipelineSteps/StepCommonFields/StepCommonFields'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
 import {
   getInitialValuesInCorrectFormat,

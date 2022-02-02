@@ -14,12 +14,15 @@ import { useStrings } from 'framework/strings'
 import { MultiTypeSelectField } from '@common/components/MultiTypeSelect/MultiTypeSelect'
 import { MultiTypeTextField } from '@common/components/MultiTypeText/MultiTypeText'
 import { FormMultiTypeDurationField } from '@common/components/MultiTypeDuration/MultiTypeDuration'
-import { GetShellOptions, GetImagePullPolicyOptions } from '@pipeline/components/StepCommonFields/StepCommonFields'
+import {
+  GetShellOptions,
+  GetImagePullPolicyOptions
+} from '@ci/components/PipelineSteps/StepCommonFields/StepCommonFields'
 import type { InputSetData } from '@pipeline/components/AbstractSteps/Step'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
 import { getOptionalSubLabel } from '@ci/components/PipelineSteps/CIStep/CIStepOptionalConfig'
-import css from '../PipelineSteps/Steps/Steps.module.scss'
+import css from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
 interface StepCommonFieldsInputSetProps<T> extends Omit<InputSetData<T>, 'path' | 'template'> {
   path?: string

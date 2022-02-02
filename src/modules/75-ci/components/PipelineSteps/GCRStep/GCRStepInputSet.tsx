@@ -15,7 +15,7 @@ import MultiTypeListInputSet from '@common/components/MultiTypeListInputSet/Mult
 import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
 import { MultiTypeTextField } from '@common/components/MultiTypeText/MultiTypeText'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
-import StepCommonFieldsInputSet from '@pipeline/components/StepCommonFields/StepCommonFieldsInputSet'
+import StepCommonFieldsInputSet from '@ci/components/PipelineSteps/StepCommonFields/StepCommonFieldsInputSet'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import type { GitQueryParams } from '@common/interfaces/RouteInterfaces'
 import type { GCRStepProps } from './GCRStep'

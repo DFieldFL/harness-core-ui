@@ -43,7 +43,7 @@ import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorRef
 import StepCommonFields, {
   GetImagePullPolicyOptions,
   GetShellOptions /*,{ /*usePullOptions }*/
-} from '@pipeline/components/StepCommonFields/StepCommonFields'
+} from '@ci/components/PipelineSteps/StepCommonFields/StepCommonFields'
 import { validate } from '@pipeline/components/PipelineSteps/Steps/StepsValidateUtils'
 import {
   getInitialValuesInCorrectFormat,

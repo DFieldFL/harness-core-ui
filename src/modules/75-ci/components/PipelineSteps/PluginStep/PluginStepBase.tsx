@@ -15,7 +15,9 @@ import type { StepFormikFowardRef } from '@pipeline/components/AbstractSteps/Ste
 import { setFormikRef } from '@pipeline/components/AbstractSteps/Step'
 import { usePipelineContext } from '@pipeline/components/PipelineStudio/PipelineContext/PipelineContext'
 import { useStrings } from 'framework/strings'
-import StepCommonFields, { GetImagePullPolicyOptions } from '@pipeline/components/StepCommonFields/StepCommonFields'
+import StepCommonFields, {
+  GetImagePullPolicyOptions
+} from '@ci/components/PipelineSteps/StepCommonFields/StepCommonFields'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
 import {
   getInitialValuesInCorrectFormat,

@@ -15,7 +15,7 @@ import MultiTypeListInputSet from '@common/components/MultiTypeListInputSet/Mult
 import { MultiTypeTextField } from '@common/components/MultiTypeText/MultiTypeText'
 import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
 import { FormMultiTypeConnectorField } from '@connectors/components/ConnectorReferenceField/FormMultiTypeConnectorField'
-import StepCommonFieldsInputSet from '@pipeline/components/StepCommonFields/StepCommonFieldsInputSet'
+import StepCommonFieldsInputSet from '@ci/components/PipelineSteps/StepCommonFields/StepCommonFieldsInputSet'
 import { StepViewType } from '@pipeline/components/AbstractSteps/Step'
 import type { GitQueryParams } from '@common/interfaces/RouteInterfaces'
 import type { DockerHubStepProps } from './DockerHubStep'

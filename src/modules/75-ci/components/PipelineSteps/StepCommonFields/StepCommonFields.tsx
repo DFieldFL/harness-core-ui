@@ -14,9 +14,9 @@ import { useStrings } from 'framework/strings'
 import { FormMultiTypeDurationField } from '@common/components/MultiTypeDuration/MultiTypeDuration'
 import { MultiTypeSelectField } from '@common/components/MultiTypeSelect/MultiTypeSelect'
 import { MultiTypeTextField } from '@common/components/MultiTypeText/MultiTypeText'
-import { useVariablesExpression } from '../PipelineStudio/PiplineHooks/useVariablesExpression'
-import type { PullOption } from '../PipelineSteps/Steps/StepsTypes'
-import css from '../PipelineSteps/Steps/Steps.module.scss'
+import { useVariablesExpression } from '@pipeline/components/PipelineStudio/PiplineHooks/useVariablesExpression'
+import type { PullOption } from '@pipeline/components/PipelineSteps/Steps/StepsTypes'
+import css from '@pipeline/components/PipelineSteps/Steps/Steps.module.scss'
 
 export type PullOptions = { label: string; value: PullOption }[]
 
