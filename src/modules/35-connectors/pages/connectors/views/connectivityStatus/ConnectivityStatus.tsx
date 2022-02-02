@@ -79,7 +79,6 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
 
   const executeStepVerify = async (): Promise<void> => {
     if (stepDetails.step === StepIndex.get(STEP.TEST_CONNECTION) && stepDetails.status === 'PROCESS') {
-      setTesting(true)
       try {
         const result = await reloadTestConnection()
         setStatus(result?.data?.status)
@@ -105,7 +104,7 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
         if (err?.data?.responseMessages) {
           setErrorMessage({
             errorSummary: err?.data?.message,
-            errors: err?.data?.responseMessages || [],
+            errors: err?.data?.responseMessages,
             useErrorHandler: true
           })
         } else {
@@ -195,53 +194,54 @@ const ConnectivityStatus: React.FC<ConnectivityStatusProps> = ({ data }) => {
     )
   }
 
+  if (testing) {
+    return (
+      <Layout.Horizontal>
+        <Popover interactionKind={PopoverInteractionKind.HOVER} position={Position.LEFT_TOP}>
+          <Button intent="primary" minimal loading />
+          <div className={css.testConnectionPop}>
+            <StepsProgress
+              steps={[stepName]}
+              intent={stepDetails.intent}
+              current={stepDetails.step}
+              currentStatus={stepDetails.status}
+            />
+          </div>
+        </Popover>
+        <Text style={{ margin: 8 }}>{getString('connectors.testInProgress')}</Text>
+      </Layout.Horizontal>
+    )
+  }
+
   return (
     <Layout.Horizontal>
-      {!testing ? (
-        <>
-          <Layout.Vertical width="100px">
-            <Layout.Horizontal spacing="small">{renderStatus()}</Layout.Horizontal>
-            {connectorStatus ? (
-              <Text font={{ size: 'small' }} color={Color.GREY_400}>
-                {<ReactTimeago date={lastTestedAt || data.status?.testedAt || ''} />}
-              </Text>
-            ) : null}
-          </Layout.Vertical>
-          {!isStatusSuccess ? (
-            <Button
-              variation={ButtonVariation.SECONDARY}
-              size={ButtonSize.SMALL}
-              text={getString('test')}
-              className={css.testBtn}
-              onClick={e => {
-                e.stopPropagation()
-                executeStepVerify()
-                setStepDetails({
-                  step: 1,
-                  intent: Intent.WARNING,
-                  status: 'PROCESS' // Replace when enum is added in uikit
-                })
-              }}
-              withoutBoxShadow
-            />
-          ) : undefined}
-        </>
-      ) : (
-        <Layout.Horizontal>
-          <Popover interactionKind={PopoverInteractionKind.HOVER} position={Position.LEFT_TOP}>
-            <Button intent="primary" minimal loading />
-            <div className={css.testConnectionPop}>
-              <StepsProgress
-                steps={[stepName]}
-                intent={stepDetails.intent}
-                current={stepDetails.step}
-                currentStatus={stepDetails.status}
-              />
-            </div>
-          </Popover>
-          <Text style={{ margin: 8 }}>{getString('connectors.testInProgress')}</Text>
-        </Layout.Horizontal>
-      )}
+      <Layout.Vertical width="100px">
+        <Layout.Horizontal spacing="small">{renderStatus()}</Layout.Horizontal>
+        {connectorStatus ? (
+          <Text font={{ size: 'small' }} color={Color.GREY_400}>
+            {<ReactTimeago date={lastTestedAt || data.status?.testedAt || ''} />}
+          </Text>
+        ) : null}
+      </Layout.Vertical>
+      {!isStatusSuccess ? (
+        <Button
+          variation={ButtonVariation.SECONDARY}
+          size={ButtonSize.SMALL}
+          text={getString('test')}
+          className={css.testBtn}
+          onClick={e => {
+            e.stopPropagation()
+            setTesting(true)
+            executeStepVerify()
+            setStepDetails({
+              step: 1,
+              intent: Intent.WARNING,
+              status: 'PROCESS' // Replace when enum is added in uikit
+            })
+          }}
+          withoutBoxShadow
+        />
+      ) : undefined}
     </Layout.Horizontal>
   )
 }
