@@ -597,7 +597,7 @@ perspectives:
     reportDeletedTxt: 'Report {{ name }} deleted'
   recommendations:
     viewText: '{{ $.common.viewText }}'
-    recommendationCountTxt: '{{ count }} recommendations saving upto'
+    recommendationCountTxt: '{{ count }} recommendation(s) saving upto'
     perMonth: per month
   budgets:
     budgetText: '{{ index }}. Budget Amount: {{ amount }}'
