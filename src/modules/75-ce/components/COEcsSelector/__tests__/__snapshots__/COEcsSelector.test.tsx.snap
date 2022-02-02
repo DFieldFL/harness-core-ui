@@ -554,7 +554,7 @@ exports[`ECS Service Selector Modal should fill in region and cluster and displa
                 style="width: 5%;"
               >
                 <label
-                  class="bp3-control bp3-radio StyledProps--font Radio--radio StyledProps--main"
+                  class="bp3-control bp3-radio StyledProps--font Radio--radio radioBtn StyledProps--main"
                 >
                   <input
                     type="radio"
