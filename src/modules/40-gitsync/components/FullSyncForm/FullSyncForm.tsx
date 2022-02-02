@@ -32,7 +32,6 @@ import type { FormikContext } from 'formik'
 import { useParams } from 'react-router-dom'
 import {
   GitSyncConfig,
-  GitSyncFolderConfigDTO,
   GitBranchDTO,
   getListOfBranchesWithStatusPromise,
   ResponseGitBranchListDTO,
@@ -46,62 +45,36 @@ import {
 import { useStrings } from 'framework/strings'
 import { useGitSyncStore } from 'framework/GitRepoStore/GitSyncStoreContext'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
+import {
+  defaultInitialFormData,
+  FullSyncFormProps,
+  handleConfigResponse,
+  ModalConfigureProps
+} from './FullSyncFormHelper'
 import css from './FullSyncForm.module.scss'
-
-interface FullSyncFormProps {
-  orgIdentifier: string
-  projectIdentifier: string
-  isNewUser: boolean
-  classname?: string
-}
-
-interface ModalConfigureProps {
-  onClose?: () => void
-  onSuccess?: () => void
-}
-
-const getRootFolderSelectOptions = (folders: GitSyncFolderConfigDTO[] | undefined): SelectOption[] => {
-  return folders?.length
-    ? folders.map((folder: GitSyncFolderConfigDTO) => {
-        return {
-          label: folder.rootFolder || '',
-          value: folder.rootFolder || ''
-        }
-      })
-    : []
-}
 
 const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props => {
   const { isNewUser = true, orgIdentifier, projectIdentifier, onClose, onSuccess } = props
   const { gitSyncRepos, loadingRepos } = useGitSyncStore()
-  const config = {} as GitFullSyncConfigRequestDTO
   const { accountId } = useParams<AccountPathProps>()
   const { showSuccess, showError } = useToaster()
   const { getString } = useStrings()
 
+  const [modalErrorHandler, setModalErrorHandler] = React.useState<ModalErrorHandlerBinding>()
+  const formikRef = useRef<FormikContext<GitFullSyncConfigRequestDTO>>()
+
   const [rootFolderSelectOptions, setRootFolderSelectOptions] = React.useState<SelectOption[]>([])
   const [repoSelectOptions, setRepoSelectOptions] = React.useState<SelectOption[]>([])
   const [isNewBranch, setIsNewBranch] = React.useState(false)
-
   const [branches, setBranches] = React.useState<SelectOption[]>()
-  const [modalErrorHandler, setModalErrorHandler] = React.useState<ModalErrorHandlerBinding>()
-  const formikRef = useRef<FormikContext<GitFullSyncConfigRequestDTO>>()
   const [createPR, setCreatePR] = useState<boolean>(false) //used for rendering PR title
   const [disableCreatePR, setDisableCreatePR] = useState<boolean>()
   const [disableBranchSelection, setDisableBranchSelection] = useState<boolean>(true)
 
-  const defaultInitialFormData: GitFullSyncConfigRequestDTO = {
-    baseBranch: config?.baseBranch,
-    branch: '',
-    createPullRequest: false,
-    newBranch: false,
-    prTitle: getString('gitsync.deafaultSyncTitle'),
-    repoIdentifier: config?.repoIdentifier || '',
-    rootFolder: config?.rootFolder || '',
-    targetBranch: ''
-  }
-
-  const [defaultFormData, setDefaultFormData] = useState<GitFullSyncConfigRequestDTO>(defaultInitialFormData)
+  const [defaultFormData, setDefaultFormData] = useState<GitFullSyncConfigRequestDTO>({
+    ...defaultInitialFormData,
+    prTitle: getString('gitsync.deafaultSyncTitle')
+  })
 
   const {
     data: configResponse,
@@ -115,52 +88,21 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
 
   useEffect(() => {
     if (projectIdentifier && gitSyncRepos?.length) {
-      refetch() // Fetching config once context data is available
+      refetch() // Fetching config once context repos are available
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gitSyncRepos, projectIdentifier])
 
   useEffect(() => {
     if (!loadingConfig && gitSyncRepos.length) {
-      if (configResponse?.status === 'SUCCESS' || (configError?.data as Failure)?.code === 'RESOURCE_NOT_FOUND') {
-        //Setting up default form feilds
-        const repoIdentifier = configResponse?.data?.repoIdentifier || gitSyncRepos[0].identifier || ''
-        const selectedRepo = gitSyncRepos.find((repo: GitSyncConfig) => repo.identifier === repoIdentifier)
-        const baseBranch = selectedRepo?.branch
-
-        const defaultRootFolder = selectedRepo?.gitSyncFolderConfigDTOs?.find(
-          (folder: GitSyncFolderConfigDTO) => folder.isDefault
-        )
-        const rootFolder = configResponse?.data?.rootFolder || defaultRootFolder?.rootFolder || ''
-        const branch = configResponse?.data?.branch || ''
-        formikRef.current?.setFieldValue('repoIdentifier', repoIdentifier)
-        formikRef.current?.setFieldValue('branch', branch)
-        formikRef.current?.setFieldValue('rootFolder', rootFolder)
-        setDefaultFormData({
-          ...defaultInitialFormData,
-          repoIdentifier,
-          baseBranch,
-          branch,
-          rootFolder
-        })
-
-        fetchBranches(repoIdentifier)
-
-        //Setting up default form repo and rootFolder dropdown options
-        setRootFolderSelectOptions(getRootFolderSelectOptions(selectedRepo?.gitSyncFolderConfigDTOs))
-        setRepoSelectOptions(
-          gitSyncRepos?.map((gitRepo: GitSyncConfig) => {
-            return {
-              label: gitRepo.name || '',
-              value: gitRepo.identifier || ''
-            }
-          })
-        )
-      } else {
-        //Closing edit config modal with error toaster if fetch config API has failed
-        showError(configError?.message)
-        onClose?.()
-      }
+      handleConfigResponse(configResponse, configError?.data as Failure, gitSyncRepos, formikRef, {
+        setRootFolderSelectOptions,
+        setRepoSelectOptions,
+        setDefaultFormData,
+        fetchBranches,
+        showError,
+        onClose
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingConfig])
