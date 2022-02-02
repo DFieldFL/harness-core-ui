@@ -60,9 +60,9 @@ export const ArtifactConnectorLabelMap: Record<string, string> = {
 export const allowedArtifactTypes: Array<ArtifactType> = [
   ENABLED_ARTIFACT_TYPES.DockerRegistry,
   ENABLED_ARTIFACT_TYPES.Gcr,
-  ENABLED_ARTIFACT_TYPES.Ecr
-  // ENABLED_ARTIFACT_TYPES.NexusRegistry,
-  // ENABLED_ARTIFACT_TYPES.ArtifactoryRegistry
+  ENABLED_ARTIFACT_TYPES.Ecr,
+  ENABLED_ARTIFACT_TYPES.NexusRegistry,
+  ENABLED_ARTIFACT_TYPES.ArtifactoryRegistry
 ]
 
 export const tagOptions: IOptionProps[] = [
