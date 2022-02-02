@@ -22,7 +22,7 @@ jest.mock('services/cd-ng', () => ({
   triggerFullSyncPromise: jest.fn().mockImplementation(() => noop()),
   getListOfBranchesWithStatusPromise: jest.fn().mockImplementation(() => fetchBranches()),
   useGetGitFullSyncConfig: jest.fn().mockImplementation(() => {
-    return { loading: false, data: mockFullSyncConfig }
+    return { loading: false, data: mockFullSyncConfig, refetch: jest.fn() }
   })
 }))
 

@@ -3,8 +3,7 @@
 exports[`Test GitFullSyncForm Should render GitFullSyncForm 1`] = `
 <div>
   <div
-    class="StyledProps--font StyledProps--main modalContainer"
-    style="height: inherit;"
+    class="StyledProps--font StyledProps--main modalContainer isModalStep"
   >
     <p
       class="StyledProps--font StyledProps--main StyledProps--font-variation-h3 StyledProps--padding-bottom-xlarge"
@@ -24,11 +23,6 @@ exports[`Test GitFullSyncForm Should render GitFullSyncForm 1`] = `
             <div
               class="StyledProps--font StyledProps--main formBody"
             >
-              <p
-                class="StyledProps--font StyledProps--main StyledProps--margin-bottom-small StyledProps--font-size-medium StyledProps--color StyledProps--color-grey700"
-              >
-                common.gitSync.harnessFolderLabel
-              </p>
               <div
                 class="bp3-form-group bp3-disabled"
                 data-id="repoIdentifier-0"
@@ -68,7 +62,7 @@ exports[`Test GitFullSyncForm Should render GitFullSyncForm 1`] = `
                           placeholder="- Select -"
                           style="padding-right: 0px;"
                           type="text"
-                          value="gitSyncRepoTest"
+                          value=""
                         />
                         <span
                           class="bp3-input-action"
@@ -137,7 +131,7 @@ exports[`Test GitFullSyncForm Should render GitFullSyncForm 1`] = `
                           placeholder="- Select -"
                           style="padding-right: 0px;"
                           type="text"
-                          value="/src1/.harness/"
+                          value=""
                         />
                         <span
                           class="bp3-input-action"
