@@ -18,13 +18,15 @@ import {
   usePerspectiveRecommendationsQuery,
   RecommendationItemDto
 } from 'services/ce/services'
+import { CCM_PAGE_TYPE } from '@ce/types'
 import css from './PerspectiveSummary.module.scss'
 
 interface RecommendationSummaryCardProps {
   filters: K8sRecommendationFilterDtoInput
+  pageType?: CCM_PAGE_TYPE
 }
 
-const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.Element = ({ filters }) => {
+const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.Element = ({ filters, pageType }) => {
   const { perspectiveId, accountId, perspectiveName } = useParams<{
     perspectiveId: string
     accountId: string
@@ -61,6 +63,14 @@ const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.
   const nagvigateToRecommendations: () => void = () => {
     const recommendationsDetails = (data?.recommendationsV2?.items || []) as RecommendationItemDto[]
 
+    const queryString: Record<string, any> = {
+      perspectiveId,
+      perspectiveName
+    }
+    if (pageType === CCM_PAGE_TYPE.Workload) {
+      queryString['filters'] = filters
+      queryString['origin'] = pageType
+    }
     if (recommendationsDetails.length === 1 && recommendationData?.count === 1) {
       const recommendationId = recommendationsDetails[0].id
       const recommendationName = recommendationsDetails[0].resourceName || recommendationId
@@ -78,10 +88,7 @@ const RecommendationSummaryCard: (props: RecommendationSummaryCardProps) => JSX.
         pathname: routes.toCERecommendations({
           accountId
         }),
-        search: qs.stringify({
-          perspectiveId,
-          perspectiveName
-        })
+        search: qs.stringify(queryString)
       })
     }
   }

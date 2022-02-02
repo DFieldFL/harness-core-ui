@@ -160,7 +160,7 @@ const WorkloadSummary: (props: WorkloadSummaryProps) => JSX.Element = ({
             right: 'large'
           }}
         >
-          <RecommendationSummaryCard filters={recommendationFilters} />
+          <RecommendationSummaryCard pageType={pageType} filters={recommendationFilters} />
         </Container>
       ) : null}
     </Layout.Horizontal>

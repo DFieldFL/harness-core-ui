@@ -32,6 +32,7 @@ import OverviewAddCluster from '@ce/components/OverviewPage/OverviewAddCluster'
 import { PAGE_NAMES, USER_JOURNEY_EVENTS } from '@ce/TrackingEventsConstants'
 import { useTelemetry } from '@common/hooks/useTelemetry'
 import { NGBreadcrumbs } from '@common/components/NGBreadcrumbs/NGBreadcrumbs'
+import { CCM_PAGE_TYPE } from '@ce/types'
 import RecommendationSavingsCard from '../../components/RecommendationSavingsCard/RecommendationSavingsCard'
 import RecommendationFilters from '../../components/RecommendationFilters'
 import css from './RecommendationList.module.scss'
@@ -246,14 +247,25 @@ const RecommendationsList: React.FC<RecommendationListProps> = ({
 }
 
 const RecommendationList: React.FC = () => {
-  const [filters, setFilters] = useState<Record<string, string[]>>({})
   const [costFilters, setCostFilters] = useState<Record<string, number>>({})
   const [page, setPage] = useState(0)
 
   const { trackPage } = useTelemetry()
   const history = useHistory()
   const { accountId } = useParams<{ accountId: string }>()
-  const { perspectiveId, perspectiveName } = useQueryParams<{ perspectiveId: string; perspectiveName: string }>()
+  const {
+    perspectiveId,
+    perspectiveName,
+    filters: filterQuery = {},
+    origin
+  } = useQueryParams<{
+    perspectiveId: string
+    perspectiveName: string
+    filters: Record<string, any>
+    origin: string
+  }>()
+
+  const [filters, setFilters] = useState<Record<string, string[]>>(filterQuery)
 
   useEffect(() => {
     trackPage(PAGE_NAMES.RECOMMENDATIONS_PAGE, {})
@@ -304,13 +316,30 @@ const RecommendationList: React.FC = () => {
   const gotoPage = (pageNumber: number) => setPage(pageNumber)
 
   const goBackToPerspective: () => void = () => {
-    history.push(
-      routes.toPerspectiveDetails({
-        perspectiveId,
-        perspectiveName,
-        accountId
-      })
-    )
+    if (origin === CCM_PAGE_TYPE.Workload) {
+      const clusterName = filterQuery.clusterNames[0],
+        namespace = filterQuery.namespaces[0],
+        workloadName = filterQuery.names[0]
+
+      history.push(
+        routes.toCEPerspectiveWorkloadDetails({
+          accountId,
+          perspectiveId,
+          perspectiveName,
+          clusterName,
+          namespace,
+          workloadName
+        })
+      )
+    } else {
+      history.push(
+        routes.toPerspectiveDetails({
+          perspectiveId,
+          perspectiveName,
+          accountId
+        })
+      )
+    }
   }
 
   const pagination = {

@@ -160,11 +160,15 @@ const WorkloadDetailsPage: () => JSX.Element = () => {
     }
   })
 
-  const recommendationsFilters = {
-    clusterNames: [clusterName],
-    names: [workloadName],
-    namespaces: [namespace]
-  } as K8sRecommendationFilterDtoInput
+  const recommendationsFilters = useMemo(
+    () =>
+      ({
+        clusterNames: [clusterName],
+        names: [workloadName],
+        namespaces: [namespace]
+      } as K8sRecommendationFilterDtoInput),
+    [clusterName, workloadName, namespace]
+  )
 
   const { data: gridData, fetching: gridFetching } = gridResult
   const { data: chartData, fetching: chartFetching } = chartResult
