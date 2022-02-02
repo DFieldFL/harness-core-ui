@@ -56,7 +56,7 @@ export default function StageHeader(props: StageHeaderProps): React.ReactElement
             </Layout.Horizontal>
           )}
         </Layout.Vertical>
-        <ExecutionStatusLabel status={data?.status} />
+        <ExecutionStatusLabel status={data?.status === 'IgnoreFailed' ? 'Failed' : data?.status} />
       </Layout.Horizontal>
       {data.status === ExecutionStatusEnum.Failed && (
         <Layout.Horizontal

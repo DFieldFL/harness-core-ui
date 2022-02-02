@@ -50,7 +50,7 @@ exports[`test cases for filters operand selector should be able to render common
           class="bp3-overlay bp3-overlay-open bp3-overlay-inline"
         >
           <div
-            class="bp3-transition-container bp3-popover-appear bp3-popover-appear-active"
+            class="bp3-transition-container bp3-popover-appear-done bp3-popover-enter-done"
             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0);"
           >
             <div
