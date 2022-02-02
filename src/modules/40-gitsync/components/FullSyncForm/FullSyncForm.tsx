@@ -27,9 +27,10 @@ import {
 } from '@harness/uicore'
 import * as Yup from 'yup'
 import cx from 'classnames'
-import { debounce, isEmpty } from 'lodash-es'
+import { debounce, defaultTo, isEmpty } from 'lodash-es'
 import type { FormikContext } from 'formik'
 import { useParams } from 'react-router-dom'
+import type { PaddingProps } from '@harness/uicore/dist/styled-props/padding/PaddingProps'
 import {
   GitSyncConfig,
   GitBranchDTO,
@@ -52,6 +53,21 @@ import {
   ModalConfigureProps
 } from './FullSyncFormHelper'
 import css from './FullSyncForm.module.scss'
+
+const getNewBranchPadding = (isNewBranch: boolean): PaddingProps => {
+  return {
+    bottom: isNewBranch ? 'xSmall' : 'small'
+  }
+}
+
+const showSpinner = (isNewUser: boolean, loadingConfig: boolean, loadingRepos: boolean): boolean =>
+  (!isNewUser && loadingConfig) || loadingRepos
+
+const hasToFetchConfig = (projectIdentifier: string, repos: GitSyncConfig[]): boolean =>
+  !!(projectIdentifier && repos?.length)
+
+const hasToProcessConfig = (loadingConfig: boolean, repos: GitSyncConfig[]): boolean =>
+  !loadingConfig && !!repos?.length
 
 const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props => {
   const { isNewUser = true, orgIdentifier, projectIdentifier, onClose, onSuccess } = props
@@ -87,14 +103,14 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
   })
 
   useEffect(() => {
-    if (projectIdentifier && gitSyncRepos?.length) {
+    if (hasToFetchConfig(projectIdentifier, gitSyncRepos)) {
       refetch() // Fetching config once context repos are available
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gitSyncRepos, projectIdentifier])
 
   useEffect(() => {
-    if (!loadingConfig && gitSyncRepos.length) {
+    if (hasToProcessConfig(loadingConfig, gitSyncRepos)) {
       handleConfigResponse(configResponse, configError?.data as Failure, gitSyncRepos, formikRef, {
         setRootFolderSelectOptions,
         setRepoSelectOptions,
@@ -220,7 +236,7 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
               formikRef.current?.setFieldTouched('targetBranch', false)
               setCreatePR(e.currentTarget.checked)
               if (e.currentTarget.checked) {
-                fetchBranches(formikRef.current?.values.repoIdentifier || '')
+                fetchBranches(defaultTo(formikRef.current?.values.repoIdentifier, ''))
               } else {
                 setDisableBranchSelection(true)
               }
@@ -242,11 +258,11 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
           ) : null}
           <FormInput.Select
             name="targetBranch"
-            items={branches || []}
-            disabled={disableBranchSelection || disableCreatePR}
+            items={defaultTo(branches, [])}
+            disabled={defaultTo(disableBranchSelection, disableCreatePR)}
             data-id="create-pr-branch-select"
             onQueryChange={(query: string) =>
-              debounceFetchBranches(formikRef.current?.values.repoIdentifier || '', query)
+              debounceFetchBranches(defaultTo(formikRef.current?.values.repoIdentifier, ''), query)
             }
             selectProps={{ usePortal: true, popoverClassName: css.gitBranchSelectorPopover }}
             className={css.branchSelector}
@@ -269,7 +285,7 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
 
   return (
     <Container className={cx(css.modalContainer, { [css.isModalStep]: isNewUser })}>
-      {(!isNewUser && loadingConfig) || loadingRepos ? (
+      {showSpinner(isNewUser, loadingConfig, loadingRepos) ? (
         <PageSpinner />
       ) : (
         <>
@@ -343,7 +359,7 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
                             </Radio>
                             <FormInput.Select
                               name="branch"
-                              items={branches || []}
+                              items={defaultTo(branches, [])}
                               disabled={isNewBranch}
                               onQueryChange={(query: string) =>
                                 debounceFetchBranches(formik.values.repoIdentifier, query)
@@ -354,12 +370,7 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
                           </Layout.Horizontal>
                           {!isNewBranch && CreatePR}
                         </Container>
-                        <Container
-                          className={css.branchSection}
-                          padding={{
-                            bottom: isNewBranch ? 'xSmall' : 'small'
-                          }}
-                        >
+                        <Container className={css.branchSection} padding={getNewBranchPadding(isNewBranch)}>
                           <Radio
                             data-test="newBranchRadioBtn"
                             large
