@@ -6,9 +6,10 @@
  */
 
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { TestWrapper } from '@common/utils/testUtils'
+import * as lwServices from 'services/lw'
 import COEcsSelector from '../COEcsSelector'
 
 const pathParams = { accountId: 'accountId', orgIdentifier: 'orgIdentifier', projectIdentifier: 'projectIdentifier' }
@@ -83,7 +84,7 @@ const mockedDescService = {
 }
 
 const mockedServiceDescribeDetails = {
-  data: mockedDescService,
+  data: { response: mockedDescService },
   loading: false,
   refetch: jest.fn(() => Promise.resolve({ data: mockedDescService }))
 }
@@ -147,6 +148,96 @@ describe('ECS Service Selector Modal', () => {
     })
 
     expect(clusterDropdown.value).toBe('dummy-cluster')
+
+    expect(container).toMatchSnapshot()
+  })
+
+  test('clicking on refresh fetches data again and search is enabled', async () => {
+    const refetchServicesFn = jest.fn()
+    jest.spyOn(lwServices, 'useListOfServicesInContainerServiceCluster').mockImplementation(
+      () =>
+        ({
+          data: { response: [{ name: 'dummy-service', id: 'dummy-service-id' }] },
+          loading: false,
+          error: 'Some error',
+          refetch: refetchServicesFn
+        } as any)
+    )
+
+    const { container, getByText } = render(
+      <TestWrapper pathParams={pathParams}>
+        <COEcsSelector gatewayDetails={gatewayDetails} onServiceAddSuccess={jest.fn()} setGatewayDetails={jest.fn()} />
+      </TestWrapper>
+    )
+
+    const regionCaret = container
+      .querySelector(`input[name="region"] + [class*="bp3-input-action"]`)
+      ?.querySelector('[data-icon="chevron-down"]')
+    act(() => {
+      fireEvent.click(regionCaret!)
+    })
+
+    const regionToSelect = getByText('us-east-1')
+    expect(regionToSelect).toBeDefined()
+    act(() => {
+      fireEvent.click(regionToSelect)
+    })
+
+    const clusterCaret = container
+      .querySelector(`input[name="cluster"] + [class*="bp3-input-action"]`)
+      ?.querySelector('[data-icon="chevron-down"]')
+    act(() => {
+      fireEvent.click(clusterCaret!)
+    })
+
+    const clusterToSelect = getByText('dummy-cluster')
+    expect(clusterToSelect).toBeDefined()
+    act(() => {
+      fireEvent.click(clusterToSelect)
+    })
+
+    const refreshBtn = getByText('Refresh')
+    expect(refreshBtn).toBeDefined()
+    act(() => {
+      fireEvent.click(refreshBtn)
+    })
+    await waitFor(() => {
+      expect(refetchServicesFn).toBeCalled()
+    })
+
+    const searchInput = container.querySelector('input[type="search"]') as HTMLInputElement
+    expect(searchInput).toBeDefined()
+    await waitFor(() => {
+      fireEvent.change(searchInput!, { target: { value: 'random' } })
+    })
+    expect(searchInput.value).toBe('random')
+  })
+
+  test('error', () => {
+    jest.spyOn(lwServices, 'useListOfServicesInContainerServiceCluster').mockImplementation(
+      () =>
+        ({
+          data: null,
+          loading: false,
+          error: 'Some error',
+          refetch: jest.fn()
+        } as any)
+    )
+    jest.spyOn(lwServices, 'useDescribeServiceInContainerServiceCluster').mockImplementation(
+      () =>
+        ({
+          data: null,
+          loading: false,
+          error: 'Some Descrive service error',
+          refetch: jest.fn()
+        } as any)
+    )
+
+    const { container } = render(
+      <TestWrapper pathParams={pathParams}>
+        <COEcsSelector gatewayDetails={gatewayDetails} onServiceAddSuccess={jest.fn()} setGatewayDetails={jest.fn()} />
+      </TestWrapper>
+    )
 
     expect(container).toMatchSnapshot()
   })
