@@ -5,15 +5,25 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
-import type { SelectOption } from '@harness/uicore'
+import type { ModalErrorHandlerBinding, SelectOption } from '@harness/uicore'
 import type { FormikProps } from 'formik'
-import type {
+import { isEmpty } from 'lodash-es'
+import type { UseStringsReturn } from 'framework/strings/String'
+import {
+  createGitFullSyncConfigPromise,
   Failure,
+  getListOfBranchesWithStatusPromise,
+  GetListOfBranchesWithStatusQueryParams,
+  GitBranchDTO,
   GitFullSyncConfigDTO,
   GitFullSyncConfigRequestDTO,
   GitSyncConfig,
   GitSyncFolderConfigDTO,
-  ResponseGitFullSyncConfigDTO
+  ResponseGitBranchListDTO,
+  ResponseGitFullSyncConfigDTO,
+  triggerFullSyncPromise,
+  updateGitFullSyncConfigPromise,
+  UpdateGitFullSyncConfigQueryParams
 } from 'services/cd-ng'
 
 export interface FullSyncFormProps {
@@ -30,10 +40,23 @@ export interface ModalConfigureProps {
 
 export interface FullSyncCallbacks extends ModalConfigureProps {
   showError: (error?: string) => void
-  setDefaultFormData: (data: GitFullSyncConfigRequestDTO) => void
+  setDefaultFormData: React.Dispatch<React.SetStateAction<GitFullSyncConfigRequestDTO>>
   setRootFolderSelectOptions: React.Dispatch<React.SetStateAction<SelectOption[]>>
   setRepoSelectOptions: React.Dispatch<React.SetStateAction<SelectOption[]>>
   fetchBranches: (repoIdentifier: string) => void
+}
+
+export interface FetchBranchCallbacks {
+  setDisableCreatePR: React.Dispatch<React.SetStateAction<boolean>>
+  setDisableBranchSelection: React.Dispatch<React.SetStateAction<boolean>>
+  setBranches: React.Dispatch<React.SetStateAction<SelectOption[] | undefined>>
+  getString: UseStringsReturn['getString']
+}
+
+export interface SubmitCallbacks {
+  showSuccess: (msg: string) => void
+  onSuccess?: () => void
+  getString: UseStringsReturn['getString']
 }
 
 export const getRootFolderSelectOptions = (folders: GitSyncFolderConfigDTO[] | undefined): SelectOption[] => {
@@ -114,5 +137,81 @@ export const handleConfigResponse = (
     //Closing edit config modal with error toaster if fetch config API has failed
     showError(configError?.message)
     onClose?.()
+  }
+}
+
+export const branchFetchHandler = (
+  queryParams: GetListOfBranchesWithStatusQueryParams,
+  isNewBranch: boolean,
+  handlers: FetchBranchCallbacks,
+  modalErrorHandler: ModalErrorHandlerBinding | undefined,
+  query?: string
+): void => {
+  const { setDisableCreatePR, setDisableBranchSelection, setBranches, getString } = handlers
+  modalErrorHandler?.hide()
+
+  getListOfBranchesWithStatusPromise({
+    queryParams
+  })
+    .then((response: ResponseGitBranchListDTO) => {
+      const branchesInResponse = response?.data?.branches?.content
+      /* Show error in case no branches exist on a git repo at all */
+      /* A valid git repo should have atleast one branch in it(a.k.a default branch) */
+      if (!query && isEmpty(branchesInResponse)) {
+        setDisableCreatePR(true)
+        setDisableBranchSelection(true)
+        modalErrorHandler?.showDanger(getString('common.git.noBranchesFound'))
+        return
+      }
+      const branchOptions = branchesInResponse?.map((branch: GitBranchDTO) => {
+        return { label: branch?.branchName, value: branch?.branchName }
+      }) as SelectOption[]
+
+      if (!isNewBranch && isEmpty(branchOptions)) {
+        setDisableCreatePR(true)
+        setDisableBranchSelection(true)
+      } else {
+        setBranches(branchOptions)
+        setDisableCreatePR(false)
+        setDisableBranchSelection(false)
+      }
+    })
+    .catch(e => {
+      modalErrorHandler?.showDanger(e.data?.message || e.message)
+    })
+}
+
+export const saveAndTriggerFullSync = async (
+  queryParams: UpdateGitFullSyncConfigQueryParams,
+  fullSyncData: GitFullSyncConfigRequestDTO,
+  isNewBranch: boolean,
+  config: ResponseGitFullSyncConfigDTO | null,
+  handlers: SubmitCallbacks,
+  modalErrorHandler?: ModalErrorHandlerBinding
+): Promise<void> => {
+  const { showSuccess, onSuccess, getString } = handlers
+  modalErrorHandler?.hide()
+
+  try {
+    const reqObj = {
+      queryParams,
+      body: { ...fullSyncData, newBranch: isNewBranch }
+    }
+    const fullSyncConfigData = config?.data
+      ? await updateGitFullSyncConfigPromise(reqObj)
+      : await createGitFullSyncConfigPromise(reqObj)
+    if (fullSyncConfigData.status !== 'SUCCESS') {
+      throw fullSyncConfigData
+    } else {
+      config?.data ? showSuccess('Full Sync Config is saved') : showSuccess('Full Sync Config is updated')
+    }
+    const triggerFullSync = await triggerFullSyncPromise({ queryParams, body: {} as unknown as void })
+    if (triggerFullSync.status !== 'SUCCESS') {
+      throw triggerFullSync
+    }
+    showSuccess(getString('gitsync.syncSucessToaster'))
+    onSuccess?.()
+  } catch (err) {
+    modalErrorHandler?.showDanger(err.message)
   }
 }

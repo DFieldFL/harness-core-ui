@@ -27,30 +27,21 @@ import {
 } from '@harness/uicore'
 import * as Yup from 'yup'
 import cx from 'classnames'
-import { debounce, defaultTo, isEmpty } from 'lodash-es'
+import { debounce, defaultTo } from 'lodash-es'
 import type { FormikContext } from 'formik'
 import { useParams } from 'react-router-dom'
 import type { PaddingProps } from '@harness/uicore/dist/styled-props/padding/PaddingProps'
-import {
-  GitSyncConfig,
-  GitBranchDTO,
-  getListOfBranchesWithStatusPromise,
-  ResponseGitBranchListDTO,
-  GitFullSyncConfigRequestDTO,
-  createGitFullSyncConfigPromise,
-  updateGitFullSyncConfigPromise,
-  triggerFullSyncPromise,
-  useGetGitFullSyncConfig,
-  Failure
-} from 'services/cd-ng'
+import { GitSyncConfig, GitFullSyncConfigRequestDTO, useGetGitFullSyncConfig, Failure } from 'services/cd-ng'
 import { useStrings } from 'framework/strings'
 import { useGitSyncStore } from 'framework/GitRepoStore/GitSyncStoreContext'
 import type { AccountPathProps } from '@common/interfaces/RouteInterfaces'
 import {
+  branchFetchHandler,
   defaultInitialFormData,
   FullSyncFormProps,
   handleConfigResponse,
-  ModalConfigureProps
+  ModalConfigureProps,
+  saveAndTriggerFullSync
 } from './FullSyncFormHelper'
 import css from './FullSyncForm.module.scss'
 
@@ -84,7 +75,7 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
   const [isNewBranch, setIsNewBranch] = React.useState(false)
   const [branches, setBranches] = React.useState<SelectOption[]>()
   const [createPR, setCreatePR] = useState<boolean>(false) //used for rendering PR title
-  const [disableCreatePR, setDisableCreatePR] = useState<boolean>()
+  const [disableCreatePR, setDisableCreatePR] = useState<boolean>(false)
   const [disableBranchSelection, setDisableBranchSelection] = useState<boolean>(true)
 
   const [defaultFormData, setDefaultFormData] = useState<GitFullSyncConfigRequestDTO>({
@@ -144,9 +135,8 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
   }
 
   const fetchBranches = (repoIdentifier: string, query?: string): void => {
-    modalErrorHandler?.hide()
-    getListOfBranchesWithStatusPromise({
-      queryParams: {
+    branchFetchHandler(
+      {
         accountIdentifier: accountId,
         orgIdentifier,
         projectIdentifier,
@@ -154,65 +144,12 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
         page: 0,
         size: 10,
         searchTerm: query
-      }
-    })
-      .then((response: ResponseGitBranchListDTO) => {
-        const branchesInResponse = response?.data?.branches?.content
-        /* Show error in case no branches exist on a git repo at all */
-        /* A valid git repo should have atleast one branch in it(a.k.a default branch) */
-        if (!query && isEmpty(branchesInResponse)) {
-          setDisableCreatePR(true)
-          setDisableBranchSelection(true)
-          modalErrorHandler?.showDanger(getString('common.git.noBranchesFound'))
-          return
-        }
-        const branchOptions = branchesInResponse?.map((branch: GitBranchDTO) => {
-          return { label: branch?.branchName, value: branch?.branchName }
-        }) as SelectOption[]
-
-        if (!isNewBranch && isEmpty(branchOptions)) {
-          setDisableCreatePR(true)
-          setDisableBranchSelection(true)
-        } else {
-          setBranches(branchOptions)
-          setDisableCreatePR(false)
-          setDisableBranchSelection(false)
-        }
-      })
-      .catch(e => {
-        modalErrorHandler?.showDanger(e.data?.message || e.message)
-      })
-  }
-
-  const saveAndTriggerFullSync = async (fullSyncData: GitFullSyncConfigRequestDTO): Promise<void> => {
-    const queryParams = {
-      accountIdentifier: accountId,
-      orgIdentifier,
-      projectIdentifier
-    }
-    modalErrorHandler?.hide()
-    try {
-      const reqObj = {
-        queryParams,
-        body: { ...fullSyncData, newBranch: isNewBranch }
-      }
-      const fullSyncConfigData = configResponse?.data
-        ? await updateGitFullSyncConfigPromise(reqObj)
-        : await createGitFullSyncConfigPromise(reqObj)
-      if (fullSyncConfigData.status !== 'SUCCESS') {
-        throw fullSyncConfigData
-      } else {
-        configResponse?.data ? showSuccess('Full Sync Config is saved') : showSuccess('Full Sync Config is updated')
-      }
-      const triggerFullSync = await triggerFullSyncPromise({ queryParams, body: {} as unknown as void })
-      if (triggerFullSync.status !== 'SUCCESS') {
-        throw triggerFullSync
-      }
-      showSuccess(getString('gitsync.syncSucessToaster'))
-      onSuccess?.()
-    } catch (err) {
-      modalErrorHandler?.showDanger(err.message)
-    }
+      },
+      isNewBranch,
+      { setDisableCreatePR, setDisableBranchSelection, setBranches, getString },
+      modalErrorHandler,
+      query
+    )
   }
 
   const debounceFetchBranches = debounce((repoIdentifier: string, query?: string): void => {
@@ -318,7 +255,18 @@ const FullSyncForm: React.FC<ModalConfigureProps & FullSyncFormProps> = props =>
                 prTitle: Yup.string().trim().min(1).required(getString('common.git.validation.PRTitleRequired'))
               })}
               onSubmit={formData => {
-                saveAndTriggerFullSync(formData)
+                saveAndTriggerFullSync(
+                  {
+                    accountIdentifier: accountId,
+                    orgIdentifier,
+                    projectIdentifier
+                  },
+                  formData,
+                  isNewBranch,
+                  configResponse,
+                  { showSuccess, onSuccess, getString },
+                  modalErrorHandler
+                )
               }}
             >
               {formik => {
