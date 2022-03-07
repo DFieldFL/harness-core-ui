@@ -10,8 +10,10 @@ import { Container, Text, Color } from '@wings-software/uicore'
 import cx from 'classnames'
 import HighchartsReact from 'highcharts-react-official'
 import Highcharts from 'highcharts'
+import { useParams } from 'react-router-dom'
 import { useStrings } from 'framework/strings'
 import { getRiskColorValue, getRiskLabelStringId } from '@cv/utils/CommonUtils'
+import type { PipelinePathProps } from '@common/interfaces/RouteInterfaces'
 import getLogAnalysisLineChartOptions from './LogAnalysisLineChartConfig'
 import { LogAnalysisRiskAndJiraModal } from './components/LogAnalysisRiskAndJiraModal/LogAnalysisRiskAndJiraModal'
 import type {
@@ -58,13 +60,14 @@ function DataRow(props: LogAnalysisDataRowProps): JSX.Element {
   const [displayRiskEditModal, setDisplayRiskEditModal] = useState(false)
   const [feedbackGiven, setFeedbackGiven] = useState<{ risk: string; message: string } | undefined>(undefined)
   const logTextRef = useRef<HTMLParagraphElement>(null)
+  const { accountId, projectIdentifier, orgIdentifier } = useParams<PipelinePathProps>()
   const onShowRiskEditModalCallback = useCallback(() => {
     if (isErrorTracking) {
-      onClickErrorTrackingRow(rowData.message)
+      onClickErrorTrackingRow(rowData.message, accountId, projectIdentifier, orgIdentifier)
     } else {
       setDisplayRiskEditModal(true)
     }
-  }, [isErrorTracking, rowData.message])
+  }, [isErrorTracking, rowData.message, accountId, projectIdentifier, orgIdentifier])
 
   const onHideRiskEditModalCallback = useCallback((data?) => {
     if (data?.risk || data?.message) setFeedbackGiven(data)

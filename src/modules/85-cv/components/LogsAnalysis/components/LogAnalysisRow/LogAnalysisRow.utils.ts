@@ -5,6 +5,7 @@
  * https://polyformproject.org/wp-content/uploads/2020/06/PolyForm-Shield-1.0.0.txt.
  */
 
+import routes from '@common/RouteDefinitions'
 import type { LogData } from 'services/cv'
 
 export const getEventTypeFromClusterType = (tag: LogData['tag']): string => {
@@ -20,7 +21,12 @@ export const getEventTypeFromClusterType = (tag: LogData['tag']): string => {
   }
 }
 
-export const onClickErrorTrackingRow = (message: string): void => {
+export const onClickErrorTrackingRow = (
+  message: string,
+  accountId: string,
+  projectIdentifier: string,
+  orgIdentifier: string
+): void => {
   const rowMessageSplit = message.split('|')
   const timestamp = rowMessageSplit[rowMessageSplit.length - 1].trim()
   const requestId = rowMessageSplit[rowMessageSplit.length - 2].trim()
@@ -43,5 +49,11 @@ export const onClickErrorTrackingRow = (message: string): void => {
           ,"timestamp":"${timestamp}"
         }`
 
-  window.open(`${localStorage.ERROR_TRACKING_URL}arc?event=${btoa(arcJson)}`)
+  const arcUrl = routes.toErrorTrackingArc({
+    orgIdentifier: orgIdentifier,
+    projectIdentifier: projectIdentifier,
+    accountId: accountId
+  })
+  const baseUrl = window.location.href.split('#')[0]
+  window.open(`${baseUrl}#${arcUrl}/arc?event=${btoa(arcJson)}`)
 }
