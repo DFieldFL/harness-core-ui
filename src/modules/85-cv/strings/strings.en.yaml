@@ -477,6 +477,7 @@ monitoredServices:
     noDataAvailableForHealthScore: No healthscore data available in the {{duration}}
     pleaseSelectAnotherTimeWindow: Please select another time window.
     selectTimeline: Select a timeline to see metric & logs data
+    selectTimelineErrorTracking: Select a timeline to see error data
     metricsAndLogs: Metrics & Logs
     lowestHealthScore: Lowest Health Score
     anamolies: Anamolies

@@ -7912,6 +7912,133 @@ export const getWorkloadsPromise = (
     signal
   )
 
+export interface GetAllErrorTrackingClusterDataQueryParams {
+  accountId?: string
+  orgIdentifier: string
+  projectIdentifier: string
+  monitoredServiceIdentifier?: string
+  clusterTypes?: ('KNOWN' | 'UNEXPECTED' | 'UNKNOWN')[]
+  startTime: number
+  endTime: number
+  healthSources?: string[]
+}
+
+export type GetAllErrorTrackingClusterDataProps = Omit<
+  GetProps<
+    RestResponseListLiveMonitoringLogAnalysisClusterDTO,
+    unknown,
+    GetAllErrorTrackingClusterDataQueryParams,
+    void
+  >,
+  'path'
+>
+
+/**
+ * get all log cluster data for a time range
+ */
+export const GetAllErrorTrackingClusterData = (props: GetAllErrorTrackingClusterDataProps) => (
+  <Get<RestResponseListLiveMonitoringLogAnalysisClusterDTO, unknown, GetAllErrorTrackingClusterDataQueryParams, void>
+    path={`/error-tracking-dashboard/cluster`}
+    base={getConfig('cv/api')}
+    {...props}
+  />
+)
+
+export type UseGetAllErrorTrackingClusterDataProps = Omit<
+  UseGetProps<
+    RestResponseListLiveMonitoringLogAnalysisClusterDTO,
+    unknown,
+    GetAllErrorTrackingClusterDataQueryParams,
+    void
+  >,
+  'path'
+>
+
+/**
+ * get all log cluster data for a time range
+ */
+export const useGetAllErrorTrackingClusterData = (props: UseGetAllErrorTrackingClusterDataProps) =>
+  useGet<RestResponseListLiveMonitoringLogAnalysisClusterDTO, unknown, GetAllErrorTrackingClusterDataQueryParams, void>(
+    `/error-tracking-dashboard/cluster`,
+    { base: getConfig('cv/api'), ...props }
+  )
+
+/**
+ * get all log cluster data for a time range
+ */
+export const getAllErrorTrackingClusterDataPromise = (
+  props: GetUsingFetchProps<
+    RestResponseListLiveMonitoringLogAnalysisClusterDTO,
+    unknown,
+    GetAllErrorTrackingClusterDataQueryParams,
+    void
+  >,
+  signal?: RequestInit['signal']
+) =>
+  getUsingFetch<
+    RestResponseListLiveMonitoringLogAnalysisClusterDTO,
+    unknown,
+    GetAllErrorTrackingClusterDataQueryParams,
+    void
+  >(getConfig('cv/api'), `/error-tracking-dashboard/cluster`, props, signal)
+
+export interface GetAllErrorTrackingDataQueryParams {
+  accountId?: string
+  orgIdentifier: string
+  projectIdentifier: string
+  monitoredServiceIdentifier?: string
+  clusterTypes?: ('KNOWN' | 'UNEXPECTED' | 'UNKNOWN')[]
+  startTime: number
+  endTime: number
+  healthSources?: string[]
+  page?: number
+  size?: number
+}
+
+export type GetAllErrorTrackingDataProps = Omit<
+  GetProps<RestResponsePageAnalyzedLogDataDTO, unknown, GetAllErrorTrackingDataQueryParams, void>,
+  'path'
+>
+
+/**
+ * get all error tracking data for a time range
+ */
+export const GetAllErrorTrackingData = (props: GetAllErrorTrackingDataProps) => (
+  <Get<RestResponsePageAnalyzedLogDataDTO, unknown, GetAllErrorTrackingDataQueryParams, void>
+    path={`/error-tracking-dashboard/data`}
+    base={getConfig('cv/api')}
+    {...props}
+  />
+)
+
+export type UseGetAllErrorTrackingDataProps = Omit<
+  UseGetProps<RestResponsePageAnalyzedLogDataDTO, unknown, GetAllErrorTrackingDataQueryParams, void>,
+  'path'
+>
+
+/**
+ * get all error tracking data for a time range
+ */
+export const useGetAllErrorTrackingData = (props: UseGetAllErrorTrackingDataProps) =>
+  useGet<RestResponsePageAnalyzedLogDataDTO, unknown, GetAllErrorTrackingDataQueryParams, void>(
+    `/error-tracking-dashboard/data`,
+    { base: getConfig('cv/api'), ...props }
+  )
+
+/**
+ * get all error tracking data for a time range
+ */
+export const getAllErrorTrackingDataPromise = (
+  props: GetUsingFetchProps<RestResponsePageAnalyzedLogDataDTO, unknown, GetAllErrorTrackingDataQueryParams, void>,
+  signal?: RequestInit['signal']
+) =>
+  getUsingFetch<RestResponsePageAnalyzedLogDataDTO, unknown, GetAllErrorTrackingDataQueryParams, void>(
+    getConfig('cv/api'),
+    `/error-tracking-dashboard/data`,
+    props,
+    signal
+  )
+
 export interface GetAllLogsClusterDataQueryParams {
   accountId?: string
   orgIdentifier: string

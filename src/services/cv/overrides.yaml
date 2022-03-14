@@ -107,6 +107,7 @@ allowpaths:
   - /monitored-service/service-details
   - /monitored-service/count-of-services
   - /log-dashboard/logs-data
+  - /error-tracking-dashboard/data
   - /timeseries-dashboard/metrics
   - /verify-step/input-set-template
   - /monitored-service/{identifier}/scores
@@ -119,6 +120,7 @@ allowpaths:
   - /account/{accountIdentifier}/org/{orgIdentifier}/project/{projectIdentifier}/change-event/timeline
   - /account/{accountIdentifier}/org/{orgIdentifier}/project/{projectIdentifier}/change-event/{activityId}
   - /log-dashboard/logs-cluster
+  - /error-tracking-dashboard/cluster
   - /user-journey/create
   - /user-journey
   - /slo

@@ -14,6 +14,8 @@ import TimelineSlider from '@cv/components/ChangeTimeline/components/TimelineSli
 import type { RiskData } from 'services/cv'
 import type { ChangesInfoCardData } from '@cv/components/ChangeTimeline/ChangeTimeline.types'
 import ServiceDependencyGraph from '@cv/pages/monitored-service/CVMonitoredService/components/MonitoredServiceGraphView/MonitoredServiceGraphView'
+import { useFeatureFlag } from '@common/hooks/useFeatureFlag'
+import { FeatureFlag } from '@common/featureFlags'
 import {
   calculateLowestHealthScoreBar,
   calculateStartAndEndTimes,
@@ -30,6 +32,7 @@ import MetricsAndLogs from './components/MetricsAndLogs/MetricsAndLogs'
 import AnomaliesCard from './components/AnomaliesCard/AnomaliesCard'
 import ChangesSourceCard from './components/ChangesSourceCard/ChangesSourceCard'
 import ChangesTable from './components/ChangesAndServiceDependency/components/ChangesTable/ChangesTable'
+import ErrorTracking from './components/ErrorTracking/ErrorTracking'
 import css from './ServiceHealth.module.scss'
 
 export default function ServiceHealth({
@@ -50,6 +53,7 @@ export default function ServiceHealth({
   const [changeTimelineSummary, setChangeTimelineSummary] = useState<ChangesInfoCardData[] | null>(null)
   const [healthScoreData, setHealthScoreData] = useState<RiskData[]>()
   const containerRef = useRef<HTMLElement>(null)
+  const isErrorTrackingEnabled = useFeatureFlag(FeatureFlag.ERROR_TRACKING_ENABLED)
 
   useEffect(() => {
     //changing timeperiod in dropdown should reset the timerange and remove the slider.
@@ -223,6 +227,16 @@ export default function ServiceHealth({
           startTime={timeRange?.startTime}
           endTime={timeRange?.endTime}
         />
+
+        {isErrorTrackingEnabled && (
+          <ErrorTracking
+            monitoredServiceIdentifier={monitoredServiceIdentifier}
+            serviceIdentifier={serviceIdentifier}
+            environmentIdentifier={environmentIdentifier}
+            startTime={timeRange?.startTime}
+            endTime={timeRange?.endTime}
+          />
+        )}
       </Container>
     </>
   )
