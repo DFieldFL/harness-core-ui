@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Unit tests for LogAnalysisContainer Verify if LogAnalysisContainer renders 1`] = `
+exports[`Unit tests for ErrorTrackingAnalysisContainer Verify if ErrorTrackingAnalysisContainer renders 1`] = `
 <div>
   <div
     class="container"

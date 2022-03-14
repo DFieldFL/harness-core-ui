@@ -33,7 +33,7 @@ let useGetAllLogsClusterDataQueryParams: cvServices.GetAllLogsClusterDataQueryPa
 let useGetAllLogsDataQueryParams: cvServices.GetAllLogsDataQueryParams | undefined
 
 jest.mock('services/cv', () => ({
-  useGetAllErrorTrackingLogsData: jest.fn().mockImplementation(props => {
+  useGetAllErrorTrackingData: jest.fn().mockImplementation(props => {
     useGetAllLogsDataQueryParams = props.queryParams
     return { data: mockedErrorTrackingAnalysisData, loading: false, error: null, refetch: fetchLogAnalysis }
   }),
