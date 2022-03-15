@@ -8,7 +8,7 @@
 import type { AnalyzedLogDataDTO } from 'services/cv'
 import { RiskValues, getRiskColorValue } from '@cv/utils/CommonUtils'
 
-export const mockedLogAnalysisData = {
+export const mockedErrorTrackingAnalysisData = {
   resource: {
     totalPages: 1,
     totalItems: 1,
@@ -198,5 +198,32 @@ export const mockedLogsTableData = [
     ],
     riskScore: 0,
     riskStatus: RiskValues.HEALTHY
+  }
+]
+
+export const mockedLogsData2: AnalyzedLogDataDTO[] = [
+  {
+    projectIdentifier: 'Harshil',
+    orgIdentifier: 'CV',
+    environmentIdentifier: 'prod',
+    serviceIdentifier: 'service240'
+  }
+]
+
+export const mockedLogsTableData2 = [
+  {
+    clusterType: undefined,
+    count: 0,
+    message: '',
+    messageFrequency: [
+      {
+        name: 'trendData',
+        type: 'line',
+        color: getRiskColorValue(RiskValues.NO_DATA),
+        data: undefined
+      }
+    ],
+    riskScore: 0,
+    riskStatus: undefined
   }
 ]

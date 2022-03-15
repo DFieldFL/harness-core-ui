@@ -8,7 +8,12 @@
 import type { StringKeys } from 'framework/strings'
 import { getClusterTypes, getErrorTrackingAnalysisTableData } from '../ErrorTrackingAnalysis.utils'
 import { ErrorTrackingEvents } from '../ErrorTrackingAnalysis.types'
-import { mockedLogsData, mockedLogsTableData } from './ErrorTrackingAnalysis.mocks'
+import {
+  mockedLogsData,
+  mockedLogsTableData,
+  mockedLogsData2,
+  mockedLogsTableData2
+} from './ErrorTrackingAnalysis.mocks'
 
 function getString(key: StringKeys): StringKeys {
   return key
@@ -24,7 +29,11 @@ describe('Unit tests for LogAnalysis utils', () => {
     ])
   })
 
-  test('Verify if getLogAnalysisTableData method gives the correct logs analysis Table data', async () => {
+  test('Verify if getErrorTrackingAnalysisTableData method gives the correct logs analysis Table data', async () => {
     expect(getErrorTrackingAnalysisTableData(mockedLogsData)).toEqual(mockedLogsTableData)
+  })
+
+  test('Verify if getErroTrackingAnalysisTableData method gives the correct logs analysis Table data2', async () => {
+    expect(getErrorTrackingAnalysisTableData(mockedLogsData2)).toEqual(mockedLogsTableData2)
   })
 })
