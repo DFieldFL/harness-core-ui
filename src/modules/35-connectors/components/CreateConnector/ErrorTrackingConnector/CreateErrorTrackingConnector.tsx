@@ -24,7 +24,6 @@ export function ErrorTrackingConfigStep(props: ConnectionConfigProps): JSX.Eleme
   const { getString } = useStrings()
   const [initialValues, setInitialValues] = useState<ConnectorConfigDTO>({
     url: '',
-    sid: '',
     apiKeyRef: {},
     accountId,
     projectIdentifier,
@@ -53,7 +52,6 @@ export function ErrorTrackingConfigStep(props: ConnectionConfigProps): JSX.Eleme
         initialValues={{ ...initialValues }}
         validationSchema={Yup.object().shape({
           url: Yup.string().trim().required(getString('connectors.errorTracking.urlValidation')),
-          sid: Yup.string().trim().required(getString('connectors.errorTracking.sidValidation')),
           apiKeyRef: Yup.string().trim().required(getString('connectors.encryptedAPIKeyValidation'))
         })}
         onSubmit={(formData: ConnectorConfigDTO) => nextStep?.({ ...connectorInfo, ...prevStepData, ...formData })}
@@ -61,7 +59,6 @@ export function ErrorTrackingConfigStep(props: ConnectionConfigProps): JSX.Eleme
         <FormikForm className={css.form}>
           <Layout.Vertical spacing="large" height={450}>
             <FormInput.Text label={getString('UrlLabel')} name="url" />
-            <FormInput.Text label={getString('connectors.errorTracking.sidLabel')} name="sid" />
             <SecretInput label={getString('connectors.encryptedAPIKeyLabel')} name="apiKeyRef" />
           </Layout.Vertical>
           <Layout.Horizontal spacing="xlarge">

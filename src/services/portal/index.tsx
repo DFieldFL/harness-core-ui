@@ -6623,7 +6623,6 @@ export interface ErrorDetail {
 export type ErrorTrackingConnectorDTO = ConnectorConfigDTO & {
   apiKeyRef: string
   delegateSelectors?: string[]
-  sid: string
   url: string
 }
 

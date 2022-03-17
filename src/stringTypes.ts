@@ -1786,8 +1786,6 @@ export interface StringsMap {
   'connectors.editConnector': string
   'connectors.encryptedAPIKeyLabel': string
   'connectors.encryptedAPIKeyValidation': string
-  'connectors.errorTracking.sidLabel': string
-  'connectors.errorTracking.sidValidation': string
   'connectors.errorTracking.urlValidation': string
   'connectors.gcpKms.credentialsFile': string
   'connectors.gcpKms.credentialsFileRequired': string

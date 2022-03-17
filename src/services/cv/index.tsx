@@ -1456,7 +1456,6 @@ export interface ErrorMetadataDTO {
 export type ErrorTrackingConnectorDTO = ConnectorConfigDTO & {
   apiKeyRef: string
   delegateSelectors?: string[]
-  sid: string
   url: string
 }
 

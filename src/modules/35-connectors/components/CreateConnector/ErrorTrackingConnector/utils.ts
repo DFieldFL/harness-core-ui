@@ -11,7 +11,6 @@ import type { ConnectorConfigDTO } from 'services/cd-ng'
 
 export interface SpecData {
   url: string
-  sid: string
   apiKeyRef: string
   delegateSelectors: string
 }
@@ -43,7 +42,6 @@ export async function initializeErrorTrackingConnectorWithStepData(
   }
 
   updateInitialValue(prevData as PrevData, spec as SpecData, updatedInitialValues, 'url' as AllowedKeyList)
-  updateInitialValue(prevData as PrevData, spec as SpecData, updatedInitialValues, 'sid' as AllowedKeyList)
   updateInitialValue(prevData as PrevData, spec as SpecData, updatedInitialValues, 'apiKeyRef' as AllowedKeyList)
 
   const initValueWithSecrets = await setErrorTrackingSecrets(updatedInitialValues, accountId)

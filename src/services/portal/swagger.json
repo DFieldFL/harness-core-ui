@@ -92455,12 +92455,9 @@
         },
         {
           "type": "object",
-          "required": ["apiKeyRef", "sid", "url"],
+          "required": ["apiKeyRef", "url"],
           "properties": {
             "url": {
-              "type": "string"
-            },
-            "sid": {
               "type": "string"
             },
             "apiKeyRef": {

@@ -310,8 +310,6 @@ datadog:
   encryptedAPPKeyValidation: Encrypted APP Key is required.
 errorTracking:
   urlValidation: Error Tracking URL is required.
-  sidValidation: Error Tracking SID is required.
-  sidLabel: SID
 dynatrace:
   apiToken: API Token
   apiTokenValidation: API Token is required.
