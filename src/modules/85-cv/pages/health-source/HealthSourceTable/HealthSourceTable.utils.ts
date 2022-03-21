@@ -82,6 +82,8 @@ export const getIconBySourceType = (type: string): IconName => {
     case 'DYNATRACE':
     case 'Dynatrace':
       return 'service-dynatrace'
+    case 'ErrorTracking':
+      return 'error-tracking'
     default:
       return 'placeholder'
   }
