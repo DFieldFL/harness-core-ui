@@ -1373,7 +1373,6 @@ export const buildErrorTrackingPayload = (formData: FormData): Connector => {
     projectIdentifier,
     orgIdentifier,
     delegateSelectors,
-    url,
     apiKeyRef: { referenceString: apiReferenceKey },
     description,
     tags
@@ -1388,7 +1387,7 @@ export const buildErrorTrackingPayload = (formData: FormData): Connector => {
       description,
       tags,
       spec: {
-        url,
+        url: window.location.href.split('#')[0],
         apiKeyRef: apiReferenceKey,
         delegateSelectors: delegateSelectors || {}
       } as ErrorTrackingConnectorDTO
