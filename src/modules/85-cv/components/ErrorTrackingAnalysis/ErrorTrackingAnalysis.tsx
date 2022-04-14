@@ -20,7 +20,7 @@ import {
 } from '@wings-software/uicore'
 import { Color, FontVariation } from '@harness/design-system'
 import { useStrings } from 'framework/strings'
-import { useGetAllErrorTrackingData, useGetAllLogsClusterData } from 'services/cv'
+import { useGetAllErrorTrackingClusterData, useGetAllErrorTrackingData } from 'services/cv'
 import type { ProjectPathProps } from '@common/interfaces/RouteInterfaces'
 import { getErrorMessage } from '@cv/utils/CommonUtils'
 import { HealthSourceDropDown } from '@cv/components/HealthSourceDropDown/HealthSourceDropDown'
@@ -47,7 +47,7 @@ const ClusterChartContainer: React.FC<ErrorTrackingAnalysisContentProps> = ({
   const { getString } = useStrings()
   const { orgIdentifier, projectIdentifier, accountId } = useParams<ProjectPathProps>()
 
-  const { data, loading, error, refetch } = useGetAllLogsClusterData({
+  const { data, loading, error, refetch } = useGetAllErrorTrackingClusterData({
     queryParams: {
       accountId,
       orgIdentifier,

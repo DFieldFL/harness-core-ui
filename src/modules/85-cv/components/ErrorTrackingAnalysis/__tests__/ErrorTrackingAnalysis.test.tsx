@@ -48,7 +48,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
       return { data: mockedHealthSourcesData, error: null, loading: false }
     })
 
-    jest.spyOn(cvServices, 'useGetAllLogsClusterData').mockImplementation((): any => {
+    jest.spyOn(cvServices, 'useGetAllErrorTrackingClusterData').mockImplementation((): any => {
       return { data: mockedClustersData, error: null, loading: false, refetch: fetchClusterData }
     })
 
@@ -65,7 +65,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
       return { data: mockedHealthSourcesData, error: null, loading: false }
     })
 
-    jest.spyOn(cvServices, 'useGetAllLogsClusterData').mockImplementation((): any => {
+    jest.spyOn(cvServices, 'useGetAllErrorTrackingClusterData').mockImplementation((): any => {
       return { data: mockedClustersData, error: null, loading: false, refetch: fetchClusterData }
     })
 
@@ -88,7 +88,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
       return { data: mockedHealthSourcesData, error: null, loading: false }
     })
 
-    jest.spyOn(cvServices, 'useGetAllLogsClusterData').mockImplementation((): any => {
+    jest.spyOn(cvServices, 'useGetAllErrorTrackingClusterData').mockImplementation((): any => {
       return { data: mockedClustersData, error: null, loading: false, refetch: fetchClusterData }
     })
     const { container, getByText, getAllByText } = render(<WrapperComponent {...mockProps} />)
@@ -153,7 +153,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
     })
 
     jest
-      .spyOn(cvServices, 'useGetAllLogsClusterData')
+      .spyOn(cvServices, 'useGetAllErrorTrackingClusterData')
       .mockImplementation((props: cvServices.UseGetAllLogsClusterDataProps): any => {
         useGetAllLogsClusterDataQueryParams = props.queryParams
         return { data: mockedClustersData, error: null, loading: false, refetch: fetchClusterData }
@@ -186,7 +186,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
       return { data: mockedHealthSourcesData, error: null, loading: false }
     })
 
-    jest.spyOn(cvServices, 'useGetAllLogsClusterData').mockImplementation((): any => {
+    jest.spyOn(cvServices, 'useGetAllErrorTrackingClusterData').mockImplementation((): any => {
       return { data: mockedClustersData, error: null, loading: false, refetch: fetchClusterData }
     })
 
@@ -204,7 +204,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
       return { data: mockedHealthSourcesData, error: null, loading: false }
     })
 
-    jest.spyOn(cvServices, 'useGetAllLogsClusterData').mockImplementation((): any => {
+    jest.spyOn(cvServices, 'useGetAllErrorTrackingClusterData').mockImplementation((): any => {
       return { data: mockedClustersData, error: null, loading: false, refetch: fetchClusterData }
     })
 
@@ -231,7 +231,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
       return { data: mockedHealthSourcesData, error: null, loading: false }
     })
 
-    jest.spyOn(cvServices, 'useGetAllLogsClusterData').mockImplementation((): any => {
+    jest.spyOn(cvServices, 'useGetAllErrorTrackingClusterData').mockImplementation((): any => {
       return { data: undefined, error: null, loading: false, refetch: fetchClusterData }
     })
 
@@ -249,7 +249,7 @@ describe('Unit tests for ErrorTrackingAnalysisContainer', () => {
       return { data: mockedHealthSourcesData, error: null, loading: false }
     })
 
-    jest.spyOn(cvServices, 'useGetAllLogsClusterData').mockImplementation((): any => {
+    jest.spyOn(cvServices, 'useGetAllErrorTrackingClusterData').mockImplementation((): any => {
       return {
         data: undefined,
         error: { message: 'a new problem has occurred' },

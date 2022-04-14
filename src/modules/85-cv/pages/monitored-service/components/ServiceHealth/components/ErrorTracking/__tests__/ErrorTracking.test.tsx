@@ -35,7 +35,7 @@ jest.mock('services/cv', () => ({
   useGetAllHealthSourcesForMonitoredServiceIdentifier: jest.fn().mockImplementation(() => {
     return { data: mockedHealthSourcesData, error: null, loading: false }
   }),
-  useGetAllLogsClusterData: jest.fn().mockImplementation(() => {
+  useGetAllErrorTrackingClusterData: jest.fn().mockImplementation(() => {
     return { data: mockedClustersData, error: null, loading: false, refetch: fetchClusterData }
   })
 }))
