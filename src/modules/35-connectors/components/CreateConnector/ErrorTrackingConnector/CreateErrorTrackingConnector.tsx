@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react'
 import * as Yup from 'yup'
-import { Container, FormikForm, Layout, Formik, Button, PageSpinner } from '@wings-software/uicore'
+import { Container, FormikForm, Layout, FormInput, Formik, Button, PageSpinner } from '@wings-software/uicore'
 import { buildErrorTrackingPayload } from '@connectors/pages/connectors/utils/ConnectorUtils'
 import type { ConnectorConfigDTO } from 'services/cd-ng'
 import { useStrings } from 'framework/strings'
@@ -23,6 +23,7 @@ export function ErrorTrackingConfigStep(props: ConnectionConfigProps): JSX.Eleme
   const { nextStep, prevStepData, connectorInfo, projectIdentifier, orgIdentifier, accountId } = props
   const { getString } = useStrings()
   const [initialValues, setInitialValues] = useState<ConnectorConfigDTO>({
+    url: '',
     apiKeyRef: {},
     accountId,
     projectIdentifier,
@@ -50,12 +51,14 @@ export function ErrorTrackingConfigStep(props: ConnectionConfigProps): JSX.Eleme
         enableReinitialize
         initialValues={{ ...initialValues }}
         validationSchema={Yup.object().shape({
+          url: Yup.string().trim().required(getString('connectors.errorTracking.urlValidation')),
           apiKeyRef: Yup.string().trim().required(getString('connectors.encryptedAPIKeyValidation'))
         })}
         onSubmit={(formData: ConnectorConfigDTO) => nextStep?.({ ...connectorInfo, ...prevStepData, ...formData })}
       >
         <FormikForm className={css.form}>
           <Layout.Vertical spacing="large" height={450}>
+            <FormInput.Text label={getString('UrlLabel')} name="url" />
             <SecretInput label={getString('connectors.encryptedAPIKeyLabel')} name="apiKeyRef" />
           </Layout.Vertical>
           <Layout.Horizontal spacing="xlarge">
