@@ -10,6 +10,7 @@ import { setSecretField } from '@secrets/utils/SecretField'
 import type { ConnectorConfigDTO } from 'services/cd-ng'
 
 export interface SpecData {
+  url: string
   apiKeyRef: string
   delegateSelectors: string
 }
@@ -40,6 +41,7 @@ export async function initializeErrorTrackingConnectorWithStepData(
     ...prevData
   }
 
+  updateInitialValue(prevData as PrevData, spec as SpecData, updatedInitialValues, 'url' as AllowedKeyList)
   updateInitialValue(prevData as PrevData, spec as SpecData, updatedInitialValues, 'apiKeyRef' as AllowedKeyList)
 
   const initValueWithSecrets = await setErrorTrackingSecrets(updatedInitialValues, accountId)
