@@ -5418,6 +5418,7 @@ export interface StringsMap {
   'cv.monitoredServices.changeMonitoredServiceTypeMessage': string
   'cv.monitoredServices.changesTable.impact': string
   'cv.monitoredServices.continuousVerification': string
+  'cv.monitoredServices.copyET': string
   'cv.monitoredServices.deleteMonitoredServiceWarning': string
   'cv.monitoredServices.deleteService': string
   'cv.monitoredServices.dependenciesHealth': string

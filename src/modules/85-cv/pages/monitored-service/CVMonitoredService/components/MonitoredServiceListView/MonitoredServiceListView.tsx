@@ -8,7 +8,7 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom'
 import type { CellProps, Renderer } from 'react-table'
-import { Container, Text, Layout, TableV2, NoDataCard, Heading } from '@wings-software/uicore'
+import { Container, Text, Layout, TableV2, NoDataCard, Heading, Utils } from '@wings-software/uicore'
 import { FontVariation, Color } from '@harness/design-system'
 import { useStrings } from 'framework/strings'
 import { ResourceType } from '@rbac/interfaces/ResourceType'
@@ -187,7 +187,7 @@ const MonitoredServiceListView: React.FC<MonitoredServiceListViewProps> = ({
 }) => {
   const { getString } = useStrings()
 
-  const { projectIdentifier } = useParams<ProjectPathProps>()
+  const { projectIdentifier, orgIdentifier, accountId } = useParams<ProjectPathProps>()
 
   const { content, pageSize = 0, pageIndex = 0, totalPages = 0, totalItems = 0 } = monitoredServiceListData || {}
   const RenderStatusToggle: Renderer<CellProps<MonitoredServiceListItemDTO>> = ({ row }) => {
@@ -203,6 +203,17 @@ const MonitoredServiceListView: React.FC<MonitoredServiceListViewProps> = ({
       },
       [projectIdentifier]
     )
+
+    const onCopy = (): void => {
+      const environmentVariables = `ET_COLLECTOR_URL: <check documentation for value>
+ET_PROJECT_ID: ${projectIdentifier}
+ET_ACCOUNT_ID: ${accountId}
+ET_ORG_ID: ${orgIdentifier}
+ET_ENV_ID: ${monitoredService.environmentRef}
+ET_APPLICATION_NAME: ${monitoredService.serviceRef}
+ET_DEPLOYMENT_NAME: <replace with deployment version>`
+      Utils.copy(environmentVariables)
+    }
 
     return (
       <Layout.Horizontal flex={{ alignItems: 'center' }}>
@@ -226,6 +237,8 @@ const MonitoredServiceListView: React.FC<MonitoredServiceListViewProps> = ({
           onEdit={() => {
             onEditService(monitoredService.identifier as string)
           }}
+          copyLabel={getString('cv.monitoredServices.copyET')}
+          onCopy={() => onCopy()}
           RbacPermissions={{
             edit: {
               permission: PermissionIdentifier.EDIT_MONITORED_SERVICE,

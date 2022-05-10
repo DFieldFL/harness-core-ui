@@ -452,6 +452,7 @@ monitoredServices:
   editService: Edit service
   deleteMonitoredServiceWarning: Deleting your monitored service ‘{{ name }}’ will also delete its resources.
   deleteService: Delete service
+  copyET: Copy Error Tracking Config
   monitoredServiceDeleted: Monitored service successfully deleted
   monitoredServiceCreated: Monitored Service created
   monitoredServiceUpdated: Monitored Service updated

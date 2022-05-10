@@ -41,7 +41,7 @@
     "strings:genTypes": "node scripts/strings/generateTypesCli.mjs",
     "strings:loaders": "node scripts/strings/generateStrings.mjs",
     "prepare": "husky install && patch-package",
-    "fmt": "prettier --write \"./src/**/*.{ts,tsx,css}\"",
+    "fmt": "prettier --write \"./src/**/*.{ts,tsx,css,scss}\"",
     "generate-merged-coverage": "node mergedCoverage.js",
     "generate-microfrontend-types": "rm -rf src/microfrontends/dist && webpack --config src/microfrontends/webpack.config.js",
     "publish-types": "yarn generate-microfrontend-types; yarn publish src/microfrontends;",

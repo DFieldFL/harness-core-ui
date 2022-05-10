@@ -7,19 +7,22 @@
 
 import React, { useState } from 'react'
 import { Menu, Popover, Position } from '@blueprintjs/core'
-import { Button, ButtonVariation, useConfirmationDialog } from '@wings-software/uicore'
+import { Button, ButtonVariation, Icon, useConfirmationDialog } from '@wings-software/uicore'
 import { Color } from '@harness/design-system'
 import { String, useStrings } from 'framework/strings'
 import type { ContextMenuActionsProps } from '@cv/pages/monitored-service/CVMonitoredService/CVMonitoredService.types'
 import RbacMenuItem from '@rbac/components/MenuItem/MenuItem'
+import css from './ContextMenuActions.module.scss'
 
 export default function ContextMenuActions({
   onEdit,
+  onCopy,
   onDelete,
   titleText,
   contentText,
   confirmButtonText,
   deleteLabel,
+  copyLabel,
   editLabel,
   RbacPermissions
 }: ContextMenuActionsProps): JSX.Element {
@@ -52,6 +55,14 @@ export default function ContextMenuActions({
               text={editLabel ?? <String stringID="edit" />}
               onClick={onEdit}
               permission={RbacPermissions?.edit}
+            />
+          )}
+          {!!onCopy && (
+            <RbacMenuItem
+              className={css.bp3MenuItem}
+              icon={<Icon className={css.contextCopyIcon} name="copy-alt" />}
+              text={copyLabel ?? <String stringID="common.copy" />}
+              onClick={onCopy}
             />
           )}
           {!!onDelete && (
