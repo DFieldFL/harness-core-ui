@@ -238,7 +238,7 @@ ET_DEPLOYMENT_NAME: <replace with deployment version>`
             onEditService(monitoredService.identifier as string)
           }}
           copyLabel={getString('cv.monitoredServices.copyET')}
-          onCopy={() => onCopy()}
+          onCopy={onCopy}
           RbacPermissions={{
             edit: {
               permission: PermissionIdentifier.EDIT_MONITORED_SERVICE,
