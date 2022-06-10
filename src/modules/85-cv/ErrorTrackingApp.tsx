@@ -7,17 +7,21 @@
 
 import React from 'react'
 
+/* istanbul ignore next */
 // eslint-disable-next-line import/no-unresolved
 export const ErrorTracking = React.lazy(() => import('errortracking/App'))
 
+/* istanbul ignore next */
 export interface ErrorTrackingLocation {
   pathname: string
 }
 
+/* istanbul ignore next */
 interface ChildAppProps {
   componentLocation: ErrorTrackingLocation
 }
 
+/* istanbul ignore next */
 export interface EventListProps extends ChildAppProps {
   orgId: string
   accountId: string
