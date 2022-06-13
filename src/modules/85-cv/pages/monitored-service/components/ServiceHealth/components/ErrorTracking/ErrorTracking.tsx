@@ -6,8 +6,7 @@
  */
 
 import React from 'react'
-import { Container, Heading, Card, NoDataCard } from '@wings-software/uicore'
-import { FontVariation } from '@harness/design-system'
+import { Container, Card, NoDataCard } from '@wings-software/uicore'
 import { useParams } from 'react-router-dom'
 import noServiceAvailableImage from '@cv/assets/noServiceAvailable.png'
 import { useStrings } from 'framework/strings'
@@ -28,10 +27,7 @@ const ErrorTracking: React.FC<MetricsAndLogsProps> = props => {
   }
 
   return (
-    <Container margin={{ bottom: 'medium' }}>
-      <Heading level={2} font={{ variation: FontVariation.H6 }} padding={{ bottom: 'small' }}>
-        {getString('errors')}
-      </Heading>
+    <Container style={{ height: '100%' }}>
       {startTime && endTime ? (
         <ChildAppMounter<EventListProps>
           ChildApp={EventList}
