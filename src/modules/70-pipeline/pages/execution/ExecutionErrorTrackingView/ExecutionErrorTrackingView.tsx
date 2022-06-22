@@ -40,7 +40,11 @@ export default function ExecutionErrorTrackingView(): React.ReactElement | null 
         environmentId={'_INTERNAL_ET_CI'}
         versionId={pipelineExecutionDetail.pipelineExecutionSummary.runSequence.toString()}
         fromDateTime={Math.floor(pipelineExecutionDetail.pipelineExecutionSummary.startTs / 1000)}
-        toDateTime={Math.floor(Date.now() / 1000)}
+        toDateTime={Math.floor(
+          pipelineExecutionDetail.pipelineExecutionSummary.endTs
+            ? pipelineExecutionDetail.pipelineExecutionSummary.endTs / 1000 + 60 * 30
+            : Date.now() / 1000
+        )}
       />
     </Container>
   )
