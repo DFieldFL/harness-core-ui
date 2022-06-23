@@ -32,4 +32,5 @@ export interface EventListProps extends ChildAppProps {
   fromDateTime: number
   toDateTime: number
   toBaseRouteDefinition?: () => string
+  handleBackAction?: () => void
 }
