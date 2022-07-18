@@ -106,8 +106,10 @@ const ET_COMMANDS =
   'export ET_ACCOUNT_ID=$HARNESS_ACCOUNT_ID\n' +
   'export ET_ORG_ID=$HARNESS_ORG_ID\n' +
   'export ET_PROJECT_ID=$HARNESS_PROJECT_ID\n' +
-  '#export ET_SHUTDOWN_GRACETIME=30000\n' +
+  '# export ET_SHUTDOWN_GRACETIME=30000\n' +
   'export JAVA_TOOL_OPTIONS="-agentpath:/opt/harness/lib/libETAgent.so"\n' +
+  '# Uncomment the line below if using Java version 10 or above\n' +
+  '# export JAVA_TOOL_OPTIONS="-Xshare:off -XX:-UseTypeSpeculation -XX:ReservedCodeCacheSize=512m -agentpath:/opt/harness/lib/libETAgent.so"\n' +
   'cd $PROJ_DIR\n' +
   ET_COMMANDS_END
 
